@@ -1,0 +1,44 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+
+class CacheTableSeeder extends Seeder
+{
+
+    /**
+     * Auto generated seed file
+     *
+     * @return void
+     */
+    public function run()
+    {
+        
+
+        \DB::table('cache')->delete();
+        
+        \DB::table('cache')->insert(array (
+            0 => 
+            array (
+                'key' => 'a17961fa74e9275d529f489537f179c05d50c2f3',
+                'value' => 'i:1;',
+                'expiration' => 1728333497,
+            ),
+            1 => 
+            array (
+                'key' => 'a17961fa74e9275d529f489537f179c05d50c2f3:timer',
+                'value' => 'i:1728333497;',
+                'expiration' => 1728333497,
+            ),
+            2 => 
+            array (
+                'key' => 'spatie.permission.cache',
+                'value' => 'a:3:{s:5:"alias";a:4:{s:1:"a";s:2:"id";s:1:"b";s:4:"name";s:1:"c";s:10:"guard_name";s:1:"r";s:5:"roles";}s:11:"permissions";a:54:{i:0;a:4:{s:1:"a";i:1;s:1:"b";s:9:"view_role";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:1;a:4:{s:1:"a";i:2;s:1:"b";s:13:"view_any_role";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:2;a:4:{s:1:"a";i:3;s:1:"b";s:11:"create_role";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:3;a:4:{s:1:"a";i:4;s:1:"b";s:11:"update_role";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:4;a:4:{s:1:"a";i:5;s:1:"b";s:11:"delete_role";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:5;a:4:{s:1:"a";i:6;s:1:"b";s:15:"delete_any_role";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:6;a:4:{s:1:"a";i:7;s:1:"b";s:9:"view_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:7;a:4:{s:1:"a";i:8;s:1:"b";s:13:"view_any_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:8;a:4:{s:1:"a";i:9;s:1:"b";s:11:"create_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:9;a:4:{s:1:"a";i:10;s:1:"b";s:11:"update_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:10;a:4:{s:1:"a";i:11;s:1:"b";s:12:"restore_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:11;a:4:{s:1:"a";i:12;s:1:"b";s:16:"restore_any_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:12;a:4:{s:1:"a";i:13;s:1:"b";s:14:"replicate_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:13;a:4:{s:1:"a";i:14;s:1:"b";s:12:"reorder_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:14;a:4:{s:1:"a";i:15;s:1:"b";s:11:"delete_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:15;a:4:{s:1:"a";i:16;s:1:"b";s:15:"delete_any_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:16;a:4:{s:1:"a";i:17;s:1:"b";s:17:"force_delete_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:17;a:4:{s:1:"a";i:18;s:1:"b";s:21:"force_delete_any_user";s:1:"c";s:3:"web";s:1:"r";a:1:{i:0;i:1;}}i:18;a:4:{s:1:"a";i:19;s:1:"b";s:12:"view_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:19;a:4:{s:1:"a";i:20;s:1:"b";s:16:"view_any_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:20;a:4:{s:1:"a";i:21;s:1:"b";s:14:"create_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:21;a:4:{s:1:"a";i:22;s:1:"b";s:14:"update_drawing";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:22;a:4:{s:1:"a";i:23;s:1:"b";s:15:"restore_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:23;a:4:{s:1:"a";i:24;s:1:"b";s:19:"restore_any_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:24;a:4:{s:1:"a";i:25;s:1:"b";s:17:"replicate_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:25;a:4:{s:1:"a";i:26;s:1:"b";s:15:"reorder_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:26;a:4:{s:1:"a";i:27;s:1:"b";s:14:"delete_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:27;a:4:{s:1:"a";i:28;s:1:"b";s:18:"delete_any_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:28;a:4:{s:1:"a";i:29;s:1:"b";s:20:"force_delete_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:29;a:4:{s:1:"a";i:30;s:1:"b";s:24:"force_delete_any_drawing";s:1:"c";s:3:"web";s:1:"r";a:3:{i:0;i:1;i:1;i:5;i:2;i:6;}}i:30;a:4:{s:1:"a";i:31;s:1:"b";s:22:"view_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:31;a:4:{s:1:"a";i:32;s:1:"b";s:26:"view_any_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:32;a:4:{s:1:"a";i:33;s:1:"b";s:24:"create_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:33;a:4:{s:1:"a";i:34;s:1:"b";s:24:"update_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:34;a:4:{s:1:"a";i:35;s:1:"b";s:25:"restore_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:35;a:4:{s:1:"a";i:36;s:1:"b";s:29:"restore_any_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:36;a:4:{s:1:"a";i:37;s:1:"b";s:27:"replicate_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:37;a:4:{s:1:"a";i:38;s:1:"b";s:25:"reorder_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:38;a:4:{s:1:"a";i:39;s:1:"b";s:24:"delete_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:39;a:4:{s:1:"a";i:40;s:1:"b";s:28:"delete_any_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:40;a:4:{s:1:"a";i:41;s:1:"b";s:30:"force_delete_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:41;a:4:{s:1:"a";i:42;s:1:"b";s:34:"force_delete_any_drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:42;a:4:{s:1:"a";i:43;s:1:"b";s:27:"view_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:43;a:4:{s:1:"a";i:44;s:1:"b";s:31:"view_any_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:44;a:4:{s:1:"a";i:45;s:1:"b";s:29:"create_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:45;a:4:{s:1:"a";i:46;s:1:"b";s:29:"update_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:46;a:4:{s:1:"a";i:47;s:1:"b";s:30:"restore_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:47;a:4:{s:1:"a";i:48;s:1:"b";s:34:"restore_any_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:48;a:4:{s:1:"a";i:49;s:1:"b";s:32:"replicate_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:49;a:4:{s:1:"a";i:50;s:1:"b";s:30:"reorder_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:50;a:4:{s:1:"a";i:51;s:1:"b";s:29:"delete_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:51;a:4:{s:1:"a";i:52;s:1:"b";s:33:"delete_any_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:52;a:4:{s:1:"a";i:53;s:1:"b";s:35:"force_delete_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}i:53;a:4:{s:1:"a";i:54;s:1:"b";s:39:"force_delete_any_sub::drawing::category";s:1:"c";s:3:"web";s:1:"r";a:2:{i:0;i:1;i:1;i:5;}}}s:5:"roles";a:3:{i:0;a:3:{s:1:"a";i:1;s:1:"b";s:11:"super_admin";s:1:"c";s:3:"web";}i:1;a:3:{s:1:"a";i:5;s:1:"b";s:15:"admin_ing_panel";s:1:"c";s:3:"web";}i:2;a:3:{s:1:"a";i:6;s:1:"b";s:8:"user_ing";s:1:"c";s:3:"web";}}}',
+                'expiration' => 1728408192,
+            ),
+        ));
+        
+        
+    }
+}
