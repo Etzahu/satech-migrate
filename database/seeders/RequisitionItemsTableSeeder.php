@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class DrawingCategoriesTableSeeder extends Seeder
+class RequisitionItemsTableSeeder extends Seeder
 {
 
     /**
@@ -16,7 +16,7 @@ class DrawingCategoriesTableSeeder extends Seeder
     {
         
 
-        \DB::table('drawing_categories')->delete();
+        \DB::table('requisition_items')->delete();
         
         
         

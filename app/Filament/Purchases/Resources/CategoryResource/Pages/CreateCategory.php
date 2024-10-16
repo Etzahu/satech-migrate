@@ -12,7 +12,7 @@ class CreateCategory extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['name'] = Str::of($data['name'])->squish()->lower();
-        $data['code'] = Str::of($data['name'])->upper()->replace(' ', '');
+        $data['code'] = Str::of($data['code'])->upper()->replace(' ', '');
         return $data;
     }
 }

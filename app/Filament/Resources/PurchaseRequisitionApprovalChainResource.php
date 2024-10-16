@@ -33,18 +33,21 @@ protected static ?string $navigationGroup = 'Compras';
             ->schema([
                 Forms\Components\Select::make('requester_id')
                     ->label('Solicita')
-                    ->relationship('requester', 'name')
+                    ->relationship('requester', 'name',modifyQueryUsing: fn (Builder $query) => $query->where('active',1))
                     ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\Select::make('reviewer_id')
                     ->label('Revisa')
-                    ->relationship('reviewer', 'name')
+                    ->relationship('reviewer', 'name',modifyQueryUsing: fn (Builder $query) => $query->where('active',1))
                     ->searchable()
+                    ->preload()
                     ->required(),
                 Forms\Components\Select::make('approver_id')
                     ->label('Autoriza/Aprueba')
-                    ->relationship('approver', 'name')
+                    ->relationship('approver', 'name',modifyQueryUsing: fn (Builder $query) => $query->where('active',1))
                     ->searchable()
+                    ->preload()
                     ->required(),
             ]);
     }

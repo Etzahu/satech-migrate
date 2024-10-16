@@ -18,13 +18,13 @@ class UsersTableSeeder extends Seeder
 
         \DB::table('users')->delete();
 
-        \DB::table('users')->insert(array(
+        \DB::table('users')->insert(array (
             0 =>
-            array(
+            array (
                 'id' => 13,
                 'name' => 'Alcántara Bautista Benjamín',
                 'email' => 'balcantarab@gptservices.com',
-                'phone' => '(+52) 55 8096 0795',
+            'phone' => '(+52) 55 8096 0795',
                 'depto' => 'Logística',
                 'puesto' => 'Ayudante Especializado',
                 'active' => 1,
@@ -33,13 +33,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:31',
                 'updated_at' => '2024-07-29 05:25:12',
+
             ),
             1 =>
-            array(
+            array (
                 'id' => 14,
                 'name' => 'Becerra Yebra Jesús',
                 'email' => 'jbecerray@gptservices.com',
-                'phone' => '(+52) 55 3034 8643',
+            'phone' => '(+52) 55 3034 8643',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Soldador Master',
                 'active' => 1,
@@ -48,13 +49,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'w4WWHBjtISuM1RL9TPcEKoD82khdTZowJ6y4HOATZGcuauK1WexIB01qeYq8',
                 'created_at' => '2022-08-06 08:33:31',
                 'updated_at' => '2023-08-15 07:53:35',
+
             ),
             2 =>
-            array(
+            array (
                 'id' => 18,
                 'name' => 'López Arreola Ana Lilia',
                 'email' => 'alopeza@gptservices.com',
-                'phone' => '(+52) 55 8108 6378',
+            'phone' => '(+52) 55 8108 6378',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Encargada Administrativa',
                 'active' => 1,
@@ -63,9 +65,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 07:54:06',
+
             ),
             3 =>
-            array(
+            array (
                 'id' => 19,
                 'name' => 'García Arroyo Rafael',
                 'email' => 'rgarciaa@gptservices.com',
@@ -78,13 +81,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'waWCRVorwFO69uYPWVrZTMPgtJKklHuSbXjOfxqH2hhXP5wnL80XFiuMsKm0',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:52:47',
+
             ),
             4 =>
-            array(
+            array (
                 'id' => 22,
                 'name' => 'Ponce Reyes Iván',
                 'email' => 'iponcer@gptservices.com',
-                'phone' => '(+52) 55 8103 0124',
+            'phone' => '(+52) 55 8103 0124',
                 'depto' => 'HT & LS',
                 'puesto' => 'Técnico Especialista en HT & LS Nivel III',
                 'active' => 1,
@@ -93,13 +97,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '3jZf79bjgNY0AOKZpyCciSpbdcnXqwrAl7rpwq9moPikgG261GTb9ah4FWTQ',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-25 20:27:49',
+
             ),
             5 =>
-            array(
+            array (
                 'id' => 26,
                 'name' => 'Ulloa Tello Sinhue',
                 'email' => 'sulloat@gptservices.com',
-                'phone' => '(+52) 55 5953 7883',
+            'phone' => '(+52) 55 5953 7883',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Especialista en Soldadura',
                 'active' => 1,
@@ -108,13 +113,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 07:55:23',
+
             ),
             6 =>
-            array(
+            array (
                 'id' => 36,
                 'name' => 'Gutiérrez Melo Guillermo',
                 'email' => 'ggutierrezm@gptservices.com',
-                'phone' => '(+52) 55 8097 1226',
+            'phone' => '(+52) 55 8097 1226',
                 'depto' => 'Proyectos',
                 'puesto' => 'Gerencia de Proyectos',
                 'active' => 1,
@@ -123,9 +129,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-19 07:56:27',
+
             ),
             7 =>
-            array(
+            array (
                 'id' => 37,
                 'name' => 'Reyes Yáñez Luis',
                 'email' => 'lreyesy@gptservices.com',
@@ -138,9 +145,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 07:56:55',
+
             ),
             8 =>
-            array(
+            array (
                 'id' => 40,
                 'name' => 'Basave Arce Fernando',
                 'email' => 'febasavea@gptservices.com',
@@ -153,13 +161,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '9M7wmI6yHByYaZNs7GxzociptJrLzt9NK6ZjKiRSwId1xMGZ5058pOdHxQlT',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-09-02 02:48:37',
+
             ),
             9 =>
-            array(
+            array (
                 'id' => 46,
                 'name' => 'García Montiel Aquiles Gonzalo',
                 'email' => 'agarciam@gptservices.com',
-                'phone' => '(+52) 55 5965 6833',
+            'phone' => '(+52) 55 5965 6833',
                 'depto' => 'Comercial',
                 'puesto' => 'Gerencia Comercial',
                 'active' => 1,
@@ -168,13 +177,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:29:48',
+
             ),
             10 =>
-            array(
+            array (
                 'id' => 50,
                 'name' => 'Cruz Báez Aurelio',
                 'email' => 'acruzb@gptservices.com',
-                'phone' => '(+52) 55 7667 3044',
+            'phone' => '(+52) 55 7667 3044',
                 'depto' => 'HT & LS',
                 'puesto' => 'Técnico Especialista en HT & LS Nivel I',
                 'active' => 1,
@@ -183,13 +193,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '0wfLKvQ0LS92zEChBrxVGTDREdngfTKy8VUMIygmz86zA4lOY6jkMLvrafdo',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-11 00:07:00',
+
             ),
             11 =>
-            array(
+            array (
                 'id' => 52,
                 'name' => 'Pereyra Medina Norma Angélica',
                 'email' => 'npereyram@gptservices.com',
-                'phone' => '(+52) 55 1954 4768',
+            'phone' => '(+52) 55 1954 4768',
                 'depto' => 'Compras',
                 'puesto' => 'Comprador',
                 'active' => 1,
@@ -198,9 +209,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '4uJngJx7ByzxzWlj7FaJ6GLhAgf61FxTVOVYWzHQvO5MBgLEaqWiY6lMi2To',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:25:15',
+
             ),
             12 =>
-            array(
+            array (
                 'id' => 53,
                 'name' => 'González Huitrón Adriana',
                 'email' => 'agonzalezh@gptservices.com',
@@ -213,9 +225,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '8ZBq76N2nVj3H2TZ68QShGKVITZ6846sVbOgit6cuW4n0qjW88HCnblOKDht',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-07 17:13:46',
+
             ),
             13 =>
-            array(
+            array (
                 'id' => 64,
                 'name' => 'Sandoval Cabello Luis',
                 'email' => 'lsandovalc@gptservices.com',
@@ -228,13 +241,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 07:59:03',
+
             ),
             14 =>
-            array(
+            array (
                 'id' => 67,
                 'name' => 'Santoyo Meléndez Luis Javier',
                 'email' => 'ljsantoyom@gptservices.com',
-                'phone' => '(+52) 55 8222 7624',
+            'phone' => '(+52) 55 8222 7624',
                 'depto' => 'Comercial',
                 'puesto' => 'Dirección de Desarrollo de Nuevos Negocios',
                 'active' => 1,
@@ -243,13 +257,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-11-21 21:21:27',
+
             ),
             15 =>
-            array(
+            array (
                 'id' => 89,
                 'name' => 'Jiménez Camacho Juan',
                 'email' => 'jjimenezc@gptservices.com',
-                'phone' => '(+52) 4721 270293',
+            'phone' => '(+52) 4721 270293',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Soldador',
                 'active' => 1,
@@ -258,9 +273,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-04-09 14:09:27',
+
             ),
             16 =>
-            array(
+            array (
                 'id' => 92,
                 'name' => 'Acosta Arroyo Néstor Adair',
                 'email' => 'naacostaa@gptservices.com',
@@ -273,13 +289,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-20 23:26:38',
+
             ),
             17 =>
-            array(
+            array (
                 'id' => 99,
                 'name' => 'Rodríguez Guzmán Raúl',
                 'email' => 'rrodriguezg@gptservices.com',
-                'phone' => '(+52) 55 3513 4163',
+            'phone' => '(+52) 55 3513 4163',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Soldador',
                 'active' => 1,
@@ -288,13 +305,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 08:00:41',
+
             ),
             18 =>
-            array(
+            array (
                 'id' => 106,
                 'name' => 'Reyes Ramírez Denise Marisol',
                 'email' => 'dmreyesr@gptservices.com',
-                'phone' => '(+52) 55 8097 1232',
+            'phone' => '(+52) 55 8097 1232',
                 'depto' => 'Dirección General',
                 'puesto' => 'Dirección General',
                 'active' => 1,
@@ -303,9 +321,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'MeWfEv5cYrS2QqsLw7mtjWW1rY19HOddOo4WmJjBKF6kP7Jm27E2S1hBC6O0',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:17:29',
+
             ),
             19 =>
-            array(
+            array (
                 'id' => 114,
                 'name' => 'Ríos Cuautitla Manuel Antonio',
                 'email' => 'mariosc@gptservices.com',
@@ -318,9 +337,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'sUjlIuJvcLbACRoF9FVFYV4UHm48jnPXGHQHoyQTUVJyabtmMy9YxTDlBI26',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:31:27',
+
             ),
             20 =>
-            array(
+            array (
                 'id' => 120,
                 'name' => 'González Muñoz Roberto',
                 'email' => 'rgonzalezm@gptservices.com',
@@ -333,13 +353,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:32:01',
+
             ),
             21 =>
-            array(
+            array (
                 'id' => 123,
                 'name' => 'Salgado Zúñiga Angélica',
                 'email' => 'asalgadoz@gptservices.com',
-                'phone' => '(+52) 55 6703 9366',
+            'phone' => '(+52) 55 6703 9366',
                 'depto' => 'recursos Humanos',
                 'puesto' => 'Recursos Humanos Sr',
                 'active' => 1,
@@ -348,13 +369,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'pgDnFUQUDL1qnZecYNzNgYWA5i9dbCBVC47BfnvIroHntrf4piuzgGU5gbiS',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:19:48',
+
             ),
             22 =>
-            array(
+            array (
                 'id' => 131,
                 'name' => 'Martínez Segura Axel Javier',
                 'email' => 'ajmartinezs@gptservices.com',
-                'phone' => '(+52) 55 5188 2957',
+            'phone' => '(+52) 55 5188 2957',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Soldador',
                 'active' => 1,
@@ -363,13 +385,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-11 00:08:35',
+
             ),
             23 =>
-            array(
+            array (
                 'id' => 132,
                 'name' => 'Paes Santillán Martín',
                 'email' => 'mpaess@gptservices.com',
-                'phone' => '(+52) 55 7786 2987',
+            'phone' => '(+52) 55 7786 2987',
                 'depto' => 'Soldadura',
                 'puesto' => 'Ayudante de Soldador',
                 'active' => 1,
@@ -378,9 +401,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'f0AOV4OeMxTlDd6DGbVhapjR5NbuVJmc94XKGfzTyiDGwAHFFWf4R0r28RAe',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 08:01:30',
+
             ),
             24 =>
-            array(
+            array (
                 'id' => 137,
                 'name' => 'Godínez Rivera Luis Jesús',
                 'email' => 'lgodinez@gptservices.com',
@@ -393,13 +417,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '8I58h7xGfiaeVrRnqSKoAeUuxbPocj6uUd1vKvXrBvHdiE9QGE4QzBsuQtla',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-10-23 21:13:06',
+
             ),
             25 =>
-            array(
+            array (
                 'id' => 152,
                 'name' => 'Meza Rivera Edgar David',
                 'email' => 'emeza@gptservices.com',
-                'phone' => '(+52) 55 2280 0751',
+            'phone' => '(+52) 55 2280 0751',
                 'depto' => 'IT',
                 'puesto' => 'Soporte Técnico IT',
                 'active' => 1,
@@ -408,13 +433,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'C9RhycUSKUHfCvG9SejIjs5LqZXnty6GyK6RH6kHHcSUsfGMm0OY23rV1VlB',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:33:54',
+
             ),
             26 =>
-            array(
+            array (
                 'id' => 157,
                 'name' => 'Pérez Hernández Claudio Magdaleno',
                 'email' => 'cperez@gptservices.com',
-                'phone' => '(+52) 55 8531 7147',
+            'phone' => '(+52) 55 8531 7147',
                 'depto' => 'HT & LS',
                 'puesto' => 'Trainee HT & LS',
                 'active' => 1,
@@ -423,13 +449,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-11-06 22:57:34',
+
             ),
             27 =>
-            array(
+            array (
                 'id' => 158,
                 'name' => 'Colín Antonio Yanet Rosario',
                 'email' => 'yrcolina@gptservices.com',
-                'phone' => '(+52) 55 2283 7096',
+            'phone' => '(+52) 55 2283 7096',
                 'depto' => 'Finanzas ',
                 'puesto' => 'Contador Sr',
                 'active' => 1,
@@ -438,13 +465,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'GKcKYXFtNydxvhpYo0ymBjJJ4URtJEkc2tF4Elxabl9xEHaNo4RSiKbOTWKP',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:34:20',
+
             ),
             28 =>
-            array(
+            array (
                 'id' => 166,
                 'name' => 'Jiménez Ávila Rafael Alejandro',
                 'email' => 'rajimeneza@gptservices.com',
-                'phone' => '(+52) 55 5953 0834',
+            'phone' => '(+52) 55 5953 0834',
                 'depto' => 'Finanzas ',
                 'puesto' => 'Contador Jr',
                 'active' => 1,
@@ -453,13 +481,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'FkpHLVIdWKaJPN8sJRxGMpeld0zLD3VFPV4qvkkmEhuKMfTtPeUoxQaRBvql',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-07-01 07:24:08',
+
             ),
             29 =>
-            array(
+            array (
                 'id' => 168,
                 'name' => 'Ordaz Espinosa Sergio Antonio',
                 'email' => 'santonio@gptservices.com',
-                'phone' => '(+52) 55 5103 5335',
+            'phone' => '(+52) 55 5103 5335',
                 'depto' => 'Comercial',
                 'puesto' => 'Gerencia Comercial',
                 'active' => 1,
@@ -468,13 +497,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-07-05 06:22:09',
+
             ),
             30 =>
-            array(
+            array (
                 'id' => 180,
                 'name' => 'García Ojeda Jorge Eduardo',
                 'email' => 'jegarciao@gptservices.com',
-                'phone' => '(+52) 55 30 40 90 54',
+            'phone' => '(+52) 55 30 40 90 54',
                 'depto' => 'Compras',
                 'puesto' => 'Encargado de compras',
                 'active' => 1,
@@ -483,13 +513,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'mGemTVITiJlLHYV9O6Zbg6Fh4aqWq0uIKLvp42koxFoF5fxTyIhqt951ZBEI',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:29:07',
+
             ),
             31 =>
-            array(
+            array (
                 'id' => 187,
                 'name' => 'Ramírez Pérez Alejandro Aldair',
                 'email' => 'aramirezp@gptservices.com',
-                'phone' => '(+52) 55 83 59 05 08',
+            'phone' => '(+52) 55 83 59 05 08',
                 'depto' => 'Proyectos',
                 'puesto' => 'Ingeniero de Costos Jr.',
                 'active' => 1,
@@ -498,13 +529,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'yEimbHQGbd5h3VvD7R8wh5AVKoTlX6xMlmV7VztuXcLmtiQkQ1x0ZnB2S5XD',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:31:34',
+
             ),
             32 =>
-            array(
+            array (
                 'id' => 191,
                 'name' => 'Martínez Jarquín Jennifer',
                 'email' => 'jmartinezj@gptservices.com',
-                'phone' => '(+52) 55 74 99 89 47',
+            'phone' => '(+52) 55 74 99 89 47',
                 'depto' => 'Ingeniería',
                 'puesto' => 'Diseñador',
                 'active' => 1,
@@ -513,13 +545,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:55:42',
+
             ),
             33 =>
-            array(
+            array (
                 'id' => 192,
                 'name' => 'Díaz Esparza Karla Cristina',
                 'email' => 'kdiaze@gptservices.com',
-                'phone' => '(+52) 55 44 55 67 72',
+            'phone' => '(+52) 55 44 55 67 72',
                 'depto' => 'QHSE',
                 'puesto' => 'Trainee de HSE',
                 'active' => 1,
@@ -528,13 +561,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'nIT5zlk1R8tm9kMNDofJTRXmQxocxFVWAbD46D1qlLhi9trIepvNUgvYhV5k',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 22:08:11',
+
             ),
             34 =>
-            array(
+            array (
                 'id' => 193,
                 'name' => 'Martínez Hernández Martín Alejandro',
                 'email' => 'mmartinez@gptservices.com',
-                'phone' => '(+52) 56 19 43 95 09',
+            'phone' => '(+52) 56 19 43 95 09',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Servicios Generales Sr',
                 'active' => 1,
@@ -543,28 +577,29 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'Hhb0Ue3nHZu7LTgC48u6GI1Uojy5VOR7BobKn16mKCMYIkW1sdxzF6ntyQb5',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-29 19:12:49',
+
             ),
             35 =>
-            array(
+            array (
                 'id' => 199,
                 'name' => 'Hernández Mendoza Alan Etzahu',
                 'email' => 'ahernandezm@gptservices.com',
-                'phone' => '(+52) 5540756374',
+                'phone' => '5540756374',
                 'depto' => 'IT',
                 'puesto' => 'Trainee de IT',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => '$2y$12$S0mLRDTEiOAp4xyZatp8k.7bctoyOGjpXKlX/.JnEsD4D6DHluq3W',
-                'remember_token' => 'JlImUQEti7vBQjX778A8mNkVIItlw6nPk48fKHJoYYhCWdSE4KplJWTFXgAe',
+                'remember_token' => '18BaaMWoIgXK6hXdDnNsXlDJaSupPv2KVAhpkZFgr6u6UB9cglyWciRfz4w5',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-05 23:59:51',
+                'updated_at' => '2024-10-16 17:23:24',
             ),
             36 =>
-            array(
+            array (
                 'id' => 200,
                 'name' => 'Rojas González Rocío',
                 'email' => 'rrojasg@gptservices.com',
-                'phone' => '(+52) 5591862465',
+            'phone' => '(+52) 5591862465',
                 'depto' => 'QHSE',
                 'puesto' => 'Trainee de Calidad',
                 'active' => 1,
@@ -573,13 +608,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'Xwr35wkG1LHTBB9N61SKAKxvBnCQg75NgEm3RtslBHrpdhjlmPwePx72drB9',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-20 00:48:43',
+
             ),
             37 =>
-            array(
+            array (
                 'id' => 202,
                 'name' => 'González García Daniel',
                 'email' => '',
-                'phone' => '(+52) 55 11 79 61 70',
+            'phone' => '(+52) 55 11 79 61 70',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Limpieza',
                 'active' => 1,
@@ -588,13 +624,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 08:04:35',
+
             ),
             38 =>
-            array(
+            array (
                 'id' => 205,
                 'name' => 'López Olvera Erik David',
                 'email' => 'edlopezo@gptservices.com',
-                'phone' => '(+52) 55 81 29 09 74',
+            'phone' => '(+52) 55 81 29 09 74',
                 'depto' => 'HT & LS',
                 'puesto' => 'Trainee HT & LS',
                 'active' => 1,
@@ -603,13 +640,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-07-04 06:39:58',
+
             ),
             39 =>
-            array(
+            array (
                 'id' => 212,
                 'name' => 'Villafranca García Enrique',
                 'email' => 'evillafranca@gptservices.com',
-                'phone' => '(+52) 55 45 94 36 60',
+            'phone' => '(+52) 55 45 94 36 60',
                 'depto' => 'Mantenimiento',
                 'puesto' => 'Ayudante de Mantenimiento',
                 'active' => 1,
@@ -618,9 +656,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'uEouLW94avUuLRGRklFHZtpIP7VnZg2CG47vGobitXaeP7MSpUAoesmxB1ap',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:32:47',
+
             ),
             40 =>
-            array(
+            array (
                 'id' => 223,
                 'name' => 'Avilés Nieto José Héctor',
                 'email' => 'haviles@gptservices.com',
@@ -633,9 +672,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-06-11 19:08:22',
+
             ),
             41 =>
-            array(
+            array (
                 'id' => 227,
                 'name' => 'Pérez Rodríguez Kevin Hazael',
                 'email' => 'kperez@gptservices.com',
@@ -648,9 +688,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'o4gpRz6iCKYYZNKnAFGVgzi0ENd5HKdckVyYKV88uvFTtwxipSHZmKOI0Kmz',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-05 03:23:26',
+
             ),
             42 =>
-            array(
+            array (
                 'id' => 230,
                 'name' => 'Bautista Cruz Ernesto',
                 'email' => 'ebautista@gptservices.com',
@@ -663,9 +704,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'OdJAqOJ22GbqkmiLeGo8UU1fskGycn8kBQhDYUIz4A1k8bgDJrp8qlZHZn3y',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-11-07 19:24:38',
+
             ),
             43 =>
-            array(
+            array (
                 'id' => 233,
                 'name' => 'Correa Cruz Israel',
                 'email' => 'icorrea@gptservices.com',
@@ -678,9 +720,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-22 03:02:13',
                 'updated_at' => '2024-08-28 06:35:16',
+
             ),
             44 =>
-            array(
+            array (
                 'id' => 235,
                 'name' => 'Lugardo Aguilar Giovanni',
                 'email' => '',
@@ -693,9 +736,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:25:13',
                 'updated_at' => '2023-08-15 07:25:13',
+
             ),
             45 =>
-            array(
+            array (
                 'id' => 238,
                 'name' => 'Ramón Zetina Karen Stefany',
                 'email' => 'kramon@gptservices.com',
@@ -708,9 +752,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-10-24 01:51:36',
                 'updated_at' => '2024-02-21 16:09:07',
+
             ),
             46 =>
-            array(
+            array (
                 'id' => 240,
                 'name' => 'Pimentel García  Mónica Jazmín ',
                 'email' => 'mpimentel@gptservices.com',
@@ -723,9 +768,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'k0yPZLZ4AU2fhaHJsM5CZnFk53TcXXINR33uWeppbkLMQAuEfFTzJrTuEBei',
                 'created_at' => '2022-11-07 06:03:32',
                 'updated_at' => '2024-09-09 04:23:11',
+
             ),
             47 =>
-            array(
+            array (
                 'id' => 244,
                 'name' => 'Palafox Luna José Roberto',
                 'email' => 'jpalafox@gptservices.com',
@@ -738,13 +784,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'avqrOWEEbGErtZvYKz6WxBLT6SCivzNMvXSAaAQ66dN0Pz8iDStM3rz1c2qf',
                 'created_at' => '2023-02-01 07:33:10',
                 'updated_at' => '2024-08-28 06:36:38',
+
             ),
             48 =>
-            array(
+            array (
                 'id' => 247,
                 'name' => 'Prado Hernández Juan Carlos',
                 'email' => 'jprado@gptservices.com',
-                'phone' => '(55)45570447',
+            'phone' => '(55)45570447',
                 'depto' => 'Finanzas ',
                 'puesto' => 'Trainee de Contabilidad',
                 'active' => 1,
@@ -753,13 +800,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-02-15 02:30:34',
                 'updated_at' => '2024-02-08 20:22:47',
+
             ),
             49 =>
-            array(
+            array (
                 'id' => 249,
                 'name' => 'Salgado Rangel Rocío',
                 'email' => 'rsalgado@gptservices.com',
-                'phone' => '(+52) 55 8404 3368',
+            'phone' => '(+52) 55 8404 3368',
                 'depto' => 'Manufactura',
                 'puesto' => 'Ayudante de manufactura',
                 'active' => 1,
@@ -768,13 +816,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'FBR8IeKGInHG6ma3CRVfdtkusjBuwLunsjfGXd8xP5H6SG5GD3KQTBd1Zuaw',
                 'created_at' => '2023-08-15 07:28:23',
                 'updated_at' => '2023-11-23 01:26:29',
+
             ),
             50 =>
-            array(
+            array (
                 'id' => 250,
                 'name' => 'Martínez Amador José Carlos',
                 'email' => 'jmartinez@gptservices.com',
-                'phone' => '(+52) 56 2102 933',
+            'phone' => '(+52) 56 2102 933',
                 'depto' => 'Almacén',
                 'puesto' => 'Ayudante de Almacén',
                 'active' => 1,
@@ -783,9 +832,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'LA9ZNIyB7ZyN6Q2JyJMc6d3EIjvhcWdVi5yJxC6IxjzZzBec4t61TUqkC1PT',
                 'created_at' => '2023-03-08 02:40:15',
                 'updated_at' => '2024-08-28 06:37:18',
+
             ),
             51 =>
-            array(
+            array (
                 'id' => 251,
                 'name' => 'Rodríguez Vázquez Alejandro',
                 'email' => 'arodriguez@gptservices.com',
@@ -798,9 +848,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-03-07 22:36:46',
                 'updated_at' => '2023-11-29 03:09:04',
+
             ),
             52 =>
-            array(
+            array (
                 'id' => 252,
                 'name' => 'Mora Barrios Israel Omar',
                 'email' => '',
@@ -813,9 +864,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-03-07 22:48:55',
                 'updated_at' => '2023-08-15 07:29:48',
+
             ),
             53 =>
-            array(
+            array (
                 'id' => 253,
                 'name' => 'Nuñez Cruz Daniel',
                 'email' => '',
@@ -828,9 +880,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-03-12 21:37:52',
                 'updated_at' => '2023-08-15 07:31:30',
+
             ),
             54 =>
-            array(
+            array (
                 'id' => 256,
                 'name' => 'Mendoza Gutierrez Rosa Maria',
                 'email' => '',
@@ -843,9 +896,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:33:18',
                 'updated_at' => '2023-08-15 07:33:18',
+
             ),
             55 =>
-            array(
+            array (
                 'id' => 257,
                 'name' => 'Ramírez Jaimes Sergio Martín',
                 'email' => 'sramirez@gptservices.com',
@@ -858,9 +912,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '2DxMh9e7myNgCeN80Q075Ku2Hqfbs61wn2My2xoXp63gUMxHtQMVlhd3WOcf',
                 'created_at' => '2023-08-03 23:38:14',
                 'updated_at' => '2023-08-15 07:33:43',
+
             ),
             56 =>
-            array(
+            array (
                 'id' => 258,
                 'name' => 'Flores Valenzuela  Julia ',
                 'email' => '',
@@ -873,9 +928,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:34:06',
                 'updated_at' => '2023-08-30 20:50:02',
+
             ),
             57 =>
-            array(
+            array (
                 'id' => 260,
                 'name' => 'Lázaro Juárez José de Jesús',
                 'email' => 'jlazaro@gptservices.com',
@@ -888,9 +944,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'B47xjqWtBzgZCrYjdzwwTUvSzxQkyPYTC4dERh2CW03YIcdQTzfWSziRfpjz',
                 'created_at' => '2023-04-17 23:55:59',
                 'updated_at' => '2024-10-07 16:20:59',
+
             ),
             58 =>
-            array(
+            array (
                 'id' => 263,
                 'name' => 'García Real Joya Elizabeth',
                 'email' => 'egarcia@gptservices.com',
@@ -903,9 +960,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '6eqjMaenuwGw7EY89uzOY0CBpIkNlxPwYTiaxQ4uBAVIIbpB2WH10CizKi3f',
                 'created_at' => '2023-05-01 20:03:40',
                 'updated_at' => '2023-09-11 00:28:23',
+
             ),
             59 =>
-            array(
+            array (
                 'id' => 264,
                 'name' => 'López Hernández Juan Carlos',
                 'email' => 'jhernandez@gptservices.com',
@@ -918,9 +976,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'fIVwGNbOW0NTrWlcTMegiJ174TxsH0oF8ib928wphqOBLSa01bA7qlL3tws2',
                 'created_at' => '2023-08-01 19:34:45',
                 'updated_at' => '2024-08-28 06:38:51',
+
             ),
             60 =>
-            array(
+            array (
                 'id' => 265,
                 'name' => 'Gómez López  Alfonso ',
                 'email' => '',
@@ -933,9 +992,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:39:23',
                 'updated_at' => '2023-10-23 21:36:05',
+
             ),
             61 =>
-            array(
+            array (
                 'id' => 266,
                 'name' => 'Alvarado Bailey Omar',
                 'email' => 'oalvarado@gptservices.com',
@@ -948,9 +1008,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'NLZE6VrmNTuNtLaLbs0Xs2UaJRDFVdY5TBCG8OFIWOQekxyLN5KiKvNu3fvD',
                 'created_at' => '2023-05-16 02:01:12',
                 'updated_at' => '2024-08-28 06:40:20',
+
             ),
             62 =>
-            array(
+            array (
                 'id' => 268,
                 'name' => 'Carbajal Cerezo Carlos Ivan',
                 'email' => '',
@@ -963,9 +1024,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:45:16',
                 'updated_at' => '2024-08-28 06:41:26',
+
             ),
             63 =>
-            array(
+            array (
                 'id' => 269,
                 'name' => 'Santos Cruces Javier Mozart',
                 'email' => 'jsantos@gptservices.com',
@@ -978,9 +1040,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'bDHRblbSfAIeqHIbDwuvZ5BXqBuGMYiq06jMa7lZ1ey6Goj07Xrq0UcSaH6b',
                 'created_at' => '2023-06-26 05:11:03',
                 'updated_at' => '2024-08-28 06:41:57',
+
             ),
             64 =>
-            array(
+            array (
                 'id' => 270,
                 'name' => 'Orduña Álvarez Miguel Eduardo',
                 'email' => 'eorduna@gptservices.com',
@@ -993,9 +1056,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:48:21',
                 'updated_at' => '2023-11-24 01:07:26',
+
             ),
             65 =>
-            array(
+            array (
                 'id' => 271,
                 'name' => 'Cardona Salinas  José Manuel ',
                 'email' => 'jcardona@gptservices.com',
@@ -1008,9 +1072,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:50:07',
                 'updated_at' => '2023-10-26 23:48:33',
+
             ),
             66 =>
-            array(
+            array (
                 'id' => 274,
                 'name' => 'López Muñóz María Fernanda',
                 'email' => 'mlopez@gptservices.com',
@@ -1023,9 +1088,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-13 20:56:49',
                 'updated_at' => '2023-12-15 00:40:21',
+
             ),
             67 =>
-            array(
+            array (
                 'id' => 275,
                 'name' => 'Quechol Millán Agustín',
                 'email' => 'NA',
@@ -1038,9 +1104,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-29 20:08:40',
                 'updated_at' => '2024-08-28 06:43:22',
+
             ),
             68 =>
-            array(
+            array (
                 'id' => 276,
                 'name' => 'Paredes Chávez  Leonardo ',
                 'email' => 'lparedes@gptservices.com',
@@ -1053,9 +1120,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-09-12 20:18:39',
                 'updated_at' => '2023-09-13 18:40:07',
+
             ),
             69 =>
-            array(
+            array (
                 'id' => 277,
                 'name' => 'Guevara Galán  Antonio ',
                 'email' => 'guevaraantonio376@gmail.com',
@@ -1068,9 +1136,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-09-17 23:58:57',
                 'updated_at' => '2023-09-20 19:48:01',
+
             ),
             70 =>
-            array(
+            array (
                 'id' => 279,
                 'name' => 'Alfaro Villegas Orlando Sebastian ',
                 'email' => 'alfa0198@gmail.com',
@@ -1083,9 +1152,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-09-20 21:21:54',
                 'updated_at' => '2023-09-25 22:11:42',
+
             ),
             71 =>
-            array(
+            array (
                 'id' => 282,
                 'name' => 'Martínez Dolores  Diana ',
                 'email' => 'dmartinez@gptservices.com',
@@ -1098,9 +1168,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-10-09 19:14:11',
                 'updated_at' => '2023-10-09 22:22:55',
+
             ),
             72 =>
-            array(
+            array (
                 'id' => 285,
                 'name' => 'Castañeda Martínez Juan Gabriel',
                 'email' => 'NA',
@@ -1113,9 +1184,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-01-03 03:38:48',
                 'updated_at' => '2024-01-03 03:40:06',
+
             ),
             73 =>
-            array(
+            array (
                 'id' => 286,
                 'name' => 'Pardo Sánchez Luis Enrique',
                 'email' => 'NA',
@@ -1128,9 +1200,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-01-17 20:50:12',
                 'updated_at' => '2024-08-28 06:45:53',
+
             ),
             74 =>
-            array(
+            array (
                 'id' => 287,
                 'name' => 'Moreno Carmona Eduardo',
                 'email' => 'emoreno@gptservices.com',
@@ -1143,9 +1216,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'bRbnRqYrwV7EJat7zwwq1pp2vAWyQtfUfwP78ybOE4Z5Rdrv3hRc9fZrzs9I',
                 'created_at' => '2024-01-11 21:41:48',
                 'updated_at' => '2024-01-19 01:33:36',
+
             ),
             75 =>
-            array(
+            array (
                 'id' => 289,
                 'name' => 'Raya Espino Miguel Ángel',
                 'email' => 'NA',
@@ -1158,9 +1232,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-01-23 21:15:39',
                 'updated_at' => '2024-08-28 06:46:29',
+
             ),
             76 =>
-            array(
+            array (
                 'id' => 290,
                 'name' => 'Jiménez Ortega Mariana Karina',
                 'email' => 'mjimenez@gptservices.com',
@@ -1173,9 +1248,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'Hz5wWBbN7whaLCEtQGvAzjer4BpF3dD99gdHaRmJwRKx6DpI5I9As6uM3xuO',
                 'created_at' => '2024-01-31 17:12:57',
                 'updated_at' => '2024-01-31 18:10:59',
+
             ),
             77 =>
-            array(
+            array (
                 'id' => 292,
                 'name' => 'Zamora González Fernando',
                 'email' => 'fzamora@gptservices.com',
@@ -1188,9 +1264,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'fzeOOKZaOyUG5E9IK9HGjyLaYkTuOJ2BOFS1RYTSc5JrGHSUiiJpGrD6aA1m',
                 'created_at' => '2024-02-07 16:26:36',
                 'updated_at' => '2024-03-26 18:16:33',
+
             ),
             78 =>
-            array(
+            array (
                 'id' => 293,
                 'name' => 'Alejo Osorio Jatziri Yamile',
                 'email' => 'jalejo@gptservices.com',
@@ -1203,9 +1280,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'vX4OZXzDsiAptW125DKIVFeg4bmsTgkB2jQdOkaPdZ6WqYmb9Tsk9SzP84V9',
                 'created_at' => '2024-02-18 14:02:25',
                 'updated_at' => '2024-03-31 15:20:42',
+
             ),
             79 =>
-            array(
+            array (
                 'id' => 296,
                 'name' => 'Chávez Huerta Paola',
                 'email' => 'pchavez@gptservices.com',
@@ -1218,9 +1296,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'osat80tfNUeKg4lQQR4nGT9Zsi3wxiqbskYvfF9ViIYIyrGJsy0Ku2HTta4p',
                 'created_at' => '2024-03-21 14:45:46',
                 'updated_at' => '2024-03-21 19:30:10',
+
             ),
             80 =>
-            array(
+            array (
                 'id' => 298,
                 'name' => 'González Cisneros Ingrid Danae',
                 'email' => 'igonzalez@gptservices.com',
@@ -1233,9 +1312,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'I9lqEP1NYRUhdrrwJlLtCMK9vUsSCXYXT7lTCtvkaBoMrevMtSITBIxBbMqQ',
                 'created_at' => '2024-04-14 12:56:12',
                 'updated_at' => '2024-04-14 17:11:14',
+
             ),
             81 =>
-            array(
+            array (
                 'id' => 299,
                 'name' => 'Gómez Matilde Christian Alberto',
                 'email' => 'NA',
@@ -1248,24 +1328,26 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-04-22 17:32:32',
                 'updated_at' => '2024-04-24 15:58:03',
+
             ),
             82 =>
-            array(
+            array (
                 'id' => 301,
                 'name' => 'Vazquez Hernández Pablo Angel',
                 'email' => 'pvazquez@gptservices.com',
                 'phone' => 'NA',
                 'depto' => 'QHSE',
-                'puesto' => 'Trainee de Sistema de Gestión Integral (SGI)',
+            'puesto' => 'Trainee de Sistema de Gestión Integral (SGI)',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => '',
                 'remember_token' => '0smgJfG9P4eQrYaEh88dxUhq48xG2XgyD01hnWEKpUVYkWoTRRmOG8QlbjYo',
                 'created_at' => '2024-02-07 14:12:27',
                 'updated_at' => '2024-06-13 04:30:30',
+
             ),
             83 =>
-            array(
+            array (
                 'id' => 302,
                 'name' => 'Padilla Gónzalez Monica Esthela',
                 'email' => 'mpadilla@gptservices.com',
@@ -1278,9 +1360,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'FGPCAdEhqY8OwC12qKuG7SxY3H1KZJq3BIa5qhpyXFaiEVsVZGtQBivDfC9y',
                 'created_at' => '2024-05-22 23:19:57',
                 'updated_at' => '2024-06-09 21:32:47',
+
             ),
             84 =>
-            array(
+            array (
                 'id' => 303,
                 'name' => 'Sánchez González Luis Adrián',
                 'email' => 'lsanchez@gptservices.com',
@@ -1293,9 +1376,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '10C66vnyl8dd4yzt3hrVfK6W4jLAS7yw94H3151lpy8RqgVxNL2Ff8MzinVk',
                 'created_at' => '2024-07-08 06:51:38',
                 'updated_at' => '2024-07-29 01:22:31',
+
             ),
             85 =>
-            array(
+            array (
                 'id' => 304,
                 'name' => 'Contreras García Francisco Alejandro',
                 'email' => 'fcontreras@gptservices.com',
@@ -1308,9 +1392,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'LI4vgnPQdoVEIaEVmOxmcAbPpSKlTnW3pPcGCsqQA0xX8yaZQ5bcRkKUaSvI',
                 'created_at' => '2024-07-08 06:42:37',
                 'updated_at' => '2024-07-08 06:44:21',
+
             ),
             86 =>
-            array(
+            array (
                 'id' => 305,
                 'name' => 'Quintanar Pérez María de los Ángeles',
                 'email' => 'mquintanar@gptservices.com',
@@ -1323,9 +1408,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'aUqFZgtqX5ilYo88od4GWNjDJH6gELucfrukZhrXjTVO0vkiMedt6iP7DZ0B',
                 'created_at' => '2024-07-26 05:24:53',
                 'updated_at' => '2024-09-09 04:27:05',
+
             ),
             87 =>
-            array(
+            array (
                 'id' => 306,
                 'name' => 'Cruz Montes Bruno',
                 'email' => 'bcruz@gptservices.com',
@@ -1338,9 +1424,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-07-26 06:42:31',
                 'updated_at' => '2024-08-01 00:54:03',
+
             ),
             88 =>
-            array(
+            array (
                 'id' => 307,
                 'name' => 'Luna García Francisco',
                 'email' => 'fluna@gptservices.com',
@@ -1353,9 +1440,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-08-19 07:59:18',
                 'updated_at' => '2024-08-20 05:48:56',
+
             ),
             89 =>
-            array(
+            array (
                 'id' => 309,
                 'name' => 'Butrón González Fernando',
                 'email' => 'fbutron@gptservices.com',
@@ -1368,9 +1456,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-09-02 01:31:20',
                 'updated_at' => '2024-09-03 05:29:05',
+
             ),
             90 =>
-            array(
+            array (
                 'id' => 310,
                 'name' => 'Iriarte Pérez Daniel',
                 'email' => 'diriarte@gptservices.com',
@@ -1383,9 +1472,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'FdXGW1xrFirUwUSBN6czcPKjy3M4v91PHiGFVjWbRfxEwf2N4jrs9d2RnAMm',
                 'created_at' => '2024-09-09 04:48:38',
                 'updated_at' => '2024-09-09 04:56:36',
+
             ),
             91 =>
-            array(
+            array (
                 'id' => 311,
                 'name' => 'Guerrero Cruz Miguel Ángel',
                 'email' => 'vigilanciagpt@gptservices.com',
@@ -1398,13 +1488,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '40i2xJ7jkqStrlygtMFoYF6aVP5XjxgTCWljQweGuEoGqjorKHNqyjTOTqSd',
                 'created_at' => '2024-10-02 02:46:56',
                 'updated_at' => '2024-10-04 06:08:56',
+
             ),
             92 =>
-            array(
+            array (
                 'id' => 315,
                 'name' => 'Alonso Pérez Carlos',
                 'email' => 'calonso@gptservices.com',
-                'phone' => '(+1) 832 270 8700',
+            'phone' => '(+1) 832 270 8700',
                 'depto' => 'Dirección General',
                 'puesto' => 'Dirección General',
                 'active' => 1,
@@ -1413,13 +1504,14 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:34:49',
+
             ),
             93 =>
-            array(
+            array (
                 'id' => 331,
                 'name' => 'Rodríguez Lara José Carmen',
                 'email' => 'jrlara@gptservices.com',
-                'phone' => '(+52) 81 8473 8500',
+            'phone' => '(+52) 81 8473 8500',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Gerencia de Compras y Servicios Generales',
                 'active' => 1,
@@ -1428,9 +1520,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:35:29',
+
             ),
             94 =>
-            array(
+            array (
                 'id' => 666,
                 'name' => 'Zamudio Juárez Juan Antonio',
                 'email' => NULL,
@@ -1443,7 +1536,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-06-04 19:52:04',
                 'updated_at' => '2024-06-04 19:52:04',
+
             ),
         ));
+
+
     }
 }

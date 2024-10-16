@@ -7,27 +7,32 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Notifications\Notification;
 use Filament\Notifications\Actions\Action;
 use Filament\Resources\Pages\CreateRecord;
+use App\Models\PurchaseRequisitionApprovalChain;
 use App\Filament\Resources\PurchaseRequisitionApprovalChainResource;
 
 class CreatePurchaseRequisitionApprovalChain extends CreateRecord
 {
     protected static string $resource = PurchaseRequisitionApprovalChainResource::class;
-    // protected function beforeCreate(): void
-    // {
-    //     if (true) {
-    //         Notification::make()
-    //             ->warning()
-    //             ->title('You don\'t have an active subscription!')
-    //             ->body('Choose a plan to continue.')
-    //             ->persistent()
-    //             ->actions([
-    //                 Action::make('subscribe')
-    //                     ->button()
-    //                     ->url('https://filamentphp.com', shouldOpenInNewTab: true),
-    //             ])
-    //             ->send();
 
-    //         $this->halt();
-    //     }
-    // }
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+
+        $existRecord = PurchaseRequisitionApprovalChain::where('requester_id', $data['requester_id'])
+            ->where('reviewer_id', $data['reviewer_id'])
+            ->where('approver_id', $data['approver_id'])
+            ->first();
+
+        if ($existRecord) {
+            Notification::make()
+                ->danger()
+                ->title('Error al guardar la información')
+                ->body('Ya existe la cadena de aprobación.')
+                ->persistent()
+                ->color('danger')
+                ->send();
+            $this->halt();
+        } else {
+            return $data;
+        }
+    }
 }

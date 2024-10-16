@@ -2,9 +2,9 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use App\Filament\Purchases\Resources\MeasureUnitResource\Pages;
-use App\Filament\Purchases\Resources\MeasureUnitResource\RelationManagers;
-use App\Models\MeasureUnit;
+use App\Filament\Purchases\Resources\CategoryFamilyResource\Pages;
+use App\Filament\Purchases\Resources\CategoryFamilyResource\RelationManagers;
+use App\Models\CategoryFamily;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,15 +13,14 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class MeasureUnitResource extends Resource
+class CategoryFamilyResource extends Resource
 {
-    protected static ?string $model = MeasureUnit::class;
-    protected static ?string $modelLabel = 'Unidad de medida';
-    protected static ?string $pluralModelLabel = 'Unidades de medida';
-    protected static ?string $navigationLabel = 'UM';
-    protected static ?string $slug = 'um';
-    protected static ?string $navigationGroup = 'Bienes y servicios';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+    protected static ?string $model = CategoryFamily::class;
+    protected static ?string $modelLabel = 'Familia';
+    protected static ?string $pluralModelLabel = 'Familias';
+    protected static ?string $navigationLabel = 'Familias';
+    protected static ?string $slug = 'familias';
+    protected static bool $shouldRegisterNavigation = false;
 
 
     public static function form(Form $form): Form
@@ -29,15 +28,14 @@ class MeasureUnitResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
-                    ->label('Nombre')
                     ->required()
-                    ->unique(table: MeasureUnit::class, ignoreRecord: true)
                     ->maxLength(100),
-                Forms\Components\TextInput::make('acronym')
-                    ->label('Sigla')
+                Forms\Components\TextInput::make('code')
                     ->required()
-                    ->unique(table: MeasureUnit::class, ignoreRecord: true)
-                    ->maxLength(100),
+                    ->maxLength(30),
+                Forms\Components\Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->required(),
             ]);
     }
 
@@ -46,11 +44,12 @@ class MeasureUnitResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nombre')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('acronym')
-                    ->label('Sigla')
+                Tables\Columns\TextColumn::make('code')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -83,9 +82,9 @@ class MeasureUnitResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMeasureUnits::route('/'),
-            'create' => Pages\CreateMeasureUnit::route('/create'),
-            'edit' => Pages\EditMeasureUnit::route('/{record}/edit'),
+            'index' => Pages\ListCategoryFamilies::route('/'),
+            'create' => Pages\CreateCategoryFamily::route('/create'),
+            'edit' => Pages\EditCategoryFamily::route('/{record}/edit'),
         ];
     }
 }

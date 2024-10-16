@@ -21,6 +21,7 @@ class EditMeasureUnit extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $data['name'] = Str::of($data['name'])->squish()->lower();
+        $data['acronym'] = Str::of($data['acronym'])->squish();
         return $data;
     }
 }

@@ -13,25 +13,33 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-        $this->call(UsersTableSeeder::class);
-        // $this->call(DrawingCategoriesTableSeeder::class);
-        // $this->call(SubDrawingCategoriesTableSeeder::class);
-        // $this->call(CacheTableSeeder::class);
-        // $this->call(CacheLocksTableSeeder::class);
-        // $this->call(DrawingsTableSeeder::class);
+        $this->call(CacheTableSeeder::class);
+        $this->call(CacheLocksTableSeeder::class);
+        $this->call(CategoriesTableSeeder::class);
+        $this->call(CategoryFamiliesTableSeeder::class);
+        $this->call(CompaniesTableSeeder::class);
+        $this->call(DrawingCategoriesTableSeeder::class);
+        $this->call(DrawingsTableSeeder::class);
         $this->call(FailedJobsTableSeeder::class);
-        // $this->call(JobBatchesTableSeeder::class);
-        // $this->call(JobsTableSeeder::class);
+        $this->call(JobBatchesTableSeeder::class);
+        $this->call(JobsTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
+        $this->call(ManagementTableSeeder::class);
+        $this->call(MeasureUnitsTableSeeder::class);
+        $this->call(MigrationsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(ModelHasPermissionsTableSeeder::class);
-        $this->call(PermissionsTableSeeder::class);
         $this->call(ModelHasRolesTableSeeder::class);
         $this->call(PasswordResetTokensTableSeeder::class);
+        $this->call(PermissionsTableSeeder::class);
+        $this->call(ProductsTableSeeder::class);
+        $this->call(ProjectsDnNpCpTableSeeder::class);
+        $this->call(PurchaseRequisitionApprovalChainsTableSeeder::class);
+        // $this->call(PurchaseRequisitionsTableSeeder::class);
+        // $this->call(RequisitionItemsTableSeeder::class);
         $this->call(RoleHasPermissionsTableSeeder::class);
         $this->call(SessionsTableSeeder::class);
-        $this->call(ProyectosDnNpCpTableSeeder::class);
-        $this->call(ManagementTableSeeder::class);
-        $this->call(CompaniesTableSeeder::class);
+        $this->call(SubDrawingCategoriesTableSeeder::class);
+        $this->call(TaxesTableSeeder::class);
     }
 }

@@ -7,11 +7,11 @@
     <x-filament::dropdown.list>
         @if (session()->get('company_id') == 1)
         <x-filament::dropdown.list.item href="{{ route('company',1) }}" tag="a" color="danger">
-            GPT SERVICES
+            GPT
         </x-filament::dropdown.list.item>
         @else
         <x-filament::dropdown.list.item href="{{ route('company',1) }}" tag="a" >
-            GPT SERVICES
+            GPT
         </x-filament::dropdown.list.item>
         @endif
         @if (session()->get('company_id') == 2)

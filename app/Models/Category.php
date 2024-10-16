@@ -27,4 +27,9 @@ class Category extends Model
     protected $casts = [
         'id' => 'integer',
     ];
+
+    public function families()
+    {
+        return $this->hasMany(CategoryFamily::class, 'category_id');
+    }
 }

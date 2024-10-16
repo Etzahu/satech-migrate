@@ -2,51 +2,70 @@
 
 namespace App\Filament\Purchases\Resources;
 
+use Filament\Forms;
+use Filament\Tables;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use App\Models\PurchaseRequisition;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\PurchaseRequisitionApprovalChain;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\RelationManagers;
-use App\Models\PurchaseRequisition;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class PurchaseRequisitionResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
     protected static ?string $modelLabel = 'Requisición';
-    protected static ?string $pluralModelLabel = 'Requisiciónes';
-    protected static ?string $navigationLabel = 'Requisiciónes';
+    protected static ?string $pluralModelLabel = 'Mis requisiciónes';
+    protected static ?string $navigationLabel = 'Mis requisiciónes';
     protected static ?string $slug = 'requisiciones';
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('company_id', session()->get('company_id'))
+            ->whereIn('approval_chain_id', auth()->user()->approvalChains->pluck('id')->toArray());
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('folio')
-                    ->required()
-                    ->maxLength(255),
-                // Forms\Components\Select::make('request_user_id')
-                //     ->relationship('requestUser', 'name')
-                //     ->required(),
-                Forms\Components\DatePicker::make('date_delivery')
-                    ->label('Fecha deseable de entrega')
-                    ->default(now()->addDay(3))
-                    ->required(),
-                Forms\Components\Textarea::make('delivery_address')
-                    ->label('Dirección de entrega')
-                    ->required()
-                    ->maxLength(500),
-                Forms\Components\TextInput::make('type')
-                    ->label('Tipo de requisición')
-                    ->required()
-                    ->maxLength(50),
-                Forms\Components\Select::make('approval_chain_id')
-                    ->label('Flujo de aprobación')
-                    ->relationship('approvalChain', 'id')
-                    ->required(),
+                Forms\Components\Section::make('Información general')
+                    ->schema([
+                        Forms\Components\DatePicker::make('date_delivery')
+                            ->label('Fecha deseable de entrega')
+                            ->default(now()->addDay(3))
+                            ->required(),
+                        Forms\Components\Textarea::make('delivery_address')
+                            ->label('Dirección de entrega')
+                            ->required()
+                            ->maxLength(500),
+                        Forms\Components\TextInput::make('type')
+                            ->label('Tipo de requisición')
+                            ->required()
+                            ->maxLength(50),
+                    ]),
+                Forms\Components\Section::make('Flujo de aprobación')
+                    ->schema([
+                        Forms\Components\Select::make('reviewer_id')
+                            ->label('Revisa')
+                            ->options(
+                                PurchaseRequisitionApprovalChain::with(['reviewer'])
+                                    ->where('requester_id', auth()->user()->id)->get()
+                                    ->pluck('reviewer.name', 'reviewer.id')
+                            )
+                            ->required(),
+                        Forms\Components\Select::make('approver_id')
+                            ->label('Aprueba')
+                            ->options(
+                                PurchaseRequisitionApprovalChain::with(['approver'])
+                                    ->where('requester_id', auth()->user()->id)->get()
+                                    ->pluck('approver.name', 'approver.id')
+                            )
+                            ->required()
+                    ])
             ]);
     }
 
@@ -56,19 +75,11 @@ class PurchaseRequisitionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('folio')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('requestUser.name')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('date_delivery')
                     ->date()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('delivery_address')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('approvalChain.id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

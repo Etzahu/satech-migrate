@@ -16,6 +16,7 @@ class MeasureUnit extends Model
      */
     protected $fillable = [
         'name',
+        'acronym'
     ];
 
     /**

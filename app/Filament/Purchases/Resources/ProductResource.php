@@ -2,16 +2,22 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use App\Filament\Purchases\Resources\ProductResource\Pages;
-use App\Filament\Purchases\Resources\ProductResource\RelationManagers;
-use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Product;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use App\Models\Category;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\CategoryFamily;
+use Filament\Resources\Resource;
+use Illuminate\Support\Collection;
+use Filament\Forms\Components\Textarea;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Purchases\Resources\ProductResource\Pages;
+use App\Filament\Purchases\Resources\ProductResource\RelationManagers;
 
 class ProductResource extends Resource
 {
@@ -30,30 +36,41 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Textarea::make('name')
-                    ->label('Nombre')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('code')
-                    ->label('Código')
-                    ->required()
-                    ->maxLength(50),
-                Forms\Components\TextInput::make('brand')
-                    ->label('Marca')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('unit')
-                    ->label('Unidad de medida')
-                    ->relationship('unit', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('part_num')
-                    ->label('Número de parte')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('category_id')
-                    ->label('Categoría')
-                    ->relationship('category', 'name')
-                    ->required(),
+                Forms\Components\Section::make('General')
+                    ->schema([
+                        Forms\Components\Textarea::make('name')
+                            ->label('Nombre')
+                            ->required()
+                            ->columnSpanFull(),
+                        Forms\Components\Select::make('unit_id')
+                            ->label('Unidad de medida')
+                            ->relationship('unit', 'name')
+                            ->preload()
+                            ->searchable()
+                            ->required(),
+                    ]),
+                Forms\Components\Section::make('Categoría')
+                    ->schema([
+                        Forms\Components\Select::make('category_id')
+                            ->label('Tipo')
+                            ->relationship('category', 'name')
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->afterStateUpdated(function (Set $set) {
+                                $set('category_family_id', null);
+                            })
+                            ->required(),
+                        Forms\Components\Select::make('category_family_id')
+                            ->label('Familia')
+                            ->options(fn(Get $get): Collection => CategoryFamily::query()
+                                ->where('category_id', $get('category_id'))
+                                ->pluck('name', 'id'))
+                            ->searchable()
+                            ->preload()
+                            ->live()
+                            ->required(),
+                    ])
             ]);
     }
 
@@ -64,15 +81,8 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('code')
                     ->label('Código')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('brand')
-                    ->label('Marca')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('unit')
+                Tables\Columns\TextColumn::make('unit.name')
                     ->label('Unidad de medida')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('part_num')
-                    ->label('Número de parte')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Categoría')

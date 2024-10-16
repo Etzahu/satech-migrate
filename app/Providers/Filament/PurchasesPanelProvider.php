@@ -26,7 +26,7 @@ class PurchasesPanelProvider extends PanelProvider
         return $panel
             ->id('compras')
             ->path('compras')
-            ->spa()
+            // ->spa()
             ->spaUrlExceptions([
                 '*/empresa/*',
             ])

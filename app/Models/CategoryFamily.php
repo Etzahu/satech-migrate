@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PurchaseRequisition extends Model
+class CategoryFamily extends Model
 {
     use HasFactory;
 
@@ -16,12 +16,9 @@ class PurchaseRequisition extends Model
      * @var array
      */
     protected $fillable = [
-        'folio',
-        'date_delivery',
-        'delivery_address',
-        'type',
-        'company_id',
-        'approval_chain_id',
+        'name',
+        'code',
+        'category_id',
     ];
 
     /**
@@ -31,14 +28,11 @@ class PurchaseRequisition extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'request_user_id' => 'integer',
-        'date_delivery' => 'date',
-        'approval_chain_id' => 'integer',
+        'category_id' => 'integer',
     ];
 
-
-    public function approvalChain(): BelongsTo
+    public function category(): BelongsTo
     {
-        return $this->belongsTo(PurchaseRequisitionApprovalChain::class, 'approval_chain_id');
+        return $this->belongsTo(Category::class, 'category_id');
     }
 }
