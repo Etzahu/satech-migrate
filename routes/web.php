@@ -11,3 +11,8 @@ Route::get('home', [LoginController::class, 'home'])->name('home')->middleware('
 if (config('app.env') === 'local') {
     @include_once('pruebas.php');
 }
+
+
+Route::get('empresa/{id}', [LoginController::class, 'setCompany'])
+    ->name('company')
+    ->middleware('auth');

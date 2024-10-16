@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone', 20)->nullable();
-            $table->string('profile_image', 200)->default('https://res.cloudinary.com/gpt-services/image/upload/v1635975373/logo_GPT_yhm2ut.svg');
-            $table->string('area', 100);
             $table->string('depto', 100);
             $table->string('puesto', 100);
             $table->boolean('active')->default(1);
@@ -53,6 +51,3 @@ return new class extends Migration
         Schema::dropIfExists('sessions');
     }
 };
-
-
-

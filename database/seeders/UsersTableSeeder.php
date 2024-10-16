@@ -14,19 +14,17 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('users')->delete();
-        
-        \DB::table('users')->insert(array (
-            0 => 
-            array (
+
+        \DB::table('users')->insert(array(
+            0 =>
+            array(
                 'id' => 13,
                 'name' => 'Alcántara Bautista Benjamín',
                 'email' => 'balcantarab@gptservices.com',
-            'phone' => '(+52) 55 8096 0795',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692116993/fotos/13.png',
-                'area' => 'Servicios Generales y Almacén',
+                'phone' => '(+52) 55 8096 0795',
                 'depto' => 'Logística',
                 'puesto' => 'Ayudante Especializado',
                 'active' => 1,
@@ -36,14 +34,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:31',
                 'updated_at' => '2024-07-29 05:25:12',
             ),
-            1 => 
-            array (
+            1 =>
+            array(
                 'id' => 14,
                 'name' => 'Becerra Yebra Jesús',
                 'email' => 'jbecerray@gptservices.com',
-            'phone' => '(+52) 55 3034 8643',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912320/fotos/14.jpg',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 55 3034 8643',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Soldador Master',
                 'active' => 1,
@@ -53,14 +49,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:31',
                 'updated_at' => '2023-08-15 07:53:35',
             ),
-            2 => 
-            array (
+            2 =>
+            array(
                 'id' => 18,
                 'name' => 'López Arreola Ana Lilia',
                 'email' => 'alopeza@gptservices.com',
-            'phone' => '(+52) 55 8108 6378',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117013/fotos/18.png',
-                'area' => 'Servicios Generales y Almacén',
+                'phone' => '(+52) 55 8108 6378',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Encargada Administrativa',
                 'active' => 1,
@@ -70,14 +64,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 07:54:06',
             ),
-            3 => 
-            array (
+            3 =>
+            array(
                 'id' => 19,
                 'name' => 'García Arroyo Rafael',
                 'email' => 'rgarciaa@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117036/fotos/19.png',
-                'area' => 'Ingeniería y Manufactura',
                 'depto' => 'Ingeniería',
                 'puesto' => 'Gerencia de Ingeniería y Manufactura',
                 'active' => 1,
@@ -87,14 +79,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:52:47',
             ),
-            4 => 
-            array (
+            4 =>
+            array(
                 'id' => 22,
                 'name' => 'Ponce Reyes Iván',
                 'email' => 'iponcer@gptservices.com',
-            'phone' => '(+52) 55 8103 0124',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695745668/fotos/22.jpg',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 55 8103 0124',
                 'depto' => 'HT & LS',
                 'puesto' => 'Técnico Especialista en HT & LS Nivel III',
                 'active' => 1,
@@ -104,14 +94,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-25 20:27:49',
             ),
-            5 => 
-            array (
+            5 =>
+            array(
                 'id' => 26,
                 'name' => 'Ulloa Tello Sinhue',
                 'email' => 'sulloat@gptservices.com',
-            'phone' => '(+52) 55 5953 7883',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117102/fotos/26.png',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 55 5953 7883',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Especialista en Soldadura',
                 'active' => 1,
@@ -121,14 +109,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 07:55:23',
             ),
-            6 => 
-            array (
+            6 =>
+            array(
                 'id' => 36,
                 'name' => 'Gutiérrez Melo Guillermo',
                 'email' => 'ggutierrezm@gptservices.com',
-            'phone' => '(+52) 55 8097 1226',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1696437610/fotos/36.jpg',
-                'area' => 'Proyectos',
+                'phone' => '(+52) 55 8097 1226',
                 'depto' => 'Proyectos',
                 'puesto' => 'Gerencia de Proyectos',
                 'active' => 1,
@@ -138,14 +124,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-19 07:56:27',
             ),
-            7 => 
-            array (
+            7 =>
+            array(
                 'id' => 37,
                 'name' => 'Reyes Yáñez Luis',
                 'email' => 'lreyesy@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912252/fotos/37.png',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Manufactura',
                 'puesto' => 'Mecánico Tornero',
                 'active' => 1,
@@ -155,14 +139,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 07:56:55',
             ),
-            8 => 
-            array (
+            8 =>
+            array(
                 'id' => 40,
                 'name' => 'Basave Arce Fernando',
                 'email' => 'febasavea@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694462739/fotos/40.png',
-                'area' => 'Contratos',
                 'depto' => 'Contratos',
                 'puesto' => 'Gerencia de Contratos',
                 'active' => 1,
@@ -172,14 +154,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-09-02 02:48:37',
             ),
-            9 => 
-            array (
+            9 =>
+            array(
                 'id' => 46,
                 'name' => 'García Montiel Aquiles Gonzalo',
                 'email' => 'agarciam@gptservices.com',
-            'phone' => '(+52) 55 5965 6833',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912357/fotos/46.jpg',
-                'area' => 'Comercial',
+                'phone' => '(+52) 55 5965 6833',
                 'depto' => 'Comercial',
                 'puesto' => 'Gerencia Comercial',
                 'active' => 1,
@@ -189,14 +169,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:29:48',
             ),
-            10 => 
-            array (
+            10 =>
+            array(
                 'id' => 50,
                 'name' => 'Cruz Báez Aurelio',
                 'email' => 'acruzb@gptservices.com',
-            'phone' => '(+52) 55 7667 3044',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694462819/fotos/50.png',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 55 7667 3044',
                 'depto' => 'HT & LS',
                 'puesto' => 'Técnico Especialista en HT & LS Nivel I',
                 'active' => 1,
@@ -206,14 +184,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-11 00:07:00',
             ),
-            11 => 
-            array (
+            11 =>
+            array(
                 'id' => 52,
                 'name' => 'Pereyra Medina Norma Angélica',
                 'email' => 'npereyram@gptservices.com',
-            'phone' => '(+52) 55 1954 4768',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117181/fotos/52.png',
-                'area' => 'Administración y Finanzas',
+                'phone' => '(+52) 55 1954 4768',
                 'depto' => 'Compras',
                 'puesto' => 'Comprador',
                 'active' => 1,
@@ -223,14 +199,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:25:15',
             ),
-            12 => 
-            array (
+            12 =>
+            array(
                 'id' => 53,
                 'name' => 'González Huitrón Adriana',
                 'email' => 'agonzalezh@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117203/fotos/53.png',
-                'area' => 'Ingeniería y Manufactura',
                 'depto' => 'Ingeniería',
                 'puesto' => 'Gerencia de Ingeniería',
                 'active' => 1,
@@ -240,14 +214,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-07 17:13:46',
             ),
-            13 => 
-            array (
+            13 =>
+            array(
                 'id' => 64,
                 'name' => 'Sandoval Cabello Luis',
                 'email' => 'lsandovalc@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690998806/fotos/64.jpg',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Mantenimiento',
                 'puesto' => 'Mecánico Especialista',
                 'active' => 1,
@@ -257,14 +229,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 07:59:03',
             ),
-            14 => 
-            array (
+            14 =>
+            array(
                 'id' => 67,
                 'name' => 'Santoyo Meléndez Luis Javier',
                 'email' => 'ljsantoyom@gptservices.com',
-            'phone' => '(+52) 55 8222 7624',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691084994/fotos/67.jpg',
-                'area' => 'Comercial',
+                'phone' => '(+52) 55 8222 7624',
                 'depto' => 'Comercial',
                 'puesto' => 'Dirección de Desarrollo de Nuevos Negocios',
                 'active' => 1,
@@ -274,14 +244,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-11-21 21:21:27',
             ),
-            15 => 
-            array (
+            15 =>
+            array(
                 'id' => 89,
                 'name' => 'Jiménez Camacho Juan',
                 'email' => 'jjimenezc@gptservices.com',
-            'phone' => '(+52) 4721 270293',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117241/fotos/89.png',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 4721 270293',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Soldador',
                 'active' => 1,
@@ -291,14 +259,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-04-09 14:09:27',
             ),
-            16 => 
-            array (
+            16 =>
+            array(
                 'id' => 92,
                 'name' => 'Acosta Arroyo Néstor Adair',
                 'email' => 'naacostaa@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117274/fotos/92.png',
-                'area' => 'Operaciones',
                 'depto' => 'HT & LS',
                 'puesto' => 'Técnico Especialista en HT & LS Nivel II',
                 'active' => 1,
@@ -308,14 +274,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-20 23:26:38',
             ),
-            17 => 
-            array (
+            17 =>
+            array(
                 'id' => 99,
                 'name' => 'Rodríguez Guzmán Raúl',
                 'email' => 'rrodriguezg@gptservices.com',
-            'phone' => '(+52) 55 3513 4163',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690998881/fotos/99.jpg',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 55 3513 4163',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Soldador',
                 'active' => 1,
@@ -325,14 +289,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 08:00:41',
             ),
-            18 => 
-            array (
+            18 =>
+            array(
                 'id' => 106,
                 'name' => 'Reyes Ramírez Denise Marisol',
                 'email' => 'dmreyesr@gptservices.com',
-            'phone' => '(+52) 55 8097 1232',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117322/fotos/106.png',
-                'area' => 'Dirección General',
+                'phone' => '(+52) 55 8097 1232',
                 'depto' => 'Dirección General',
                 'puesto' => 'Dirección General',
                 'active' => 1,
@@ -342,14 +304,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:17:29',
             ),
-            19 => 
-            array (
+            19 =>
+            array(
                 'id' => 114,
                 'name' => 'Ríos Cuautitla Manuel Antonio',
                 'email' => 'mariosc@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117344/fotos/114.png',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Ingeniería',
                 'puesto' => 'Ingeniería',
                 'active' => 1,
@@ -359,14 +319,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:31:27',
             ),
-            20 => 
-            array (
+            20 =>
+            array(
                 'id' => 120,
                 'name' => 'González Muñoz Roberto',
                 'email' => 'rgonzalezm@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117370/fotos/120.jpg',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Manufactura',
                 'puesto' => 'Manufactura',
                 'active' => 1,
@@ -376,14 +334,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:32:01',
             ),
-            21 => 
-            array (
+            21 =>
+            array(
                 'id' => 123,
                 'name' => 'Salgado Zúñiga Angélica',
                 'email' => 'asalgadoz@gptservices.com',
-            'phone' => '(+52) 55 6703 9366',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912375/fotos/123.jpg',
-                'area' => 'Administración y Finanzas',
+                'phone' => '(+52) 55 6703 9366',
                 'depto' => 'recursos Humanos',
                 'puesto' => 'Recursos Humanos Sr',
                 'active' => 1,
@@ -393,14 +349,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:19:48',
             ),
-            22 => 
-            array (
+            22 =>
+            array(
                 'id' => 131,
                 'name' => 'Martínez Segura Axel Javier',
                 'email' => 'ajmartinezs@gptservices.com',
-            'phone' => '(+52) 55 5188 2957',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694462914/fotos/131.png',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 55 5188 2957',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Soldador',
                 'active' => 1,
@@ -410,14 +364,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-11 00:08:35',
             ),
-            23 => 
-            array (
+            23 =>
+            array(
                 'id' => 132,
                 'name' => 'Paes Santillán Martín',
                 'email' => 'mpaess@gptservices.com',
-            'phone' => '(+52) 55 7786 2987',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117394/fotos/132.png',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 55 7786 2987',
                 'depto' => 'Soldadura',
                 'puesto' => 'Ayudante de Soldador',
                 'active' => 1,
@@ -427,14 +379,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 08:01:30',
             ),
-            24 => 
-            array (
+            24 =>
+            array(
                 'id' => 137,
                 'name' => 'Godínez Rivera Luis Jesús',
                 'email' => 'lgodinez@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695745751/fotos/137.jpg',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Mantenimiento',
                 'puesto' => 'Mecánico Especialista',
                 'active' => 1,
@@ -444,14 +394,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-10-23 21:13:06',
             ),
-            25 => 
-            array (
+            25 =>
+            array(
                 'id' => 152,
                 'name' => 'Meza Rivera Edgar David',
                 'email' => 'emeza@gptservices.com',
-            'phone' => '(+52) 55 2280 0751',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117471/fotos/152.png',
-                'area' => 'Servicios Generales y Almacén',
+                'phone' => '(+52) 55 2280 0751',
                 'depto' => 'IT',
                 'puesto' => 'Soporte Técnico IT',
                 'active' => 1,
@@ -461,14 +409,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:33:54',
             ),
-            26 => 
-            array (
+            26 =>
+            array(
                 'id' => 157,
                 'name' => 'Pérez Hernández Claudio Magdaleno',
                 'email' => 'cperez@gptservices.com',
-            'phone' => '(+52) 55 8531 7147',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690390682/fotos/157.jpg',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 55 8531 7147',
                 'depto' => 'HT & LS',
                 'puesto' => 'Trainee HT & LS',
                 'active' => 1,
@@ -478,14 +424,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-11-06 22:57:34',
             ),
-            27 => 
-            array (
+            27 =>
+            array(
                 'id' => 158,
                 'name' => 'Colín Antonio Yanet Rosario',
                 'email' => 'yrcolina@gptservices.com',
-            'phone' => '(+52) 55 2283 7096',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117491/fotos/158.png',
-                'area' => 'Administración y Finanzas',
+                'phone' => '(+52) 55 2283 7096',
                 'depto' => 'Finanzas ',
                 'puesto' => 'Contador Sr',
                 'active' => 1,
@@ -495,14 +439,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:34:20',
             ),
-            28 => 
-            array (
+            28 =>
+            array(
                 'id' => 166,
                 'name' => 'Jiménez Ávila Rafael Alejandro',
                 'email' => 'rajimeneza@gptservices.com',
-            'phone' => '(+52) 55 5953 0834',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117532/fotos/166.png',
-                'area' => 'Administración y Finanzas',
+                'phone' => '(+52) 55 5953 0834',
                 'depto' => 'Finanzas ',
                 'puesto' => 'Contador Jr',
                 'active' => 1,
@@ -512,14 +454,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-07-01 07:24:08',
             ),
-            29 => 
-            array (
+            29 =>
+            array(
                 'id' => 168,
                 'name' => 'Ordaz Espinosa Sergio Antonio',
                 'email' => 'santonio@gptservices.com',
-            'phone' => '(+52) 55 5103 5335',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691686850/fotos/168.png',
-                'area' => 'Comercial',
+                'phone' => '(+52) 55 5103 5335',
                 'depto' => 'Comercial',
                 'puesto' => 'Gerencia Comercial',
                 'active' => 1,
@@ -529,14 +469,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-07-05 06:22:09',
             ),
-            30 => 
-            array (
+            30 =>
+            array(
                 'id' => 180,
                 'name' => 'García Ojeda Jorge Eduardo',
                 'email' => 'jegarciao@gptservices.com',
-            'phone' => '(+52) 55 30 40 90 54',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117581/fotos/180.png',
-                'area' => 'Administración y Finanzas',
+                'phone' => '(+52) 55 30 40 90 54',
                 'depto' => 'Compras',
                 'puesto' => 'Encargado de compras',
                 'active' => 1,
@@ -546,14 +484,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:29:07',
             ),
-            31 => 
-            array (
+            31 =>
+            array(
                 'id' => 187,
                 'name' => 'Ramírez Pérez Alejandro Aldair',
                 'email' => 'aramirezp@gptservices.com',
-            'phone' => '(+52) 55 83 59 05 08',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912089/fotos/187.jpg',
-                'area' => 'Proyectos',
+                'phone' => '(+52) 55 83 59 05 08',
                 'depto' => 'Proyectos',
                 'puesto' => 'Ingeniero de Costos Jr.',
                 'active' => 1,
@@ -563,14 +499,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:31:34',
             ),
-            32 => 
-            array (
+            32 =>
+            array(
                 'id' => 191,
                 'name' => 'Martínez Jarquín Jennifer',
                 'email' => 'jmartinezj@gptservices.com',
-            'phone' => '(+52) 55 74 99 89 47',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117629/fotos/191.png',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
+                'phone' => '(+52) 55 74 99 89 47',
                 'depto' => 'Ingeniería',
                 'puesto' => 'Diseñador',
                 'active' => 1,
@@ -580,14 +514,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:55:42',
             ),
-            33 => 
-            array (
+            33 =>
+            array(
                 'id' => 192,
                 'name' => 'Díaz Esparza Karla Cristina',
                 'email' => 'kdiaze@gptservices.com',
-            'phone' => '(+52) 55 44 55 67 72',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117651/fotos/192.png',
-                'area' => 'QHSE',
+                'phone' => '(+52) 55 44 55 67 72',
                 'depto' => 'QHSE',
                 'puesto' => 'Trainee de HSE',
                 'active' => 1,
@@ -597,14 +529,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 22:08:11',
             ),
-            34 => 
-            array (
+            34 =>
+            array(
                 'id' => 193,
                 'name' => 'Martínez Hernández Martín Alejandro',
                 'email' => 'mmartinez@gptservices.com',
-            'phone' => '(+52) 56 19 43 95 09',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117672/fotos/193.png',
-                'area' => 'Servicios Generales y Almacén',
+                'phone' => '(+52) 56 19 43 95 09',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Servicios Generales Sr',
                 'active' => 1,
@@ -614,14 +544,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-29 19:12:49',
             ),
-            35 => 
-            array (
+            35 =>
+            array(
                 'id' => 199,
                 'name' => 'Hernández Mendoza Alan Etzahu',
                 'email' => 'ahernandezm@gptservices.com',
-            'phone' => '(+52) 5540756374',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695311792/fotos/199.png',
-                'area' => 'Servicios Generales y Almacén',
+                'phone' => '(+52) 5540756374',
                 'depto' => 'IT',
                 'puesto' => 'Trainee de IT',
                 'active' => 1,
@@ -631,14 +559,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-05 23:59:51',
             ),
-            36 => 
-            array (
+            36 =>
+            array(
                 'id' => 200,
                 'name' => 'Rojas González Rocío',
                 'email' => 'rrojasg@gptservices.com',
-            'phone' => '(+52) 5591862465',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691706348/fotos/200.png',
-                'area' => 'QHSE',
+                'phone' => '(+52) 5591862465',
                 'depto' => 'QHSE',
                 'puesto' => 'Trainee de Calidad',
                 'active' => 1,
@@ -648,14 +574,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-20 00:48:43',
             ),
-            37 => 
-            array (
+            37 =>
+            array(
                 'id' => 202,
                 'name' => 'González García Daniel',
                 'email' => '',
-            'phone' => '(+52) 55 11 79 61 70',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117694/fotos/202.png',
-                'area' => 'Servicios Generales y Almacén',
+                'phone' => '(+52) 55 11 79 61 70',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Limpieza',
                 'active' => 1,
@@ -665,14 +589,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-08-15 08:04:35',
             ),
-            38 => 
-            array (
+            38 =>
+            array(
                 'id' => 205,
                 'name' => 'López Olvera Erik David',
                 'email' => 'edlopezo@gptservices.com',
-            'phone' => '(+52) 55 81 29 09 74',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690390600/fotos/205.jpg',
-                'area' => 'Operaciones',
+                'phone' => '(+52) 55 81 29 09 74',
                 'depto' => 'HT & LS',
                 'puesto' => 'Trainee HT & LS',
                 'active' => 1,
@@ -682,14 +604,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-07-04 06:39:58',
             ),
-            39 => 
-            array (
+            39 =>
+            array(
                 'id' => 212,
                 'name' => 'Villafranca García Enrique',
                 'email' => 'evillafranca@gptservices.com',
-            'phone' => '(+52) 55 45 94 36 60',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690999117/fotos/212.jpg',
-                'area' => 'Ingeniería y Manufactura',
+                'phone' => '(+52) 55 45 94 36 60',
                 'depto' => 'Mantenimiento',
                 'puesto' => 'Ayudante de Mantenimiento',
                 'active' => 1,
@@ -699,14 +619,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-28 06:32:47',
             ),
-            40 => 
-            array (
+            40 =>
+            array(
                 'id' => 223,
                 'name' => 'Avilés Nieto José Héctor',
                 'email' => 'haviles@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117793/fotos/223.png',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Servicios Generales Jr',
                 'active' => 1,
@@ -716,14 +634,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-06-11 19:08:22',
             ),
-            41 => 
-            array (
+            41 =>
+            array(
                 'id' => 227,
                 'name' => 'Pérez Rodríguez Kevin Hazael',
                 'email' => 'kperez@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117814/fotos/227.jpg',
-                'area' => 'Proyectos',
                 'depto' => 'Proyectos',
                 'puesto' => 'Ingeniero de proyectos',
                 'active' => 1,
@@ -733,14 +649,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-08-05 03:23:26',
             ),
-            42 => 
-            array (
+            42 =>
+            array(
                 'id' => 230,
                 'name' => 'Bautista Cruz Ernesto',
                 'email' => 'ebautista@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690911999/fotos/230.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Servicios Generales Jr',
                 'active' => 1,
@@ -750,14 +664,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-11-07 19:24:38',
             ),
-            43 => 
-            array (
+            43 =>
+            array(
                 'id' => 233,
                 'name' => 'Correa Cruz Israel',
                 'email' => 'icorrea@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690911929/fotos/233.jpg',
-                'area' => 'Comercial',
                 'depto' => 'Comercial',
                 'puesto' => 'Ingeniero de Ventas',
                 'active' => 1,
@@ -767,14 +679,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-22 03:02:13',
                 'updated_at' => '2024-08-28 06:35:16',
             ),
-            44 => 
-            array (
+            44 =>
+            array(
                 'id' => 235,
                 'name' => 'Lugardo Aguilar Giovanni',
                 'email' => '',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118006/fotos/235.png',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Manufactura',
                 'puesto' => 'Mecánico Tornero',
                 'active' => 1,
@@ -784,14 +694,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-15 07:25:13',
                 'updated_at' => '2023-08-15 07:25:13',
             ),
-            45 => 
-            array (
+            45 =>
+            array(
                 'id' => 238,
                 'name' => 'Ramón Zetina Karen Stefany',
                 'email' => 'kramon@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690999145/fotos/238.jpg',
-                'area' => 'Comercial',
                 'depto' => 'Comercial',
                 'puesto' => 'Trainee Comercial',
                 'active' => 1,
@@ -801,14 +709,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-10-24 01:51:36',
                 'updated_at' => '2024-02-21 16:09:07',
             ),
-            46 => 
-            array (
+            46 =>
+            array(
                 'id' => 240,
                 'name' => 'Pimentel García  Mónica Jazmín ',
                 'email' => 'mpimentel@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1725902591/fotos/240.png',
-                'area' => 'Dirección General',
                 'depto' => 'Dirección General',
                 'puesto' => 'Trainee de Marketing',
                 'active' => 1,
@@ -818,14 +724,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-11-07 06:03:32',
                 'updated_at' => '2024-09-09 04:23:11',
             ),
-            47 => 
-            array (
+            47 =>
+            array(
                 'id' => 244,
                 'name' => 'Palafox Luna José Roberto',
                 'email' => 'jpalafox@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118064/fotos/244.png',
-                'area' => 'Proyectos',
                 'depto' => 'Proyectos',
                 'puesto' => 'Ingeniero de Costos Jr.',
                 'active' => 1,
@@ -835,14 +739,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-02-01 07:33:10',
                 'updated_at' => '2024-08-28 06:36:38',
             ),
-            48 => 
-            array (
+            48 =>
+            array(
                 'id' => 247,
                 'name' => 'Prado Hernández Juan Carlos',
                 'email' => 'jprado@gptservices.com',
-            'phone' => '(55)45570447',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691422743/fotos/247.png',
-                'area' => 'Administración y Finanzas',
+                'phone' => '(55)45570447',
                 'depto' => 'Finanzas ',
                 'puesto' => 'Trainee de Contabilidad',
                 'active' => 1,
@@ -852,14 +754,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-02-15 02:30:34',
                 'updated_at' => '2024-02-08 20:22:47',
             ),
-            49 => 
-            array (
+            49 =>
+            array(
                 'id' => 249,
                 'name' => 'Salgado Rangel Rocío',
                 'email' => 'rsalgado@gptservices.com',
-            'phone' => '(+52) 55 8404 3368',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691706388/fotos/249.png',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
+                'phone' => '(+52) 55 8404 3368',
                 'depto' => 'Manufactura',
                 'puesto' => 'Ayudante de manufactura',
                 'active' => 1,
@@ -869,14 +769,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-15 07:28:23',
                 'updated_at' => '2023-11-23 01:26:29',
             ),
-            50 => 
-            array (
+            50 =>
+            array(
                 'id' => 250,
                 'name' => 'Martínez Amador José Carlos',
                 'email' => 'jmartinez@gptservices.com',
-            'phone' => '(+52) 56 2102 933',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118109/fotos/250.png',
-                'area' => 'Servicios Generales y Almacén',
+                'phone' => '(+52) 56 2102 933',
                 'depto' => 'Almacén',
                 'puesto' => 'Ayudante de Almacén',
                 'active' => 1,
@@ -886,14 +784,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-03-08 02:40:15',
                 'updated_at' => '2024-08-28 06:37:18',
             ),
-            51 => 
-            array (
+            51 =>
+            array(
                 'id' => 251,
                 'name' => 'Rodríguez Vázquez Alejandro',
                 'email' => 'arodriguez@gptservices.com',
                 'phone' => '5544645133',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118129/fotos/251.png',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Chofer',
                 'active' => 1,
@@ -903,14 +799,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-03-07 22:36:46',
                 'updated_at' => '2023-11-29 03:09:04',
             ),
-            52 => 
-            array (
+            52 =>
+            array(
                 'id' => 252,
                 'name' => 'Mora Barrios Israel Omar',
                 'email' => '',
                 'phone' => '5586019168',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118157/fotos/252.png',
-                'area' => 'Operaciones',
                 'depto' => 'Soldadura',
                 'puesto' => 'Ayudante de Soldador',
                 'active' => 1,
@@ -920,14 +814,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-03-07 22:48:55',
                 'updated_at' => '2023-08-15 07:29:48',
             ),
-            53 => 
-            array (
+            53 =>
+            array(
                 'id' => 253,
                 'name' => 'Nuñez Cruz Daniel',
                 'email' => '',
                 'phone' => '5613041196',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118182/fotos/253.png',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Mantenimiento',
                 'puesto' => 'Ayudante de Manatenimiento',
                 'active' => 1,
@@ -937,14 +829,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-03-12 21:37:52',
                 'updated_at' => '2023-08-15 07:31:30',
             ),
-            54 => 
-            array (
+            54 =>
+            array(
                 'id' => 256,
                 'name' => 'Mendoza Gutierrez Rosa Maria',
                 'email' => '',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118204/fotos/256.png',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Limpieza',
                 'active' => 1,
@@ -954,14 +844,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-15 07:33:18',
                 'updated_at' => '2023-08-15 07:33:18',
             ),
-            55 => 
-            array (
+            55 =>
+            array(
                 'id' => 257,
                 'name' => 'Ramírez Jaimes Sergio Martín',
                 'email' => 'sramirez@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691177963/fotos/257.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Almacén',
                 'puesto' => 'Maniobrista',
                 'active' => 1,
@@ -971,14 +859,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-03 23:38:14',
                 'updated_at' => '2023-08-15 07:33:43',
             ),
-            56 => 
-            array (
+            56 =>
+            array(
                 'id' => 258,
                 'name' => 'Flores Valenzuela  Julia ',
                 'email' => '',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1693500601/fotos/258.png',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Limpieza',
                 'active' => 1,
@@ -988,14 +874,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-15 07:34:06',
                 'updated_at' => '2023-08-30 20:50:02',
             ),
-            57 => 
-            array (
+            57 =>
+            array(
                 'id' => 260,
                 'name' => 'Lázaro Juárez José de Jesús',
                 'email' => 'jlazaro@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690395269/fotos/260.jpg',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Manufactura y Mantenimiento',
                 'puesto' => 'Ingeniero de Producto',
                 'active' => 1,
@@ -1005,14 +889,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-04-17 23:55:59',
                 'updated_at' => '2024-10-07 16:20:59',
             ),
-            58 => 
-            array (
+            58 =>
+            array(
                 'id' => 263,
                 'name' => 'García Real Joya Elizabeth',
                 'email' => 'egarcia@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386700/fotos/263.jpg',
-                'area' => 'Administración y Finanzas',
                 'depto' => 'recursos Humanos',
                 'puesto' => 'Recursos Humanos Jr',
                 'active' => 1,
@@ -1022,14 +904,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-05-01 20:03:40',
                 'updated_at' => '2023-09-11 00:28:23',
             ),
-            59 => 
-            array (
+            59 =>
+            array(
                 'id' => 264,
                 'name' => 'López Hernández Juan Carlos',
                 'email' => 'jhernandez@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386756/fotos/264.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Auxiliar de mantenimiento',
                 'active' => 1,
@@ -1039,14 +919,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-01 19:34:45',
                 'updated_at' => '2024-08-28 06:38:51',
             ),
-            60 => 
-            array (
+            60 =>
+            array(
                 'id' => 265,
                 'name' => 'Gómez López  Alfonso ',
                 'email' => '',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386819/fotos/265.jpg',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Mantenimiento',
                 'puesto' => 'Pintor industrial',
                 'active' => 1,
@@ -1056,14 +934,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-15 07:39:23',
                 'updated_at' => '2023-10-23 21:36:05',
             ),
-            61 => 
-            array (
+            61 =>
+            array(
                 'id' => 266,
                 'name' => 'Alvarado Bailey Omar',
                 'email' => 'oalvarado@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386883/fotos/266.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Almacén',
                 'puesto' => 'Ingeniero de Desarrollo',
                 'active' => 1,
@@ -1073,14 +949,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-05-16 02:01:12',
                 'updated_at' => '2024-08-28 06:40:20',
             ),
-            62 => 
-            array (
+            62 =>
+            array(
                 'id' => 268,
                 'name' => 'Carbajal Cerezo Carlos Ivan',
                 'email' => '',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386946/fotos/268.jpg',
-                'area' => 'Ingeniería y Manufactura',
                 'depto' => 'Mantenimiento',
                 'puesto' => 'Mecánico',
                 'active' => 1,
@@ -1090,14 +964,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-15 07:45:16',
                 'updated_at' => '2024-08-28 06:41:26',
             ),
-            63 => 
-            array (
+            63 =>
+            array(
                 'id' => 269,
                 'name' => 'Santos Cruces Javier Mozart',
                 'email' => 'jsantos@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692115988/fotos/269.jpg',
-                'area' => 'Proyectos',
                 'depto' => 'Proyectos',
                 'puesto' => 'Ingeniero de proyectos',
                 'active' => 1,
@@ -1107,14 +979,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-06-26 05:11:03',
                 'updated_at' => '2024-08-28 06:41:57',
             ),
-            64 => 
-            array (
+            64 =>
+            array(
                 'id' => 270,
                 'name' => 'Orduña Álvarez Miguel Eduardo',
                 'email' => 'eorduna@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690389064/fotos/270.png',
-                'area' => 'Operaciones',
                 'depto' => 'HT & LS',
                 'puesto' => 'Técnico Especialista en HT & LS Nivel II',
                 'active' => 1,
@@ -1124,14 +994,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-15 07:48:21',
                 'updated_at' => '2023-11-24 01:07:26',
             ),
-            65 => 
-            array (
+            65 =>
+            array(
                 'id' => 271,
                 'name' => 'Cardona Salinas  José Manuel ',
                 'email' => 'jcardona@gptservices.com',
                 'phone' => '5610040567',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690389168/fotos/271.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Logística',
                 'puesto' => 'Operador de Grúa',
                 'active' => 1,
@@ -1141,14 +1009,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-15 07:50:07',
                 'updated_at' => '2023-10-26 23:48:33',
             ),
-            66 => 
-            array (
+            66 =>
+            array(
                 'id' => 274,
                 'name' => 'López Muñóz María Fernanda',
                 'email' => 'mlopez@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692111512/fotos/274.png',
-                'area' => 'Administración y Finanzas',
                 'depto' => 'compras',
                 'puesto' => 'Comprador',
                 'active' => 1,
@@ -1158,14 +1024,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-13 20:56:49',
                 'updated_at' => '2023-12-15 00:40:21',
             ),
-            67 => 
-            array (
+            67 =>
+            array(
                 'id' => 275,
                 'name' => 'Quechol Millán Agustín',
                 'email' => 'NA',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694463391/fotos/275.png',
-                'area' => 'Ingeniería y Manufactura',
                 'depto' => 'Manufactura',
                 'puesto' => 'Mecánico Tornero',
                 'active' => 1,
@@ -1175,14 +1039,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-08-29 20:08:40',
                 'updated_at' => '2024-08-28 06:43:22',
             ),
-            68 => 
-            array (
+            68 =>
+            array(
                 'id' => 276,
                 'name' => 'Paredes Chávez  Leonardo ',
                 'email' => 'lparedes@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694702406/fotos/276.jpg',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Manufactura y Mantenimiento',
                 'puesto' => 'Ingeniero de Producto',
                 'active' => 1,
@@ -1192,14 +1054,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-09-12 20:18:39',
                 'updated_at' => '2023-09-13 18:40:07',
             ),
-            69 => 
-            array (
+            69 =>
+            array(
                 'id' => 277,
                 'name' => 'Guevara Galán  Antonio ',
                 'email' => 'guevaraantonio376@gmail.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695311280/fotos/277.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Seguridad Patrimonial',
                 'puesto' => 'Guardia de seguridad',
                 'active' => 1,
@@ -1209,14 +1069,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-09-17 23:58:57',
                 'updated_at' => '2023-09-20 19:48:01',
             ),
-            70 => 
-            array (
+            70 =>
+            array(
                 'id' => 279,
                 'name' => 'Alfaro Villegas Orlando Sebastian ',
                 'email' => 'alfa0198@gmail.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695322006/fotos/279.jpg',
-                'area' => 'Operaciones',
                 'depto' => 'Soldadura',
                 'puesto' => 'Ayudante de Soldador',
                 'active' => 1,
@@ -1226,14 +1084,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-09-20 21:21:54',
                 'updated_at' => '2023-09-25 22:11:42',
             ),
-            71 => 
-            array (
+            71 =>
+            array(
                 'id' => 282,
                 'name' => 'Martínez Dolores  Diana ',
                 'email' => 'dmartinez@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1696962174/fotos/282.jpg',
-                'area' => 'Administración y Finanzas',
                 'depto' => 'Finanzas ',
                 'puesto' => 'Trainee de Contabilidad',
                 'active' => 1,
@@ -1243,14 +1099,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2023-10-09 19:14:11',
                 'updated_at' => '2023-10-09 22:22:55',
             ),
-            72 => 
-            array (
+            72 =>
+            array(
                 'id' => 285,
                 'name' => 'Castañeda Martínez Juan Gabriel',
                 'email' => 'NA',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1704318005/fotos/285.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Seguridad Patrimonial',
                 'puesto' => 'Guardia de seguridad',
                 'active' => 1,
@@ -1260,14 +1114,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-01-03 03:38:48',
                 'updated_at' => '2024-01-03 03:40:06',
             ),
-            73 => 
-            array (
+            73 =>
+            array(
                 'id' => 286,
                 'name' => 'Pardo Sánchez Luis Enrique',
                 'email' => 'NA',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1705692775/fotos/286.jpg',
-                'area' => 'Ingeniería y Manufactura',
                 'depto' => 'Manufactura',
                 'puesto' => 'Tornero',
                 'active' => 1,
@@ -1277,14 +1129,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-01-17 20:50:12',
                 'updated_at' => '2024-08-28 06:45:53',
             ),
-            74 => 
-            array (
+            74 =>
+            array(
                 'id' => 287,
                 'name' => 'Moreno Carmona Eduardo',
                 'email' => 'emoreno@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1705692816/fotos/287.jpg',
-                'area' => 'Ingeniería, Manufactura y Mantenimiento',
                 'depto' => 'Manufactura y Mantenimiento',
                 'puesto' => 'Ingeniero de Producto',
                 'active' => 1,
@@ -1294,14 +1144,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-01-11 21:41:48',
                 'updated_at' => '2024-01-19 01:33:36',
             ),
-            75 => 
-            array (
+            75 =>
+            array(
                 'id' => 289,
                 'name' => 'Raya Espino Miguel Ángel',
                 'email' => 'NA',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1706109509/fotos/289.jpg',
-                'area' => 'Ingeniería y Manufactura',
                 'depto' => 'Manufactura',
                 'puesto' => 'Tornero',
                 'active' => 1,
@@ -1311,14 +1159,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-01-23 21:15:39',
                 'updated_at' => '2024-08-28 06:46:29',
             ),
-            76 => 
-            array (
+            76 =>
+            array(
                 'id' => 290,
                 'name' => 'Jiménez Ortega Mariana Karina',
                 'email' => 'mjimenez@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1706811058/fotos/290.jpg',
-                'area' => 'Administración y Finanzas',
                 'depto' => 'Finanzas ',
                 'puesto' => 'Trainee de Contabilidad',
                 'active' => 1,
@@ -1328,14 +1174,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-01-31 17:12:57',
                 'updated_at' => '2024-01-31 18:10:59',
             ),
-            77 => 
-            array (
+            77 =>
+            array(
                 'id' => 292,
                 'name' => 'Zamora González Fernando',
                 'email' => 'fzamora@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1707416401/fotos/292.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Almacén',
                 'puesto' => 'Almacenista',
                 'active' => 1,
@@ -1345,14 +1189,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-02-07 16:26:36',
                 'updated_at' => '2024-03-26 18:16:33',
             ),
-            78 => 
-            array (
+            78 =>
+            array(
                 'id' => 293,
                 'name' => 'Alejo Osorio Jatziri Yamile',
                 'email' => 'jalejo@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1708365641/fotos/293.jpg',
-                'area' => 'QHSE',
                 'depto' => 'QHSE',
                 'puesto' => 'Trainee de HSE',
                 'active' => 1,
@@ -1362,14 +1204,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-02-18 14:02:25',
                 'updated_at' => '2024-03-31 15:20:42',
             ),
-            79 => 
-            array (
+            79 =>
+            array(
                 'id' => 296,
                 'name' => 'Chávez Huerta Paola',
                 'email' => 'pchavez@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1711135809/fotos/296.jpg',
-                'area' => 'Administración y Finanzas',
                 'depto' => 'recursos Humanos',
                 'puesto' => 'Recursos Humanos Jr',
                 'active' => 1,
@@ -1379,14 +1219,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-03-21 14:45:46',
                 'updated_at' => '2024-03-21 19:30:10',
             ),
-            80 => 
-            array (
+            80 =>
+            array(
                 'id' => 298,
                 'name' => 'González Cisneros Ingrid Danae',
                 'email' => 'igonzalez@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1713211874/fotos/298.jpg',
-                'area' => 'Administración y Finanzas',
                 'depto' => 'compras',
                 'puesto' => 'Comprador',
                 'active' => 1,
@@ -1396,14 +1234,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-04-14 12:56:12',
                 'updated_at' => '2024-04-14 17:11:14',
             ),
-            81 => 
-            array (
+            81 =>
+            array(
                 'id' => 299,
                 'name' => 'Gómez Matilde Christian Alberto',
                 'email' => 'NA',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1714071483/fotos/299.jpg',
-                'area' => 'Operaciones',
                 'depto' => 'Soldadura',
                 'puesto' => 'Técnico Soldador',
                 'active' => 1,
@@ -1413,16 +1249,14 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-04-22 17:32:32',
                 'updated_at' => '2024-04-24 15:58:03',
             ),
-            82 => 
-            array (
+            82 =>
+            array(
                 'id' => 301,
                 'name' => 'Vazquez Hernández Pablo Angel',
                 'email' => 'pvazquez@gptservices.com',
                 'phone' => 'NA',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1707416065/fotos/12001.jpg',
-                'area' => 'QHSE',
                 'depto' => 'QHSE',
-            'puesto' => 'Trainee de Sistema de Gestión Integral (SGI)',
+                'puesto' => 'Trainee de Sistema de Gestión Integral (SGI)',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => '',
@@ -1430,14 +1264,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-02-07 14:12:27',
                 'updated_at' => '2024-06-13 04:30:30',
             ),
-            83 => 
-            array (
+            83 =>
+            array(
                 'id' => 302,
                 'name' => 'Padilla Gónzalez Monica Esthela',
                 'email' => 'mpadilla@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1718040767/fotos/302.jpg',
-                'area' => 'Administración y Finanzas',
                 'depto' => 'recursos Humanos',
                 'puesto' => 'Trainee de Recursos Humanos',
                 'active' => 1,
@@ -1447,14 +1279,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-05-22 23:19:57',
                 'updated_at' => '2024-06-09 21:32:47',
             ),
-            84 => 
-            array (
+            84 =>
+            array(
                 'id' => 303,
                 'name' => 'Sánchez González Luis Adrián',
                 'email' => 'lsanchez@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1720551561/fotos/303.jpg',
-                'area' => 'Contratos',
                 'depto' => 'Contratos',
                 'puesto' => 'Ingeniero de Contratos',
                 'active' => 1,
@@ -1464,14 +1294,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-07-08 06:51:38',
                 'updated_at' => '2024-07-29 01:22:31',
             ),
-            85 => 
-            array (
+            85 =>
+            array(
                 'id' => 304,
                 'name' => 'Contreras García Francisco Alejandro',
                 'email' => 'fcontreras@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1720467861/fotos/304.jpg',
-                'area' => 'Contratos',
                 'depto' => 'Contratos',
                 'puesto' => 'Ingeniero de Contratos',
                 'active' => 1,
@@ -1481,14 +1309,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-07-08 06:42:37',
                 'updated_at' => '2024-07-08 06:44:21',
             ),
-            86 => 
-            array (
+            86 =>
+            array(
                 'id' => 305,
                 'name' => 'Quintanar Pérez María de los Ángeles',
                 'email' => 'mquintanar@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1722614803/fotos/305.jpg',
-                'area' => 'Administración y Finanzas',
                 'depto' => 'Compras',
                 'puesto' => 'Comprador',
                 'active' => 1,
@@ -1498,14 +1324,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-07-26 05:24:53',
                 'updated_at' => '2024-09-09 04:27:05',
             ),
-            87 => 
-            array (
+            87 =>
+            array(
                 'id' => 306,
                 'name' => 'Cruz Montes Bruno',
                 'email' => 'bcruz@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1722520442/fotos/306.jpg',
-                'area' => 'Administración y Finanzas',
                 'depto' => 'Administración',
                 'puesto' => 'Analista de administración y presupuestos',
                 'active' => 1,
@@ -1515,14 +1339,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-07-26 06:42:31',
                 'updated_at' => '2024-08-01 00:54:03',
             ),
-            88 => 
-            array (
+            88 =>
+            array(
                 'id' => 307,
                 'name' => 'Luna García Francisco',
                 'email' => 'fluna@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1724179736/fotos/307.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Almacén',
                 'puesto' => 'Almacenista',
                 'active' => 1,
@@ -1532,14 +1354,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-08-19 07:59:18',
                 'updated_at' => '2024-08-20 05:48:56',
             ),
-            89 => 
-            array (
+            89 =>
+            array(
                 'id' => 309,
                 'name' => 'Butrón González Fernando',
                 'email' => 'fbutron@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1725388145/fotos/309.jpg',
-                'area' => 'Calidad',
                 'depto' => 'Calidad',
                 'puesto' => 'Inspector de control de calidad',
                 'active' => 1,
@@ -1549,14 +1369,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-09-02 01:31:20',
                 'updated_at' => '2024-09-03 05:29:05',
             ),
-            90 => 
-            array (
+            90 =>
+            array(
                 'id' => 310,
                 'name' => 'Iriarte Pérez Daniel',
                 'email' => 'diriarte@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1725904595/fotos/310.jpg',
-                'area' => 'Contratos',
                 'depto' => 'Contratos',
                 'puesto' => 'Ingeniero de Contratos',
                 'active' => 1,
@@ -1566,14 +1384,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-09-09 04:48:38',
                 'updated_at' => '2024-09-09 04:56:36',
             ),
-            91 => 
-            array (
+            91 =>
+            array(
                 'id' => 311,
                 'name' => 'Guerrero Cruz Miguel Ángel',
                 'email' => 'vigilanciagpt@gptservices.com',
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1727975908/fotos/311.jpg',
-                'area' => 'Servicios Generales y Almacén',
                 'depto' => 'Seguridad Patrimonial',
                 'puesto' => 'Guardia de seguridad',
                 'active' => 1,
@@ -1583,14 +1399,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2024-10-02 02:46:56',
                 'updated_at' => '2024-10-04 06:08:56',
             ),
-            92 => 
-            array (
+            92 =>
+            array(
                 'id' => 315,
                 'name' => 'Alonso Pérez Carlos',
                 'email' => 'calonso@gptservices.com',
-            'phone' => '(+1) 832 270 8700',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118250/fotos/315.jpg',
-                'area' => 'Dirección General',
+                'phone' => '(+1) 832 270 8700',
                 'depto' => 'Dirección General',
                 'puesto' => 'Dirección General',
                 'active' => 1,
@@ -1600,14 +1414,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:34:49',
             ),
-            93 => 
-            array (
+            93 =>
+            array(
                 'id' => 331,
                 'name' => 'Rodríguez Lara José Carmen',
                 'email' => 'jrlara@gptservices.com',
-            'phone' => '(+52) 81 8473 8500',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118265/fotos/331.png',
-                'area' => 'Servicios Generales y Almacén',
+                'phone' => '(+52) 81 8473 8500',
                 'depto' => 'Servicios Generales',
                 'puesto' => 'Gerencia de Compras y Servicios Generales',
                 'active' => 1,
@@ -1617,14 +1429,12 @@ class UsersTableSeeder extends Seeder
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2023-09-10 20:35:29',
             ),
-            94 => 
-            array (
+            94 =>
+            array(
                 'id' => 666,
                 'name' => 'Zamudio Juárez Juan Antonio',
                 'email' => NULL,
                 'phone' => '',
-                'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1635975373/logo_GPT_yhm2ut.svg',
-                'area' => '',
                 'depto' => '',
                 'puesto' => '',
                 'active' => 1,
@@ -1635,7 +1445,5 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2024-06-04 19:52:04',
             ),
         ));
-        
-        
     }
 }

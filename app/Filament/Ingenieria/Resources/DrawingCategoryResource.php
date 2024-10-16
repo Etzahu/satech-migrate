@@ -17,9 +17,9 @@ class DrawingCategoryResource extends Resource
 {
     protected static ?string $model = DrawingCategory::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-   
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -79,7 +79,3 @@ class DrawingCategoryResource extends Resource
         ];
     }
 }
-
-
-
-

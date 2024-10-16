@@ -10,7 +10,7 @@ use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable 
+class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use HasRoles;
@@ -31,6 +31,7 @@ class User extends Authenticatable
         'depto',
         'puesto',
         'active',
+        'management_id',
         'email_verified_at',
         'password',
         'remember_token',
@@ -57,5 +58,9 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    public function management()
+    {
+        return $this->belongsTo(Management::class, 'management_id');
     }
 }

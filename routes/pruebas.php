@@ -1,4 +1,6 @@
 <?php
+
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -53,4 +55,38 @@ Route::get('tablas', function () {
         throw $e;
     }
     // php artisan iseed users --force
+});
+
+Route::get('procesos', function () {
+    $procesos = [
+        ['Administración y Contabilidad', 'ADM'],
+        ['Almacén', 'ALM'],
+        ['Calidad, Seguridad y Medio Ambiente', 'QHSE'],
+        ['Compras', 'COM'],
+        ['Ingeniería - Manufactura', 'ING'],
+        ['Mantenimiento', 'MTTO'],
+        ['Marketing', 'MKT'],
+        ['Región Sur', 'GRS'],
+        ['Norte Región Centro', 'GRC'],
+        ['Planeación', 'CP'],
+        ['Recursos Humanos', 'RH'],
+        ['Servicios Generales', 'SG'],
+        ['Ventas', 'VEN'],
+        ['Soldadura', 'ISW'],
+        ['Servicios Complementarios', 'SC'],
+        ['Servicios Técnicos', 'ST'],
+        ['Informática', 'IT']
+    ];
+
+    foreach ($procesos as $key => $proceso) {
+        DB::table('management')->insert([
+            'id' => $key + 1,
+            'name' => $proceso[0],
+            'acronym' => $proceso[1],
+            'responsible_id' => 106,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+    }
+
 });

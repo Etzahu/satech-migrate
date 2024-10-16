@@ -16,43 +16,45 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+    protected static ?string $modelLabel = 'Usuario';
+    protected static ?string $pluralModelLabel = 'Usuarios';
+    protected static ?string $navigationLabel = 'Usuarios';
+    protected static ?string $slug = 'usuarios';
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nombre')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('email')
+                    ->label('Correo')
+                    ->required()
                     ->email()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('phone')
+                    ->label('Celular')
                     ->tel()
-                    // ->required()
                     ->maxLength(20),
-                Forms\Components\FileUpload::make('profile_image')
-                    // ->required()
-                    ->image(),
-                Forms\Components\TextInput::make('area')
-                    ->required()
-                    ->maxLength(100),
+                Forms\Components\Select::make('management_id')
+                    ->label('Gerencia')
+                    ->searchable()
+                    ->preload()
+                    ->relationship('management', 'name')
+                    ->required(),
                 Forms\Components\TextInput::make('depto')
+                    ->label('Departamento')
                     ->required()
                     ->maxLength(100),
                 Forms\Components\TextInput::make('puesto')
                     ->required()
                     ->maxLength(100),
                 Forms\Components\Toggle::make('active')
+                    ->default(1)
                     ->required(),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
-                // Forms\Components\TextInput::make('password')
-                //     ->password()
-                //     ->required()
-                //     ->revealable()
-                //     ->maxLength(255),
                 Forms\Components\Select::make('roles')
                     ->relationship('roles', 'name')
                     ->multiple()
@@ -72,21 +74,10 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-
-                Tables\Columns\ImageColumn::make('profile_image')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('area')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('depto')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('puesto')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
