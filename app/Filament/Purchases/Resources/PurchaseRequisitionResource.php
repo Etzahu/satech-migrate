@@ -22,6 +22,7 @@ class PurchaseRequisitionResource extends Resource
     protected static ?string $navigationLabel = 'Mis requisiciónes';
     protected static ?string $slug = 'requisiciones';
 
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -100,7 +101,8 @@ class PurchaseRequisitionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -121,6 +123,7 @@ class PurchaseRequisitionResource extends Resource
         return [
             'index' => Pages\ListPurchaseRequisitions::route('/'),
             'create' => Pages\CreatePurchaseRequisition::route('/create'),
+            'view' => Pages\ViewPurchaseRequisition::route('/{record}'),
             'edit' => Pages\EditPurchaseRequisition::route('/{record}/edit'),
         ];
     }
