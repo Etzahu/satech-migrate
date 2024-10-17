@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bc79e13946a8dc8f60463e89748f681",
+    "content-hash": "47eac0e8f4edf612733807591f0d2c41",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -71,6 +71,66 @@
                 "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.2.25"
             },
             "time": "2024-09-16T12:59:37+00:00"
+        },
+        {
+            "name": "asantibanez/laravel-eloquent-state-machines",
+            "version": "v6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/asantibanez/laravel-eloquent-state-machines.git",
+                "reference": "2bdbf83a4feaaef806827051d23d6ae96222aeb8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/asantibanez/laravel-eloquent-state-machines/zipball/2bdbf83a4feaaef806827051d23d6ae96222aeb8",
+                "reference": "2bdbf83a4feaaef806827051d23d6ae96222aeb8",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "javoscript/laravel-macroable-models": "^1.0",
+                "php": "^7.3|^7.4|^8.0"
+            },
+            "require-dev": {
+                "laravel/legacy-factories": "^1.0.4",
+                "orchestra/testbench": "^4.0|^5.0|^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Asantibanez\\LaravelEloquentStateMachines\\LaravelEloquentStateMachinesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Asantibanez\\LaravelEloquentStateMachines\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrés Santibáñez",
+                    "email": "santibanez.andres@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "State machines for your Laravel Eloquent models",
+            "homepage": "https://github.com/asantibanez/laravel-eloquent-state-machines",
+            "keywords": [
+                "asantibanez",
+                "laravel-eloquent-state-machines"
+            ],
+            "support": {
+                "issues": "https://github.com/asantibanez/laravel-eloquent-state-machines/issues",
+                "source": "https://github.com/asantibanez/laravel-eloquent-state-machines/tree/v6.0.0"
+            },
+            "time": "2024-08-22T21:07:05+00:00"
         },
         {
             "name": "bezhansalleh/filament-shield",
@@ -2110,6 +2170,57 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
+        },
+        {
+            "name": "javoscript/laravel-macroable-models",
+            "version": "1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/javoscript/laravel-macroable-models.git",
+                "reference": "b60da8c1d1c1731ec8851059c767c69d187c8cd7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/javoscript/laravel-macroable-models/zipball/b60da8c1d1c1731ec8851059c767c69d187c8cd7",
+                "reference": "b60da8c1d1c1731ec8851059c767c69d187c8cd7",
+                "shasum": ""
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8",
+                "phpunit/phpunit": "^10"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Javoscript\\MacroableModels\\MacroableModelsServiceProvider"
+                    ],
+                    "aliases": {
+                        "MacroableModels": "Javoscript\\MacroableModels\\Facades\\MacroableModels"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Javoscript\\MacroableModels\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Javier Ugarte",
+                    "email": "javougarte@gmail.com"
+                }
+            ],
+            "description": "A package for adding methods to Laravel models on the fly",
+            "support": {
+                "issues": "https://github.com/javoscript/laravel-macroable-models/issues",
+                "source": "https://github.com/javoscript/laravel-macroable-models/tree/1.0.6"
+            },
+            "time": "2023-05-23T15:04:41+00:00"
         },
         {
             "name": "kirschbaum-development/eloquent-power-joins",

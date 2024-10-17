@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\StateMachines\PurchaseRequisitionStateMachine;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
 class PurchaseRequisition extends Model
 {
+    use HasStateMachines;
     use HasFactory;
 
     /**
@@ -20,7 +23,9 @@ class PurchaseRequisition extends Model
         'date_delivery',
         'delivery_address',
         'type',
+        'status',
         'company_id',
+        'project_id',
         'approval_chain_id',
     ];
 
@@ -37,8 +42,15 @@ class PurchaseRequisition extends Model
     ];
 
 
+    public $stateMachines = [
+        'status' => PurchaseRequisitionStateMachine::class
+    ];
     public function approvalChain(): BelongsTo
     {
         return $this->belongsTo(PurchaseRequisitionApprovalChain::class, 'approval_chain_id');
+    }
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(ProjectPurchase::class, 'project_id');
     }
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('type', 50);
             $table->string('status', 50)->nullable();
             $table->foreignId('company_id')->constrained('companies');
+            $table->foreignId('project_id')->constrained('projects');
             $table->foreignId('approval_chain_id')->constrained('purchase_requisition_approval_chains');
             $table->timestamps();
         });

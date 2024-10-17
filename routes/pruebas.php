@@ -185,12 +185,7 @@ function setCompany($id, $redirect = true)
 }
 
 Route::get('cadenas', function () {
-    // dd(auth()->user()->approvalChains->pluck('id'));
-    $count = PurchaseRequisition::withWhereHas(
-        'approvalChain.requester',
-        function ($query) {
-            $query->where('management_id', auth()->user()->management_id);
-        }
-    )->count();
-    dd($count);
+   $rq = PurchaseRequisition::first();
+   dd($rq->status()->stateMachine()->transitions());
+
 });

@@ -20,7 +20,7 @@ class MeasureUnitResource extends Resource
     protected static ?string $pluralModelLabel = 'Unidades de medida';
     protected static ?string $navigationLabel = 'UM';
     protected static ?string $slug = 'um';
-    protected static ?string $navigationGroup = 'Bienes y servicios';
+    protected static ?string $navigationGroup = 'Administración';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
 
 

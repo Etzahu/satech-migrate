@@ -2,9 +2,9 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use App\Filament\Purchases\Resources\CategoryResource\Pages;
-use App\Filament\Purchases\Resources\CategoryResource\RelationManagers;
-use App\Models\Category;
+use App\Filament\Purchases\Resources\ProjectUsageResource\Pages;
+use App\Filament\Purchases\Resources\ProjectUsageResource\RelationManagers;
+use App\Models\ProjectUsage;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,16 +13,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CategoryResource extends Resource
+class ProjectUsageResource extends Resource
 {
-    protected static ?string $model = Category::class;
-    protected static ?string $modelLabel = 'Categoría';
-    protected static ?string $pluralModelLabel = 'Categorías';
-    protected static ?string $navigationLabel = 'Categorías';
-    protected static ?string $slug = 'categorias';
+    protected static ?string $model = ProjectUsage::class;
+
+    protected static ?string $modelLabel = 'Necesidad de proyecto';
+    protected static ?string $pluralModelLabel = 'Necesidad de proyectos';
+    protected static ?string $navigationLabel = 'Necesidad de proyectos';
+    protected static ?string $slug = 'proyectos-necesidad';
+    // protected static ?int $navigationSort = 2;
     protected static ?string $navigationGroup = 'Administración';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
-
 
     public static function form(Form $form): Form
     {
@@ -30,14 +31,8 @@ class CategoryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->label('Nombre')
-                    ->unique(table: Category::class, ignoreRecord: true)
                     ->required()
                     ->maxLength(100),
-                Forms\Components\TextInput::make('code')
-                    ->unique(table: Category::class, ignoreRecord: true)
-                    ->label('Código')
-                    ->required()
-                    ->maxLength(30),
             ]);
     }
 
@@ -47,9 +42,6 @@ class CategoryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('code')
-                    ->label('Código')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -76,16 +68,16 @@ class CategoryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\FamiliesRelationManager::class,
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            'index' => Pages\ListProjectUsages::route('/'),
+            'create' => Pages\CreateProjectUsage::route('/create'),
+            'edit' => Pages\EditProjectUsage::route('/{record}/edit'),
         ];
     }
 }

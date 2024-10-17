@@ -46,6 +46,13 @@ class PurchaseRequisitionResource extends Resource
                             ->label('Tipo de requisición')
                             ->required()
                             ->maxLength(50),
+                        Forms\Components\Select::make('project_id')
+                            ->label('Proyecto')
+                            ->relationship('project', 'name', modifyQueryUsing: fn (Builder $query) => $query->where('company_id',session()->get('company_id')))
+                            ->searchable()
+                            ->preload()
+                            ->required(),
+
                     ]),
                 Forms\Components\Section::make('Flujo de aprobación')
                     ->schema([
@@ -93,7 +100,7 @@ class PurchaseRequisitionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
