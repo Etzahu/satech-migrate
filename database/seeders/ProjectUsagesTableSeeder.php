@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class CacheTableSeeder extends Seeder
+class ProjectUsagesTableSeeder extends Seeder
 {
 
     /**
@@ -16,7 +16,7 @@ class CacheTableSeeder extends Seeder
     {
         
 
-        \DB::table('cache')->delete();
+        \DB::table('project_usages')->delete();
         
         
         

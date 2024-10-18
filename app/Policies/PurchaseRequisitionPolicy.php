@@ -39,7 +39,7 @@ class PurchaseRequisitionPolicy
      */
     public function update(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('update_purchase::requisition') && $purchaseRequisition->status == 'borrador';
+        return $user->can('update_purchase::requisition');
     }
 
     /**

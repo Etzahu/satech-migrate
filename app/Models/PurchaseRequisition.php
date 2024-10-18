@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\StateMachines\PurchaseRequisitionStateMachine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class PurchaseRequisition extends Model
+class PurchaseRequisition extends Model implements HasMedia
 {
     use HasStateMachines;
+    use InteractsWithMedia;
     use HasFactory;
 
     /**

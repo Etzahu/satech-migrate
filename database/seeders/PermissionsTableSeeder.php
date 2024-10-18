@@ -451,6 +451,102 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-10-07 15:59:19',
                 'updated_at' => '2024-10-07 15:59:19',
             ),
+            54 => 
+            array (
+                'id' => 55,
+                'name' => 'view_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            55 => 
+            array (
+                'id' => 56,
+                'name' => 'view_any_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            56 => 
+            array (
+                'id' => 57,
+                'name' => 'create_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            57 => 
+            array (
+                'id' => 58,
+                'name' => 'update_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            58 => 
+            array (
+                'id' => 59,
+                'name' => 'restore_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            59 => 
+            array (
+                'id' => 60,
+                'name' => 'restore_any_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            60 => 
+            array (
+                'id' => 61,
+                'name' => 'replicate_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            61 => 
+            array (
+                'id' => 62,
+                'name' => 'reorder_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            62 => 
+            array (
+                'id' => 63,
+                'name' => 'delete_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            63 => 
+            array (
+                'id' => 64,
+                'name' => 'delete_any_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            64 => 
+            array (
+                'id' => 65,
+                'name' => 'force_delete_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
+            65 => 
+            array (
+                'id' => 66,
+                'name' => 'force_delete_any_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-17 18:33:14',
+                'updated_at' => '2024-10-17 18:33:14',
+            ),
         ));
         
         
