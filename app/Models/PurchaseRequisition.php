@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Builder;
 
 class PurchaseRequisition extends Model implements HasMedia
 {
@@ -55,5 +56,15 @@ class PurchaseRequisition extends Model implements HasMedia
     public function project(): BelongsTo
     {
         return $this->belongsTo(ProjectPurchase::class, 'project_id');
+    }
+
+    public function scopeMyRequisitions(Builder $query){
+        return $query->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray());
+    }
+    public function scopeReviewWarehouse(Builder $query){
+        return $query->where('status','revisión por almacén');
+    }
+    public function scopeReview(Builder $query){
+        return $query->where('status','revisión');
     }
 }

@@ -9,6 +9,7 @@ use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use App\Http\Middleware\CompanySession;
+use Shanerbaner82\PanelRoles\PanelRoles;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -61,6 +62,16 @@ class PurchasesPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                PanelRoles::make()
+                    ->restrictedRoles([
+                        'super_admin',
+                        'administrador_compras',
+                        'solicitante_requisicion_compra',
+                        'revisor_almacen_requisicion_compra',
+                        'revisor_requisicion_compra',
+                        'autorizador_requisicion_compra',
+                        'director_general_requisicion_compra',
+                    ]),
             ]);
     }
 }

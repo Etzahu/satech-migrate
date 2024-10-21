@@ -43,6 +43,54 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-10-07 16:00:17',
                 'updated_at' => '2024-10-07 16:01:00',
             ),
+            3 => 
+            array (
+                'id' => 4,
+                'name' => 'solicitante_requisicion_compra',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-21 01:20:15',
+                'updated_at' => '2024-10-21 01:20:15',
+            ),
+            4 => 
+            array (
+                'id' => 5,
+                'name' => 'revisor_requisicion_compra',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-21 01:20:35',
+                'updated_at' => '2024-10-21 01:20:35',
+            ),
+            5 => 
+            array (
+                'id' => 6,
+                'name' => 'autorizador_requisicion_compra',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-21 01:20:59',
+                'updated_at' => '2024-10-21 01:20:59',
+            ),
+            6 => 
+            array (
+                'id' => 7,
+                'name' => 'revisor_almacen_requisicion_compra',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-21 01:21:16',
+                'updated_at' => '2024-10-21 01:21:16',
+            ),
+            7 => 
+            array (
+                'id' => 8,
+                'name' => 'director_general_requisicion_compra',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-21 01:21:31',
+                'updated_at' => '2024-10-21 01:21:31',
+            ),
+            8 => 
+            array (
+                'id' => 9,
+                'name' => 'administrador_compras',
+                'guard_name' => 'web',
+                'created_at' => '2024-10-21 02:34:11',
+                'updated_at' => '2024-10-21 02:34:11',
+            ),
         ));
         
         

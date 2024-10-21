@@ -63,7 +63,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Management::class, 'management_id');
     }
-    public function approvalChains()
+    public function approvalChainsPurchaseRequisition()
     {
         return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'requester_id');
     }

@@ -61,7 +61,6 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 PanelRoles::make()
-                ->roleToAssign('super_admin')
                 ->restrictedRoles(['super_admin']),
             ]);
     }

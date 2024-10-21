@@ -14,12 +14,12 @@ class CreatePurchaseRequisitionApprovalChain extends CreateRecord
 {
     protected static string $resource = PurchaseRequisitionApprovalChainResource::class;
 
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
 
-        $existRecord = PurchaseRequisitionApprovalChain::where('requester_id', $data['requester_id'])
-            ->where('reviewer_id', $data['reviewer_id'])
-            ->where('approver_id', $data['approver_id'])
+    protected function afterValidate(): void
+    {
+        $existRecord = PurchaseRequisitionApprovalChain::where('requester_id', $this->data['requester_id'])
+            ->where('reviewer_id', $this->data['reviewer_id'])
+            ->where('approver_id', $this->data['approver_id'])
             ->first();
 
         if ($existRecord) {
@@ -31,8 +31,12 @@ class CreatePurchaseRequisitionApprovalChain extends CreateRecord
                 ->color('danger')
                 ->send();
             $this->halt();
-        } else {
-            return $data;
         }
+    }
+    protected function afterCreate(): void
+    {
+        $this->record->requester->assignRole('solicitante_requisicion_compra');
+        $this->record->reviewer->assignRole('revisor_requisicion_compra');
+        $this->record->approver->assignRole('autorizador_requisicion_compra');
     }
 }

@@ -159,6 +159,7 @@ Route::get('id/{id}', function ($id) {
     $user = User::findOrFail($id);
     Auth::login($user, $remember = true);
     setCompany(1, false);
+    return redirect()->back();
 });
 
 

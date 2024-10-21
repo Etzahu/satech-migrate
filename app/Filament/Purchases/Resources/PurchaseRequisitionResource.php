@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\RelationManagers;
@@ -21,20 +22,17 @@ class PurchaseRequisitionResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
     protected static ?string $modelLabel = 'Requisición';
-    protected static ?string $pluralModelLabel = 'Solicitadas';
-    protected static ?string $navigationLabel = 'Solicitadas';
-    protected static ?string $slug = 'mis-requisiciones';
-    protected static ?string $navigationGroup = 'Requisiciones';
+    protected static ?string $pluralModelLabel = 'Requisiciones';
+    protected static ?string $navigationLabel = 'Requisiciones';
+    protected static ?string $slug = 'requisiciones';
 
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
+
+
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->where('company_id', session()->get('company_id'))
-            ->whereIn('approval_chain_id', auth()->user()->approvalChains->pluck('id')->toArray());
+            ->where('company_id', session()->get('company_id'));
     }
 
     public static function form(Form $form): Form
@@ -45,6 +43,7 @@ class PurchaseRequisitionResource extends Resource
                     ->schema([
                         Forms\Components\DatePicker::make('date_delivery')
                             ->label('Fecha deseable de entrega')
+                            ->minDate(now())
                             ->default(now()->addDay(3))
                             ->required(),
                         Forms\Components\Textarea::make('delivery_address')
@@ -159,11 +158,7 @@ class PurchaseRequisitionResource extends Resource
     }
 }
 
-
-
-
-
-// 
+//
 // php artisan make:filament-resource PurchaseRequisitionReviewResource --model=PurchaseRequisition --generate -S --panel=compras
 // php artisan make:filament-resource PurchaseRequisitionReviewAuthorizeResource --model=PurchaseRequisition --generate -S --panel=compras
 // php artisan make:filament-resource PurchaseRequisitionReviewAuthorizeDGResource --model=PurchaseRequisition --generate -S --panel=compras
