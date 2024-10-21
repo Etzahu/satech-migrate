@@ -14,12 +14,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('users')->delete();
-        
+
         \DB::table('users')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 13,
                 'name' => 'Alcántara Bautista Benjamín',
@@ -33,9 +33,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:31',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 7,
+                'management_id' =>null,
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 14,
                 'name' => 'Becerra Yebra Jesús',
@@ -49,9 +49,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'w4WWHBjtISuM1RL9TPcEKoD82khdTZowJ6y4HOATZGcuauK1WexIB01qeYq8',
                 'created_at' => '2022-08-06 08:33:31',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 16,
+                'management_id' =>null,
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 18,
                 'name' => 'López Arreola Ana Lilia',
@@ -65,9 +65,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 13,
+                'management_id' =>null,
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 19,
                 'name' => 'García Arroyo Rafael',
@@ -81,9 +81,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'waWCRVorwFO69uYPWVrZTMPgtJKklHuSbXjOfxqH2hhXP5wnL80XFiuMsKm0',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 17,
+                'management_id' =>null,
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 22,
                 'name' => 'Ponce Reyes Iván',
@@ -97,9 +97,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '3jZf79bjgNY0AOKZpyCciSpbdcnXqwrAl7rpwq9moPikgG261GTb9ah4FWTQ',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 4,
+                'management_id' =>null,
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 26,
                 'name' => 'Ulloa Tello Sinhue',
@@ -113,9 +113,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 6,
+                'management_id' =>null,
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 36,
                 'name' => 'Gutiérrez Melo Guillermo',
@@ -129,9 +129,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 14,
+                'management_id' =>null,
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 37,
                 'name' => 'Reyes Yáñez Luis',
@@ -145,9 +145,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 7,
+                'management_id' =>null,
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 40,
                 'name' => 'Basave Arce Fernando',
@@ -161,9 +161,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '9M7wmI6yHByYaZNs7GxzociptJrLzt9NK6ZjKiRSwId1xMGZ5058pOdHxQlT',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 4,
+                'management_id' =>null,
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 46,
                 'name' => 'García Montiel Aquiles Gonzalo',
@@ -177,9 +177,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 2,
+                'management_id' =>null,
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 50,
                 'name' => 'Cruz Báez Aurelio',
@@ -193,9 +193,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '0wfLKvQ0LS92zEChBrxVGTDREdngfTKy8VUMIygmz86zA4lOY6jkMLvrafdo',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 13,
+                'management_id' =>null,
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 52,
                 'name' => 'Pereyra Medina Norma Angélica',
@@ -209,9 +209,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '4uJngJx7ByzxzWlj7FaJ6GLhAgf61FxTVOVYWzHQvO5MBgLEaqWiY6lMi2To',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-21 02:34:31',
-                'management_id' => 11,
+                'management_id' =>null,
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 53,
                 'name' => 'González Huitrón Adriana',
@@ -225,9 +225,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '8ZBq76N2nVj3H2TZ68QShGKVITZ6846sVbOgit6cuW4n0qjW88HCnblOKDht',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 17,
+                'management_id' =>null,
             ),
-            13 => 
+            13 =>
             array (
                 'id' => 64,
                 'name' => 'Sandoval Cabello Luis',
@@ -241,9 +241,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 10,
+                'management_id' =>null,
             ),
-            14 => 
+            14 =>
             array (
                 'id' => 67,
                 'name' => 'Santoyo Meléndez Luis Javier',
@@ -257,9 +257,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 8,
+                'management_id' =>null,
             ),
-            15 => 
+            15 =>
             array (
                 'id' => 89,
                 'name' => 'Jiménez Camacho Juan',
@@ -273,9 +273,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 15,
+                'management_id' =>null,
             ),
-            16 => 
+            16 =>
             array (
                 'id' => 92,
                 'name' => 'Acosta Arroyo Néstor Adair',
@@ -289,9 +289,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 5,
+                'management_id' =>null,
             ),
-            17 => 
+            17 =>
             array (
                 'id' => 99,
                 'name' => 'Rodríguez Guzmán Raúl',
@@ -305,9 +305,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 1,
+                'management_id' =>null,
             ),
-            18 => 
+            18 =>
             array (
                 'id' => 106,
                 'name' => 'Reyes Ramírez Denise Marisol',
@@ -321,9 +321,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'MeWfEv5cYrS2QqsLw7mtjWW1rY19HOddOo4WmJjBKF6kP7Jm27E2S1hBC6O0',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-21 02:21:58',
-                'management_id' => 13,
+                'management_id' =>null,
             ),
-            19 => 
+            19 =>
             array (
                 'id' => 114,
                 'name' => 'Ríos Cuautitla Manuel Antonio',
@@ -337,9 +337,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'sUjlIuJvcLbACRoF9FVFYV4UHm48jnPXGHQHoyQTUVJyabtmMy9YxTDlBI26',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 10,
+                'management_id' =>null,
             ),
-            20 => 
+            20 =>
             array (
                 'id' => 120,
                 'name' => 'González Muñoz Roberto',
@@ -353,9 +353,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 1,
+                'management_id' =>null,
             ),
-            21 => 
+            21 =>
             array (
                 'id' => 123,
                 'name' => 'Salgado Zúñiga Angélica',
@@ -369,9 +369,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'pgDnFUQUDL1qnZecYNzNgYWA5i9dbCBVC47BfnvIroHntrf4piuzgGU5gbiS',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 6,
+                'management_id' =>null,
             ),
-            22 => 
+            22 =>
             array (
                 'id' => 131,
                 'name' => 'Martínez Segura Axel Javier',
@@ -385,9 +385,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 6,
+                'management_id' =>null,
             ),
-            23 => 
+            23 =>
             array (
                 'id' => 132,
                 'name' => 'Paes Santillán Martín',
@@ -401,9 +401,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'f0AOV4OeMxTlDd6DGbVhapjR5NbuVJmc94XKGfzTyiDGwAHFFWf4R0r28RAe',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 11,
+                'management_id' =>null,
             ),
-            24 => 
+            24 =>
             array (
                 'id' => 137,
                 'name' => 'Godínez Rivera Luis Jesús',
@@ -417,9 +417,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '8I58h7xGfiaeVrRnqSKoAeUuxbPocj6uUd1vKvXrBvHdiE9QGE4QzBsuQtla',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            25 => 
+            25 =>
             array (
                 'id' => 152,
                 'name' => 'Meza Rivera Edgar David',
@@ -433,9 +433,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'C9RhycUSKUHfCvG9SejIjs5LqZXnty6GyK6RH6kHHcSUsfGMm0OY23rV1VlB',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 4,
+                'management_id' =>null,
             ),
-            26 => 
+            26 =>
             array (
                 'id' => 157,
                 'name' => 'Pérez Hernández Claudio Magdaleno',
@@ -449,9 +449,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 14,
+                'management_id' =>null,
             ),
-            27 => 
+            27 =>
             array (
                 'id' => 158,
                 'name' => 'Colín Antonio Yanet Rosario',
@@ -465,9 +465,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'GKcKYXFtNydxvhpYo0ymBjJJ4URtJEkc2tF4Elxabl9xEHaNo4RSiKbOTWKP',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 16,
+                'management_id' =>null,
             ),
-            28 => 
+            28 =>
             array (
                 'id' => 166,
                 'name' => 'Jiménez Ávila Rafael Alejandro',
@@ -481,9 +481,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'FkpHLVIdWKaJPN8sJRxGMpeld0zLD3VFPV4qvkkmEhuKMfTtPeUoxQaRBvql',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 16,
+                'management_id' =>null,
             ),
-            29 => 
+            29 =>
             array (
                 'id' => 168,
                 'name' => 'Ordaz Espinosa Sergio Antonio',
@@ -497,9 +497,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 16,
+                'management_id' =>null,
             ),
-            30 => 
+            30 =>
             array (
                 'id' => 180,
                 'name' => 'García Ojeda Jorge Eduardo',
@@ -513,9 +513,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'mGemTVITiJlLHYV9O6Zbg6Fh4aqWq0uIKLvp42koxFoF5fxTyIhqt951ZBEI',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 13,
+                'management_id' =>null,
             ),
-            31 => 
+            31 =>
             array (
                 'id' => 187,
                 'name' => 'Ramírez Pérez Alejandro Aldair',
@@ -529,9 +529,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'yEimbHQGbd5h3VvD7R8wh5AVKoTlX6xMlmV7VztuXcLmtiQkQ1x0ZnB2S5XD',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            32 => 
+            32 =>
             array (
                 'id' => 191,
                 'name' => 'Martínez Jarquín Jennifer',
@@ -545,9 +545,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            33 => 
+            33 =>
             array (
                 'id' => 192,
                 'name' => 'Díaz Esparza Karla Cristina',
@@ -561,9 +561,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'nIT5zlk1R8tm9kMNDofJTRXmQxocxFVWAbD46D1qlLhi9trIepvNUgvYhV5k',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 10,
+                'management_id' =>null,
             ),
-            34 => 
+            34 =>
             array (
                 'id' => 193,
                 'name' => 'Martínez Hernández Martín Alejandro',
@@ -577,9 +577,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'Hhb0Ue3nHZu7LTgC48u6GI1Uojy5VOR7BobKn16mKCMYIkW1sdxzF6ntyQb5',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 16,
+                'management_id' =>null,
             ),
-            35 => 
+            35 =>
             array (
                 'id' => 199,
                 'name' => 'Hernández Mendoza Alan Etzahu',
@@ -593,9 +593,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '18BaaMWoIgXK6hXdDnNsXlDJaSupPv2KVAhpkZFgr6u6UB9cglyWciRfz4w5',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-21 01:11:46',
-                'management_id' => 12,
+                'management_id' =>null,
             ),
-            36 => 
+            36 =>
             array (
                 'id' => 200,
                 'name' => 'Rojas González Rocío',
@@ -609,9 +609,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'Xwr35wkG1LHTBB9N61SKAKxvBnCQg75NgEm3RtslBHrpdhjlmPwePx72drB9',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 9,
+                'management_id' =>null,
             ),
-            37 => 
+            37 =>
             array (
                 'id' => 202,
                 'name' => 'González García Daniel',
@@ -625,9 +625,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 10,
+                'management_id' =>null,
             ),
-            38 => 
+            38 =>
             array (
                 'id' => 205,
                 'name' => 'López Olvera Erik David',
@@ -641,9 +641,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 13,
+                'management_id' =>null,
             ),
-            39 => 
+            39 =>
             array (
                 'id' => 212,
                 'name' => 'Villafranca García Enrique',
@@ -657,9 +657,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'uEouLW94avUuLRGRklFHZtpIP7VnZg2CG47vGobitXaeP7MSpUAoesmxB1ap',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 10,
+                'management_id' =>null,
             ),
-            40 => 
+            40 =>
             array (
                 'id' => 223,
                 'name' => 'Avilés Nieto José Héctor',
@@ -673,9 +673,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 13,
+                'management_id' =>null,
             ),
-            41 => 
+            41 =>
             array (
                 'id' => 227,
                 'name' => 'Pérez Rodríguez Kevin Hazael',
@@ -689,9 +689,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'o4gpRz6iCKYYZNKnAFGVgzi0ENd5HKdckVyYKV88uvFTtwxipSHZmKOI0Kmz',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 6,
+                'management_id' =>null,
             ),
-            42 => 
+            42 =>
             array (
                 'id' => 230,
                 'name' => 'Bautista Cruz Ernesto',
@@ -705,9 +705,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'OdJAqOJ22GbqkmiLeGo8UU1fskGycn8kBQhDYUIz4A1k8bgDJrp8qlZHZn3y',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 14,
+                'management_id' =>null,
             ),
-            43 => 
+            43 =>
             array (
                 'id' => 233,
                 'name' => 'Correa Cruz Israel',
@@ -721,9 +721,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-22 03:02:13',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 15,
+                'management_id' =>null,
             ),
-            44 => 
+            44 =>
             array (
                 'id' => 235,
                 'name' => 'Lugardo Aguilar Giovanni',
@@ -737,9 +737,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:25:13',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 16,
+                'management_id' =>null,
             ),
-            45 => 
+            45 =>
             array (
                 'id' => 238,
                 'name' => 'Ramón Zetina Karen Stefany',
@@ -753,9 +753,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-10-24 01:51:36',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 15,
+                'management_id' =>null,
             ),
-            46 => 
+            46 =>
             array (
                 'id' => 240,
                 'name' => 'Pimentel García  Mónica Jazmín ',
@@ -769,9 +769,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'k0yPZLZ4AU2fhaHJsM5CZnFk53TcXXINR33uWeppbkLMQAuEfFTzJrTuEBei',
                 'created_at' => '2022-11-07 06:03:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 17,
+                'management_id' =>null,
             ),
-            47 => 
+            47 =>
             array (
                 'id' => 244,
                 'name' => 'Palafox Luna José Roberto',
@@ -785,9 +785,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'avqrOWEEbGErtZvYKz6WxBLT6SCivzNMvXSAaAQ66dN0Pz8iDStM3rz1c2qf',
                 'created_at' => '2023-02-01 07:33:10',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 12,
+                'management_id' =>null,
             ),
-            48 => 
+            48 =>
             array (
                 'id' => 247,
                 'name' => 'Prado Hernández Juan Carlos',
@@ -801,9 +801,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-02-15 02:30:34',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 7,
+                'management_id' =>null,
             ),
-            49 => 
+            49 =>
             array (
                 'id' => 249,
                 'name' => 'Salgado Rangel Rocío',
@@ -817,9 +817,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'FBR8IeKGInHG6ma3CRVfdtkusjBuwLunsjfGXd8xP5H6SG5GD3KQTBd1Zuaw',
                 'created_at' => '2023-08-15 07:28:23',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 13,
+                'management_id' =>null,
             ),
-            50 => 
+            50 =>
             array (
                 'id' => 250,
                 'name' => 'Martínez Amador José Carlos',
@@ -833,9 +833,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'LA9ZNIyB7ZyN6Q2JyJMc6d3EIjvhcWdVi5yJxC6IxjzZzBec4t61TUqkC1PT',
                 'created_at' => '2023-03-08 02:40:15',
                 'updated_at' => '2024-10-21 02:21:36',
-                'management_id' => 14,
+                'management_id' =>null,
             ),
-            51 => 
+            51 =>
             array (
                 'id' => 251,
                 'name' => 'Rodríguez Vázquez Alejandro',
@@ -849,9 +849,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-03-07 22:36:46',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 6,
+                'management_id' =>null,
             ),
-            52 => 
+            52 =>
             array (
                 'id' => 252,
                 'name' => 'Mora Barrios Israel Omar',
@@ -865,9 +865,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-03-07 22:48:55',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 2,
+                'management_id' =>null,
             ),
-            53 => 
+            53 =>
             array (
                 'id' => 253,
                 'name' => 'Nuñez Cruz Daniel',
@@ -881,9 +881,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-03-12 21:37:52',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 11,
+                'management_id' =>null,
             ),
-            54 => 
+            54 =>
             array (
                 'id' => 256,
                 'name' => 'Mendoza Gutierrez Rosa Maria',
@@ -897,9 +897,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:33:18',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 15,
+                'management_id' =>null,
             ),
-            55 => 
+            55 =>
             array (
                 'id' => 257,
                 'name' => 'Ramírez Jaimes Sergio Martín',
@@ -913,9 +913,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '2DxMh9e7myNgCeN80Q075Ku2Hqfbs61wn2My2xoXp63gUMxHtQMVlhd3WOcf',
                 'created_at' => '2023-08-03 23:38:14',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 4,
+                'management_id' =>null,
             ),
-            56 => 
+            56 =>
             array (
                 'id' => 258,
                 'name' => 'Flores Valenzuela  Julia ',
@@ -929,9 +929,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:34:06',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 12,
+                'management_id' =>null,
             ),
-            57 => 
+            57 =>
             array (
                 'id' => 260,
                 'name' => 'Lázaro Juárez José de Jesús',
@@ -945,9 +945,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'B47xjqWtBzgZCrYjdzwwTUvSzxQkyPYTC4dERh2CW03YIcdQTzfWSziRfpjz',
                 'created_at' => '2023-04-17 23:55:59',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 5,
+                'management_id' =>null,
             ),
-            58 => 
+            58 =>
             array (
                 'id' => 263,
                 'name' => 'García Real Joya Elizabeth',
@@ -961,9 +961,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '6eqjMaenuwGw7EY89uzOY0CBpIkNlxPwYTiaxQ4uBAVIIbpB2WH10CizKi3f',
                 'created_at' => '2023-05-01 20:03:40',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 9,
+                'management_id' =>null,
             ),
-            59 => 
+            59 =>
             array (
                 'id' => 264,
                 'name' => 'López Hernández Juan Carlos',
@@ -977,9 +977,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'fIVwGNbOW0NTrWlcTMegiJ174TxsH0oF8ib928wphqOBLSa01bA7qlL3tws2',
                 'created_at' => '2023-08-01 19:34:45',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 16,
+                'management_id' =>null,
             ),
-            60 => 
+            60 =>
             array (
                 'id' => 265,
                 'name' => 'Gómez López  Alfonso ',
@@ -993,9 +993,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:39:23',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 11,
+                'management_id' =>null,
             ),
-            61 => 
+            61 =>
             array (
                 'id' => 266,
                 'name' => 'Alvarado Bailey Omar',
@@ -1009,9 +1009,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'NLZE6VrmNTuNtLaLbs0Xs2UaJRDFVdY5TBCG8OFIWOQekxyLN5KiKvNu3fvD',
                 'created_at' => '2023-05-16 02:01:12',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 2,
+                'management_id' =>null,
             ),
-            62 => 
+            62 =>
             array (
                 'id' => 268,
                 'name' => 'Carbajal Cerezo Carlos Ivan',
@@ -1025,9 +1025,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:45:16',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 11,
+                'management_id' =>null,
             ),
-            63 => 
+            63 =>
             array (
                 'id' => 269,
                 'name' => 'Santos Cruces Javier Mozart',
@@ -1041,9 +1041,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'bDHRblbSfAIeqHIbDwuvZ5BXqBuGMYiq06jMa7lZ1ey6Goj07Xrq0UcSaH6b',
                 'created_at' => '2023-06-26 05:11:03',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            64 => 
+            64 =>
             array (
                 'id' => 270,
                 'name' => 'Orduña Álvarez Miguel Eduardo',
@@ -1057,9 +1057,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:48:21',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 11,
+                'management_id' =>null,
             ),
-            65 => 
+            65 =>
             array (
                 'id' => 271,
                 'name' => 'Cardona Salinas  José Manuel ',
@@ -1073,9 +1073,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:50:07',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            66 => 
+            66 =>
             array (
                 'id' => 274,
                 'name' => 'López Muñóz María Fernanda',
@@ -1089,9 +1089,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-13 20:56:49',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 15,
+                'management_id' =>null,
             ),
-            67 => 
+            67 =>
             array (
                 'id' => 275,
                 'name' => 'Quechol Millán Agustín',
@@ -1105,9 +1105,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-08-29 20:08:40',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 14,
+                'management_id' =>null,
             ),
-            68 => 
+            68 =>
             array (
                 'id' => 276,
                 'name' => 'Paredes Chávez  Leonardo ',
@@ -1121,9 +1121,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-09-12 20:18:39',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 13,
+                'management_id' =>null,
             ),
-            69 => 
+            69 =>
             array (
                 'id' => 277,
                 'name' => 'Guevara Galán  Antonio ',
@@ -1137,9 +1137,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-09-17 23:58:57',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 14,
+                'management_id' =>null,
             ),
-            70 => 
+            70 =>
             array (
                 'id' => 279,
                 'name' => 'Alfaro Villegas Orlando Sebastian ',
@@ -1153,9 +1153,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-09-20 21:21:54',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 10,
+                'management_id' =>null,
             ),
-            71 => 
+            71 =>
             array (
                 'id' => 282,
                 'name' => 'Martínez Dolores  Diana ',
@@ -1169,9 +1169,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2023-10-09 19:14:11',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            72 => 
+            72 =>
             array (
                 'id' => 285,
                 'name' => 'Castañeda Martínez Juan Gabriel',
@@ -1185,9 +1185,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-01-03 03:38:48',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            73 => 
+            73 =>
             array (
                 'id' => 286,
                 'name' => 'Pardo Sánchez Luis Enrique',
@@ -1201,9 +1201,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-01-17 20:50:12',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 15,
+                'management_id' =>null,
             ),
-            74 => 
+            74 =>
             array (
                 'id' => 287,
                 'name' => 'Moreno Carmona Eduardo',
@@ -1217,9 +1217,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'bRbnRqYrwV7EJat7zwwq1pp2vAWyQtfUfwP78ybOE4Z5Rdrv3hRc9fZrzs9I',
                 'created_at' => '2024-01-11 21:41:48',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 2,
+                'management_id' =>null,
             ),
-            75 => 
+            75 =>
             array (
                 'id' => 289,
                 'name' => 'Raya Espino Miguel Ángel',
@@ -1233,9 +1233,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-01-23 21:15:39',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 15,
+                'management_id' =>null,
             ),
-            76 => 
+            76 =>
             array (
                 'id' => 290,
                 'name' => 'Jiménez Ortega Mariana Karina',
@@ -1249,9 +1249,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'Hz5wWBbN7whaLCEtQGvAzjer4BpF3dD99gdHaRmJwRKx6DpI5I9As6uM3xuO',
                 'created_at' => '2024-01-31 17:12:57',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 7,
+                'management_id' =>null,
             ),
-            77 => 
+            77 =>
             array (
                 'id' => 292,
                 'name' => 'Zamora González Fernando',
@@ -1265,9 +1265,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'fzeOOKZaOyUG5E9IK9HGjyLaYkTuOJ2BOFS1RYTSc5JrGHSUiiJpGrD6aA1m',
                 'created_at' => '2024-02-07 16:26:36',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 2,
+                'management_id' =>null,
             ),
-            78 => 
+            78 =>
             array (
                 'id' => 293,
                 'name' => 'Alejo Osorio Jatziri Yamile',
@@ -1281,9 +1281,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'vX4OZXzDsiAptW125DKIVFeg4bmsTgkB2jQdOkaPdZ6WqYmb9Tsk9SzP84V9',
                 'created_at' => '2024-02-18 14:02:25',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 16,
+                'management_id' =>null,
             ),
-            79 => 
+            79 =>
             array (
                 'id' => 296,
                 'name' => 'Chávez Huerta Paola',
@@ -1297,9 +1297,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'osat80tfNUeKg4lQQR4nGT9Zsi3wxiqbskYvfF9ViIYIyrGJsy0Ku2HTta4p',
                 'created_at' => '2024-03-21 14:45:46',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            80 => 
+            80 =>
             array (
                 'id' => 298,
                 'name' => 'González Cisneros Ingrid Danae',
@@ -1313,9 +1313,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'I9lqEP1NYRUhdrrwJlLtCMK9vUsSCXYXT7lTCtvkaBoMrevMtSITBIxBbMqQ',
                 'created_at' => '2024-04-14 12:56:12',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 15,
+                'management_id' =>null,
             ),
-            81 => 
+            81 =>
             array (
                 'id' => 299,
                 'name' => 'Gómez Matilde Christian Alberto',
@@ -1329,9 +1329,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-04-22 17:32:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 10,
+                'management_id' =>null,
             ),
-            82 => 
+            82 =>
             array (
                 'id' => 301,
                 'name' => 'Vazquez Hernández Pablo Angel',
@@ -1345,9 +1345,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '0smgJfG9P4eQrYaEh88dxUhq48xG2XgyD01hnWEKpUVYkWoTRRmOG8QlbjYo',
                 'created_at' => '2024-02-07 14:12:27',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            83 => 
+            83 =>
             array (
                 'id' => 302,
                 'name' => 'Padilla Gónzalez Monica Esthela',
@@ -1361,9 +1361,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'FGPCAdEhqY8OwC12qKuG7SxY3H1KZJq3BIa5qhpyXFaiEVsVZGtQBivDfC9y',
                 'created_at' => '2024-05-22 23:19:57',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 6,
+                'management_id' =>null,
             ),
-            84 => 
+            84 =>
             array (
                 'id' => 303,
                 'name' => 'Sánchez González Luis Adrián',
@@ -1377,9 +1377,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '10C66vnyl8dd4yzt3hrVfK6W4jLAS7yw94H3151lpy8RqgVxNL2Ff8MzinVk',
                 'created_at' => '2024-07-08 06:51:38',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 16,
+                'management_id' =>null,
             ),
-            85 => 
+            85 =>
             array (
                 'id' => 304,
                 'name' => 'Contreras García Francisco Alejandro',
@@ -1393,9 +1393,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'LI4vgnPQdoVEIaEVmOxmcAbPpSKlTnW3pPcGCsqQA0xX8yaZQ5bcRkKUaSvI',
                 'created_at' => '2024-07-08 06:42:37',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 7,
+                'management_id' =>null,
             ),
-            86 => 
+            86 =>
             array (
                 'id' => 305,
                 'name' => 'Quintanar Pérez María de los Ángeles',
@@ -1409,9 +1409,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'aUqFZgtqX5ilYo88od4GWNjDJH6gELucfrukZhrXjTVO0vkiMedt6iP7DZ0B',
                 'created_at' => '2024-07-26 05:24:53',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 14,
+                'management_id' =>null,
             ),
-            87 => 
+            87 =>
             array (
                 'id' => 306,
                 'name' => 'Cruz Montes Bruno',
@@ -1425,9 +1425,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-07-26 06:42:31',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 14,
+                'management_id' =>null,
             ),
-            88 => 
+            88 =>
             array (
                 'id' => 307,
                 'name' => 'Luna García Francisco',
@@ -1441,9 +1441,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-08-19 07:59:18',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 7,
+                'management_id' =>null,
             ),
-            89 => 
+            89 =>
             array (
                 'id' => 309,
                 'name' => 'Butrón González Fernando',
@@ -1457,9 +1457,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-09-02 01:31:20',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 6,
+                'management_id' =>null,
             ),
-            90 => 
+            90 =>
             array (
                 'id' => 310,
                 'name' => 'Iriarte Pérez Daniel',
@@ -1473,9 +1473,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'FdXGW1xrFirUwUSBN6czcPKjy3M4v91PHiGFVjWbRfxEwf2N4jrs9d2RnAMm',
                 'created_at' => '2024-09-09 04:48:38',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 5,
+                'management_id' =>null,
             ),
-            91 => 
+            91 =>
             array (
                 'id' => 311,
                 'name' => 'Guerrero Cruz Miguel Ángel',
@@ -1489,9 +1489,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '40i2xJ7jkqStrlygtMFoYF6aVP5XjxgTCWljQweGuEoGqjorKHNqyjTOTqSd',
                 'created_at' => '2024-10-02 02:46:56',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 5,
+                'management_id' =>null,
             ),
-            92 => 
+            92 =>
             array (
                 'id' => 315,
                 'name' => 'Alonso Pérez Carlos',
@@ -1505,9 +1505,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 3,
+                'management_id' =>null,
             ),
-            93 => 
+            93 =>
             array (
                 'id' => 331,
                 'name' => 'Rodríguez Lara José Carmen',
@@ -1521,9 +1521,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 15,
+                'management_id' =>null,
             ),
-            94 => 
+            94 =>
             array (
                 'id' => 666,
                 'name' => 'Zamudio Juárez Juan Antonio',
@@ -1537,10 +1537,10 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2024-06-04 19:52:04',
                 'updated_at' => '2024-10-17 18:30:11',
-                'management_id' => 13,
+                'management_id' =>null,
             ),
         ));
-        
-        
+
+
     }
 }

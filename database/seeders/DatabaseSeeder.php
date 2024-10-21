@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SessionsTableSeeder::class);
         $this->call(SubDrawingCategoriesTableSeeder::class);
         $this->call(TaxesTableSeeder::class);
-        // $this->call(UserManageSeeder::class);
+        $this->call(UserManageSeeder::class);
         $this->call(MediaTableSeeder::class);
         $this->call(PendingTransitionsTableSeeder::class);
     }

@@ -10,6 +10,7 @@ use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PurchaseRequisition extends Model implements HasMedia
 {
@@ -56,6 +57,12 @@ class PurchaseRequisition extends Model implements HasMedia
     public function project(): BelongsTo
     {
         return $this->belongsTo(ProjectPurchase::class, 'project_id');
+    }
+
+
+    public function items():HasMany
+    {
+        return $this->hasMany(PurchaseRequisitionItem::class, 'requisition_id');
     }
 
     public function scopeMyRequisitions(Builder $query){

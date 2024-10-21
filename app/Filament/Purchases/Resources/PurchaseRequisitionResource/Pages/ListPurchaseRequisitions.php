@@ -32,7 +32,8 @@ class ListPurchaseRequisitions extends ListRecords
                 ->modifyQueryUsing(fn(Builder $query) => $query->reviewWarehouse());
         }
         if(auth()->user()->hasRole('revisor_requisicion_compra')) {
-            $tabs['revisar'] = Tab::make('Revisar');
+            $tabs['revisar'] = Tab::make('Revisar')
+            ->modifyQueryUsing(fn(Builder $query) => $query->review());
         }
         if(auth()->user()->hasRole('autorizador_requisicion_compra')) {
            $tabs['autorizar'] = Tab::make('Autorizar');

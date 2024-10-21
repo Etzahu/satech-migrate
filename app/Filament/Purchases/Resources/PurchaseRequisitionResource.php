@@ -26,9 +26,6 @@ class PurchaseRequisitionResource extends Resource
     protected static ?string $navigationLabel = 'Requisiciones';
     protected static ?string $slug = 'requisiciones';
 
-
-
-
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -93,17 +90,6 @@ class PurchaseRequisitionResource extends Resource
             ]);
     }
 
-
-    // public static function infolist(Infolist $infolist): Infolist
-    // {
-    //     return $infolist
-    //         ->schema([
-    //             SpatieMediaLibraryImageEntry::make('document')
-    //             ->collection('additional_documents')
-    //                 ->columnSpanFull(),
-    //         ]);
-    // }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -130,7 +116,10 @@ class PurchaseRequisitionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->visible(function (PurchaseRequisition $record) {
+                        return $record->status == 'borrador';
+                    }),
                 Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
@@ -157,7 +146,6 @@ class PurchaseRequisitionResource extends Resource
         ];
     }
 }
-
 //
 // php artisan make:filament-resource PurchaseRequisitionReviewResource --model=PurchaseRequisition --generate -S --panel=compras
 // php artisan make:filament-resource PurchaseRequisitionReviewAuthorizeResource --model=PurchaseRequisition --generate -S --panel=compras
