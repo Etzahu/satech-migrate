@@ -33,6 +33,7 @@ class PurchaseRequisitionApprovalChain extends Model
         'approver_id' => 'integer',
     ];
 
+
     public function requester(): BelongsTo
     {
         return $this->belongsTo(User::class, 'requester_id');

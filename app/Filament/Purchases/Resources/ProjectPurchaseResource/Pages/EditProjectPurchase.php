@@ -20,4 +20,10 @@ class EditProjectPurchase extends EditRecord
     {
          $this->dispatch('refresh');
     }
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['code'] = str($data['code'])->squish()->upper();
+        $data['name'] = str($data['name'])->squish()->upper();
+        return $data;
+    }
 }

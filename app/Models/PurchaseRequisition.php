@@ -27,7 +27,8 @@ class PurchaseRequisition extends Model implements HasMedia
         'folio',
         'date_delivery',
         'delivery_address',
-        'type',
+        'motive',
+        'observation',
         'status',
         'company_id',
         'project_id',
@@ -50,6 +51,10 @@ class PurchaseRequisition extends Model implements HasMedia
     public $stateMachines = [
         'status' => PurchaseRequisitionStateMachine::class
     ];
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
     public function approvalChain(): BelongsTo
     {
         return $this->belongsTo(PurchaseRequisitionApprovalChain::class, 'approval_chain_id');

@@ -15,16 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('name', 100);
             $table->string('code', 30);
+            $table->string('type', 50);
             $table->foreignId('category_id')->constrained('categories')
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('category_families');

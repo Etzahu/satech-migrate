@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Models\Company;
 use Illuminate\Http\Request;
 
 class CompanySession
@@ -16,14 +17,21 @@ class CompanySession
      */
     public function handle(Request $request, Closure $next)
     {
+        if(!session()->has('companies')) {
+            $companies = Company::select('id', 'name', 'acronym')->get();
+            session()->forget('companies');
+            session(['companies' => $companies->toArray()]);
+        }
         // Validad si existe una sesión con los datos de una razon social de las dos opciones que tiene el sistema
         if (session()->has('company_id') && session()->has('company_name')) {
             return $next($request);
         } else {
+            $company = Company::first();
+            session()->forget(['company_id', 'company_name']);
             session([
-                'company_id' => 1,
-                'company_name' => 'GPT INGENIERIA Y MANUFACTURA',
-                'logo' => 'https://lh3.googleusercontent.com/oMpAslP5lCZ8ufvC4sIGfsaIR2BrZu6ee-ekhSmOEtYPSgXGqFYpRBBN99VcFN4zAXVKD6Tv4WQi4kgWHee38Ttm7uwm8j31zNZqgHVHpx4PeZpgIhmt_fySFS5S60rZz-aYnr8OiA'
+                'company_id' => $company->id,
+                'company_name' => $company->name,
+                'company_acronym' => $company->acronym,
             ]);
         }
         return $next($request);

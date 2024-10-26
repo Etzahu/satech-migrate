@@ -22,6 +22,7 @@ class MeasureUnitResource extends Resource
     protected static ?string $slug = 'um';
     protected static ?string $navigationGroup = 'Administración';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
+    protected static ?int $navigationSort = 7;
 
 
     public static function form(Form $form): Form

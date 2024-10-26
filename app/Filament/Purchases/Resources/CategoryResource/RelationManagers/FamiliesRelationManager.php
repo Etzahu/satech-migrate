@@ -29,6 +29,14 @@ class FamiliesRelationManager extends RelationManager
                     ->label('Código')
                     ->required()
                     ->maxLength(30),
+                Forms\Components\Select::make('category_id')
+                    ->label('Tipo')
+                    ->options([
+                        'DN-NP' => 'DN-NP',
+                        'stock' => 'Stock',
+                        'sg' => 'Servicios generales',
+                    ])
+                    ->required()
             ]);
     }
 
@@ -37,8 +45,12 @@ class FamiliesRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('code'),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nombre'),
+                Tables\Columns\TextColumn::make('code')
+                    ->label('Código'),
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Tipo'),
             ])
             ->filters([
                 //

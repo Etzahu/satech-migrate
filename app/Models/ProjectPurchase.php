@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ProjectPurchase extends Model
 {
@@ -17,6 +18,7 @@ class ProjectPurchase extends Model
      */
     protected $fillable = [
         'name',
+        'code',
         'status',
         'company_id',
     ];
@@ -36,8 +38,10 @@ class ProjectPurchase extends Model
     {
         return $this->belongsTo(Company::class);
     }
-    public function usage()
+    public function categories(): BelongsToMany
     {
-        return $this->belongsToMany(ProjectUsage::class, 'project_purchase_usage', 'project_purchase_id', 'project_usage_id');
+        return $this->belongsToMany(Category::class, 'project_purchase_category');
     }
+  
+
 }

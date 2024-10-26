@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.2",
         "asantibanez/laravel-eloquent-state-machines": "^6.0",
+        "barryvdh/laravel-dompdf": "^3.0",
         "bezhansalleh/filament-shield": "^3.2",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
@@ -15,6 +16,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
         "orangehill/iseed": "^3.0",
+        "rap2hpoutre/fast-excel": "^5.5",
         "shanerbaner82/panel-roles": "*"
     },
     "require-dev": {

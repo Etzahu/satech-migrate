@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('purchase_requisitions', function (Blueprint $table) {
             $table->id();
             $table->string('folio', 255);
+            $table->text('motive',600);
+            $table->text('observation',600);
             $table->date('date_delivery');
             $table->string('delivery_address', 500);
-            $table->string('type', 50);
             $table->string('status', 50)->nullable();
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('project_id')->constrained('project_purchases');

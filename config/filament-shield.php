@@ -3,8 +3,9 @@
 return [
     'shield_resource' => [
         'should_register_navigation' => true,
-        'slug' => 'shield/roles',
-        'navigation_sort' => -1,
+        // 'slug' => 'shield/roles',
+        'slug' => 'roles',
+        'navigation_sort' => 9,
         'navigation_badge' => true,
         'navigation_group' => true,
         'is_globally_searchable' => false,

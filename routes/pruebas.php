@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use App\Models\Category;
+use App\Models\CategoryFamily;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
 use Illuminate\Support\Facades\Auth;
@@ -185,7 +187,55 @@ function setCompany($id, $redirect = true)
 }
 
 Route::get('cadenas', function () {
-   $rq = PurchaseRequisition::first();
-   dd($rq->status()->stateMachine()->transitions());
+    $rq = PurchaseRequisition::first();
+    dd($rq->status()->stateMachine()->transitions());
+});
 
+Route::get('excel', function () {
+
+    $type = 'servicios generales';
+    $collection = fastexcel()->import('data.xlsx');
+    $collection =  $collection->groupBy('CATEGORIA');
+    // dd($collection);
+
+    $array = [];
+    foreach ($collection as $key => $value) {
+        $category = Category::where('name', str($key)->lower())->first();
+        // dump('KEY:'.$key, 'DB:'.$category?->name);
+        foreach ($value as $k => $v) {
+            $array[] = [
+                'name' => str($v['DESCRIPCIÓN'])->squish(),
+                'code' => $v['N° FAM.'],
+                'type' => $type,
+                'category_id' => $category->id,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+    }
+    // return true;
+    $collec = collect($array);
+    $collec = $collec->sortBy('category_id');
+    // dd($collec->values()->all());
+
+    DB::beginTransaction();
+    try {
+        DB::table('category_families')->insert($collec->toArray());
+        DB::afterCommit(function () use ($collec) {
+            echo 'Se insertaron familias';
+        });
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollback();
+        return $e->getMessage();
+    }
+});
+
+Route::get('change-category', function () {
+    $categoryFamilies = CategoryFamily::all();
+
+    foreach ($categoryFamilies as $item) {
+        $item->name = str($item->name)->lower();
+        $item->save();
+    }
 });

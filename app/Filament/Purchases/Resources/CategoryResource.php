@@ -22,8 +22,10 @@ class CategoryResource extends Resource
     protected static ?string $slug = 'categorias';
     protected static ?string $navigationGroup = 'Administración';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
+    protected static ?int $navigationSort = 6;
 
 
+    // TODO: al crear una nueva categoria se debe vincular dependiedo si es una categoria para NP-DN,stock o servicios generales
     public static function form(Form $form): Form
     {
         return $form

@@ -26,9 +26,9 @@ class ProductResource extends Resource
     protected static ?string $pluralModelLabel = 'Productos';
     protected static ?string $navigationLabel = 'Productos';
     protected static ?string $slug = 'productos';
-    // protected static ?int $navigationSort = 2;
     protected static ?string $navigationGroup = 'Administración';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
+    protected static ?int $navigationSort = 4;
 
 
 
@@ -36,23 +36,10 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('General')
-                    ->schema([
-                        Forms\Components\Textarea::make('name')
-                            ->label('Nombre')
-                            ->required()
-                            ->columnSpanFull(),
-                        Forms\Components\Select::make('unit_id')
-                            ->label('Unidad de medida')
-                            ->relationship('unit', 'name')
-                            ->preload()
-                            ->searchable()
-                            ->required(),
-                    ]),
-                Forms\Components\Section::make('Categoría')
+                Forms\Components\Section::make('')
                     ->schema([
                         Forms\Components\Select::make('category_id')
-                            ->label('Tipo')
+                            ->label('Categoría')
                             ->relationship('category', 'name')
                             ->searchable()
                             ->preload()
@@ -63,14 +50,43 @@ class ProductResource extends Resource
                             ->required(),
                         Forms\Components\Select::make('category_family_id')
                             ->label('Familia')
-                            ->options(fn(Get $get): Collection => CategoryFamily::query()
-                                ->where('category_id', $get('category_id'))
-                                ->pluck('name', 'id'))
+                            ->options(
+                                function (Get $get) {
+                                    $options = [];
+                                    $data =  CategoryFamily::query()
+                                        ->where('category_id', $get('category_id'))
+                                        ->select('id', 'name', 'type', 'code')
+                                        ->get();
+                                    if (filled($data)) {
+                                        foreach ($data as $value) {
+                                            $type = strtoupper($value->type);
+                                            $options[$type][$value->id] = $value->name . ' (' . $value->code . ')';
+                                        }
+                                        logger($options);
+                                    }
+                                    return $options;
+                                }
+                            )
                             ->searchable()
                             ->preload()
                             ->live()
                             ->required(),
-                    ])
+                    ]),
+                Forms\Components\Section::make('')
+                    ->schema([
+                        Forms\Components\Textarea::make('name')
+                            ->label('Nombre del producto')
+                            ->required()
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+                        Forms\Components\Select::make('unit_id')
+                            ->label('Unidad de medida')
+                            ->relationship('unit', 'name')
+                            ->preload()
+                            ->searchable()
+                            ->required(),
+                    ]),
+
             ]);
     }
 

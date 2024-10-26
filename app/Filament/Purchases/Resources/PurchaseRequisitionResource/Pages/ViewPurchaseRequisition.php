@@ -29,7 +29,11 @@ class ViewPurchaseRequisition extends ViewRecord
                 ->visible(auth()->user()->hasRole('solicitante_requisicion_compra') && $this->record->status()->canBe('revisión por almacén'))
                 ->action(function () {
                     $this->record->status()->transitionTo('revisión por almacén');
-                })
+                }),
+            Action::make('Ver pdf')
+                ->color('danger')
+                ->icon('heroicon-m-document')
+                ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
         ];
     }
     public function infolist(Infolist $infolist): Infolist
@@ -40,17 +44,20 @@ class ViewPurchaseRequisition extends ViewRecord
                     ->columns(2)
                     ->compact()
                     ->schema([
+                        TextEntry::make('motive')
+                            ->label('Motivo')
+                            ->columnSpan('full'),
                         TextEntry::make('folio')
                             ->label('Folio'),
                         TextEntry::make('date_delivery')
                             ->label('Fecha deseable de entrega')
                             ->date(),
-                        TextEntry::make('type')
-                            ->label('Tipo de requisición'),
                         TextEntry::make('project.name')
                             ->label('Proyecto'),
                         TextEntry::make('delivery_address')
-                            ->label('Dirección de entrega')
+                            ->label('Dirección de entrega'),
+                        TextEntry::make('observation')
+                            ->label('Observación adicionales')
                             ->columnSpan('full'),
                     ]),
                 Section::make('Flujo de aprobación')
@@ -62,13 +69,13 @@ class ViewPurchaseRequisition extends ViewRecord
                         TextEntry::make('approvalChain.approver.name')
                             ->label('Aprueba'),
                     ]),
-                Section::make('Documentacion')
-                    ->visible($this->record->getMedia('additional_documents')->count() > 0)
+                Section::make('Fichas técnicas')
+                    ->visible($this->record->getMedia('technical_data_sheets')->count() > 0)
                     ->headerActions([
-                        Infolists\Components\Actions\Action::make('Descargar documentos')
+                        Infolists\Components\Actions\Action::make('Descargar')
                             ->action(function () {
                                 $downloads = $this->record->getMedia('additional_documents');
-                                return MediaStream::create($this->record->folio . '.zip')->addMedia($downloads);
+                                return MediaStream::create($this->record->folio . '-fichas-tecnicas.zip')->addMedia($downloads);
                             }),
                     ])
                     ->compact()
@@ -76,14 +83,36 @@ class ViewPurchaseRequisition extends ViewRecord
                     ->schema([
                         RepeatableEntry::make('media')
                             ->state(function ($record) {
-                                return $record->getMedia('additional_documents');
+                                return $record->getMedia('technical_data_sheets');
                             })
                             ->label('')
                             ->schema([
                                 TextEntry::make('file_name')
                                     ->label('Nombre del archivo'),
                             ])
+                    ]),
+                Section::make('Soportes')
+                    ->visible($this->record->getMedia('supports')->count() > 0)
+                    ->headerActions([
+                        Infolists\Components\Actions\Action::make('Descargar')
+                            ->action(function () {
+                                $downloads = $this->record->getMedia('supports');
+                                return MediaStream::create($this->record->folio . '-soportes.zip')->addMedia($downloads);
+                            }),
                     ])
+                    ->compact()
+                    ->columns(2)
+                    ->schema([
+                        RepeatableEntry::make('media')
+                            ->state(function ($record) {
+                                return $record->getMedia('technical_data_sheets');
+                            })
+                            ->label('')
+                            ->schema([
+                                TextEntry::make('file_name')
+                                    ->label('Nombre del archivo'),
+                            ])
+                    ]),
             ]);
     }
 }

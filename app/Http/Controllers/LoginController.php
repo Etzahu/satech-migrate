@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Company;
 use App\Models\TicketIT;
+use Illuminate\Http\Request;
 use App\Services\DashboardService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -64,23 +65,15 @@ class LoginController extends Controller
 
     public function setCompany($id, $redirect = true)
     {
-        session()->forget(['company_id', 'company_name', 'logo']);
-        if ($id == 1) {
-            session([
-                'company_id' => 1,
-                'company_name' => 'GPT INGENIERIA Y MANUFACTURA',
-                'logo' => 'https://lh3.googleusercontent.com/oMpAslP5lCZ8ufvC4sIGfsaIR2BrZu6ee-ekhSmOEtYPSgXGqFYpRBBN99VcFN4zAXVKD6Tv4WQi4kgWHee38Ttm7uwm8j31zNZqgHVHpx4PeZpgIhmt_fySFS5S60rZz-aYnr8OiA'
-            ]);
-        }
-        if ($id == 2) {
-            session([
-                'company_id' => 2,
-                'company_name' => 'TECH ENERGY CONTROL',
-                'logo' => 'https://lh3.googleusercontent.com/693EmbDOU1QkzkumTJgTeRKUtuVD93wX_u_YrIzJlHra0qqgEebRqAaLSUtl3sUppJs7jGL6-sfvTjHizjojMdR9Q4MVFaps5F4H7xiBEjUB6xBhDwdvlXUsLFgkM5OdcwC71LImfw'
-            ]);
-        }
-        if ($redirect) {
-            return redirect()->back();
-        }
+        $companies = Company::select('id', 'name', 'acronym')->get();
+        session()->forget('companies');
+        session(['companies' => $companies->toArray()]);
+        $company = Company::find($id);
+        session()->forget(['company_id', 'company_name']);
+        session([
+            'company_id' => $company->id,
+            'company_name' => $company->name,
+            'company_acronym' => $company->acronym,
+        ]);
     }
 }

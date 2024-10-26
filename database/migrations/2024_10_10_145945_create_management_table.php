@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('management', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 255);
+            $table->string('name', 255)->unique();
             $table->string('acronym', 10)->unique();
             $table->foreignId('responsible_id')->constrained('users');
             $table->timestamps();

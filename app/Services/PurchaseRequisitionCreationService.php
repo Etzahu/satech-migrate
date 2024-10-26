@@ -40,4 +40,36 @@ class PurchaseRequisitionCreationService
     {
         return Company::find(session()->get('company_id'))->acronym;
     }
+
+    public function generateDataForEmail($subject,$model,$user){
+
+        $data = [
+            'asunto_email' => "Requicisión:{$model->folio}, {$subject}",
+            'user' => ['nombre' => $user['nombre'], 'email' => $user['email']],
+            'folio' => $model->folio,
+            'solicitud' => [
+                'solicitante' => $model->approvalChain->requester->nombre(),
+                'area' =>  $model->approvalChain->requester->management->name,
+                'fecha de creación' => $model->created_at->format('Y-m-d'),
+                'fecha de deseable de entrega' => $model->date_delivery->format('Y-m-d'),
+            ],
+            'items' => $this->getItemsForEmail($model),
+            'status' => 'Para revisión por almacén',
+            'mensaje' => '',
+            'url_btn' => route('ingenieria.solicitud.trabajo.revision.show', $model->id)
+        ];
+
+        return $data;
+    }
+
+    public function getItemsForEmail($model){
+        $items = [];
+        foreach($model->items as $item){
+            $items[] = [
+                'producto' => $item->product->name,
+                'cantidad' => $item->quantity,
+            ];
+        }
+        return $items;
+    }
 }

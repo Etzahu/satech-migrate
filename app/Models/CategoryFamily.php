@@ -18,6 +18,7 @@ class CategoryFamily extends Model
     protected $fillable = [
         'name',
         'code',
+        'type',
         'category_id',
     ];
 
