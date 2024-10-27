@@ -6,15 +6,11 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\PurchaseRequisitionApprovalChain;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\RelationManagers;
 
@@ -25,15 +21,26 @@ class PurchaseRequisitionResource extends Resource
     protected static ?string $model = PurchaseRequisition::class;
     protected static ?string $modelLabel = 'Requisición';
     protected static ?string $pluralModelLabel = 'Requisiciones';
-    protected static ?string $navigationLabel = 'Requisiciones';
-    protected static ?string $slug = 'requisiciones';
+    protected static ?string $navigationLabel = 'Mis requisiciones';
+    protected static ?string $slug = 'mis-requisiciones';
+    protected static ?string $navigationGroup = 'Requisiciones';
+    protected static ?string $navigationIcon = 'heroicon-o-minus';
+    protected static ?int $navigationSort = 1;
+
+
 
 
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
+            ->myRequisitions()
             ->where('company_id', session()->get('company_id'));
     }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::myRequisitions()->count();
+    }
+
 
     public static function form(Form $form): Form
     {
@@ -60,7 +67,7 @@ class PurchaseRequisitionResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required(),
-                            Forms\Components\Textarea::make('observation')
+                        Forms\Components\Textarea::make('observation')
                             ->label('Observación adicionales')
                             ->maxLength(600)
                             ->required(),
@@ -133,10 +140,10 @@ class PurchaseRequisitionResource extends Resource
                         return $record->status == 'borrador';
                     }),
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\Action::make('ver')
-                    ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.flow-approval', $record->id)),
-                Tables\Actions\Action::make('revision')
-                    ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.warehouse-revision', $record->id)),
+                // Tables\Actions\Action::make('ver')
+                //     ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.flow-approval', $record->id)),
+                // Tables\Actions\Action::make('revision')
+                //     ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.warehouse-revision', $record->id)),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -164,7 +171,9 @@ class PurchaseRequisitionResource extends Resource
         ];
     }
 }
-//
-// php artisan make:filament-resource CategoryFamilyResource --generate  --panel=compras
-// php artisan make:filament-resource PurchaseRequisitionReviewAuthorizeResource --model=PurchaseRequisition --generate -S --panel=compras
-// php artisan make:filament-resource PurchaseRequisitionReviewAuthorizeDGResource --model=PurchaseRequisition --generate -S --panel=compras
+
+
+
+// php artisan make:filament-resource PurchaseRequisitionReviewWareHouseResource --model-namespace=App\\Models\\PurchaseRequisition --generate -S --panel=compras
+// php artisan make:filament-resource PurchaseRequisitionReviewResource --model-namespace=App\\Models\\PurchaseRequisition --generate -S --panel=compras
+// php artisan make:filament-resource PurchaseRequisitionApprovalResource --model-namespace=App\\Models\\PurchaseRequisition --generate -S --panel=compras
