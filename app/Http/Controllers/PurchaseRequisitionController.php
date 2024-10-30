@@ -11,8 +11,13 @@ class PurchaseRequisitionController extends Controller
 
     public function pdf($id){
 
-        $rq = PurchaseRequisition::with(['items','approvalChain','project','company'])->findOrFail($id);
+        // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla
+        $rq = PurchaseRequisition::with(['items','approvalChain','project','items.product','items.product.unit','company'])->findOrFail($id);
+        // dd($rq->toArray());
         // return view('pdf.purchase-requisition',compact('rq'));
+        // $m1= $rq->getMedia('supports');
+        // $m2= $rq->getMedia('technical_data_sheets');
+        // dd($m1->toArray(),$m2->toArray());
         $pdf = Pdf::loadView('pdf.purchase-requisition',compact('rq'))->setPaper('a4', 'landscape');
         return $pdf->stream($rq->folio.'.pdf');
     }

@@ -12,6 +12,26 @@
             font-family: Verdana, Arial, sans-serif;
         }
 
+        @page {
+            margin: 80px 25px;
+        }
+
+        header {
+            position: fixed;
+            top: -60px;
+            left: 0px;
+            right: 0px;
+            height: 50px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: -60px;
+            left: 0px;
+            right: 0px;
+            height: 50px;
+        }
+
         h4 {
             margin: 0;
         }
@@ -53,79 +73,71 @@
 
 <body>
     {{-- cabecera --}}
-    <table class="w-full">
-        <tr>
-            <td rowspan="4" align="center" valing="middle">
-                {{-- row-1-1 --}}
-                <img src="{{ asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" />
-            </td>
-            <td>
-                <p style="font-size:12px; padding:1px;margin:0;text-align:center;font-weight:bold;">TECH ENERGY CONTROL
-                </p>
-            </td>
-            <td align="center" valing="middle">
-                <p style="margin: 0;padding: 5px">
+    <header>
+        <table class="w-full">
+            <tr>
+                <td rowspan="4" align="center" valing="middle">
+                    {{-- row-1-1 --}}
+                    <img src="{{ asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" />
+                </td>
+                <td colspan="4">
                     @if ($rq->company->acronym == 'T')
-                        x
-                    @else
-                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <p style="font-size:12px; padding:4px;margin:0;text-align:center;font-weight:bold;">TECH ENERGY
+                            CONTROL
+                        </p>
+                    @elseif ($rq->company->acronym == 'G')
+                        <p style="font-size:12px; padding:4px;margin:0;text-align:center;font-weight:bold;">GPT ING &
+                            MANF
+                        </p>
                     @endif
-                </p>
-            </td>
-            <td>
-                <p style="font-size:12px; padding:1px;margin:0;text-align:center;font-weight:bold;">GPT ING & MANF</p>
-            </td>
-            <td align="center" valing="middle">
-                <p style="margin: 0;padding: 5px">
-                    @if ($rq->company->acronym == 'G')
-                        x
-                    @else
-                        &nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+                <td>
+                    <p style="font-size:10px; padding:1px;margin:0;">Tipo de documento</p>
+                </td>
+                <td>
+                    <p style="font-size:10px; padding:1px;margin:0;text-align:right;">Formato</p>
+                </td>
+                <td rowspan="4" align="center" valing="middle">
+                    {{-- row-1-8 --}}
+                    @if ($rq->company->acronym == 'T')
+                        <img src="{{ asset('images/logo/companies/T.png') }}" alt="logo" width="150px" />
+                    @elseif ($rq->company->acronym == 'G')
+                        <img src="{{ asset('images/logo/companies/G.jpg') }}" alt="logo" width="150px" />
                     @endif
-                </p>
-            </td>
-            <td>
-                <p style="font-size:10px; padding:1px;margin:0;">Tipo de documento</p>
-            </td>
-            <td>
-                <p style="font-size:10px; padding:1px;margin:0;text-align:right;">Formato</p>
-            </td>
-            <td rowspan="4" align="center" valing="middle">
-                {{-- row-1-8 --}}
-                <img src="{{ asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" />
-            </td>
-        </tr>
-        <tr>
-            <td colspan="4" rowspan="3">
-                <p
-                    style="font-size:12px; padding:1px;margin:0;text-align:center;text-transform:uppercase;font-weight:bold;">
-                    Requisición
-                    de compra</p>
-            </td>
-            <td>
-                <p style="font-size:10px; padding:1px;margin:0;">Revisión</p>
-            </td>
-            <td>
-                <p style="font-size:10px; padding:1px;margin:0;text-align:right;">03</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style="font-size:10px; padding:1px;margin:0;">Fecha de aprobación</p>
-            </td>
-            <td>
-                <p style="font-size:10px; padding:1px;margin:0;text-align:right;">dic-22</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p style="font-size:10px; padding:1px;margin:0;">Código</p>
-            </td>
-            <td>
-                <p style="font-size:10px; padding:1px;margin:0;text-align:right;">FO-GPT-COM-01-A</p>
-            </td>
-        </tr>
-    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" rowspan="3">
+                    <p
+                        style="font-size:12px; padding:1px;margin:0;text-align:center;text-transform:uppercase;font-weight:bold;">
+                        Requisición
+                        de compra</p>
+                </td>
+                <td>
+                    <p style="font-size:10px; padding:1px;margin:0;">Revisión</p>
+                </td>
+                <td>
+                    <p style="font-size:10px; padding:1px;margin:0;text-align:right;">03</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="font-size:10px; padding:1px;margin:0;">Fecha de aprobación</p>
+                </td>
+                <td>
+                    <p style="font-size:10px; padding:1px;margin:0;text-align:right;">dic-22</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="font-size:10px; padding:1px;margin:0;">Código</p>
+                </td>
+                <td>
+                    <p style="font-size:10px; padding:1px;margin:0;text-align:right;">FO-GPT-COM-01-A</p>
+                </td>
+            </tr>
+        </table>
+    </header>
     <br>
     {{-- Datos de la requisición --}}
     <table class="w-full general">
@@ -143,7 +155,7 @@
                     </strong>
                 </td>
                 <td rowspan="2">
-                    <p>vacio</p>
+                    <p>Sin asignar</p>
                 </td>
             </tr>
             <tr>
@@ -209,14 +221,104 @@
             </tr>
         </thead>
         <tbody>
+            @if (filled($rq->items))
+                @foreach ($rq->items as $item)
+                    <tr>
+                        <td style="padding:3px 5px;">{{ $loop->iteration }}</td>
+                        <td style="padding:3px 5px;">{{ $item->product->name }}</td>
+                        <td style="padding:3px 5px;">{{ $item->quantity }}</td>
+                        <td style="padding:3px 5px;">{{ $item->product->unit->name }}</td>
+                        <td style="padding:3px 5px;">{{ $item->observation }}</td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td colspan="5" style="padding:3px 5px;">Sin partidas</td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
+    <br>
+    {{-- Observaciones --}}
+    <table class="general">
+        <thead>
             <tr>
-                <td colspan="5">vacio</td>
+                <th>
+                    <p>Observaciones</p>
+                </th>
             </tr>
+        </thead>
+        <tbody>
+            @if (filled($rq->observations))
+                <tr>
+                    <td style="padding:3px 5px;">{{ $rq->observations }}</td>
+                </tr>
+            @else
+                <tr>
+                    <td style="padding:3px 5px;">Sin observaciones</td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
+    <br>
+    {{-- fichas tecnicas --}}
+    <table class="general">
+        <thead>
+            <tr>
+                <th>
+                    <p style="text-align: left;">Fichas técnicas</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (filled($rq->getMedia('technical_data_sheets')))
+                @foreach ($rq->getMedia('technical_data_sheets') as $file)
+                    <tr>
+                        <td style="padding:5px 7px;">
+                            <a href="{{ $file->getUrl() }}" target="_blank" style="text-decoration: none;">
+                                {{ $file->name }} ({{ $file->extension }})
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td style="padding:3px 5px;">Sin fichas técnicas</td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
+    <br>
+    {{-- soportes --}}
+    <table class="general">
+        <thead>
+            <tr>
+                <th>
+                    <p style="text-align: left;">Soportes</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (filled($rq->getMedia('supports')))
+                @foreach ($rq->getMedia('supports') as $file)
+                    <tr>
+                        <td style="padding:5px 7px;">
+                            <a href="{{ $file->getUrl() }}" target="_blank" style="text-decoration: none;">
+                                {{ $file->name }} ({{ $file->extension }})
+                            </a>
+                        </td>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td style="padding:3px 5px;">Sin soportes</td>
+                </tr>
+            @endif
         </tbody>
     </table>
     <br>
     {{-- Firmas --}}
-    <footer>
+    <div>
         <table style="w-full">
             <tbody>
                 <tr>
@@ -234,7 +336,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div  style="height: 80px;"></div>
+                                        <div style="height: 80px;"></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -261,7 +363,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div  style="height: 80px;"></div>
+                                        <div style="height: 80px;"></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -288,7 +390,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <div  style="height: 80px;"></div>
+                                        <div style="height: 80px;"></div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -304,8 +406,10 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <footer>
+        <img src="{{ asset('images/watermark.jpg') }}" alt="watermark" style="height: 50px;">
     </footer>
-
 </body>
 
 </html>

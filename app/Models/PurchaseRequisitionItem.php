@@ -10,6 +10,7 @@ class PurchaseRequisitionItem extends Model
 {
     use HasFactory;
 
+    protected $table = 'purchase_requisition_items';
     /**
      * The attributes that are mass assignable.
      *

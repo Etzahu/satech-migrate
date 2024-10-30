@@ -23,6 +23,7 @@ class PurchaseRequisition extends Model implements HasMedia
      *
      * @var array
      */
+    protected $table = 'purchase_requisitions';
     protected $fillable = [
         'folio',
         'date_delivery',
@@ -65,18 +66,23 @@ class PurchaseRequisition extends Model implements HasMedia
     }
 
 
-    public function items():HasMany
+    public function items(): HasMany
     {
-        return $this->hasMany(PurchaseRequisitionItem::class, 'requisition_id');
+        return $this->hasMany(PurchaseRequisitionItem::class,'requisition_id');
     }
 
-    public function scopeMyRequisitions(Builder $query){
-        return $query->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray());
+    public function scopeMyRequisitions(Builder $query)
+    {
+        return $query->where('status', 'borrador')
+            ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
+            ->orderBy('id', 'desc');
     }
-    public function scopeReviewWarehouse(Builder $query){
-        return $query->where('status','revisión por almacén');
+    public function scopeReviewWarehouse(Builder $query)
+    {
+        return $query->where('status', 'revisión por almacén');
     }
-    public function scopeReview(Builder $query){
-        return $query->where('status','revisión');
+    public function scopeReview(Builder $query)
+    {
+        return $query->where('status', 'revisión');
     }
 }

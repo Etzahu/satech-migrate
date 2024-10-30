@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CacheTableSeeder::class);
         $this->call(CacheLocksTableSeeder::class);
         $this->call(CategoriesTableSeeder::class);
-        // $this->call(CategoryFamiliesTableSeeder::class);
+        $this->call(CategoryFamiliesTableSeeder::class);
         $this->call(CompaniesTableSeeder::class);
         $this->call(DrawingCategoriesTableSeeder::class);
         $this->call(DrawingsTableSeeder::class);

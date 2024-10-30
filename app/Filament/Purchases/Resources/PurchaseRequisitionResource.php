@@ -13,6 +13,8 @@ use App\Models\PurchaseRequisitionApprovalChain;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\RelationManagers;
+use Filament\Tables\Actions\ActionGroup;
+use Illuminate\Database\Eloquent\Model;
 
 
 
@@ -26,9 +28,6 @@ class PurchaseRequisitionResource extends Resource
     protected static ?string $navigationGroup = 'Requisiciones';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 1;
-
-
-
 
     public static function getEloquentQuery(): Builder
     {
@@ -47,9 +46,13 @@ class PurchaseRequisitionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Información general')
+                    ->columns([
+                        'sm' => 2,
+                        'xl' => 2,
+                    ])
                     ->schema([
                         Forms\Components\Textarea::make('motive')
-                            ->label('Motivo')
+                            ->label('Referencia')
                             ->maxLength(600)
                             ->required(),
                         Forms\Components\DatePicker::make('date_delivery')
@@ -63,7 +66,8 @@ class PurchaseRequisitionResource extends Resource
                             ->maxLength(500),
                         Forms\Components\Select::make('project_id')
                             ->label('Proyecto')
-                            ->relationship('project', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('company_id', session()->get('company_id')))
+                            ->relationship('project', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('company_id', session()->get('company_id'))->where('status', 1))
+                            ->getOptionLabelFromRecordUsing(fn(Model $record) => "({$record->code}){$record->name}")
                             ->searchable()
                             ->preload()
                             ->required(),
@@ -74,6 +78,10 @@ class PurchaseRequisitionResource extends Resource
 
                     ]),
                 Forms\Components\Section::make('Flujo de aprobación')
+                    ->columns([
+                        'sm' => 1,
+                        'xl' => 2,
+                    ])
                     ->schema([
                         Forms\Components\Select::make('reviewer_id')
                             ->label('Revisa')
@@ -94,7 +102,7 @@ class PurchaseRequisitionResource extends Resource
                     ]),
                 Forms\Components\Section::make('Documentación adicional')
                     ->schema([
-                        SpatieMediaLibraryFileUpload::make('document')
+                        SpatieMediaLibraryFileUpload::make('technical_data_sheets')
                             ->label('Fichas técnicas')
                             ->acceptedFileTypes(['application/pdf'])
                             ->collection('technical_data_sheets')
@@ -114,6 +122,16 @@ class PurchaseRequisitionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('folio')
+                    ->label('Folio')
+                    ->copyable()
+                    ->searchable(),
+                // Tables\Columns\TextColumn::make('motive')
+                //     ->label('Referencia')
+                //     ->words(20)
+                //     ->description(fn (PurchaseRequisition $record): string => $record->motive)
+                //     ->searchable(),
+                Tables\Columns\TextColumn::make('project.name')
+                    ->label('Proyecto')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date_delivery')
                     ->label('Fecha deseable de entrega')
@@ -123,10 +141,12 @@ class PurchaseRequisitionResource extends Resource
                     ->label('Estatus')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Fecha de creación')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Fecha de actualización')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -135,19 +155,16 @@ class PurchaseRequisitionResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->visible(function (PurchaseRequisition $record) {
-                        return $record->status == 'borrador';
-                    }),
-                Tables\Actions\ViewAction::make(),
-                // Tables\Actions\Action::make('ver')
-                //     ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.flow-approval', $record->id)),
-                // Tables\Actions\Action::make('revision')
-                //     ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.warehouse-revision', $record->id)),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                ActionGroup::make([
+                    Tables\Actions\EditAction::make()
+                        ->visible(function (PurchaseRequisition $record) {
+                            return $record->status == 'borrador';
+                        }),
+                    Tables\Actions\ViewAction::make(),
+                    // Tables\Actions\Action::make('ver')
+                    //     ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.flow-approval', $record->id)),
+                    // Tables\Actions\Action::make('revision')
+                    //     ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.warehouse-revision', $record->id)),
                 ]),
             ]);
     }
@@ -166,8 +183,6 @@ class PurchaseRequisitionResource extends Resource
             'create' => Pages\CreatePurchaseRequisition::route('/create'),
             'view' => Pages\ViewPurchaseRequisition::route('/{record}'),
             'edit' => Pages\EditPurchaseRequisition::route('/{record}/edit'),
-            'flow-approval' => Pages\RevisionFlow::route('/{record}/flujo-de-aprobaciones'),
-            'warehouse-revision' => Pages\RevisionFlow::route('/{record}/revision-almacen'),
         ];
     }
 }

@@ -14,9 +14,8 @@ class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'items';
     protected static ?string $modelLabel = 'Partida';
-    protected static ?string $pluralModelLabel = 'partidas';
-    protected static ?string $navigationLabel = 'partidas';
-    protected static ?string $slug = 'partidas';
+    protected static ?string $pluralModelLabel = 'Partidas';
+    protected static ?string $navigationLabel = 'Partidas';
     protected static ?string $title = 'Partida';
 
     public function form(Form $form): Form
@@ -25,49 +24,44 @@ class ItemsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\TextInput::make('quantity')
                     ->label('Cantidad')
-                    ->integer()
-                    ->minValue(1)
+                    ->numeric()
                     ->required()
-                    ->numeric(),
-                Forms\Components\Textarea::make('observation')
-                    ->label('Observación')
-                    ->nullable()
-                    ->maxLength(600)
-                    ->columnSpanFull(),
-                // Forms\Components\Select::make('requisition_id')
-                //     ->relationship('requisition', 'id')
-                //     ->required(),
+                    ->minValue(1),
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
-                    ->searchable()
                     ->relationship('product', 'name')
+                    ->searchable()
                     ->required(),
+                Forms\Components\Textarea::make('observation')
+                    ->label('Observación')
+                    ->maxLength(600),
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('quantity')
             ->columns([
-                Tables\Columns\TextColumn::make('quantity')
-                    ->label('Cantidad'),
                 Tables\Columns\TextColumn::make('product.name')
                     ->label('Producto'),
+                Tables\Columns\TextColumn::make('quantity')
+                    ->label('Cantidad')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('observation')
+                    ->label('Observación'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Fecha de creación')
+                    ->dateTime('d-m-Y'),
             ])
-            ->filters([])
+            ->filters([
+                //
+            ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->visible($this->getOwnerRecord()->status == 'borrador'),
+                Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->visible($this->getOwnerRecord()->status == 'borrador'),
-                Tables\Actions\DeleteAction::make()->visible($this->getOwnerRecord()->status == 'borrador'),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ]);
     }
 }

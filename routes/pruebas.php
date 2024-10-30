@@ -193,10 +193,13 @@ Route::get('cadenas', function () {
 
 Route::get('excel', function () {
 
-    $type = 'servicios generales';
+    // $type = 'DN-NP';
+    // $type = 'Stock';
+    $type = 'Servicios generales';
     $collection = fastexcel()->import('data.xlsx');
     $collection =  $collection->groupBy('CATEGORIA');
-    // dd($collection);
+    // $collection =  $collection->groupBy('CATEGORÍA');
+
 
     $array = [];
     foreach ($collection as $key => $value) {

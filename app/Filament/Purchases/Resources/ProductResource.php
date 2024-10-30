@@ -22,10 +22,10 @@ use App\Filament\Purchases\Resources\ProductResource\RelationManagers;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
-    protected static ?string $modelLabel = 'Producto';
-    protected static ?string $pluralModelLabel = 'Productos';
-    protected static ?string $navigationLabel = 'Productos';
-    protected static ?string $slug = 'productos';
+    protected static ?string $modelLabel = 'Catálogo';
+    protected static ?string $pluralModelLabel = 'Catálogo';
+    protected static ?string $navigationLabel = 'Catálogo';
+    protected static ?string $slug = 'catálogo';
     protected static ?string $navigationGroup = 'Administración';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 4;
@@ -75,7 +75,7 @@ class ProductResource extends Resource
                 Forms\Components\Section::make('')
                     ->schema([
                         Forms\Components\Textarea::make('name')
-                            ->label('Nombre del producto')
+                            ->label('Nombre del producto/servicio')
                             ->required()
                             ->maxLength(255)
                             ->columnSpanFull(),
@@ -97,20 +97,22 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('code')
                     ->label('Código')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Nombre'),
                 Tables\Columns\TextColumn::make('unit.name')
                     ->label('Unidad de medida')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category.name')
                     ->label('Categoría')
-                    ->numeric()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Fecha de creación')
+                    ->dateTime('d-m-Y')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label('Fecha de actualización')
+                    ->dateTime('d-m-Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -118,6 +120,7 @@ class ProductResource extends Resource
                 //
             ])
             ->actions([
+
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([

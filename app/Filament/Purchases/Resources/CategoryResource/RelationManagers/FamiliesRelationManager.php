@@ -29,12 +29,12 @@ class FamiliesRelationManager extends RelationManager
                     ->label('Código')
                     ->required()
                     ->maxLength(30),
-                Forms\Components\Select::make('category_id')
+                Forms\Components\Select::make('type')
                     ->label('Tipo')
                     ->options([
                         'DN-NP' => 'DN-NP',
-                        'stock' => 'Stock',
-                        'sg' => 'Servicios generales',
+                        'Stock' => 'Stock',
+                        'Servicios generales' => 'Servicios generales',
                     ])
                     ->required()
             ]);
