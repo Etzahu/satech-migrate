@@ -5,12 +5,15 @@ namespace App\Filament\Purchases\Resources\PurchaseRequisitionResource\Pages;
 use Filament\Actions;
 use Filament\Infolists;
 use Filament\Actions\Action;
+use App\Services\PRMediaService;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Spatie\MediaLibrary\Support\MediaStream;
+use Filament\Actions\Concerns\InteractsWithRecord;
 use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource;
@@ -19,6 +22,8 @@ use App\Filament\Purchases\Resources\PurchaseRequisitionResource;
 
 class ViewPurchaseRequisition extends ViewRecord
 {
+    use InteractsWithInfolists;
+
     protected static string $resource = PurchaseRequisitionResource::class;
     protected function getHeaderActions(): array
     {
@@ -26,18 +31,25 @@ class ViewPurchaseRequisition extends ViewRecord
             Action::make('Enviar requisición')
                 ->color('success')
                 ->requiresConfirmation()
-                ->visible(auth()->user()->hasRole('solicitante_requisicion_compra') && $this->record->status()->canBe('revisión por almacén'))
+                // ->visible($this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0)
+                ->visible($this->record->status()->canBe('revisión por almacén'))
                 ->action(function () {
-                    $this->record->status()->transitionTo('revisión por almacén');
+                    if($this->record->status()->canBe('revisión por almacén')){
+                        $this->record->status()->transitionTo('revisión por almacén');
+                    }
                 }),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->icon('heroicon-m-document')
-                ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
+                // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
+                ->url(fn(): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $this->record->id]))
+                ->openUrlInNewTab()
         ];
     }
     public function infolist(Infolist $infolist): Infolist
     {
+        $service = new PRMediaService();
+        return $service->generateInfolist($infolist, $this->record);
         return $infolist
             ->schema([
                 Section::make('Información general')
@@ -45,7 +57,7 @@ class ViewPurchaseRequisition extends ViewRecord
                     ->compact()
                     ->schema([
                         TextEntry::make('motive')
-                            ->label('Motivo')
+                            ->label('Referencia')
                             ->columnSpan('full'),
                         TextEntry::make('folio')
                             ->label('Folio'),

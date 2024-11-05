@@ -19,10 +19,14 @@ class PurchaseRequisitionStateMachine extends StateMachine
     {
         return [
             'borrador' => ['revisión por almacén', 'revisión'],
+            'devuelto por revisor' => ['revisión por almacén', 'revisión'],
+            'devuelto por gerencia' => ['revisión por almacén', 'revisión'],
+            'devuelto por DG' => ['revisión por almacén', 'revisión'],
+
             'revisión por almacén' => ['revisión'],
-            'revisión' => ['aprobado por revisor', 'rechazado por revisor'],
-            'aprobado por revisor' => ['aprobado por gerencia', 'rechazado por gerencia'],
-            'aprobado por gerencia' => ['aprobado por DG', 'rechazado por DG'],
+            'revisión' => ['aprobado por revisor', 'devuelto por revisor', 'cancelado por revisor'],
+            'aprobado por revisor' => ['aprobado por gerencia', 'devuelto por gerencia', 'cancelado por gerencia'],
+            'aprobado por gerencia' => ['aprobado por DG', 'devuelto por DG', 'cancelado por DG'],
         ];
     }
     public function defaultState(): ?string

@@ -208,7 +208,7 @@
                                                 </tbody>
                                             </table>
                                             @endif
-                                            @if(filled($data['partidas']))
+                                            @if(filled($data['items']))
                                             <table class="table table-bordered" border="0" cellpadding="0"
                                                 cellspacing="0" style="border-radius: 6px">
                                                 <thead>

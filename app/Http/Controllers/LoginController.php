@@ -12,11 +12,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 
+use Filament\Notifications\Notification;
+
 class LoginController extends Controller
 {
     public function index()
     {
-
         if (Auth::check()) {
             return redirect()->route('filament.compras.pages.dashboard');
         }
@@ -65,6 +66,7 @@ class LoginController extends Controller
 
     public function setCompany($id, $redirect = true)
     {
+
         $companies = Company::select('id', 'name', 'acronym')->get();
         session()->forget('companies');
         session(['companies' => $companies->toArray()]);
@@ -75,5 +77,15 @@ class LoginController extends Controller
             'company_name' => $company->name,
             'company_acronym' => $company->acronym,
         ]);
+        $intended_url = request()->session()->get('url.intended');
+        if ($redirect) {
+            Notification::make()
+                ->title('Se ha cambiado la empresa')
+                ->success()
+                ->iconColor('success')
+                ->icon('heroicon-m-building-office-2')
+                ->send();
+            return redirect()->to($intended_url);
+        }
     }
 }

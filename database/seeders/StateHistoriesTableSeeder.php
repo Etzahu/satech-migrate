@@ -49,6 +49,36 @@ class StateHistoriesTableSeeder extends Seeder
                 'created_at' => '2024-10-21 01:12:04',
                 'updated_at' => '2024-10-21 01:12:04',
             ),
+            2 => 
+            array (
+                'id' => 3,
+                'model_type' => 'App\\Models\\PurchaseRequisition',
+                'model_id' => 1,
+                'field' => 'status',
+                'from' => NULL,
+                'to' => 'borrador',
+                'custom_properties' => '[]',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 199,
+                'changed_attributes' => '{"id": {"new": 1, "old": null}, "folio": {"new": "G-ISW-2024-0001", "old": null}, "motive": {"new": "Nisi eaque voluptate eos illum ullamco omnis sequi eu", "old": null}, "status": {"new": "borrador", "old": null}, "company_id": {"new": 1, "old": null}, "created_at": {"new": "2024-11-01 16:11:19", "old": null}, "project_id": {"new": "1", "old": null}, "updated_at": {"new": "2024-11-01 16:11:19", "old": null}, "observation": {"new": "texto de observaciones", "old": null}, "date_delivery": {"new": "2024-11-04 00:00:00", "old": null}, "delivery_address": {"new": "Reprehenderit pariatur Id dolores magna dolor consequuntur non aliquid eveniet aliquam commodo", "old": null}, "approval_chain_id": {"new": 1, "old": null}}',
+                'created_at' => '2024-11-01 16:11:20',
+                'updated_at' => '2024-11-01 16:11:20',
+            ),
+            3 => 
+            array (
+                'id' => 4,
+                'model_type' => 'App\\Models\\PurchaseRequisition',
+                'model_id' => 1,
+                'field' => 'status',
+                'from' => 'borrador',
+                'to' => 'revisión por almacén',
+                'custom_properties' => '[]',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 199,
+                'changed_attributes' => '{"status": {"new": "revisión por almacén", "old": "borrador"}}',
+                'created_at' => '2024-11-01 16:41:07',
+                'updated_at' => '2024-11-01 16:41:07',
+            ),
         ));
         
         

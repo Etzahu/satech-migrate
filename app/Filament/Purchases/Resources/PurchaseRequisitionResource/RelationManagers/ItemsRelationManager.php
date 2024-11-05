@@ -2,6 +2,7 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisitionResource\RelationManagers;
 
+use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -29,8 +30,9 @@ class ItemsRelationManager extends RelationManager
                     ->minValue(1),
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
-                    ->relationship('product', 'name')
+                    ->options(Product::whereNotIn('id', $this->ownerRecord->items->pluck('product_id'))->pluck('name', 'id'))
                     ->searchable()
+                    ->live()
                     ->required(),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observación')

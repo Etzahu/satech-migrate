@@ -35,7 +35,7 @@ class Notification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.purchase-requisition.notification',
+            view: 'email.purchase-requisition.notification',
         );
     }
 
@@ -44,5 +44,5 @@ class Notification extends Mailable
      *
      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
-  
+
 }

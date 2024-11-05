@@ -6,6 +6,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use Illuminate\Http\Request;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use App\Http\Middleware\CompanySession;
@@ -32,13 +33,19 @@ class PurchasesPanelProvider extends PanelProvider
         return $panel
             ->id('compras')
             ->path('compras')
+            ->sidebarFullyCollapsibleOnDesktop()
             // ->spa()
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->spaUrlExceptions([
                 '*/empresa/*',
             ])
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->bootUsing(function (Panel $panel) {
+
+
+            })
             ->discoverResources(in: app_path('Filament/Purchases/Resources'), for: 'App\\Filament\\Purchases\\Resources')
             ->discoverPages(in: app_path('Filament/Purchases/Pages'), for: 'App\\Filament\\Purchases\\Pages')
             ->pages([

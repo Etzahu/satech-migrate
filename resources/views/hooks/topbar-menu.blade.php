@@ -7,7 +7,7 @@
     <x-filament::dropdown.list>
         @foreach (session()->get('companies') as $company)
             @if (session()->get('company_id') == $company['id'])
-                <x-filament::dropdown.list.item href="{{ route('company', 1) }}" tag="a" color="danger">
+                <x-filament::dropdown.list.item href="{{ route('company', 1) }}" tag="a" color="danger" disabled>
                     {{ $company['name'] }}
                 </x-filament::dropdown.list.item>
             @else

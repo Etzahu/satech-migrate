@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\StateMachines\PurchaseRequisitionStateMachine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Asantibanez\LaravelEloquentStateMachines\Models\StateHistory;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PurchaseRequisition extends Model implements HasMedia
 {
-    use HasStateMachines;
+    Use HasStateMachines;
     use InteractsWithMedia;
     use HasFactory;
 
@@ -48,7 +49,6 @@ class PurchaseRequisition extends Model implements HasMedia
         'approval_chain_id' => 'integer',
     ];
 
-
     public $stateMachines = [
         'status' => PurchaseRequisitionStateMachine::class
     ];
@@ -65,24 +65,45 @@ class PurchaseRequisition extends Model implements HasMedia
         return $this->belongsTo(ProjectPurchase::class, 'project_id');
     }
 
-
     public function items(): HasMany
     {
-        return $this->hasMany(PurchaseRequisitionItem::class,'requisition_id');
+        return $this->hasMany(PurchaseRequisitionItem::class, 'requisition_id');
     }
 
     public function scopeMyRequisitions(Builder $query)
     {
-        return $query->where('status', 'borrador')
-            ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
-            ->orderBy('id', 'desc');
+
+        if (auth()->user()) {
+            // return $query->whereIn('status', [
+            //     'borrador',
+            //     'devuelto por revisor',
+            //     'devuelto por gerencia',
+            //     'devuelto por DG'
+            // ])
+            return $query
+                ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
+                ->where('company_id', session()->get('company_id'))
+                ->orderBy('id', 'desc');
+        }
     }
     public function scopeReviewWarehouse(Builder $query)
     {
-        return $query->where('status', 'revisión por almacén');
+        return $query->where('status', 'revisión por almacén')
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
     }
     public function scopeReview(Builder $query)
     {
-        return $query->where('status', 'revisión');
+        return $query->where('status', 'revisión')
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
     }
+    public function scopeApprove(Builder $query)
+    {
+        return $query->where('status', 'aprobado por revisor')
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
+    }
+
+
 }

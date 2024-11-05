@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\PurchaseRequisitionApprovalChain;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 Route::get('tablas', function () {
 
@@ -242,3 +243,18 @@ Route::get('change-category', function () {
         $item->save();
     }
 });
+
+
+Route::get('media-test', function () {
+    $collection_name = 'technical_data_sheets';
+    $media =  Media::where('model_id', 2)
+        ->where('collection_name', $collection_name)->count();
+
+    return $media;
+});
+
+Route::get('history', function () {
+    $rq = PurchaseRequisition::find(3);
+    dd($rq->status()->history()->orderBy('created_at', 'desc')->get()->toArray());
+});
+

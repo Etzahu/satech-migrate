@@ -1,17 +1,14 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Purchases\Resources;
 
 use App\Filament\Purchases\Resources\CompanyResource\Pages;
-use App\Filament\Purchases\Resources\CompanyResource\RelationManagers;
 use App\Models\Company;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CompanyResource extends Resource
 {
@@ -23,7 +20,6 @@ class CompanyResource extends Resource
     protected static ?string $navigationGroup = 'Administración';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 1;
-
 
     public static function form(Form $form): Form
     {

@@ -32,7 +32,7 @@ class CompaniesTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'name' => 'TECHENETGY',
+                'name' => 'TECHENERGY',
                 'acronym' => 'T',
                 'rfc' => '000',
                 'address' => 'Av Sta Monica 33, El Mirador, 54080 Tlalnepantla, Méx',

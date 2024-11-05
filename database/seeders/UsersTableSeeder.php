@@ -32,8 +32,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:31',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 10,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 2,
             ),
             1 => 
             array (
@@ -48,8 +48,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'w4WWHBjtISuM1RL9TPcEKoD82khdTZowJ6y4HOATZGcuauK1WexIB01qeYq8',
                 'created_at' => '2022-08-06 08:33:31',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 1,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 10,
             ),
             2 => 
             array (
@@ -64,8 +64,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 10,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 17,
             ),
             3 => 
             array (
@@ -80,8 +80,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'waWCRVorwFO69uYPWVrZTMPgtJKklHuSbXjOfxqH2hhXP5wnL80XFiuMsKm0',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 16,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             4 => 
             array (
@@ -96,8 +96,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '3jZf79bjgNY0AOKZpyCciSpbdcnXqwrAl7rpwq9moPikgG261GTb9ah4FWTQ',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 4,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 14,
             ),
             5 => 
             array (
@@ -112,8 +112,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 17,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 12,
             ),
             6 => 
             array (
@@ -128,8 +128,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 9,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 6,
             ),
             7 => 
             array (
@@ -144,8 +144,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 6,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 1,
             ),
             8 => 
             array (
@@ -160,8 +160,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '9M7wmI6yHByYaZNs7GxzociptJrLzt9NK6ZjKiRSwId1xMGZ5058pOdHxQlT',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 10,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 8,
             ),
             9 => 
             array (
@@ -176,8 +176,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 7,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 2,
             ),
             10 => 
             array (
@@ -192,8 +192,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '0wfLKvQ0LS92zEChBrxVGTDREdngfTKy8VUMIygmz86zA4lOY6jkMLvrafdo',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 13,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 11,
             ),
             11 => 
             array (
@@ -208,8 +208,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '4uJngJx7ByzxzWlj7FaJ6GLhAgf61FxTVOVYWzHQvO5MBgLEaqWiY6lMi2To',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 13,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 8,
             ),
             12 => 
             array (
@@ -224,8 +224,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '$2y$12$GWGpw4wUXzcrJrWt1v6aWO/p0RsC5CZAbW7G4wOqO0i5SDTy/q9.m',
                 'remember_token' => '8ZBq76N2nVj3H2TZ68QShGKVITZ6846sVbOgit6cuW4n0qjW88HCnblOKDht',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 2,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 8,
             ),
             13 => 
             array (
@@ -240,8 +240,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 4,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 2,
             ),
             14 => 
             array (
@@ -256,8 +256,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 15,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 17,
             ),
             15 => 
             array (
@@ -272,8 +272,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 17,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 8,
             ),
             16 => 
             array (
@@ -288,8 +288,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 15,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 2,
             ),
             17 => 
             array (
@@ -304,8 +304,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 9,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 4,
             ),
             18 => 
             array (
@@ -320,8 +320,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'MeWfEv5cYrS2QqsLw7mtjWW1rY19HOddOo4WmJjBKF6kP7Jm27E2S1hBC6O0',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 1,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 10,
             ),
             19 => 
             array (
@@ -336,8 +336,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'sUjlIuJvcLbACRoF9FVFYV4UHm48jnPXGHQHoyQTUVJyabtmMy9YxTDlBI26',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 2,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 8,
             ),
             20 => 
             array (
@@ -352,8 +352,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 15,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 9,
             ),
             21 => 
             array (
@@ -368,7 +368,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'pgDnFUQUDL1qnZecYNzNgYWA5i9dbCBVC47BfnvIroHntrf4piuzgGU5gbiS',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 14,
             ),
             22 => 
@@ -384,8 +384,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 10,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 1,
             ),
             23 => 
             array (
@@ -400,8 +400,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'f0AOV4OeMxTlDd6DGbVhapjR5NbuVJmc94XKGfzTyiDGwAHFFWf4R0r28RAe',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 15,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 12,
             ),
             24 => 
             array (
@@ -416,8 +416,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '8I58h7xGfiaeVrRnqSKoAeUuxbPocj6uUd1vKvXrBvHdiE9QGE4QzBsuQtla',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 7,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 14,
             ),
             25 => 
             array (
@@ -432,8 +432,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'C9RhycUSKUHfCvG9SejIjs5LqZXnty6GyK6RH6kHHcSUsfGMm0OY23rV1VlB',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 6,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             26 => 
             array (
@@ -448,8 +448,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 9,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             27 => 
             array (
@@ -464,8 +464,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'GKcKYXFtNydxvhpYo0ymBjJJ4URtJEkc2tF4Elxabl9xEHaNo4RSiKbOTWKP',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 10,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             28 => 
             array (
@@ -480,8 +480,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'FkpHLVIdWKaJPN8sJRxGMpeld0zLD3VFPV4qvkkmEhuKMfTtPeUoxQaRBvql',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 9,
             ),
             29 => 
             array (
@@ -496,8 +496,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 9,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 11,
             ),
             30 => 
             array (
@@ -512,8 +512,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'mGemTVITiJlLHYV9O6Zbg6Fh4aqWq0uIKLvp42koxFoF5fxTyIhqt951ZBEI',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 16,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 12,
             ),
             31 => 
             array (
@@ -528,8 +528,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'yEimbHQGbd5h3VvD7R8wh5AVKoTlX6xMlmV7VztuXcLmtiQkQ1x0ZnB2S5XD',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 9,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 1,
             ),
             32 => 
             array (
@@ -544,8 +544,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 13,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 7,
             ),
             33 => 
             array (
@@ -560,8 +560,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'nIT5zlk1R8tm9kMNDofJTRXmQxocxFVWAbD46D1qlLhi9trIepvNUgvYhV5k',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 1,
             ),
             34 => 
             array (
@@ -576,8 +576,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'Hhb0Ue3nHZu7LTgC48u6GI1Uojy5VOR7BobKn16mKCMYIkW1sdxzF6ntyQb5',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             35 => 
             array (
@@ -590,10 +590,10 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => '$2y$12$S0mLRDTEiOAp4xyZatp8k.7bctoyOGjpXKlX/.JnEsD4D6DHluq3W',
-                'remember_token' => '18BaaMWoIgXK6hXdDnNsXlDJaSupPv2KVAhpkZFgr6u6UB9cglyWciRfz4w5',
+                'remember_token' => 'JozYn7xRxXIieJnmpfwV094NhHxtjZItM5bgvyXKieUhMATlnli0WyPwrOMf',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 6,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 14,
             ),
             36 => 
             array (
@@ -608,8 +608,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'Xwr35wkG1LHTBB9N61SKAKxvBnCQg75NgEm3RtslBHrpdhjlmPwePx72drB9',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 5,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 12,
             ),
             37 => 
             array (
@@ -624,8 +624,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 10,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 2,
             ),
             38 => 
             array (
@@ -640,8 +640,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 13,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 15,
             ),
             39 => 
             array (
@@ -656,8 +656,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'uEouLW94avUuLRGRklFHZtpIP7VnZg2CG47vGobitXaeP7MSpUAoesmxB1ap',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 17,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 2,
             ),
             40 => 
             array (
@@ -672,8 +672,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 6,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 10,
             ),
             41 => 
             array (
@@ -688,8 +688,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'o4gpRz6iCKYYZNKnAFGVgzi0ENd5HKdckVyYKV88uvFTtwxipSHZmKOI0Kmz',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 11,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 3,
             ),
             42 => 
             array (
@@ -704,8 +704,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'OdJAqOJ22GbqkmiLeGo8UU1fskGycn8kBQhDYUIz4A1k8bgDJrp8qlZHZn3y',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 5,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 10,
             ),
             43 => 
             array (
@@ -720,8 +720,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-22 03:02:13',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 12,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             44 => 
             array (
@@ -736,8 +736,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:25:13',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 11,
             ),
             45 => 
             array (
@@ -752,7 +752,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-10-24 01:51:36',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 9,
             ),
             46 => 
@@ -768,8 +768,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'k0yPZLZ4AU2fhaHJsM5CZnFk53TcXXINR33uWeppbkLMQAuEfFTzJrTuEBei',
                 'created_at' => '2022-11-07 06:03:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 5,
             ),
             47 => 
             array (
@@ -784,8 +784,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'avqrOWEEbGErtZvYKz6WxBLT6SCivzNMvXSAaAQ66dN0Pz8iDStM3rz1c2qf',
                 'created_at' => '2023-02-01 07:33:10',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 3,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             48 => 
             array (
@@ -800,8 +800,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-02-15 02:30:34',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 17,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 11,
             ),
             49 => 
             array (
@@ -816,8 +816,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'FBR8IeKGInHG6ma3CRVfdtkusjBuwLunsjfGXd8xP5H6SG5GD3KQTBd1Zuaw',
                 'created_at' => '2023-08-15 07:28:23',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 2,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             50 => 
             array (
@@ -832,7 +832,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'LA9ZNIyB7ZyN6Q2JyJMc6d3EIjvhcWdVi5yJxC6IxjzZzBec4t61TUqkC1PT',
                 'created_at' => '2023-03-08 02:40:15',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 1,
             ),
             51 => 
@@ -848,8 +848,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-03-07 22:36:46',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 11,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 4,
             ),
             52 => 
             array (
@@ -864,8 +864,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-03-07 22:48:55',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 13,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 16,
             ),
             53 => 
             array (
@@ -880,7 +880,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-03-12 21:37:52',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 3,
             ),
             54 => 
@@ -896,8 +896,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:33:18',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 8,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 15,
             ),
             55 => 
             array (
@@ -912,8 +912,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '2DxMh9e7myNgCeN80Q075Ku2Hqfbs61wn2My2xoXp63gUMxHtQMVlhd3WOcf',
                 'created_at' => '2023-08-03 23:38:14',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 4,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 1,
             ),
             56 => 
             array (
@@ -928,8 +928,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:34:06',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 6,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 5,
             ),
             57 => 
             array (
@@ -944,8 +944,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '$2y$12$Vqy869OdRhb.Y8V9p86iqumtUA83DZmrRu50i5W.iMHG7Pc84tjle',
                 'remember_token' => 'B47xjqWtBzgZCrYjdzwwTUvSzxQkyPYTC4dERh2CW03YIcdQTzfWSziRfpjz',
                 'created_at' => '2023-04-17 23:55:59',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 16,
             ),
             58 => 
             array (
@@ -960,7 +960,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '6eqjMaenuwGw7EY89uzOY0CBpIkNlxPwYTiaxQ4uBAVIIbpB2WH10CizKi3f',
                 'created_at' => '2023-05-01 20:03:40',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 8,
             ),
             59 => 
@@ -976,8 +976,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'fIVwGNbOW0NTrWlcTMegiJ174TxsH0oF8ib928wphqOBLSa01bA7qlL3tws2',
                 'created_at' => '2023-08-01 19:34:45',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 15,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 17,
             ),
             60 => 
             array (
@@ -992,8 +992,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:39:23',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 2,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             61 => 
             array (
@@ -1008,7 +1008,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'NLZE6VrmNTuNtLaLbs0Xs2UaJRDFVdY5TBCG8OFIWOQekxyLN5KiKvNu3fvD',
                 'created_at' => '2023-05-16 02:01:12',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 14,
             ),
             62 => 
@@ -1024,8 +1024,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:45:16',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 3,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 14,
             ),
             63 => 
             array (
@@ -1040,7 +1040,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'bDHRblbSfAIeqHIbDwuvZ5BXqBuGMYiq06jMa7lZ1ey6Goj07Xrq0UcSaH6b',
                 'created_at' => '2023-06-26 05:11:03',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 6,
             ),
             64 => 
@@ -1056,7 +1056,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:48:21',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 10,
             ),
             65 => 
@@ -1072,8 +1072,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-08-15 07:50:07',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 1,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 2,
             ),
             66 => 
             array (
@@ -1088,8 +1088,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-08-13 20:56:49',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 6,
             ),
             67 => 
             array (
@@ -1104,8 +1104,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-08-29 20:08:40',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 1,
             ),
             68 => 
             array (
@@ -1120,8 +1120,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-09-12 20:18:39',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 10,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 4,
             ),
             69 => 
             array (
@@ -1136,8 +1136,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-09-17 23:58:57',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 2,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 4,
             ),
             70 => 
             array (
@@ -1152,8 +1152,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-09-20 21:21:54',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 11,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 16,
             ),
             71 => 
             array (
@@ -1168,8 +1168,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2023-10-09 19:14:11',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 12,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 1,
             ),
             72 => 
             array (
@@ -1184,8 +1184,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => NULL,
                 'created_at' => '2024-01-03 03:38:48',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 16,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 4,
             ),
             73 => 
             array (
@@ -1200,7 +1200,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => NULL,
                 'created_at' => '2024-01-17 20:50:12',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 10,
             ),
             74 => 
@@ -1216,8 +1216,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'bRbnRqYrwV7EJat7zwwq1pp2vAWyQtfUfwP78ybOE4Z5Rdrv3hRc9fZrzs9I',
                 'created_at' => '2024-01-11 21:41:48',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 15,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 1,
             ),
             75 => 
             array (
@@ -1232,7 +1232,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => NULL,
                 'created_at' => '2024-01-23 21:15:39',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 5,
             ),
             76 => 
@@ -1248,8 +1248,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'Hz5wWBbN7whaLCEtQGvAzjer4BpF3dD99gdHaRmJwRKx6DpI5I9As6uM3xuO',
                 'created_at' => '2024-01-31 17:12:57',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 16,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 4,
             ),
             77 => 
             array (
@@ -1264,8 +1264,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'fzeOOKZaOyUG5E9IK9HGjyLaYkTuOJ2BOFS1RYTSc5JrGHSUiiJpGrD6aA1m',
                 'created_at' => '2024-02-07 16:26:36',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 11,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
             78 => 
             array (
@@ -1280,8 +1280,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'vX4OZXzDsiAptW125DKIVFeg4bmsTgkB2jQdOkaPdZ6WqYmb9Tsk9SzP84V9',
                 'created_at' => '2024-02-18 14:02:25',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 10,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 5,
             ),
             79 => 
             array (
@@ -1296,7 +1296,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'osat80tfNUeKg4lQQR4nGT9Zsi3wxiqbskYvfF9ViIYIyrGJsy0Ku2HTta4p',
                 'created_at' => '2024-03-21 14:45:46',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 9,
             ),
             80 => 
@@ -1312,7 +1312,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'I9lqEP1NYRUhdrrwJlLtCMK9vUsSCXYXT7lTCtvkaBoMrevMtSITBIxBbMqQ',
                 'created_at' => '2024-04-14 12:56:12',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 3,
             ),
             81 => 
@@ -1328,8 +1328,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => NULL,
                 'created_at' => '2024-04-22 17:32:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 7,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 10,
             ),
             82 => 
             array (
@@ -1344,8 +1344,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '0smgJfG9P4eQrYaEh88dxUhq48xG2XgyD01hnWEKpUVYkWoTRRmOG8QlbjYo',
                 'created_at' => '2024-02-07 14:12:27',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 10,
             ),
             83 => 
             array (
@@ -1360,8 +1360,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'FGPCAdEhqY8OwC12qKuG7SxY3H1KZJq3BIa5qhpyXFaiEVsVZGtQBivDfC9y',
                 'created_at' => '2024-05-22 23:19:57',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 12,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 9,
             ),
             84 => 
             array (
@@ -1376,8 +1376,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '10C66vnyl8dd4yzt3hrVfK6W4jLAS7yw94H3151lpy8RqgVxNL2Ff8MzinVk',
                 'created_at' => '2024-07-08 06:51:38',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 11,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 9,
             ),
             85 => 
             array (
@@ -1392,8 +1392,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'LI4vgnPQdoVEIaEVmOxmcAbPpSKlTnW3pPcGCsqQA0xX8yaZQ5bcRkKUaSvI',
                 'created_at' => '2024-07-08 06:42:37',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 7,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 10,
             ),
             86 => 
             array (
@@ -1408,8 +1408,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'aUqFZgtqX5ilYo88od4GWNjDJH6gELucfrukZhrXjTVO0vkiMedt6iP7DZ0B',
                 'created_at' => '2024-07-26 05:24:53',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 11,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 17,
             ),
             87 => 
             array (
@@ -1424,7 +1424,7 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => NULL,
                 'created_at' => '2024-07-26 06:42:31',
-                'updated_at' => '2024-10-24 19:47:04',
+                'updated_at' => '2024-10-31 20:21:49',
                 'management_id' => 7,
             ),
             88 => 
@@ -1440,8 +1440,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => NULL,
                 'created_at' => '2024-08-19 07:59:18',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 11,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 17,
             ),
             89 => 
             array (
@@ -1456,8 +1456,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => NULL,
                 'created_at' => '2024-09-02 01:31:20',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 17,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 7,
             ),
             90 => 
             array (
@@ -1472,8 +1472,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => 'FdXGW1xrFirUwUSBN6czcPKjy3M4v91PHiGFVjWbRfxEwf2N4jrs9d2RnAMm',
                 'created_at' => '2024-09-09 04:48:38',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 8,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 9,
             ),
             91 => 
             array (
@@ -1488,8 +1488,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '40i2xJ7jkqStrlygtMFoYF6aVP5XjxgTCWljQweGuEoGqjorKHNqyjTOTqSd',
                 'created_at' => '2024-10-02 02:46:56',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 8,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 9,
             ),
             92 => 
             array (
@@ -1504,8 +1504,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => '',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 14,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 3,
             ),
             93 => 
             array (
@@ -1518,10 +1518,10 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => '',
-                'remember_token' => '',
+                'remember_token' => 'l9g3MEeHEGb0JMQZLeHjrLVlVNKKuiv6OqYpvgygO6TReFgHBRCu4C9QrCn4',
                 'created_at' => '2022-08-06 08:33:32',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 8,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 15,
             ),
             94 => 
             array (
@@ -1536,8 +1536,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '',
                 'remember_token' => NULL,
                 'created_at' => '2024-06-04 19:52:04',
-                'updated_at' => '2024-10-24 19:47:04',
-                'management_id' => 6,
+                'updated_at' => '2024-10-31 20:21:49',
+                'management_id' => 13,
             ),
         ));
         

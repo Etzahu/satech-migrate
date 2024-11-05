@@ -8,17 +8,18 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\RelationManagers;
-use Filament\Tables\Actions\ActionGroup;
-use Illuminate\Database\Eloquent\Model;
 
 
 
-class PurchaseRequisitionResource extends Resource
+class PurchaseRequisitionResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = PurchaseRequisition::class;
     protected static ?string $modelLabel = 'Requisición';
@@ -29,11 +30,22 @@ class PurchaseRequisitionResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 1;
 
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'view_review_warehouse',
+        ];
+    }
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->myRequisitions()
-            ->where('company_id', session()->get('company_id'));
+            ->myRequisitions();
     }
     public static function getNavigationBadge(): ?string
     {
@@ -71,11 +83,6 @@ class PurchaseRequisitionResource extends Resource
                             ->searchable()
                             ->preload()
                             ->required(),
-                        Forms\Components\Textarea::make('observation')
-                            ->label('Observación adicionales')
-                            ->maxLength(600)
-                            ->required(),
-
                     ]),
                 Forms\Components\Section::make('Flujo de aprobación')
                     ->columns([
@@ -111,7 +118,11 @@ class PurchaseRequisitionResource extends Resource
                             ->label('Soportes')
                             ->acceptedFileTypes(['application/pdf'])
                             ->collection('supports')
-                            ->multiple()
+                            ->multiple(),
+                        Forms\Components\Textarea::make('observation')
+                            ->label('Observación adicionales')
+                            ->maxLength(600)
+                            ->required(),
                     ])
 
             ]);
@@ -125,11 +136,6 @@ class PurchaseRequisitionResource extends Resource
                     ->label('Folio')
                     ->copyable()
                     ->searchable(),
-                // Tables\Columns\TextColumn::make('motive')
-                //     ->label('Referencia')
-                //     ->words(20)
-                //     ->description(fn (PurchaseRequisition $record): string => $record->motive)
-                //     ->searchable(),
                 Tables\Columns\TextColumn::make('project.name')
                     ->label('Proyecto')
                     ->searchable(),
@@ -156,15 +162,21 @@ class PurchaseRequisitionResource extends Resource
             ])
             ->actions([
                 ActionGroup::make([
+                    Tables\Actions\ViewAction::make(),
                     Tables\Actions\EditAction::make()
                         ->visible(function (PurchaseRequisition $record) {
-                            return $record->status == 'borrador';
+                            $states = [
+                                'borrador',
+                                'devuelto por revisor',
+                                'devuelto por gerencia',
+                                'devuelto por DG',
+                            ];
+                            return in_array($record->status, $states);
                         }),
-                    Tables\Actions\ViewAction::make(),
-                    // Tables\Actions\Action::make('ver')
-                    //     ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.flow-approval', $record->id)),
-                    // Tables\Actions\Action::make('revision')
-                    //     ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.requisiciones.warehouse-revision', $record->id)),
+                    Tables\Actions\Action::make('Ver pdf')
+                        ->icon('heroicon-m-document')
+                        // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
+                        ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $record->id])),
                 ]),
             ]);
     }
@@ -183,12 +195,8 @@ class PurchaseRequisitionResource extends Resource
             'create' => Pages\CreatePurchaseRequisition::route('/create'),
             'view' => Pages\ViewPurchaseRequisition::route('/{record}'),
             'edit' => Pages\EditPurchaseRequisition::route('/{record}/edit'),
+            // 'pdf' => Pages\Pdf::route('/{id}/pdf'),
+            'pdf' => Pages\Pdf::route('/{record}/pdf'),
         ];
     }
 }
-
-
-
-// php artisan make:filament-resource PurchaseRequisitionReviewWareHouseResource --model-namespace=App\\Models\\PurchaseRequisition --generate -S --panel=compras
-// php artisan make:filament-resource PurchaseRequisitionReviewResource --model-namespace=App\\Models\\PurchaseRequisition --generate -S --panel=compras
-// php artisan make:filament-resource PurchaseRequisitionApprovalResource --model-namespace=App\\Models\\PurchaseRequisition --generate -S --panel=compras

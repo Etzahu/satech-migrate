@@ -13,6 +13,9 @@ class PurchaseRequisitionPolicy
     /**
      * Determine whether the user can view any models.
      */
+    public function viewReviewWarehouse(User $user){
+        return $user->can('view_review_warehouse_purchase::requisition');
+    }
     public function viewAny(User $user): bool
     {
         return $user->can('view_any_purchase::requisition');
@@ -63,7 +66,7 @@ class PurchaseRequisitionPolicy
      */
     public function forceDelete(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('force_delete_purchase::requisition');
+        return $user->can('{{ ForceDelete }}');
     }
 
     /**
@@ -71,7 +74,7 @@ class PurchaseRequisitionPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_purchase::requisition');
+        return $user->can('{{ ForceDeleteAny }}');
     }
 
     /**
@@ -79,7 +82,7 @@ class PurchaseRequisitionPolicy
      */
     public function restore(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('restore_purchase::requisition');
+        return $user->can('{{ Restore }}');
     }
 
     /**
@@ -87,7 +90,7 @@ class PurchaseRequisitionPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_purchase::requisition');
+        return $user->can('{{ RestoreAny }}');
     }
 
     /**
@@ -95,7 +98,7 @@ class PurchaseRequisitionPolicy
      */
     public function replicate(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('replicate_purchase::requisition');
+        return $user->can('{{ Replicate }}');
     }
 
     /**
@@ -103,6 +106,6 @@ class PurchaseRequisitionPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_purchase::requisition');
+        return $user->can('{{ Reorder }}');
     }
 }

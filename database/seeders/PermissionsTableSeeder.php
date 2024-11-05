@@ -1691,6 +1691,390 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-10-21 02:37:27',
                 'updated_at' => '2024-10-21 02:37:27',
             ),
+            209 => 
+            array (
+                'id' => 210,
+                'name' => 'view_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            210 => 
+            array (
+                'id' => 211,
+                'name' => 'view_any_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            211 => 
+            array (
+                'id' => 212,
+                'name' => 'create_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            212 => 
+            array (
+                'id' => 213,
+                'name' => 'update_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            213 => 
+            array (
+                'id' => 214,
+                'name' => 'restore_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            214 => 
+            array (
+                'id' => 215,
+                'name' => 'restore_any_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            215 => 
+            array (
+                'id' => 216,
+                'name' => 'replicate_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            216 => 
+            array (
+                'id' => 217,
+                'name' => 'reorder_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            217 => 
+            array (
+                'id' => 218,
+                'name' => 'delete_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            218 => 
+            array (
+                'id' => 219,
+                'name' => 'delete_any_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            219 => 
+            array (
+                'id' => 220,
+                'name' => 'force_delete_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            220 => 
+            array (
+                'id' => 221,
+                'name' => 'force_delete_any_p::r::review::ware::house',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-01 15:20:39',
+                'updated_at' => '2024-11-01 15:20:39',
+            ),
+            221 => 
+            array (
+                'id' => 222,
+                'name' => 'view_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            222 => 
+            array (
+                'id' => 223,
+                'name' => 'view_any_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            223 => 
+            array (
+                'id' => 224,
+                'name' => 'create_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            224 => 
+            array (
+                'id' => 225,
+                'name' => 'update_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            225 => 
+            array (
+                'id' => 226,
+                'name' => 'restore_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            226 => 
+            array (
+                'id' => 227,
+                'name' => 'restore_any_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            227 => 
+            array (
+                'id' => 228,
+                'name' => 'replicate_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            228 => 
+            array (
+                'id' => 229,
+                'name' => 'reorder_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            229 => 
+            array (
+                'id' => 230,
+                'name' => 'delete_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            230 => 
+            array (
+                'id' => 231,
+                'name' => 'delete_any_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            231 => 
+            array (
+                'id' => 232,
+                'name' => 'force_delete_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            232 => 
+            array (
+                'id' => 233,
+                'name' => 'force_delete_any_p::r::review',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:22',
+                'updated_at' => '2024-11-04 15:33:22',
+            ),
+            233 => 
+            array (
+                'id' => 234,
+                'name' => 'view_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            234 => 
+            array (
+                'id' => 235,
+                'name' => 'view_any_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            235 => 
+            array (
+                'id' => 236,
+                'name' => 'create_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            236 => 
+            array (
+                'id' => 237,
+                'name' => 'update_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            237 => 
+            array (
+                'id' => 238,
+                'name' => 'restore_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            238 => 
+            array (
+                'id' => 239,
+                'name' => 'restore_any_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            239 => 
+            array (
+                'id' => 240,
+                'name' => 'replicate_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            240 => 
+            array (
+                'id' => 241,
+                'name' => 'reorder_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            241 => 
+            array (
+                'id' => 242,
+                'name' => 'delete_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            242 => 
+            array (
+                'id' => 243,
+                'name' => 'delete_any_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            243 => 
+            array (
+                'id' => 244,
+                'name' => 'force_delete_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            244 => 
+            array (
+                'id' => 245,
+                'name' => 'force_delete_any_p::r::approval',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:24',
+                'updated_at' => '2024-11-04 15:33:24',
+            ),
+            245 => 
+            array (
+                'id' => 246,
+                'name' => 'view_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            246 => 
+            array (
+                'id' => 247,
+                'name' => 'view_any_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            247 => 
+            array (
+                'id' => 248,
+                'name' => 'create_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            248 => 
+            array (
+                'id' => 249,
+                'name' => 'update_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            249 => 
+            array (
+                'id' => 250,
+                'name' => 'restore_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            250 => 
+            array (
+                'id' => 251,
+                'name' => 'restore_any_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            251 => 
+            array (
+                'id' => 252,
+                'name' => 'replicate_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            252 => 
+            array (
+                'id' => 253,
+                'name' => 'reorder_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            253 => 
+            array (
+                'id' => 254,
+                'name' => 'delete_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            254 => 
+            array (
+                'id' => 255,
+                'name' => 'delete_any_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            255 => 
+            array (
+                'id' => 256,
+                'name' => 'force_delete_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
+            256 => 
+            array (
+                'id' => 257,
+                'name' => 'force_delete_any_p::r::approval::d::g',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-04 15:33:26',
+                'updated_at' => '2024-11-04 15:33:26',
+            ),
         ));
         
         
