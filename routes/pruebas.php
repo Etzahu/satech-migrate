@@ -253,8 +253,26 @@ Route::get('media-test', function () {
     return $media;
 });
 
+// TODO: este codigo  es para reenviar un correo dependiendo el status de una requisicion
 Route::get('history', function () {
-    $rq = PurchaseRequisition::find(3);
-    dd($rq->status()->history()->orderBy('created_at', 'desc')->get()->toArray());
+    $model = PurchaseRequisition::find(22);
+
+    $array = $model->status()->stateMachine()->transitions();
+    $from = 'borrador';
+    $to = 'revisión por almacén';
+    $afterTransitionHooks = $model->status()->stateMachine()->afterTransitionHooks()[$to];
+    // $afterTransitionHooks = $model->status()->stateMachine()->afterTransitionHooks()[$to][0];
+    // $afterTransitionHooks($to,$model);
+    collect($afterTransitionHooks)
+        ->each(function ($callable) use ($from,$model) {
+            dump($callable);
+            $callable($from, $model);
+        });
+    // return array_unique(array_reduce($array, 'array_merge', array()));
 });
+Route::get('items', function () {
+    $model = PurchaseRequisition::find(21);
+    dd($model->items);
+});
+
 

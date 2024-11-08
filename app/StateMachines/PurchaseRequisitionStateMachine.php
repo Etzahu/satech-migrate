@@ -19,6 +19,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
     {
         return [
             'borrador' => ['revisión por almacén', 'revisión'],
+
             'devuelto por revisor' => ['revisión por almacén', 'revisión'],
             'devuelto por gerencia' => ['revisión por almacén', 'revisión'],
             'devuelto por DG' => ['revisión por almacén', 'revisión'],
@@ -33,19 +34,109 @@ class PurchaseRequisitionStateMachine extends StateMachine
     {
         return 'borrador';
     }
-    public function beforeTransitionHooks(): array
+    public function afterTransitionHooks(): array
     {
         return [
             'revisión por almacén' => [
                 function ($to, $model) {
-                    // buscar el usuario de almacen
-                    $user = User::role('revisor_almacen_requisicion_compra')->first();
-                    // Enviar notificacion
+                    $users = User::role('revisor_almacen_requisicion_compra')->get();
                     $service = new PurchaseRequisitionCreationService();
-                    $data = $service->generateDataForEmail('para revisión por almacén', $model, $user);
-                    Mail::to($data['user']['email'])->send(new Notification($data));
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('para revisión por almacén', $model);
+                    Mail::to($recipient)->send(new Notification($data));
                 },
             ],
+            'revisión' => [
+                function ($to, $model) {
+                     $users = $model->approvalChain->reviewer;
+                     $service = new PurchaseRequisitionCreationService();
+                     $recipient = $service->getUserForEmail($users?->toArray());
+                     $data = $service->generateDataForEmail('para revisión', $model);
+                     Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'aprobado por revisor' => [
+                function ($to, $model) {
+                    $users = $model->approvalChain->approver;
+                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('para revisión por gerencia', $model);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'devuelto por revisor' => [
+                function ($to, $model) {
+                    $users = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('devuelto por revisor', $model);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'cancelado por revisor' => [
+                function ($to, $model) {
+                    $users = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('cancelado por revisor', $model);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'aprobado por gerencia' => [
+                function ($to, $model) {
+                    $users = User::role('director_general_requisicion_compra')->get();
+                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('para revisión por dirección general', $model);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'devuelto por gerencia' => [
+                function ($to, $model) {
+                    $users = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('devuelto por gerencia', $model);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'cancelado por gerencia' => [
+                function ($to, $model) {
+                     $users = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('cancelado por gerencia', $model);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'aprobado por DG' => [
+                function ($to, $model) {
+                    $users = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('aprobado por dirección general', $model);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'devuelto por DG' => [
+                function ($to, $model) {
+                    $users = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('devuelto por dirección general', $model);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'cancelado por DG' => [
+                function ($to, $model) {
+                    $users = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('cancelado por dirección general', $model);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+
         ];
     }
 }

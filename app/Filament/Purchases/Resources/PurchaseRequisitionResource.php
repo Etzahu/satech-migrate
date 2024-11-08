@@ -13,6 +13,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use App\Filament\Purchases\Pages\PurchaseRequisition\ViewPdf;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource\RelationManagers;
@@ -30,6 +31,11 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 1;
 
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasRole('solicitante_requisicion_compra');
+    }
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -40,6 +46,9 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
             'delete',
             'delete_any',
             'view_review_warehouse',
+            'view_review',
+            'view_approve',
+            'view_approve_dg',
         ];
     }
     public static function getEloquentQuery(): Builder
@@ -49,7 +58,7 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::myRequisitions()->count();
+        return static::getModel()::myRequisitionsDraft()->count();
     }
 
 
@@ -175,8 +184,7 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
                         }),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
-                        ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $record->id])),
+                        ->url(fn(PurchaseRequisition $record): string => PurchaseRequisitionResource::getUrl('view-pdf', ['record' => $record->id]))
                 ]),
             ]);
     }
@@ -190,13 +198,13 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
 
     public static function getPages(): array
     {
+
         return [
             'index' => Pages\ListPurchaseRequisitions::route('/'),
             'create' => Pages\CreatePurchaseRequisition::route('/create'),
             'view' => Pages\ViewPurchaseRequisition::route('/{record}'),
             'edit' => Pages\EditPurchaseRequisition::route('/{record}/edit'),
-            // 'pdf' => Pages\Pdf::route('/{id}/pdf'),
-            'pdf' => Pages\Pdf::route('/{record}/pdf'),
+            'view-pdf'=> Pages\ViewPdf::route('/pdf/{record}'),
         ];
     }
 }

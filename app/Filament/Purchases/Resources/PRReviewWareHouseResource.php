@@ -4,8 +4,8 @@ namespace App\Filament\Purchases\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use App\Models\PRReviewWareHouse;
 use App\Models\PurchaseRequisition;
@@ -16,6 +16,7 @@ use App\Models\PurchaseRequisitionApprovalChain;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PRReviewWareHouseResource\Pages\ViewPR;
+use App\Filament\Purchases\Resources\PRReviewWareHouseResource\Pages\ViewPdf;
 use App\Filament\Purchases\Resources\PRReviewWareHouseResource\Pages\ManagePRReviewWareHouses;
 
 
@@ -31,11 +32,8 @@ class PRReviewWareHouseResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 2;
 
-    public static function canViewAny(): bool
-    {
-        return false;
-    }
-    
+
+
     public static function canAccess(): bool
     {
         return auth()->user()->can('view_review_warehouse_purchase::requisition');
@@ -125,7 +123,6 @@ class PRReviewWareHouseResource extends Resource
             ]);
     }
 
-
     public static function table(Table $table): Table
     {
         return $table
@@ -164,14 +161,9 @@ class PRReviewWareHouseResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make()
-                        ->visible(function (PurchaseRequisition $record) {
-                            return $record->status == 'revision por almacén';
-                        }),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
-                        ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $record->id])),
+                        ->url(fn(PurchaseRequisition $record): string => PRReviewWareHouseResource::getUrl('view-pdf', ['record' => $record->id]))
                 ]),
             ]);
     }
@@ -181,6 +173,7 @@ class PRReviewWareHouseResource extends Resource
         return [
             'index' => ManagePRReviewWareHouses::route('/'),
             'view' => ViewPR::route('/{record}'),
+            'view-pdf' => ViewPdf::route('/pdf/{record}'),
         ];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\Purchases\Shield;
+namespace App\Filament\Purchases\Resources\Shield;
 
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;

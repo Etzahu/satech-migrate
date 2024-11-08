@@ -69,7 +69,6 @@ class PurchaseRequisition extends Model implements HasMedia
     {
         return $this->hasMany(PurchaseRequisitionItem::class, 'requisition_id');
     }
-
     public function scopeMyRequisitions(Builder $query)
     {
 
@@ -83,6 +82,16 @@ class PurchaseRequisition extends Model implements HasMedia
             return $query
                 ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
                 ->where('company_id', session()->get('company_id'))
+                ->orderBy('id', 'desc');
+        }
+    }
+    public function scopeMyRequisitionsDraft(Builder $query)
+    {
+        if (auth()->user()) {
+            return $query
+                ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
+                ->where('company_id', session()->get('company_id'))
+                ->where('status', 'borrador')
                 ->orderBy('id', 'desc');
         }
     }
@@ -101,6 +110,12 @@ class PurchaseRequisition extends Model implements HasMedia
     public function scopeApprove(Builder $query)
     {
         return $query->where('status', 'aprobado por revisor')
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
+    }
+    public function scopeApproveDG(Builder $query)
+    {
+        return $query->where('status', 'aprobado por gerencia')
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }

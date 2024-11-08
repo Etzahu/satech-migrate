@@ -2075,6 +2075,38 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-11-04 15:33:26',
                 'updated_at' => '2024-11-04 15:33:26',
             ),
+            257 => 
+            array (
+                'id' => 258,
+                'name' => 'view_review_warehouse_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-05 18:53:37',
+                'updated_at' => '2024-11-05 18:53:37',
+            ),
+            258 => 
+            array (
+                'id' => 259,
+                'name' => 'view_review_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-05 20:49:43',
+                'updated_at' => '2024-11-05 20:49:43',
+            ),
+            259 => 
+            array (
+                'id' => 260,
+                'name' => 'view_approve_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-05 20:49:43',
+                'updated_at' => '2024-11-05 20:49:43',
+            ),
+            260 => 
+            array (
+                'id' => 261,
+                'name' => 'view_approve_dg_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-05 20:49:43',
+                'updated_at' => '2024-11-05 20:49:43',
+            ),
         ));
         
         

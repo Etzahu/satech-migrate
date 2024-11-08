@@ -24,7 +24,10 @@ class PRReviewResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 3;
 
-
+    public static function canAccess(): bool
+    {
+        return auth()->user()->can('view_review_purchase::requisition');
+    }
 
     public static function getEloquentQuery(): Builder
     {
@@ -77,19 +80,13 @@ class PRReviewResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-            ])
+            ->filters([])
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make()
-                        ->visible(function (PurchaseRequisition $record) {
-                            return $record->status == 'revision por almacén';
-                        }),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
-                        ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $record->id])),
+                        ->url(fn(PurchaseRequisition $record): string => PRReviewResource::getUrl('view-pdf', ['record' => $record->id]))
                 ]),
             ]);
     }
@@ -99,6 +96,7 @@ class PRReviewResource extends Resource
         return [
             'index' => Pages\ManagePRReviews::route('/'),
             'view' => Pages\View::route('/{record}'),
+            'view-pdf' => Pages\ViewPdf::route('/{record}/pdf'),
         ];
     }
 }

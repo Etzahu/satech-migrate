@@ -23,16 +23,20 @@ class PRApprovalDGResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 5;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->can('view_approve_dg_purchase::requisition');
+    }
 
 
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->myRequisitions();
+            ->approveDG();
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::myRequisitions()->count();
+        return static::getModel()::approveDG()->count();
     }
 
     public static function form(Form $form): Form
@@ -75,20 +79,13 @@ class PRApprovalDGResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make()
-                        ->visible(function (PurchaseRequisition $record) {
-                            return $record->status == 'revision por almacén';
-                        }),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
-                        ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $record->id])),
+                        ->url(fn(PurchaseRequisition $record): string => PRApprovalDGResource::getUrl('view-pdf', ['record' => $record->id]))
                 ]),
             ]);
     }
@@ -97,6 +94,8 @@ class PRApprovalDGResource extends Resource
     {
         return [
             'index' => Pages\ManagePRApprovalDGS::route('/'),
+            'view' => Pages\View::route('/{record}'),
+            'view-pdf' => Pages\ViewPdf::route('/{record}'),
         ];
     }
 }

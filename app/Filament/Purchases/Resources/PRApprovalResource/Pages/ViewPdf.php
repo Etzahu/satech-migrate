@@ -1,29 +1,21 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaseRequisitionResource\Pages;
+namespace App\Filament\Purchases\Resources\PRApprovalResource\Pages;
 
+use App\Filament\Purchases\Resources\PRApprovalResource;
+use Filament\Actions;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Pages\Page;
+use App\Models\PurchaseRequisition;
 use Illuminate\Support\Facades\Storage;
 use App\Services\PurchaseRequisitionCreationService;
+use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
-use App\Filament\Purchases\Resources\PurchaseRequisitionResource;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
+use Filament\Resources\Pages\ViewRecord;
 
-class Pdf extends Page
+class ViewPdf extends ViewRecord
 {
-    use InteractsWithRecord;
-
-    protected static string $resource = PurchaseRequisitionResource::class;
-    protected static string $view = 'filament.purchases.resources.purchase-requisition-resource.pages.pdf';
-    protected static ?string $title = 'PDF de la requisición de compra';
-
-
-    public function mount(int | string $record): void
-    {
-        $this->record = $this->resolveRecord($record);
-    }
-
+    protected static string $resource = PRApprovalResource::class;
     public function infolist(Infolist $infolist): Infolist
     {
         $service = new PurchaseRequisitionCreationService();

@@ -14,6 +14,7 @@ class EditPurchaseRequisition extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Actions\ViewAction::make()
         ];
     }
 }

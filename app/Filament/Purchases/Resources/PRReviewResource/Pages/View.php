@@ -28,7 +28,7 @@ class View extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('Enviar revisión')
+            Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
                 ->visible(fn() => $this->record->status()->canBe('aprobado por revisor') || $this->record->status()->canBe('devuelto por revisor') || $this->record->status()->canBe('cancelado por revisor'))
                 ->color('success')

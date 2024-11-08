@@ -23,6 +23,13 @@ class PRApprovalResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 4;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->can('view_approve_purchase::requisition');
+    }
+
+
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -79,14 +86,9 @@ class PRApprovalResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make()
-                        ->visible(function (PurchaseRequisition $record) {
-                            return $record->status == 'revision por almacén';
-                        }),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
-                        ->url(fn(PurchaseRequisition $record): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $record->id])),
+                        ->url(fn(PurchaseRequisition $record): string => PRApprovalResource::getUrl('view-pdf', ['record' => $record->id]))
                 ]),
             ]);
     }
@@ -95,6 +97,9 @@ class PRApprovalResource extends Resource
     {
         return [
             'index' => Pages\ManagePRApprovals::route('/'),
+            'view' => Pages\View::route('/{record}'),
+            'view-pdf' => Pages\ViewPdf::route('/{record}'),
         ];
+
     }
 }

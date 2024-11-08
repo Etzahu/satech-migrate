@@ -35,6 +35,7 @@ class PurchaseRequisitionCreationService
             ->where('approver_id', $approverId)->first()->id;
     }
     public function getManangement()
+
     {
         return auth()->user()->management->acronym;
     }
@@ -43,23 +44,23 @@ class PurchaseRequisitionCreationService
         return Company::find(session()->get('company_id'))->acronym;
     }
 
-    public function generateDataForEmail($subject, $model, $user)
+    public function generateDataForEmail($subject, $model)
     {
 
         $data = [
-            'subject' => "Requicisión:{$model->folio}, {$subject}",
-            'user' => ['nombre' => $user['nombre'], 'email' => $user['email']],
+            'subject' => "REQUISICIÓN:{$model->folio} {$subject}",
+            'company' => $model->company->name,
+            'management' => $model->approvalChain->requester->management->name,
+            'requester' => $model->approvalChain->requester->name,
             'folio' => $model->folio,
-            'solicitud' => [
-                'solicitante' => $model->approvalChain->requester->name,
-                'area' =>  $model->approvalChain->requester->management->name,
-                'fecha de creación' => $model->created_at->format('Y-m-d'),
-                'fecha de deseable de entrega' => $model->date_delivery->format('Y-m-d'),
-            ],
+            'created_at' => $model->created_at->format('d-m-Y'),
+            'date_delivery' => $model->date_delivery->format('d-m-Y'),
+            'delivery_address' => $model->delivery_address,
+            'project' => $model->project->code . '-' . $model->project->name,
+            'observation' => $model->observation,
             'items' => $this->getItemsForEmail($model),
             'status' => 'Para revisión por almacén',
             'mensaje' => '',
-            // 'url_btn' => route('', $model->id)
             'url_btn' => ''
         ];
 
@@ -71,8 +72,11 @@ class PurchaseRequisitionCreationService
         $items = [];
         foreach ($model->items as $item) {
             $items[] = [
-                'producto' => $item->product->name,
-                'cantidad' => $item->quantity,
+                'code' => $item->product->code,
+                'product' => $item->product->name,
+                'um' => $item->product->unit->acronym,
+                'quantity' => $item->quantity,
+                'observation' => $item->observation,
             ];
         }
         return $items;
@@ -83,5 +87,17 @@ class PurchaseRequisitionCreationService
         $rq =  $model->load(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company']);
         $pdf = Pdf::loadView('pdf.purchase-requisition', compact('rq'))->setPaper('a4', 'landscape');
         Storage::disk('public')->put('requisicion-compra.pdf', $pdf->output());
+    }
+    public function getUserForEmail($data)
+    {
+        $recipient = [];
+        if (count($data) > 1) {
+            foreach ($data as $user) {
+                $recipient[] = $user['email'];
+            }
+        } else {
+            return $data[0]['email'];
+        }
+        return $recipient;
     }
 }

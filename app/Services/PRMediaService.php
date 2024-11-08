@@ -27,7 +27,7 @@ class PRMediaService
             ->where('collection_name', $collectionName)->get();
         foreach ($media as $key => $value) {
             // $data[$key]->url = $value->getUrl();
-            $data[$key]['file_name'] = $value->file_name;
+            $data[$key]['file_name'] = $value->name;
         }
         return $data;
     }

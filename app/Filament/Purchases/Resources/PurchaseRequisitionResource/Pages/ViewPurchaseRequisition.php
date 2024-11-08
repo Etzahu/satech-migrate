@@ -6,7 +6,9 @@ use Filament\Actions;
 use Filament\Infolists;
 use Filament\Actions\Action;
 use App\Services\PRMediaService;
+use Filament\Actions\EditAction;
 use Filament\Infolists\Infolist;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
@@ -27,22 +29,36 @@ class ViewPurchaseRequisition extends ViewRecord
     protected static string $resource = PurchaseRequisitionResource::class;
     protected function getHeaderActions(): array
     {
+        // dd($this->record);
         return [
             Action::make('Enviar requisición')
                 ->color('success')
                 ->requiresConfirmation()
-                // ->visible($this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0)
-                ->visible($this->record->status()->canBe('revisión por almacén'))
+                ->visible($this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0)
+                // ->visible($this->record->status()->canBe('revisión por almacén'))
                 ->action(function () {
-                    if($this->record->status()->canBe('revisión por almacén')){
+                    if ($this->record->status()->canBe('revisión por almacén')) {
                         $this->record->status()->transitionTo('revisión por almacén');
+                        Notification::make()
+                            ->title('Requisición enviada')
+                            ->success()
+                            ->send();
                     }
+                }),
+            EditAction::make()
+                ->visible(function () {
+                    $states = [
+                        'borrador',
+                        'devuelto por revisor',
+                        'devuelto por gerencia',
+                        'devuelto por DG',
+                    ];
+                    return in_array($this->record->status, $states);
                 }),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->icon('heroicon-m-document')
-                // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
-                ->url(fn(): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $this->record->id]))
+                ->url(PurchaseRequisitionResource::getUrl('view-pdf', ['record' => $this->record->id]))
                 ->openUrlInNewTab()
         ];
     }

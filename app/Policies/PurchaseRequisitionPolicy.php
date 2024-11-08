@@ -13,9 +13,23 @@ class PurchaseRequisitionPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewReviewWarehouse(User $user){
+    public function viewReviewWarehouse(User $user): bool
+    {
         return $user->can('view_review_warehouse_purchase::requisition');
     }
+    public function viewReview(User $user): bool
+    {
+        return $user->can('view_review_purchase::requisition');
+    }
+    public function viewApprove(User $user): bool
+    {
+        return $user->can('view_approve_purchase::requisition');
+    }
+    public function viewApproveDg(User $user): bool
+    {
+        return $user->can('view_approve_dg_purchase::requisition');
+    }
+
     public function viewAny(User $user): bool
     {
         return $user->can('view_any_purchase::requisition');
