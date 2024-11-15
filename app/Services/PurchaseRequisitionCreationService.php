@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Models\Company;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PurchaseRequisition;
@@ -34,6 +35,10 @@ class PurchaseRequisitionCreationService
             ->where('reviewer_id', $reviewerId)
             ->where('approver_id', $approverId)->first()->id;
     }
+    public function getApprovalChainConfidential()
+    {
+        return PurchaseRequisitionApprovalChain::where('requester_id', auth()->user()->id)->first()->id;
+    }
     public function getManangement()
 
     {
@@ -58,8 +63,7 @@ class PurchaseRequisitionCreationService
             'delivery_address' => $model->delivery_address,
             'project' => $model->project->code . '-' . $model->project->name,
             'observation' => $model->observation,
-            'items' => $this->getItemsForEmail($model),
-            'status' => 'Para revisión por almacén',
+            'items' => $this->getItemsForEmail($model->items),
             'mensaje' => '',
             'url_btn' => ''
         ];
@@ -67,19 +71,23 @@ class PurchaseRequisitionCreationService
         return $data;
     }
 
-    public function getItemsForEmail($model)
+    public function getItemsForEmail($items)
     {
-        $items = [];
-        foreach ($model->items as $item) {
-            $items[] = [
-                'code' => $item->product->code,
-                'product' => $item->product->name,
-                'um' => $item->product->unit->acronym,
-                'quantity' => $item->quantity,
-                'observation' => $item->observation,
-            ];
+        $data = [];
+        foreach ($items as $item) {
+            if ($item->quantity_purchase > 0) {
+                $data[] = [
+                    'code' => $item->product->code,
+                    'product' => $item->product->name,
+                    'um' => $item->product->unit->acronym,
+                    'quantity_requested' => $item->quantity_requested,
+                    'quantity_warehouse' => $item->quantity_warehouse,
+                    'quantity_purchase' => $item->quantity_purchase,
+                    'observation' => $item->observation,
+                ];
+            }
         }
-        return $items;
+        return $data;
     }
 
     public function generatePdf($model)
@@ -91,7 +99,7 @@ class PurchaseRequisitionCreationService
     public function getUserForEmail($data)
     {
         $recipient = [];
-        if (count($data) > 1) {
+        if (count($data) >= 1) {
             foreach ($data as $user) {
                 $recipient[] = $user['email'];
             }
@@ -99,5 +107,27 @@ class PurchaseRequisitionCreationService
             return $data[0]['email'];
         }
         return $recipient;
+    }
+
+    public function compareRequestedAndPurchase($items)
+    {
+        $data = [];
+        foreach ($items as $item) {
+            if ($item->quantity_requested !== $item->quantity_purchase) {
+                $data[] = $item;
+            }
+        }
+        return $data;
+    }
+    public function getUserForEmailPRFinish($model){
+        $moreUsers = [];
+        $moreUsers[] = $model->approvalChain->reviewer->email;
+        $moreUsers[] = $model->approvalChain->approver->email;
+        $moreUsers[] = User::role('director_general_requisicion_compra')->first()->email;
+        $usersWareHouse = User::role('revisor_almacen_requisicion_compra')->get()->flatten();
+        foreach ($usersWareHouse as $user) {
+            $moreUsers[] = $user->email;
+        }
+        return array_unique($moreUsers);
     }
 }

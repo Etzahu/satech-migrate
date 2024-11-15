@@ -6,8 +6,10 @@ namespace App\Models;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -66,5 +68,18 @@ class User extends Authenticatable
     public function approvalChainsPurchaseRequisition()
     {
         return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'requester_id');
+    }
+    public function reviewerChainsPR(): HasMany
+    {
+        return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'reviewer_id');
+    }
+    public function approverChainsPR(): HasMany
+    {
+        return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'approver_id');
+
+    }
+    public function scopeApprovers(){
+        $management = Management::all()->pluck('responsible_id')->unique();
+        return $this->whereIn('id',$management);
     }
 }

@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('purchase_requisition_items', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantity');
+            $table->integer('quantity_requested');
+            $table->integer('quantity_warehouse')->default(0);
+            $table->integer('quantity_purchase');
             $table->text('observation', 600);
+            $table->foreignId('user_warehouse_id')->nullable()->constrained('users');
             $table->foreignId('requisition_id')->constrained('purchase_requisitions')
                 ->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')

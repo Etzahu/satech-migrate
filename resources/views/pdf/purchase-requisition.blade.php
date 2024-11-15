@@ -226,7 +226,7 @@
                     <tr>
                         <td style="padding:3px 5px;">{{ $loop->iteration }}</td>
                         <td style="padding:3px 5px;">{{ $item->product->name }}</td>
-                        <td style="padding:3px 5px;">{{ $item->quantity }}</td>
+                        <td style="padding:3px 5px;">{{ $item->quantity_requested }}</td>
                         <td style="padding:3px 5px;">{{ $item->product->unit->name }}</td>
                         <td style="padding:3px 5px;">{{ $item->observation }}</td>
                     </tr>

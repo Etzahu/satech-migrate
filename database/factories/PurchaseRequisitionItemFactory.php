@@ -23,7 +23,7 @@ class PurchaseRequisitionItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'quantity' => $this->faker->numberBetween(-10000, 10000),
+            'quantity_requested' => $this->faker->numberBetween(-10000, 10000),
             'observation' => $this->faker->text(),
             'requisition_id' => PurchaseRequisitions::factory(),
             'product_id' => Products::factory(),

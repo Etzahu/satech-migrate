@@ -4,12 +4,16 @@ namespace App\Filament\Purchases\Resources\PRReviewWareHouseResource\Pages;
 
 
 use Filament\Tables;
+use Filament\Forms\Get;
 use Filament\Tables\Table;
 use Filament\Actions\Action;
 use App\Services\PRMediaService;
 use Filament\Infolists\Infolist;
+use Filament\Forms\Components\Select;
 use App\Models\PurchaseRequisitionItem;
+use Filament\Forms\Components\Textarea;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -18,95 +22,53 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use App\Filament\Purchases\Resources\PRReviewWareHouseResource;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
 
 
-class ViewPR extends ViewRecord  implements HasTable
+class ViewPR extends ViewRecord
 {
-    use InteractsWithTable;
+
     use InteractsWithInfolists;
     use InteractsWithRecord;
 
     protected static string $resource = PRReviewWareHouseResource::class;
-    protected static string $view = 'filament.purchases.resources.pr-review-warehouse-resource.pages.view';
     protected function getHeaderActions(): array
     {
         return [
-            Action::make('Enviar revisión')
-                ->visible(fn() => $this->record->status()->canBe('revisión'))
+            Action::make('Capturar respuesta')
+                ->modalHeading('Enviar respuesta')
+                ->visible(fn() => $this->record->status()->canBe('revisión') || $this->record->status()->canBe('devuelto por almacén'))
                 ->color('success')
                 ->form([
+                    Select::make('response')
+                        ->label('Respuesta')
+                        ->options([
+                            'revisión' => 'Revisado',
+                            'devuelto por almacén' => 'Devolver',
+                        ])
+                        ->default('revisión')
+                        ->required(),
                     Textarea::make('observation')
+                        ->requiredUnless('response', 'revision')
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
                 ->action(function (array $data) {
-                    $this->record->status()->transitionTo('revisión', ['respuesta' => $data['observation']]);
+                    $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
                     Notification::make()
                         ->title('Respuesta enviada')
                         ->success()
                         ->send();
-                    return redirect()->route('filament.compras.resources.requisiciones.revisar.almacen.index');
+                    return redirect(PRReviewWareHouseResource::getUrl('index'));
                 }),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->icon('heroicon-m-document')
-                // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
-                // ->url(fn(): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $this->record->id]))
                 ->openUrlInNewTab()
         ];
     }
     public function infolist(Infolist $infolist): Infolist
     {
         $service = new PRMediaService();
-        return $service->generateInfolist($infolist, $this->record);
-    }
-    public function table(Table $table): Table
-    {
-        return $table
-            ->relationship(fn(): HasMany => $this->record->items())
-            ->columns([
-                Tables\Columns\TextColumn::make('product.name')
-                    ->label('Producto'),
-                Tables\Columns\TextColumn::make('quantity')
-                    ->label('Cantidad')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Fecha de creación')
-                    ->dateTime('d-m-Y'),
-            ])
-            ->filters([
-                // ...
-            ])
-            ->actions([
-                ActionTable::make('Ver')
-                    ->color('gray')
-                    ->icon('heroicon-m-eye')
-                    ->modalHeading('Ver partida')
-                    ->modalSubmitAction(false)
-                    ->fillForm(fn(PurchaseRequisitionItem $record): array => [
-                        'product' => $record->product->name,
-                        'um' => $record->product->unit->name,
-                        'quantity' => $record->quantity,
-                        'observation' => $record->observation,
-                    ])
-                    ->form([
-                        TextInput::make('product')
-                            ->label('Producto'),
-                        TextInput::make('quantity')
-                            ->label('Cantidad'),
-                        TextInput::make('um')
-                            ->label('Unidad de medida'),
-                        TextArea::make('observation')
-                            ->label('Observaciones')
-                    ])
-                    ->disabledForm(),
-                ActionTable::make('Editar cantidad')
-                    ->action(function (array $data, PurchaseRequisitionItem $record): void {
-                        dd($record);
-                    }),
-
-            ]);
+        return $service->generateInfolist($infolist, $this->record, false);
     }
 }

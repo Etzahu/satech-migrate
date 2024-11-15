@@ -17,8 +17,11 @@ class PurchaseRequisitionItem extends Model
      * @var array
      */
     protected $fillable = [
-        'quantity',
+        'quantity_requested',
+        'quantity_purchase',
+        'quantity_warehouse',
         'observation',
+        'user_warehouse_id',
         'requisition_id',
         'product_id',
     ];
@@ -42,5 +45,9 @@ class PurchaseRequisitionItem extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class, 'product_id');
+    }
+    public function userWarehouse(): BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_warehouse_id','id');
     }
 }

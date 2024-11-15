@@ -1,15 +1,17 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaseRequisitionResource\RelationManagers;
+namespace App\Filament\Purchases\Resources\PRReviewWareHouseResource\RelationManagers;
 
-use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use App\Models\Product;
+use Filament\Forms\Get;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\PurchaseRequisitionItem;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -18,25 +20,35 @@ class ItemsRelationManager extends RelationManager
     protected static ?string $pluralModelLabel = 'Partidas';
     protected static ?string $navigationLabel = 'Partidas';
     protected static ?string $title = 'Partida';
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('product_id')
+                    ->label('Producto')
+                    ->relationship(name: 'product', titleAttribute: 'name')
+                    ->disabled(),
+                Forms\Components\Textarea::make('observation')
+                    ->label('Observación')
+                    ->readonly()
+                    ->maxLength(600),
                 Forms\Components\TextInput::make('quantity_requested')
                     ->label('Cantidad solicitada')
                     ->numeric()
-                    ->required()
+                    ->readonly()
                     ->minValue(1),
-                Forms\Components\Select::make('product_id')
-                    ->label('Producto')
-                    ->options(Product::whereNotIn('id', $this->ownerRecord->items->pluck('product_id'))->pluck('name', 'id'))
-                    ->searchable()
-                    ->live()
-                    ->required(),
-                Forms\Components\Textarea::make('observation')
-                    ->label('Observación')
-                    ->maxLength(600),
+                Forms\Components\TextInput::make('quantity_warehouse')
+                    ->label('Cantidad en almacén')
+                    ->numeric()
+                    ->required()
+                    ->default(0)
+                    ->maxValue(fn(Get $get) => $get('quantity_requested'))
+                    ->minValue(0),
             ]);
     }
 
@@ -46,7 +58,7 @@ class ItemsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('product.name')
                     ->label('Producto'),
-                    Tables\Columns\TextColumn::make('quantity_requested')
+                Tables\Columns\TextColumn::make('quantity_requested')
                     ->label('Cantidad solicitada')
                     ->numeric()
                     ->sortable(),
@@ -58,8 +70,6 @@ class ItemsRelationManager extends RelationManager
                     ->label('Cantidad a comprar')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('observation')
-                    ->label('Observación'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
                     ->dateTime('d-m-Y'),
@@ -67,17 +77,17 @@ class ItemsRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make()
+            ->actions([
+                Tables\Actions\EditAction::make()
+                    ->label('Editar cantidad')
                     ->mutateFormDataUsing(function (array $data): array {
-                        $data['quantity_purchase'] = $data['quantity_requested'];
+                        if ($data['quantity_warehouse'] > 0) {
+                            $data['quantity_purchase'] = $data['quantity_requested'] - $data['quantity_warehouse'];
+                        }
+                        $data['user_warehouse_id'] = auth()->id();
                         return $data;
                     })
-                    ->createAnother(false),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                    ->successNotificationTitle('Cantidad actualizada correctamente'),
             ]);
     }
 }

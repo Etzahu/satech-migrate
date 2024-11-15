@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources;
 
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
@@ -46,7 +47,7 @@ class PurchaseRequisitionApprovalChainResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('approver_id')
                     ->label('Autoriza/Aprueba')
-                    ->relationship('approver', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1))
+                    ->options(User::approvers()->pluck('name','id'))
                     ->searchable()
                     ->preload()
                     ->required(),

@@ -38,13 +38,12 @@ class View extends ViewRecord
                         ->options([
                             'aprobado por revisor' => 'Aprobar',
                             'devuelto por revisor' => 'Devolver',
-                            'cancelado por revisor' => 'Rechazar',
+                            'cancelado por revisor' => 'Cancelar',
                         ])
                         ->default('aprobado por revisor')
-                        ->required()
-                        ->live(),
-                    Textarea::make('observation')
-                        ->required(fn(Get $get): bool => $get('response') !== 'aprobado por revisor')
+                        ->required(),
+                        Textarea::make('observation')
+                        ->requiredUnless('response','aprobado por revisor')
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
@@ -54,13 +53,11 @@ class View extends ViewRecord
                         ->title('Respuesta enviada')
                         ->success()
                         ->send();
-                    return redirect()->route('filament.compras.resources.requisiciones-revisar.index');
+                        return redirect(PRReviewResource::getUrl('index'));
                 }),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->icon('heroicon-m-document')
-                // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
-                // ->url(fn(): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $this->record->id]))
                 ->openUrlInNewTab()
         ];
     }

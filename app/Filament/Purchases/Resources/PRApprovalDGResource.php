@@ -95,7 +95,7 @@ class PRApprovalDGResource extends Resource
         return [
             'index' => Pages\ManagePRApprovalDGS::route('/'),
             'view' => Pages\View::route('/{record}'),
-            'view-pdf' => Pages\ViewPdf::route('/{record}'),
+            'view-pdf' => Pages\ViewPdf::route('/{record}/pdf'),
         ];
     }
 }

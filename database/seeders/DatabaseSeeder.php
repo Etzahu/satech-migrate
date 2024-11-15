@@ -42,11 +42,10 @@ class DatabaseSeeder extends Seeder
         $this->call(TaxesTableSeeder::class);
         $this->call(MediaTableSeeder::class);
         $this->call(PendingTransitionsTableSeeder::class);
-        $this->call(ProjectPurchaseCategoryTableSeeder::class);
-        $this->call(PurchaseRequisitionsTableSeeder::class);
         $this->call(ProductsTableSeeder::class);
         $this->call(ProjectPurchasesTableSeeder::class);
-        $this->call(PurchaseRequisitionItemsTableSeeder::class);
-        $this->call(RequisitionItemsTableSeeder::class);
+        $this->call(ProjectPurchaseCategoryTableSeeder::class);
+        // $this->call(PurchaseRequisitionItemsTableSeeder::class);
+        // $this->call(PurchaseRequisitionsTableSeeder::class);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Filament\Purchases\Resources\PRApprovalResource\Pages;
 
-use App\Filament\Purchases\Resources\PRApprovalResource;
 use Filament\Forms\Get;
 use Filament\Actions\Action;
 use App\Services\PRMediaService;
@@ -10,11 +9,12 @@ use Filament\Infolists\Infolist;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
-use Filament\Infolists\Concerns\InteractsWithInfolists;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Infolists\Concerns\InteractsWithInfolists;
+use App\Filament\Purchases\Resources\PRApprovalResource;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
-class View extends ViewRecord
+class ViewPR extends ViewRecord
 {
     use InteractsWithInfolists;
     use InteractsWithRecord;
@@ -38,13 +38,12 @@ class View extends ViewRecord
                         ->options([
                             'aprobado por gerencia' => 'Aprobar',
                             'devuelto por gerencia' => 'Devolver',
-                            'cancelado por gerencia' => 'Rechazar',
+                            'cancelado por gerencia' => 'Cancelar',
                         ])
                         ->default('aprobado por gerencia')
-                        ->required()
-                        ->live(),
-                    Textarea::make('observation')
-                        ->required(fn(Get $get): bool => $get('response') !== 'aprobado por revisor')
+                        ->required(),
+                        Textarea::make('observation')
+                        ->requiredUnless('response','aprobado por gerencia')
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
@@ -54,13 +53,12 @@ class View extends ViewRecord
                         ->title('Respuesta enviada')
                         ->success()
                         ->send();
-                    return redirect()->route('filament.compras.resources.requisiciones-revisar.index');
+
+                    return redirect(PRApprovalResource::getUrl('index'));
                 }),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->icon('heroicon-m-document')
-                // ->url(fn(): string => route('compras.requisiciones.pdf', ['id' => $this->record->id]))
-                // ->url(fn(): string => route('filament.compras.resources.mis-requisiciones.pdf', ['record' => $this->record->id]))
                 ->openUrlInNewTab()
         ];
     }

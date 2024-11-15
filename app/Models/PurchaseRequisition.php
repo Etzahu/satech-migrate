@@ -15,7 +15,7 @@ use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
 class PurchaseRequisition extends Model implements HasMedia
 {
-    Use HasStateMachines;
+    use HasStateMachines;
     use InteractsWithMedia;
     use HasFactory;
 
@@ -30,10 +30,12 @@ class PurchaseRequisition extends Model implements HasMedia
         'date_delivery',
         'delivery_address',
         'motive',
+        'confidential',
         'observation',
         'status',
         'company_id',
         'project_id',
+        'assign_user_id',
         'approval_chain_id',
     ];
 
@@ -47,6 +49,8 @@ class PurchaseRequisition extends Model implements HasMedia
         'request_user_id' => 'integer',
         'date_delivery' => 'date',
         'approval_chain_id' => 'integer',
+        'assign_user_id' => 'integer',
+        'confidential' => 'boolean',
     ];
 
     public $stateMachines = [
@@ -69,6 +73,13 @@ class PurchaseRequisition extends Model implements HasMedia
     {
         return $this->hasMany(PurchaseRequisitionItem::class, 'requisition_id');
     }
+
+    public function responsiblePurchaseOrder(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assign_user_id');
+    }
+
+    // SCOPES
     public function scopeMyRequisitions(Builder $query)
     {
 
@@ -91,7 +102,13 @@ class PurchaseRequisition extends Model implements HasMedia
             return $query
                 ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
                 ->where('company_id', session()->get('company_id'))
-                ->where('status', 'borrador')
+                ->whereIn('status', [
+                    'borrador',
+                    'devuelto por almacén',
+                    'devuelto por revisor',
+                    'devuelto por gerencia',
+                    'devuelto por DG'
+                ])
                 ->orderBy('id', 'desc');
         }
     }
@@ -104,12 +121,14 @@ class PurchaseRequisition extends Model implements HasMedia
     public function scopeReview(Builder $query)
     {
         return $query->where('status', 'revisión')
+            ->whereIn('approval_chain_id', auth()->user()->reviewerChainsPR->pluck('id')->toArray())
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
     public function scopeApprove(Builder $query)
     {
         return $query->where('status', 'aprobado por revisor')
+            ->whereIn('approval_chain_id', auth()->user()->approverChainsPR->pluck('id')->toArray())
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
@@ -119,6 +138,12 @@ class PurchaseRequisition extends Model implements HasMedia
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
-
-
+    public function scopeReadyAssing(Builder $query)
+    {
+        return $query
+            ->has('responsiblePurchaseOrder')
+            ->OrWhere('status', 'aprobado por DG')
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
+    }
 }

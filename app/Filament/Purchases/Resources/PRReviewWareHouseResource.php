@@ -4,8 +4,8 @@ namespace App\Filament\Purchases\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Forms\Form;
+use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Models\PRReviewWareHouse;
 use App\Models\PurchaseRequisition;
@@ -17,13 +17,14 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PRReviewWareHouseResource\Pages\ViewPR;
 use App\Filament\Purchases\Resources\PRReviewWareHouseResource\Pages\ViewPdf;
+use App\Filament\Purchases\Resources\PRReviewWareHouseResource\Pages\EditItem;
 use App\Filament\Purchases\Resources\PRReviewWareHouseResource\Pages\ManagePRReviewWareHouses;
+use App\Filament\Purchases\Resources\PRReviewWareHouseResource\RelationManagers;
 
 
 class PRReviewWareHouseResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
-    // protected static ?string $model = PRReviewWareHouse::class;
     protected static ?string $modelLabel = 'Requisición';
     protected static ?string $pluralModelLabel = 'Requisiciones';
     protected static ?string $navigationLabel = 'Revisar por almacén';
@@ -168,12 +169,18 @@ class PRReviewWareHouseResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ItemsRelationManager::class,
+        ];
+    }
     public static function getPages(): array
     {
         return [
             'index' => ManagePRReviewWareHouses::route('/'),
             'view' => ViewPR::route('/{record}'),
-            'view-pdf' => ViewPdf::route('/pdf/{record}'),
+            'view-pdf' => ViewPdf::route('/{record}/pdf'),
         ];
     }
 }

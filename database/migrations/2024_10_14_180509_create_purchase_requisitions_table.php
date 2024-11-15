@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('purchase_requisitions', function (Blueprint $table) {
             $table->id();
             $table->string('folio', 255);
+            $table->boolean('confidential')->default(false);
             $table->text('motive', 600);
             $table->text('observation', 600);
             $table->date('date_delivery');
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('project_id')->constrained('project_purchases');
             $table->foreignId('approval_chain_id')->nullable()->constrained('purchase_requisition_approval_chains');
+            $table->foreignId('assign_user_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

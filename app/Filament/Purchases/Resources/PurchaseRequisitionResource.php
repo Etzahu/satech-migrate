@@ -4,6 +4,7 @@ namespace App\Filament\Purchases\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Forms\Get;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
@@ -61,7 +62,6 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
         return static::getModel()::myRequisitionsDraft()->count();
     }
 
-
     public static function form(Form $form): Form
     {
         return $form
@@ -92,8 +92,13 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
                             ->searchable()
                             ->preload()
                             ->required(),
+                        Forms\Components\Toggle::make("confidential")
+                            ->label("Confidencial")
+                            ->default(false)
+                            ->live()
                     ]),
                 Forms\Components\Section::make('Flujo de aprobación')
+                    ->visible(fn(Get $get) => !$get('confidential'))
                     ->columns([
                         'sm' => 1,
                         'xl' => 2,
@@ -106,7 +111,7 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
                                     ->where('requester_id', auth()->user()->id)->get()
                                     ->pluck('reviewer.name', 'reviewer.id')
                             )
-                            ->required(),
+                            ->requiredIf('confidential', false),
                         Forms\Components\Select::make('approver_id')
                             ->label('Aprueba')
                             ->options(
@@ -114,7 +119,7 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
                                     ->where('requester_id', auth()->user()->id)->get()
                                     ->pluck('approver.name', 'approver.id')
                             )
-                            ->required()
+                            ->requiredIf('confidential', false)
                     ]),
                 Forms\Components\Section::make('Documentación adicional')
                     ->schema([
@@ -176,6 +181,7 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
                         ->visible(function (PurchaseRequisition $record) {
                             $states = [
                                 'borrador',
+                                'devuelto por almacén',
                                 'devuelto por revisor',
                                 'devuelto por gerencia',
                                 'devuelto por DG',
@@ -204,7 +210,7 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
             'create' => Pages\CreatePurchaseRequisition::route('/create'),
             'view' => Pages\ViewPurchaseRequisition::route('/{record}'),
             'edit' => Pages\EditPurchaseRequisition::route('/{record}/edit'),
-            'view-pdf'=> Pages\ViewPdf::route('/pdf/{record}'),
+            'view-pdf' => Pages\ViewPdf::route('/{record}/pdf'),
         ];
     }
 }

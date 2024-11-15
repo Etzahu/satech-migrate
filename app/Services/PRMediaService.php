@@ -4,12 +4,13 @@ namespace App\Services;
 
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\Actions;
+use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Spatie\MediaLibrary\Support\MediaStream;
 use Filament\Infolists\Components\Actions\Action;
 use Filament\Infolists\Components\RepeatableEntry;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Filament\Infolists\Components\ViewEntry;
 
 
 class PRMediaService
@@ -39,7 +40,7 @@ class PRMediaService
         return (int)$media;
     }
 
-    public function generateInfoList($infolist, $record)
+    public function generateInfoList($infolist, $record, $tabItems = true)
     {
 
         return $infolist
@@ -49,6 +50,8 @@ class PRMediaService
                     ->tabs([
                         Tabs\Tab::make('Información general')
                             ->schema([
+                                TextEntry::make('approvalChain.requester.name')
+                                    ->label('Solicitante'),
                                 TextEntry::make('motive')
                                     ->label('Referencia'),
                                 TextEntry::make('folio')
@@ -60,10 +63,35 @@ class PRMediaService
                                     ->label('Proyecto'),
                                 TextEntry::make('delivery_address')
                                     ->label('Dirección de entrega'),
-
+                                IconEntry::make('confidential')
+                                    ->label('Confidencial')
+                                    ->boolean(),
                             ])
                             ->columns(3),
+                        Tabs\Tab::make('Partidas')
+                            ->visible($tabItems)
+                            ->schema([
+                                RepeatableEntry::make('items')
+                                    ->label('')
+                                    ->schema([
+                                        TextEntry::make('product.code')
+                                            ->label('Código'),
+                                        TextEntry::make('product.name')
+                                            ->label('Producto'),
+                                        // TextEntry::make('quantity_purchase')
+                                        //     ->label('Cantidad solicitada'),
+                                        TextEntry::make('quantity_warehouse')
+                                            ->label('Cantidad en almacén'),
+                                        TextEntry::make('quantity_purchase')
+                                            ->label('Cantidad para comprar'),
+                                        TextEntry::make('observation')
+                                            ->label('Observación')
+                                            ->columnSpan(2),
+                                    ])
+                                    ->columns(5)
+                            ]),
                         Tabs\Tab::make('Flujo de aprobación')
+                        ->visible(!$record->confidential)
                             ->schema([
                                 TextEntry::make('approvalChain.requester.name')
                                     ->label('Solicitante'),
@@ -126,11 +154,6 @@ class PRMediaService
                                 ViewEntry::make('status')
                                     ->view('filament.infolists.entries.history'),
                             ]),
-                        Tabs\Tab::make('Partidas')
-                            ->visible(false)
-                            ->schema([
-
-                            ])
                     ]),
 
             ]);

@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Management;
 use App\Models\CategoryFamily;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
@@ -255,8 +256,10 @@ Route::get('media-test', function () {
 
 // TODO: este codigo  es para reenviar un correo dependiendo el status de una requisicion
 Route::get('history', function () {
-    $model = PurchaseRequisition::find(22);
-
+    $model = PurchaseRequisition::find(1);
+    $from =$model->status()->latest()->from;
+    return ($from);
+    return true;
     $array = $model->status()->stateMachine()->transitions();
     $from = 'borrador';
     $to = 'revisión por almacén';
@@ -264,15 +267,33 @@ Route::get('history', function () {
     // $afterTransitionHooks = $model->status()->stateMachine()->afterTransitionHooks()[$to][0];
     // $afterTransitionHooks($to,$model);
     collect($afterTransitionHooks)
-        ->each(function ($callable) use ($from,$model) {
+        ->each(function ($callable) use ($from, $model) {
             dump($callable);
             $callable($from, $model);
         });
     // return array_unique(array_reduce($array, 'array_merge', array()));
 });
 Route::get('items', function () {
-    $model = PurchaseRequisition::find(21);
-    dd($model->items);
+    $model = PurchaseRequisition::find(3);
+    dd($model->responsiblePurchaseOrder);
 });
 
+Route::get('change-status', function () {
+    $model = PurchaseRequisition::find(1);
+    $model->status = 'aprobado por DG';
+    $model->save();
+});
 
+Route::get('management-user', function () {
+    $user = User::approvers()->get();
+    $management = Management::all()->pluck('responsible_id')->unique();
+    dd($user->toArray(), $management);
+    $user = User::withWhereHas('management', function($query)
+    {
+    })->get();
+    // return $user;
+});
+
+Route::get('chains',function(){
+    $user= User::with(['approverChainsPR'])->find(331);
+});

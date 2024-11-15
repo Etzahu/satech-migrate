@@ -10,41 +10,36 @@ use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Purchases\Resources\PRApprovalResource\Pages;
+use App\Filament\Purchases\Resources\PRAssingResource\Pages;
 
-class PRApprovalResource extends Resource
+class PRAssingResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
     protected static ?string $modelLabel = 'Requisición';
     protected static ?string $pluralModelLabel = 'Requisiciones';
-    protected static ?string $navigationLabel = 'Aprobar';
-    protected static ?string $slug = 'requisiciones-aprobar';
+    protected static ?string $navigationLabel = 'Asignaciones';
+    protected static ?string $slug = 'requisiciones-asignacion';
     protected static ?string $navigationGroup = 'Requisiciones';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 6;
 
     public static function canAccess(): bool
     {
-        return auth()->user()->can('view_approve_purchase::requisition');
+        return true;
+        // return auth()->user()->can('view_approve_dg_purchase::requisition');
     }
+
 
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->approve();
+            ->readyAssing();
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::approve()->count();
+        return static::getModel()::readyAssing()->count();
     }
 
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                //
-            ]);
-    }
 
     public static function table(Table $table): Table
     {
@@ -78,15 +73,13 @@ class PRApprovalResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn(PurchaseRequisition $record): string => PRApprovalResource::getUrl('view-pdf', ['record' => $record->id]))
+                        ->url(fn(PurchaseRequisition $record): string => PRAssingResource::getUrl('view-pdf', ['record' => $record->id]))
                 ]),
             ]);
     }
@@ -94,8 +87,8 @@ class PRApprovalResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePRApprovals::route('/'),
-            'view' => Pages\ViewPR::route('/{record}'),
+            'index' => Pages\ManagePRApprovalDGS::route('/'),
+            'view' => Pages\View::route('/{record}'),
             'view-pdf' => Pages\ViewPdf::route('/{record}/pdf'),
         ];
     }

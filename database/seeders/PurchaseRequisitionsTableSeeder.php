@@ -18,6 +18,25 @@ class PurchaseRequisitionsTableSeeder extends Seeder
 
         \DB::table('purchase_requisitions')->delete();
         
+        \DB::table('purchase_requisitions')->insert(array (
+            0 => 
+            array (
+                'id' => 1,
+                'folio' => 'G-ALM-2024-0001',
+                'confidential' => 0,
+                'motive' => 'Non aut tempora et ut in iure voluptas debitis hic ut facilis molestiae nulla',
+                'observation' => 'Aliquid sapiente iusto iusto praesentium ut in ut quia sed vel voluptates sunt voluptas',
+                'date_delivery' => '2024-11-15',
+                'delivery_address' => 'Quis suscipit molestiae officia natus dolore tempor soluta nulla aspernatur omnis',
+                'status' => 'aprobado por DG',
+                'company_id' => 1,
+                'project_id' => 1,
+                'approval_chain_id' => 1,
+                'assign_user_id' => NULL,
+                'created_at' => '2024-11-14 16:31:09',
+                'updated_at' => '2024-11-14 16:36:33',
+            ),
+        ));
         
         
     }
