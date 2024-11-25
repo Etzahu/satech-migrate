@@ -32,7 +32,7 @@ class ViewPurchaseRequisition extends ViewRecord
             Action::make('Enviar requisición')
                 ->color('success')
                 ->requiresConfirmation()
-                ->visible($this->record->status()->canBe('revisión por almacén') || $this->record->status()->canBe('aprobado por revisor') && $this->record->items->count() > 0)
+                ->visible($this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 || $this->record->status()->canBe('aprobado por revisor') && $this->record->items->count() > 0)
                 ->action(function () {
                     if ($this->record->confidential) {
                         $this->record->status()->transitionTo('aprobado por revisor');

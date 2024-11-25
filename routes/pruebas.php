@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Filament\Notifications\Notification;
 
 Route::get('tablas', function () {
 
@@ -295,5 +296,27 @@ Route::get('management-user', function () {
 });
 
 Route::get('chains',function(){
-    $user= User::with(['approverChainsPR'])->find(331);
+    // $user= User::with(['approverChainsPR'])->find(331);
+    try {
+        $user = auth()->user();
+        $user->notify(
+            Notification::make()
+                ->title('Revisar existencias de requisicion')
+                ->toDatabase()
+        );
+    }catch (\Exception $e){
+        dd($e->getMessage());
+    }
+});
+
+Route::get('flatMap',function(){
+    $rq = PurchaseRequisition::with('items')->first();
+    if (filled($rq->orders)) {
+        $flattened = $rq->orders->flatMap(function ($values) {
+            return $values->items;
+        });
+        return $flattened->pluck('product_id');
+    }else{
+        return null;
+    }
 });

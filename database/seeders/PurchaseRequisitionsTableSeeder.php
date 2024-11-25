@@ -28,13 +28,13 @@ class PurchaseRequisitionsTableSeeder extends Seeder
                 'observation' => 'Aliquid sapiente iusto iusto praesentium ut in ut quia sed vel voluptates sunt voluptas',
                 'date_delivery' => '2024-11-15',
                 'delivery_address' => 'Quis suscipit molestiae officia natus dolore tempor soluta nulla aspernatur omnis',
-                'status' => 'aprobado por DG',
+                'status' => 'comprador asignado',
                 'company_id' => 1,
                 'project_id' => 1,
                 'approval_chain_id' => 1,
-                'assign_user_id' => NULL,
+                'assign_user_id' => 199,
                 'created_at' => '2024-11-14 16:31:09',
-                'updated_at' => '2024-11-14 16:36:33',
+                'updated_at' => '2024-11-21 17:09:20',
             ),
         ));
         

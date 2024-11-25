@@ -33,8 +33,8 @@ class PurchasesPanelProvider extends PanelProvider
         return $panel
             ->id('compras')
             ->path('compras')
+            ->databaseNotifications()
             ->sidebarFullyCollapsibleOnDesktop()
-            // ->spa()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->spaUrlExceptions([
                 '*/empresa/*',
@@ -83,6 +83,7 @@ class PurchasesPanelProvider extends PanelProvider
                         'revisor_requisicion_compra',
                         'autorizador_requisicion_compra',
                         'director_general_requisicion_compra',
+                        'comprador',
                     ]),
             ]);
     }

@@ -5,6 +5,7 @@ namespace App\StateMachines;
 use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PurchaseRequisition\Notification;
+use Filament\Notifications\Notification as NotificationFilament;
 use App\Services\PurchaseRequisitionCreationService;
 use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
 
@@ -18,7 +19,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
     public function transitions(): array
     {
         return [
-            'borrador' => ['revisión por almacén', 'revisión','aprobado por revisor'],
+            'borrador' => ['revisión por almacén', 'revisión', 'aprobado por revisor'],
 
             'devuelto por revisor' => ['revisión por almacén', 'revisión'],
             'devuelto por gerencia' => ['revisión por almacén', 'revisión'],
@@ -47,6 +48,9 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('revisar existencia', $model);
                     Mail::to($recipient)->send(new Notification($data));
+                    // NotificationFilament::make()
+                    //     ->title('Revisar existencias de nueva requisicion')
+                    //     ->sendToDatabase($users);
                 },
             ],
             'revisión' => [

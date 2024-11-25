@@ -2107,6 +2107,30 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-11-05 20:49:43',
                 'updated_at' => '2024-11-05 20:49:43',
             ),
+            261 => 
+            array (
+                'id' => 262,
+                'name' => 'view_p::r::admin::assing',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-21 17:19:16',
+                'updated_at' => '2024-11-21 17:19:16',
+            ),
+            262 => 
+            array (
+                'id' => 263,
+                'name' => 'view_any_p::r::admin::assing',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-21 17:19:16',
+                'updated_at' => '2024-11-21 17:19:16',
+            ),
+            263 => 
+            array (
+                'id' => 264,
+                'name' => 'update_p::r::admin::assing',
+                'guard_name' => 'web',
+                'created_at' => '2024-11-21 17:19:16',
+                'updated_at' => '2024-11-21 17:19:16',
+            ),
         ));
         
         

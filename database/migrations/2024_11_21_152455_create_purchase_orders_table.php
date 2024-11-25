@@ -11,16 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchase_requisition_items', function (Blueprint $table) {
+        Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantity_requested');
-            $table->integer('quantity_warehouse')->default(0);
-            $table->integer('quantity_purchase');
-            $table->text('observation', 600);
-            $table->foreignId('user_warehouse_id')->nullable()->constrained('users');
             $table->foreignId('requisition_id')->constrained('purchase_requisitions')
-                ->onDelete('cascade');
-            $table->foreignId('product_id')->constrained('products')
                 ->onDelete('cascade');
             $table->timestamps();
         });
@@ -31,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchase_requisition_items');
+        Schema::dropIfExists('purchase_orders');
     }
 };

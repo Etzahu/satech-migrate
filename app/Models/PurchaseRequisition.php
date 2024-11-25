@@ -5,6 +5,7 @@ namespace App\Models;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use App\StateMachines\PROrderStateMachine;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -33,6 +34,7 @@ class PurchaseRequisition extends Model implements HasMedia
         'confidential',
         'observation',
         'status',
+        'status_order',
         'company_id',
         'project_id',
         'assign_user_id',
@@ -54,7 +56,8 @@ class PurchaseRequisition extends Model implements HasMedia
     ];
 
     public $stateMachines = [
-        'status' => PurchaseRequisitionStateMachine::class
+        'status' => PurchaseRequisitionStateMachine::class,
+        'status_order' => PROrderStateMachine::class,
     ];
     public function company(): BelongsTo
     {
@@ -77,6 +80,10 @@ class PurchaseRequisition extends Model implements HasMedia
     public function responsiblePurchaseOrder(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assign_user_id');
+    }
+    public function orders(): HasMany
+    {
+        return $this->hasMany(PurchaseOrder::class, 'id');
     }
 
     // SCOPES
@@ -143,6 +150,21 @@ class PurchaseRequisition extends Model implements HasMedia
         return $query
             ->has('responsiblePurchaseOrder')
             ->OrWhere('status', 'aprobado por DG')
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
+    }
+    public function scopeReadyAssingCount(Builder $query)
+    {
+        return $query
+            ->where('status', 'aprobado por DG')
+            ->where('company_id', session()->get('company_id'))
+            ->count();
+    }
+    public function scopeMyAssing(Builder $query)
+    {
+        return $query
+            ->where('assign_user_id', auth()->user()->id)
+            // ->OrWhere('status', 'aprobado por DG')
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }

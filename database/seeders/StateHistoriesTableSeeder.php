@@ -319,6 +319,21 @@ class StateHistoriesTableSeeder extends Seeder
                 'created_at' => '2024-11-14 16:36:33',
                 'updated_at' => '2024-11-14 16:36:33',
             ),
+            20 => 
+            array (
+                'id' => 21,
+                'model_type' => 'App\\Models\\PurchaseRequisition',
+                'model_id' => 1,
+                'field' => 'status',
+                'from' => 'aprobado por DG',
+                'to' => 'comprador asignado',
+                'custom_properties' => '[]',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 199,
+                'changed_attributes' => '{"status": {"new": "comprador asignado", "old": "aprobado por DG"}}',
+                'created_at' => '2024-11-21 17:09:20',
+                'updated_at' => '2024-11-21 17:09:20',
+            ),
         ));
         
         

@@ -7,26 +7,21 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use Filament\Resources\Pages\Page;
 use App\Models\PurchaseRequisition;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Purchases\Resources\PRAssingResource\Pages;
-use App\Filament\Purchases\Resources\PRAssingResource\RelationManagers;
+use App\Filament\Purchases\Resources\PRAdminAssingResource\Pages;
 
-
-class PRAssingResource extends Resource
+class PRAdminAssingResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
     protected static ?string $modelLabel = 'Requisición';
     protected static ?string $pluralModelLabel = 'Requisiciones';
-    protected static ?string $navigationLabel = 'Mis asignaciones';
-    protected static ?string $slug = 'requisiciones/asignacion';
+    protected static ?string $navigationLabel = 'Asignaciones';
+    protected static ?string $slug = 'requisiciones/admin/asignacion';
     protected static ?string $navigationGroup = 'Requisiciones';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 7;
-    // protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+    protected static ?int $navigationSort = 6;
 
     public static function canAccess(): bool
     {
@@ -37,11 +32,11 @@ class PRAssingResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->myAssing();
+            ->readyAssing();
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::myAssing()->count();
+        return static::getModel()::readyAssingCount();
     }
 
     public static function table(Table $table): Table
@@ -82,7 +77,7 @@ class PRAssingResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn(PurchaseRequisition $record): string => PRAssingResource::getUrl('view-pdf', ['record' => $record->id]))
+                        ->url(fn(PurchaseRequisition $record): string => PRAdminAssingResource::getUrl('view-pdf', ['record' => $record->id]))
                 ]),
             ]);
     }
@@ -90,11 +85,9 @@ class PRAssingResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePRAssingResource::route('/'),
+            'index' => Pages\ManagePRAdminAssing::route('/'),
             'view' => Pages\View::route('/{record}'),
             'view-pdf' => Pages\ViewPdf::route('/{record}/pdf'),
-            'orders.create' => Pages\CreateOrder::route('{record}/orden/crear'),
         ];
     }
-
 }

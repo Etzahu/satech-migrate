@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PRAssingResource\Pages;
+namespace App\Filament\Purchases\Resources\PRAdminAssingResource\Pages;
 
+use App\Filament\Purchases\Resources\PRAdminAssingResource;
 use Filament\Infolists\Infolist;
 use Illuminate\Support\Facades\Storage;
-use Filament\Resources\Pages\ViewRecord;
 use App\Services\PurchaseRequisitionCreationService;
-use App\Filament\Purchases\Resources\PRAssingResource;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
+use Filament\Resources\Pages\ViewRecord;
 
 class ViewPdf extends ViewRecord
 {
-    protected static string $resource = PRAssingResource::class;
+    protected static string $resource = PRAdminAssingResource::class;
     public function infolist(Infolist $infolist): Infolist
     {
         $service = new PurchaseRequisitionCreationService();

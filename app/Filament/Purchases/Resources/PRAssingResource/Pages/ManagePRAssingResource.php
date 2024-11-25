@@ -2,11 +2,11 @@
 
 namespace App\Filament\Purchases\Resources\PRAssingResource\Pages;
 
-use App\Filament\Purchases\Resources\PRAssingResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use App\Filament\Purchases\Resources\PRAssingResource;
 
-class ManagePRApprovalDGS extends ManageRecords
+class ManagePRAssingResource extends ManageRecords
 {
     protected static string $resource = PRAssingResource::class;
 

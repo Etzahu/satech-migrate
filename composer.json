@@ -17,6 +17,7 @@
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
+        "njxqlus/filament-relation-manager-component": "^1.0",
         "orangehill/iseed": "^3.0",
         "rap2hpoutre/fast-excel": "^5.5",
         "shanerbaner82/panel-roles": "*"

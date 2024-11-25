@@ -19,7 +19,8 @@ return new class extends Migration
             $table->text('observation', 600);
             $table->date('date_delivery');
             $table->string('delivery_address', 500);
-            $table->string('status', 50)->nullable();
+            $table->string('status', 80)->nullable();
+            $table->string('status_order', 80)->nullable();
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('project_id')->constrained('project_purchases');
             $table->foreignId('approval_chain_id')->nullable()->constrained('purchase_requisition_approval_chains');
