@@ -9,9 +9,10 @@ use App\Models\PurchaseRequisition;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Filament\Notifications\Notification;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Filament\Notifications\Notification;
 
 Route::get('tablas', function () {
 
@@ -320,3 +321,4 @@ Route::get('flatMap',function(){
         return null;
     }
 });
+
