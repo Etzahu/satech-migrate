@@ -47,7 +47,7 @@ class PurchaseRequisitionApprovalChainResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('approver_id')
                     ->label('Autoriza/Aprueba')
-                    ->options(User::approvers()->pluck('name','id'))
+                    ->options(User::approvers()->pluck('name', 'id'))
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -82,11 +82,7 @@ class PurchaseRequisitionApprovalChainResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+        ;
     }
     public static function getRelations(): array
     {

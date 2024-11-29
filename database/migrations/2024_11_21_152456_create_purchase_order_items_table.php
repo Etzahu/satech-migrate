@@ -13,19 +13,16 @@ return new class extends Migration
     {
         Schema::create('purchase_order_items', function (Blueprint $table) {
             $table->id();
-            $table->integer('quantity_requested');
-            $table->integer('quantity_purchase');
-            $table->text('observation', 600);
+            $table->integer('quantity');
+            $table->decimal('unit_price',10,2)->default(0);
+            $table->text('observation', 600)->nullable();
             $table->foreignId('product_id')->constrained('products')
                 ->onDelete('cascade');
-            $table->foreignId('purchase_order_id')->nullable()->constrained('purchase_orders')
+            $table->foreignId('purchase_order_id')->constrained('purchase_orders')
                 ->onDelete('cascade');
             $table->timestamps();
         });
     }
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('purchase_order_items');

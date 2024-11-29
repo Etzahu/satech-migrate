@@ -4,12 +4,14 @@ namespace App\Filament\Purchases\Resources\PRAssingResource\Pages;
 
 use Filament\Tables\Table;
 use App\Services\OrderService;
+use App\Models\PurchaseOrderItem;
 use Filament\Resources\Pages\Page;
-use Filament\Forms\Contracts\HasForms;
 
+use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\CreateAction;
 use Illuminate\Database\Eloquent\Collection;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -86,16 +88,20 @@ class CreateOrder extends Page implements HasForms, HasTable
                 //
             ])
             ->bulkActions([
-                BulkAction::make('Agregar a la orden')
+                BulkAction::make('Agregar elementos  a la orden')
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
-                        $collection = $records->map(function ($record) {
-                            return [
-                                'product_id' => $record->product_id,
-                                'quantity' => $record->quantity_purchase,
-                            ];
+                        $records->each(function ($record) {
+                            PurchaseOrderItem::create([
+                                'product_id'=> $record->product_id,
+                                'quantity'=> $record->quantity_purchase
+                            ]);
                         });
-                        dd($collection);
+                        Notification::make()
+                            ->title('Se agregaron los elementos a la orden')
+                            ->success()
+                            ->send();
+                        $this->resetTable();
                     })
             ]);
     }

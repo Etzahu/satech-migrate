@@ -1,0 +1,67 @@
+<?php
+
+namespace App\StateMachines;
+
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NotificationPurchaseProvider;
+use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
+
+class StatusPurchaseProviderMachine extends StateMachine
+{
+    public function recordHistory(): bool
+    {
+        return true;
+    }
+
+    public function transitions(): array
+    {
+        return [
+            'revisión' => ['aprobado', 'rechazado'],
+        ];
+    }
+
+    public function defaultState(): ?string
+    {
+        return 'revisión';
+    }
+    public function afterTransitionHooks(): array
+    {
+        return [
+            'revisión' => [
+                function ($from, $model) {
+                    $recipient = User::role('administrador_compras')->first()->email;
+                    $data = [
+                        'subject' => 'Nuevo proveedor para revisar',
+                        'rfc' => $model->rfc,
+                        'name' => $model->company_name,
+                    ];
+                    Mail::to($recipient)->send(new NotificationPurchaseProvider($data));
+                },
+            ],
+            'aprobado' => [
+                function ($from, $model) {
+                    $recipient = $model->UserRequest->email;
+                    $data = [
+                        'subject' => 'Proveedor aprobado',
+                        'rfc' => $model->rfc,
+                        'name' => $model->company_name,
+                    ];
+                    Mail::to($recipient)->send(new NotificationPurchaseProvider($data));
+                },
+            ],
+            'rechazado' => [
+                function ($from, $model) {
+                    $recipient = $model->UserRequest->email;
+                    $data = [
+                        'subject' => 'Proveedor rechazado',
+                        'rfc' => $model->rfc,
+                        'name' => $model->company_name,
+                    ];
+                    Mail::to($recipient)->send(new NotificationPurchaseProvider($data));
+                },
+            ],
+
+        ];
+    }
+}

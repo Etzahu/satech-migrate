@@ -4,6 +4,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Management;
 use App\Models\CategoryFamily;
+use App\Models\PurchaseProvider;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
 use Illuminate\Support\Facades\Auth;
@@ -258,22 +259,11 @@ Route::get('media-test', function () {
 
 // TODO: este codigo  es para reenviar un correo dependiendo el status de una requisicion
 Route::get('history', function () {
-    $model = PurchaseRequisition::find(1);
-    $from =$model->status()->latest()->from;
-    return ($from);
-    return true;
-    $array = $model->status()->stateMachine()->transitions();
-    $from = 'borrador';
-    $to = 'revisión por almacén';
-    $afterTransitionHooks = $model->status()->stateMachine()->afterTransitionHooks()[$to];
-    // $afterTransitionHooks = $model->status()->stateMachine()->afterTransitionHooks()[$to][0];
-    // $afterTransitionHooks($to,$model);
-    collect($afterTransitionHooks)
-        ->each(function ($callable) use ($from, $model) {
-            dump($callable);
-            $callable($from, $model);
-        });
-    // return array_unique(array_reduce($array, 'array_merge', array()));
+    $model = PurchaseProvider::find(1);
+    $afterTransitionHooks = $model->status()->stateMachine()->afterTransitionHooks();
+    dd($afterTransitionHooks);
+    $afterTransitionHooks('',$model);
+
 });
 Route::get('items', function () {
     $model = PurchaseRequisition::find(3);
@@ -321,4 +311,3 @@ Route::get('flatMap',function(){
         return null;
     }
 });
-

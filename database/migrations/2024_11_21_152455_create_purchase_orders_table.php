@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
+            $table->string('folio')->default('N/A');
+            $table->string('currency',10)->default('MXN');
+            // $table->foreignId('provider_id')->constrained('providers');
+            $table->foreignId('purchaser_user_id')->constrained('users');
+            $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('requisition_id')->constrained('purchase_requisitions')
                 ->onDelete('cascade');
             $table->timestamps();

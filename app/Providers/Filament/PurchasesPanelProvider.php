@@ -31,10 +31,11 @@ class PurchasesPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->id('compras')
-            ->path('compras')
-            ->databaseNotifications()
-            ->sidebarFullyCollapsibleOnDesktop()
+        ->id('compras')
+        ->path('compras')
+        ->databaseNotifications()
+        ->sidebarFullyCollapsibleOnDesktop()
+        // ->unsavedChangesAlerts()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->spaUrlExceptions([
                 '*/empresa/*',
@@ -71,7 +72,6 @@ class PurchasesPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->unsavedChangesAlerts()
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 PanelRoles::make()

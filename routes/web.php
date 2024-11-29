@@ -17,15 +17,4 @@ if (config('app.env') === 'local') {
 Route::get('empresa/{id}', [LoginController::class, 'setCompany'])
     ->name('company')
     ->middleware('auth');
-    Route::get('qr', function(){
-        $data = QrCode::size(512)
-                ->format('png')
-                ->merge('/storage/app/public/logotipo_GPT_negro.png')
-                ->errorCorrection('M')
-                ->generate(
-                    'https://gptservices.com/perfil-corporativo-en',
-                );
-
-            return response($data)
-                ->header('Content-type', 'image/png');
-    });
+    
