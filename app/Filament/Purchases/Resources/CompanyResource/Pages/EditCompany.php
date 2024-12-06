@@ -2,10 +2,9 @@
 
 namespace App\Filament\Purchases\Resources\CompanyResource\Pages;
 
-use Filament\Actions;
-use Illuminate\Support\Str;
-use Filament\Resources\Pages\EditRecord;
 use App\Filament\Purchases\Resources\CompanyResource;
+use Filament\Actions;
+use Filament\Resources\Pages\EditRecord;
 
 class EditCompany extends EditRecord
 {
@@ -16,10 +15,5 @@ class EditCompany extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
-    }
-    protected function mutateFormDataBeforeSave(array $data): array
-    {
-        $data['acronym'] = Str::of($data['acronym'])->upper()->replace(' ', '');
-        return $data;
     }
 }

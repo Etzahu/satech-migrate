@@ -40,7 +40,6 @@ class PurchaseRequisitionCreationService
         return PurchaseRequisitionApprovalChain::where('requester_id', auth()->user()->id)->first()->id;
     }
     public function getManangement()
-
     {
         return auth()->user()->management->acronym;
     }

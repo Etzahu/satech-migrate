@@ -30,7 +30,7 @@ class CompanySession
             session()->forget(['company_id', 'company_name']);
             session([
                 'company_id' => $company->id,
-                'company_name' => $company->name,
+                'company_name' => $company->short_name,
                 'company_acronym' => $company->acronym,
             ]);
         }

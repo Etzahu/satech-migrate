@@ -83,7 +83,7 @@ class PurchaseRequisition extends Model implements HasMedia
     }
     public function orders(): HasMany
     {
-        return $this->hasMany(PurchaseOrder::class, 'id');
+        return $this->hasMany(PurchaseOrder::class, 'requisition_id');
     }
 
     // SCOPES

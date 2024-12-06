@@ -2131,6 +2131,110 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-11-21 17:19:16',
                 'updated_at' => '2024-11-21 17:19:16',
             ),
+            264 => 
+            array (
+                'id' => 265,
+                'name' => 'view_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            265 => 
+            array (
+                'id' => 266,
+                'name' => 'view_any_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            266 => 
+            array (
+                'id' => 267,
+                'name' => 'create_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            267 => 
+            array (
+                'id' => 268,
+                'name' => 'update_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            268 => 
+            array (
+                'id' => 269,
+                'name' => 'restore_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            269 => 
+            array (
+                'id' => 270,
+                'name' => 'restore_any_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            270 => 
+            array (
+                'id' => 271,
+                'name' => 'replicate_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            271 => 
+            array (
+                'id' => 272,
+                'name' => 'reorder_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            272 => 
+            array (
+                'id' => 273,
+                'name' => 'delete_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            273 => 
+            array (
+                'id' => 274,
+                'name' => 'delete_any_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            274 => 
+            array (
+                'id' => 275,
+                'name' => 'force_delete_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            275 => 
+            array (
+                'id' => 276,
+                'name' => 'force_delete_any_purchase::provider',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:17:03',
+                'updated_at' => '2024-12-03 16:17:03',
+            ),
+            276 => 
+            array (
+                'id' => 277,
+                'name' => 'assing_purchase::requisition',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-03 16:45:52',
+                'updated_at' => '2024-12-03 16:45:52',
+            ),
         ));
         
         

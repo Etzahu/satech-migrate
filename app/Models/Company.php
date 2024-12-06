@@ -17,9 +17,16 @@ class Company extends Model
      */
     protected $fillable = [
         'name',
-        'rfc',
+        'short_name',
         'acronym',
-        'address',
+        'rfc',
+        'street',
+        'number',
+        'neighborhood',
+        'municipality',
+        'state',
+        'country',
+        'cp'
     ];
 
     /**

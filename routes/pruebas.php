@@ -1,16 +1,20 @@
 <?php
 
+use Money\Currency;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Management;
 use App\Models\CategoryFamily;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PurchaseProvider;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
+use Money\Currencies\ISOCurrencies;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
+
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -262,8 +266,7 @@ Route::get('history', function () {
     $model = PurchaseProvider::find(1);
     $afterTransitionHooks = $model->status()->stateMachine()->afterTransitionHooks();
     dd($afterTransitionHooks);
-    $afterTransitionHooks('',$model);
-
+    $afterTransitionHooks('', $model);
 });
 Route::get('items', function () {
     $model = PurchaseRequisition::find(3);
@@ -280,13 +283,11 @@ Route::get('management-user', function () {
     $user = User::approvers()->get();
     $management = Management::all()->pluck('responsible_id')->unique();
     dd($user->toArray(), $management);
-    $user = User::withWhereHas('management', function($query)
-    {
-    })->get();
+    $user = User::withWhereHas('management', function ($query) {})->get();
     // return $user;
 });
 
-Route::get('chains',function(){
+Route::get('chains', function () {
     // $user= User::with(['approverChainsPR'])->find(331);
     try {
         $user = auth()->user();
@@ -295,19 +296,46 @@ Route::get('chains',function(){
                 ->title('Revisar existencias de requisicion')
                 ->toDatabase()
         );
-    }catch (\Exception $e){
+    } catch (\Exception $e) {
         dd($e->getMessage());
     }
 });
 
-Route::get('flatMap',function(){
+Route::get('flatMap', function () {
     $rq = PurchaseRequisition::with('items')->first();
     if (filled($rq->orders)) {
         $flattened = $rq->orders->flatMap(function ($values) {
             return $values->items;
         });
         return $flattened->pluck('product_id');
-    }else{
+    } else {
         return null;
     }
+});
+
+Route::get('rq-order', function () {
+    $rq = PurchaseRequisition::find(1);
+    return $rq->orders;
+});
+
+Route::get('money', function () {
+    $currencies = new ISOCurrencies();
+    foreach ($currencies as $currency) {
+        echo '<br>';
+        echo $currency->getCode(); // prints an available currency code within the repository
+        echo '<br>';
+    }
+});
+
+Route::get('pdf-order', function () {
+
+      // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla
+      $rq = PurchaseRequisition::with(['items','approvalChain','project','items.product','items.product.unit','company'])->findOrFail(1);
+      // dd($rq->toArray());
+      // return view('pdf.purchase-order',compact('rq'));
+      // $m1= $rq->getMedia('supports');
+      // $m2= $rq->getMedia('technical_data_sheets');
+      // dd($m1->toArray(),$m2->toArray());
+      $pdf = Pdf::loadView('pdf.purchase-order',compact('rq'));
+      return $pdf->stream($rq->folio.'.pdf');
 });

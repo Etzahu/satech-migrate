@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 
+use Filament\Facades\Filament;
+
 use Filament\Notifications\Notification;
 
 class LoginController extends Controller
@@ -59,22 +61,25 @@ class LoginController extends Controller
 
     public function logout()
     {
-        Session::flush();
-        Auth::logout();
-        return redirect()->route('login');
+        Filament::auth()->logout();
+
+        session()->invalidate();
+        session()->regenerateToken();
+        // Session::flush();
+        // Auth::logout();
+        // return redirect()->route('login');
     }
 
     public function setCompany($id, $redirect = true)
     {
-
-        $companies = Company::select('id', 'name', 'acronym')->get();
+        $companies = Company::select('id', 'name', 'short_name', 'acronym')->get();
         session()->forget('companies');
         session(['companies' => $companies->toArray()]);
         $company = Company::find($id);
         session()->forget(['company_id', 'company_name']);
         session([
             'company_id' => $company->id,
-            'company_name' => $company->name,
+            'company_name' => $company->short_name,
             'company_acronym' => $company->acronym,
         ]);
         $intended_url = request()->session()->get('url.intended');

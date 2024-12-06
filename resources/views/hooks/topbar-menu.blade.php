@@ -5,17 +5,17 @@
     </x-slot>
 
     <x-filament::dropdown.list>
-        @foreach (session()->get('companies') as $company)
-            @if (session()->get('company_id') == $company['id'])
-                <x-filament::dropdown.list.item href="{{ route('company', 1) }}" tag="a" color="danger" disabled>
-                    {{ $company['name'] }}
+        @foreach (App\Models\Company::all() as $company)
+            @if (session()->get('company_id') == $company->id)
+                <x-filament::dropdown.list.item href="{{ route('company', $company->id) }}" tag="a" color="danger"
+                    disabled>
+                    {{ $company->short_name }}
                 </x-filament::dropdown.list.item>
             @else
-                <x-filament::dropdown.list.item href="{{ route('company', $company['id']) }}" tag="a">
-                    {{ $company['name'] }}
+                <x-filament::dropdown.list.item href="{{ route('company', $company->id) }}" tag="a">
+                    {{ $company->short_name }}
                 </x-filament::dropdown.list.item>
             @endif
         @endforeach
-
     </x-filament::dropdown.list>
 </x-filament::dropdown>

@@ -100,32 +100,92 @@ class MigrationsTableSeeder extends Seeder
             13 => 
             array (
                 'id' => 14,
-                'migration' => '2024_10_14_180507_create_measure_units_table',
+                'migration' => '2024_10_14_180507_create_category_families_table',
                 'batch' => 1,
             ),
             14 => 
             array (
                 'id' => 15,
-                'migration' => '2024_10_14_180508_create_products_table',
+                'migration' => '2024_10_14_180507_create_measure_units_table',
                 'batch' => 1,
             ),
             15 => 
             array (
                 'id' => 16,
-                'migration' => '2024_10_14_180509_create_purchase_requisitions_table',
+                'migration' => '2024_10_14_180508_create_products_table',
                 'batch' => 1,
             ),
             16 => 
             array (
                 'id' => 17,
-                'migration' => '2024_10_14_180510_create_requisition_items_table',
+                'migration' => '2024_10_14_180508_create_project_purchases_table',
                 'batch' => 1,
             ),
             17 => 
             array (
                 'id' => 18,
-                'migration' => '2024_10_16_134030_create_category_families_table',
-                'batch' => 2,
+                'migration' => '2024_10_14_180509_create_project_purchase_category_table',
+                'batch' => 1,
+            ),
+            18 => 
+            array (
+                'id' => 19,
+                'migration' => '2024_10_14_180509_create_purchase_requisitions_table',
+                'batch' => 1,
+            ),
+            19 => 
+            array (
+                'id' => 20,
+                'migration' => '2024_10_14_180510_create_purchase_requisition_items_table',
+                'batch' => 1,
+            ),
+            20 => 
+            array (
+                'id' => 21,
+                'migration' => '2024_10_16_202949_create_pending_transitions_table',
+                'batch' => 1,
+            ),
+            21 => 
+            array (
+                'id' => 22,
+                'migration' => '2024_10_16_202949_create_state_histories_table',
+                'batch' => 1,
+            ),
+            22 => 
+            array (
+                'id' => 23,
+                'migration' => '2024_10_17_181443_create_media_table',
+                'batch' => 1,
+            ),
+            23 => 
+            array (
+                'id' => 24,
+                'migration' => '2024_11_20_182543_create_notifications_table',
+                'batch' => 1,
+            ),
+            24 => 
+            array (
+                'id' => 25,
+                'migration' => '2024_11_21_152453_create_purchase_providers_table',
+                'batch' => 1,
+            ),
+            25 => 
+            array (
+                'id' => 26,
+                'migration' => '2024_11_21_152454_create_provider_contacts_table',
+                'batch' => 1,
+            ),
+            26 => 
+            array (
+                'id' => 27,
+                'migration' => '2024_11_21_152455_create_purchase_orders_table',
+                'batch' => 1,
+            ),
+            27 => 
+            array (
+                'id' => 28,
+                'migration' => '2024_11_21_152456_create_purchase_order_items_table',
+                'batch' => 1,
             ),
         ));
         

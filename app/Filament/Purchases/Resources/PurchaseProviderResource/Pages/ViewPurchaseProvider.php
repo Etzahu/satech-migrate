@@ -18,7 +18,7 @@ class ViewPurchaseProvider extends ViewRecord
         return [
             Actions\EditAction::make(),
             Actions\Action::make('responder')
-                ->visible(($this->record->status()->canBe('aprobado') || $this->record->status()->canBe('rechazado')) && auth()->user()->hasRole('administrador_compras') )
+                ->visible(($this->record->status()->canBe('aprobado') || $this->record->status()->canBe('rechazado')) && auth()->user()->can('assing_purchase::requisition'))
                 ->form([
                     Select::make('request')
                         ->label('Respuesta')
@@ -31,9 +31,9 @@ class ViewPurchaseProvider extends ViewRecord
                 ->action(function (array $data): void {
                     $this->record->status()->transitionTo($data['request']);
                     Notification::make()
-                    ->title('Respuesta guardada')
-                    ->success()
-                    ->send();
+                        ->title('Respuesta guardada')
+                        ->success()
+                        ->send();
                 })
                 ->color('success')
         ];

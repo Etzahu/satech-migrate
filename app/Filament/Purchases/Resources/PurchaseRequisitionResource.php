@@ -50,6 +50,7 @@ class PurchaseRequisitionResource extends Resource implements HasShieldPermissio
             'view_review',
             'view_approve',
             'view_approve_dg',
+            'assing'
         ];
     }
     public static function getEloquentQuery(): Builder

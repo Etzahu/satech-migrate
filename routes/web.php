@@ -17,4 +17,4 @@ if (config('app.env') === 'local') {
 Route::get('empresa/{id}', [LoginController::class, 'setCompany'])
     ->name('company')
     ->middleware('auth');
-    
+

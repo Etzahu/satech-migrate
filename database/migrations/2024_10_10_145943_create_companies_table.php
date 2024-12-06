@@ -13,10 +13,17 @@ return new class extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 100);
+            $table->string('name', 150);
+            $table->string('short_name', 100);
             $table->string('acronym', 3)->unique();
             $table->string('rfc', 18);
-            $table->string('address', 255);
+            $table->string('street');
+            $table->string('number');
+            $table->string('neighborhood');
+            $table->string('municipality');
+            $table->string('state');
+            $table->string('country');
+            $table->string('cp');
             $table->timestamps();
         });
     }

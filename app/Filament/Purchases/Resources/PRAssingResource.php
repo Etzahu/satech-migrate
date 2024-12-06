@@ -31,7 +31,7 @@ class PRAssingResource extends Resource
     public static function canAccess(): bool
     {
         return true;
-        // return auth()->user()->can('view_approve_dg_purchase::requisition');
+        return auth()->user()->can('assing_purchase::requisition');
     }
 
     public static function getEloquentQuery(): Builder
@@ -86,6 +86,12 @@ class PRAssingResource extends Resource
                 ]),
             ]);
     }
+    // public static function getRelations(): array
+    // {
+    //     return [
+    //         RelationManagers\OrdersRelationManager::class,
+    //     ];
+    // }
 
     public static function getPages(): array
     {
@@ -96,5 +102,4 @@ class PRAssingResource extends Resource
             'orders.create' => Pages\CreateOrder::route('{record}/orden/crear'),
         ];
     }
-
 }
