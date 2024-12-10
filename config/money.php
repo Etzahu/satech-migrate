@@ -4,7 +4,7 @@ return [
 
     'defaults' => [
 
-        'currency'  => env('MONEY_DEFAULTS_CURRENCY', 'USD'),
+        'currency'  => env('MONEY_DEFAULTS_CURRENCY', 'MXN'),
 
         'convert'   => env('MONEY_DEFAULTS_CONVERT', false),
 
@@ -1673,7 +1673,7 @@ return [
             'decimal_mark'        => ',',
             'thousands_separator' => '.',
         ],
-        
+
         'VED' => [
             'name'                => 'Dijital Bolívar',
             'code'                => 926,

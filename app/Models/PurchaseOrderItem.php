@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Cknow\Money\Casts\MoneyDecimalCast;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PurchaseOrderItem extends Model
 {
@@ -19,6 +21,7 @@ class PurchaseOrderItem extends Model
     protected $fillable = [
         'quantity',
         'unit_price',
+        'sub_total',
         'observation',
         'purchase_order_id',
         'product_id',
@@ -34,7 +37,7 @@ class PurchaseOrderItem extends Model
         'purchase_order_id' => 'integer',
         'product_id' => 'integer',
     ];
-
+   
     public function purchase(): BelongsTo
     {
         return $this->belongsTo(PurchaseOrder::class, 'purchase_order_id');

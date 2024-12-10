@@ -8,6 +8,7 @@ use App\Models\Product;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\Summarizers\Sum;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
 use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
@@ -23,7 +24,6 @@ class ItemsRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-
         return $form
             ->schema([
                 Forms\Components\TextInput::make('quantity')
@@ -33,14 +33,17 @@ class ItemsRelationManager extends RelationManager
                     ->integer(),
                 MoneyInput::make('unit_price')
                     ->label('Precio unitario')
+                    ->currency('MXN')
+                    ->locale('es_MX')
                     ->required()
                     ->minValue(0)
                     ->numeric(),
                 Forms\Components\Select::make('product_id')
                     ->label('Producto/Servicio')
-                    ->options(Product::all()->pluck('name', 'id'))
+                    ->options(Product::whereNotIn('id', $this->itemsExclude())->pluck('name', 'id'))
                     ->searchPrompt('Busca los productos o servicios por su descripción')
                     ->searchable()
+                    ->noSearchResultsMessage('No se encontró el producto/servicio.')
                     ->columnSpan('full'),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observaciones')
@@ -49,23 +52,45 @@ class ItemsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $this->itemsExclude();
         return $table
             ->recordTitleAttribute('quantity')
             ->columns([
+                Tables\Columns\TextColumn::make('product.name')
+                ->label('Producto/Servicio'),
                 Tables\Columns\TextColumn::make('quantity')
                     ->label('Cantidad'),
-                Tables\Columns\TextColumn::make('product.name')
-                    ->label('Producto/Servicio'),
                 MoneyColumn::make('unit_price')
+                    ->currency('MXN')
+                    ->locale('es_MX')
                     ->label('Precio unitario'),
+                    // ->summarize(Sum::make()->money('MXN', divideBy: 100, locale: 'es_MX')),
+                MoneyColumn::make('sub_total')
+                    ->currency('MXN')
+                    ->locale('es_MX')
+                    ->label('Total')
+                    ->summarize(Sum::make()->label('Total')->money('MXN', divideBy: 100, locale: 'es_MX')),
             ])
 
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                ->mutateFormDataUsing(function (array $data): array {
+                    $data['sub_total'] = $data['quantity'] * $data['unit_price'];
+                    return $data;
+                }),
+                Tables\Actions\DeleteAction::make()
+                ->mutateFormDataUsing(function (array $data): array {
+                    $data['sub_total'] = $data['quantity'] * $data['unit_price'];
+                    return $data;
+                }),
             ]);
+    }
+    public function itemsExclude()
+    {
+        $items = $this->ownerRecord->items?->pluck('product_id')->all();
+        return $items;
     }
 }

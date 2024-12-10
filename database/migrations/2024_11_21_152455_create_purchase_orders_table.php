@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('currency', 5)->default('MXN');
 
             $table->string('type_payment', 100);
-            $table->decimal('discount', 10, 2)->default(0);
+            $table->integer('discount',)->default(0);
             $table->string('form_payment', 100);
             $table->string('term_payment', 100);
             $table->string('condition_payment', 100);
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('use_cfdi', 100);
             $table->text('shipping_method', 600);
 
-            $table->decimal('tax_iva', 10, 2)->default(0);
+            $table->integer('tax_iva')->default(0);
             $table->decimal('retention_iva', 10, 2)->default(0);
             $table->decimal('retention_isr', 10, 2)->default(0);
             $table->decimal('retention_another', 10, 2)->default(0);

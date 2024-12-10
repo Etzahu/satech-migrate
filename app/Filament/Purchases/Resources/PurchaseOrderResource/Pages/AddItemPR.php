@@ -27,7 +27,7 @@ class AddItemPR extends Page implements HasForms, HasTable
 
     protected static string $resource = PurchaseOrderResource::class;
     protected static string $view = 'filament.purchases.resources.purchase-order-resource.pages.add-item-p-r';
-    protected ?string $heading = 'Agregar partidas de la requisición de compra';
+    protected ?string $heading = 'Agregar partidas';
     protected static ?string $title = 'Partidas';
 
     public $rq;
@@ -101,7 +101,7 @@ class AddItemPR extends Page implements HasForms, HasTable
         if (filled($items)) {
             return in_array($product_id, $items) ? false : true;
         } else {
-            return false;
+            return true;
         }
     }
 }

@@ -182,7 +182,9 @@ class PurchaseOrderResource extends Resource
                         Tabs\Tab::make('Partidas')->schema([
                             \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(false)
                         ])
-                        ->hidden(fn(string $operation): bool => $operation === 'create'),
+                            ->hidden(function (string $operation) {
+                                return  $operation === 'create' || $operation === 'App\Filament\Purchases\Resources\PRAssingResource\Pages\CreateOrder';
+                            }),
                     ])
                     ->activeTab(6)
             ]);

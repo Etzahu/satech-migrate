@@ -329,6 +329,7 @@ Route::get('money', function () {
 
 Route::get('pdf-order', function () {
 
+    
       // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla
       $rq = PurchaseRequisition::with(['items','approvalChain','project','items.product','items.product.unit','company'])->findOrFail(1);
       // dd($rq->toArray());

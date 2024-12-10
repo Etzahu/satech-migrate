@@ -2,9 +2,10 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrderResource\Pages;
 
-use App\Filament\Purchases\Resources\PurchaseOrderResource;
 use Filament\Actions;
+use App\Models\PurchaseOrder;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Purchases\Resources\PurchaseOrderResource;
 
 class EditPurchaseOrder extends EditRecord
 {
@@ -14,6 +15,9 @@ class EditPurchaseOrder extends EditRecord
     {
         return [
             Actions\DeleteAction::make(),
+            Actions\Action::make('Agregar partidas de la requisición')
+            ->color('success')
+            ->url(fn(PurchaseOrder $record): string => PurchaseOrderResource::getUrl('add-item', ['record' => $record->id]))
         ];
     }
 }
