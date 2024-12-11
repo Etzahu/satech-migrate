@@ -97,7 +97,7 @@ class AddItemPR extends Page implements HasForms, HasTable
     }
     public function checkItemInOrder($product_id)
     {
-       $items = $this->record->items?->pluck('product_id')->all();
+        $items = $this->record->items?->pluck('product_id')->all();
         if (filled($items)) {
             return in_array($product_id, $items) ? false : true;
         } else {

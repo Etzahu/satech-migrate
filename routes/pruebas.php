@@ -10,11 +10,14 @@ use App\Models\PurchaseProvider;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
 use Money\Currencies\ISOCurrencies;
+use Spatie\Browsershot\Browsershot;
+use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use Filament\Notifications\Notification;
 
+use Filament\Notifications\Notification;
+use function Spatie\LaravelPdf\Support\pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -328,12 +331,21 @@ Route::get('money', function () {
 });
 
 Route::get('pdf-order', function () {
+    // return view('pdf.purchase-order.content');
+    return pdf()
+            ->view('pdf.purchase-order.content' )
+            // ->margins(1, 1, 1, 1)
+            // ->headerView('pdf.purchase-order.header')
+            ->withBrowsershot(function (Browsershot $browsershot) {
+                $browsershot->noSandbox();
+            })
+            ->name('invoice-2023-04-10.pdf');
 
-    
       // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla
       $rq = PurchaseRequisition::with(['items','approvalChain','project','items.product','items.product.unit','company'])->findOrFail(1);
+
       // dd($rq->toArray());
-      // return view('pdf.purchase-order',compact('rq'));
+      return view('pdf.purchase-order',compact('rq'));
       // $m1= $rq->getMedia('supports');
       // $m2= $rq->getMedia('technical_data_sheets');
       // dd($m1->toArray(),$m2->toArray());

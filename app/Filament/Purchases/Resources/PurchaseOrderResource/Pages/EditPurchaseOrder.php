@@ -16,8 +16,14 @@ class EditPurchaseOrder extends EditRecord
         return [
             Actions\DeleteAction::make(),
             Actions\Action::make('Agregar partidas de la requisición')
-            ->color('success')
-            ->url(fn(PurchaseOrder $record): string => PurchaseOrderResource::getUrl('add-item', ['record' => $record->id]))
+                ->color('success')
+                ->url(fn(PurchaseOrder $record): string => PurchaseOrderResource::getUrl('add-item', ['record' => $record->id]))
+        ];
+    }
+    protected function getFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction(),
         ];
     }
 }

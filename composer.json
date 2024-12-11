@@ -24,7 +24,8 @@
         "orangehill/iseed": "^3.0",
         "pelmered/filament-money-field": "^1.4",
         "rap2hpoutre/fast-excel": "^5.5",
-        "shanerbaner82/panel-roles": "*"
+        "shanerbaner82/panel-roles": "*",
+        "spatie/laravel-pdf": "^1.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

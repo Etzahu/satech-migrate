@@ -20,7 +20,7 @@ class ItemsRelationManager extends RelationManager
     protected static ?string $modelLabel = 'Partida';
     protected static ?string $pluralModelLabel = 'Partidas';
     protected static ?string $navigationLabel = 'Partidas';
-    protected static ?string $title = 'Partida';
+    protected static ?string $title = 'Partidas';
 
     public function form(Form $form): Form
     {
@@ -38,13 +38,6 @@ class ItemsRelationManager extends RelationManager
                     ->required()
                     ->minValue(0)
                     ->numeric(),
-                Forms\Components\Select::make('product_id')
-                    ->label('Producto/Servicio')
-                    ->options(Product::whereNotIn('id', $this->itemsExclude())->pluck('name', 'id'))
-                    ->searchPrompt('Busca los productos o servicios por su descripción')
-                    ->searchable()
-                    ->noSearchResultsMessage('No se encontró el producto/servicio.')
-                    ->columnSpan('full'),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observaciones')
             ]);
@@ -54,7 +47,7 @@ class ItemsRelationManager extends RelationManager
     {
         $this->itemsExclude();
         return $table
-            ->recordTitleAttribute('quantity')
+            ->recordTitleAttribute('product.name')
             ->columns([
                 Tables\Columns\TextColumn::make('product.name')
                 ->label('Producto/Servicio'),
@@ -68,8 +61,8 @@ class ItemsRelationManager extends RelationManager
                 MoneyColumn::make('sub_total')
                     ->currency('MXN')
                     ->locale('es_MX')
-                    ->label('Total')
-                    ->summarize(Sum::make()->label('Total')->money('MXN', divideBy: 100, locale: 'es_MX')),
+                    ->label('Importe')
+                    ->summarize(Sum::make()->label('Subtotal')->money('MXN', divideBy: 100, locale: 'es_MX')),
             ])
 
             ->headerActions([
@@ -77,6 +70,7 @@ class ItemsRelationManager extends RelationManager
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                ->modalHeading(fn ( $record) => "Editar partida {$record->product->name}")
                 ->mutateFormDataUsing(function (array $data): array {
                     $data['sub_total'] = $data['quantity'] * $data['unit_price'];
                     return $data;

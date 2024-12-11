@@ -10,11 +10,12 @@ use App\Models\PurchaseOrder;
 use App\Models\PurchaseProvider;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
+use Filament\Forms\Components\Tabs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 use App\Filament\Purchases\Resources\PurchaseOrderResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseOrderResource\RelationManagers;
-use Filament\Forms\Components\Tabs;
 
 class PurchaseOrderResource extends Resource
 {
@@ -152,19 +153,20 @@ class PurchaseOrderResource extends Resource
                         Tabs\Tab::make('Descuento del proveedor')
                             ->columns(3)
                             ->schema([
-                                Forms\Components\TextInput::make('discount')
-                                    ->label('Cantidad')
+                                MoneyInput::make('discount')
+                                    ->label('Descuento')
+                                    ->currency('MXN')
+                                    ->locale('es_MX')
                                     ->required()
-                                    ->numeric()
                                     ->minValue(0)
-                                    ->default(0),
+                                    ->numeric(),
                             ]),
                         Tabs\Tab::make('Fecha de entrega')
                             ->columns(2)
                             ->schema([
                                 Forms\Components\DatePicker::make('initial_delivery_date') //TODO: falta validar esta logica cuando se edita
                                     ->label('Inicial')
-                                    ->minDate(now()->subDays(1))
+                                    ->minDate(now()->subDays(2))
                                     ->required(),
                                 Forms\Components\DatePicker::make('final_delivery_date') //TODO: falta validar esta logica cuando se edita
                                     ->label('Final')
@@ -179,14 +181,8 @@ class PurchaseOrderResource extends Resource
                                     ->required()
                                     ->columnSpanFull(),
                             ]),
-                        Tabs\Tab::make('Partidas')->schema([
-                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(false)
-                        ])
-                            ->hidden(function (string $operation) {
-                                return  $operation === 'create' || $operation === 'App\Filament\Purchases\Resources\PRAssingResource\Pages\CreateOrder';
-                            }),
                     ])
-                    ->activeTab(6)
+                    ->activeTab(1)
             ]);
     }
 
@@ -223,6 +219,13 @@ class PurchaseOrderResource extends Resource
                 Tables\Actions\ViewAction::make(),
 
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\ItemsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

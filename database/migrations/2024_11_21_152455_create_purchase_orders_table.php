@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('currency', 5)->default('MXN');
 
             $table->string('type_payment', 100);
-            $table->integer('discount',)->default(0);
+            $table->integer('discount')->default(0);
             $table->string('form_payment', 100);
             $table->string('term_payment', 100);
             $table->string('condition_payment', 100);
