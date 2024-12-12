@@ -334,10 +334,12 @@ Route::get('pdf-order', function () {
     // return view('pdf.purchase-order.content');
     return pdf()
             ->view('pdf.purchase-order.content' )
-            // ->margins(1, 1, 1, 1)
-            // ->headerView('pdf.purchase-order.header')
+            ->margins(40, 15, 15, 15)
+            ->headerView('pdf.purchase-order.header')
             ->withBrowsershot(function (Browsershot $browsershot) {
-                $browsershot->noSandbox();
+                $browsershot
+                ->noSandbox()
+                ->writeOptionsToFile();
             })
             ->name('invoice-2023-04-10.pdf');
 
