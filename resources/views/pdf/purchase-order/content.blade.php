@@ -180,8 +180,8 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="w-16 px-1 text-xs text-right text-gray-700">Partida 1:</td>
-                        <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Debe ser de 24”</td>
+                        <td class="w-16 px-1 text-xs text-left text-gray-700">Partida 1:</td>
+                        <td class="px-1 text-xs text-left text-gray-700 ">Debe ser de 24”</td>
                     </tr>
                 </tbody>
             </table>
@@ -214,6 +214,7 @@
                     </tbody>
                 </table>
             </div>
+            {{-- Condiciones de entrega --}}
             <div class="pl-4">
                 <table class="w-full">
                     <thead>
@@ -228,8 +229,92 @@
                         </tr>
                     </tbody>
                 </table>
+                <div class="grid w-full grid-cols-2">
+                    <table class="border-r border-black ">
+                        <thead>
+                            <th
+                                class="px-1 text-xs text-center text-black underline border-white decoration-solid">
+                                Dirección de entrega</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
+                            </tr>
+                            <tr>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
+                            </tr>
+                            <tr>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
+                            </tr>
+                            <tr>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="pl-3">
+                        <thead>
+                            <th
+                                class="px-1 text-xs text-center text-black underline border-white decoration-solid">
+                                Documentación para entrega</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
+                            </tr>
+                            <tr>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
+                            </tr>
+                            <tr>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
+                            </tr>
+                            <tr>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
+        </div>
+        {{-- facturacion --}}
+        <div class="grid grid-cols-3 gap-5 mt-4">
+            <table class="w-full">
+                <thead>
+                    <th colspan="2"
+                        class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
+                        Facturación</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-1 text-xs text-left text-gray-700 ">Debe ser de 24”</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="w-full">
+                <thead>
+                    <th colspan="2"
+                        class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
+                        Datos para facturación</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="w-16 px-1 text-xs text-left text-gray-700">Partida 1:</td>
+                        <td class="px-1 text-xs text-left text-gray-700 ">Debe ser de 24”</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="w-full">
+                <thead>
+                    <th colspan="2"
+                        class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
+                        Cuenta de proveedor</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="w-16 px-1 text-xs text-left text-gray-700">Partida 1:</td>
+                        <td class="px-1 text-xs text-left text-gray-700 ">Debe ser de 24”</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </body>
