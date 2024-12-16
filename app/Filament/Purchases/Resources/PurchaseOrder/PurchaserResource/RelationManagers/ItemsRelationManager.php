@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaseOrderResource\RelationManagers;
+namespace App\Filament\Purchases\Resources\PurchaserResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
@@ -38,7 +38,7 @@ class ItemsRelationManager extends RelationManager
                     ->required()
                     ->minValue(0)
                     ->numeric(),
-                    Forms\Components\Select::make('product_id')
+                Forms\Components\Select::make('product_id')
                     ->label('Producto/Servicio')
                     ->options(Product::all()->pluck('name', 'id'))
                     ->searchPrompt('Busca los productos o servicios por su descripción')
@@ -56,14 +56,16 @@ class ItemsRelationManager extends RelationManager
             ->recordTitleAttribute('product.name')
             ->columns([
                 Tables\Columns\TextColumn::make('product.name')
-                ->label('Producto/Servicio'),
+                    ->label('Producto/Servicio'),
+                Tables\Columns\TextColumn::make('product.unit.acronym')
+                    ->label('Unidad'),
                 Tables\Columns\TextColumn::make('quantity')
                     ->label('Cantidad'),
                 MoneyColumn::make('unit_price')
                     ->currency('MXN')
                     ->locale('es_MX')
                     ->label('Precio unitario'),
-                    // ->summarize(Sum::make()->money('MXN', divideBy: 100, locale: 'es_MX')),
+                // ->summarize(Sum::make()->money('MXN', divideBy: 100, locale: 'es_MX')),
                 MoneyColumn::make('sub_total')
                     ->currency('MXN')
                     ->locale('es_MX')
@@ -73,20 +75,19 @@ class ItemsRelationManager extends RelationManager
 
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                ->mutateFormDataUsing(function (array $data): array {
-                    $data['sub_total'] = $data['quantity'] * $data['unit_price'];
-                    return $data;
-                }),
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['sub_total'] = $data['quantity'] * $data['unit_price'];
+                        return $data;
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                ->modalHeading(fn ( $record) => "Editar partida {$record->product->name}")
-                ->mutateFormDataUsing(function (array $data): array {
-                    $data['sub_total'] = $data['quantity'] * $data['unit_price'];
-                    return $data;
-                }),
+                    ->modalHeading(fn($record) => "Editar partida {$record->product->name}")
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['sub_total'] = $data['quantity'] * $data['unit_price'];
+                        return $data;
+                    }),
                 Tables\Actions\DeleteAction::make(),
             ]);
     }
-
 }

@@ -99,6 +99,30 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-11-13 19:02:20',
                 'updated_at' => '2024-11-13 19:02:20',
             ),
+            10 => 
+            array (
+                'id' => 11,
+                'name' => 'gerente_solicitante_orden_compra',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 19:07:26',
+                'updated_at' => '2024-12-16 19:07:26',
+            ),
+            11 => 
+            array (
+                'id' => 12,
+                'name' => 'autoriza_nivel-1-orden_compra',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 19:09:21',
+                'updated_at' => '2024-12-16 19:09:21',
+            ),
+            12 => 
+            array (
+                'id' => 13,
+                'name' => 'autoriza_nivel-2-orden_compra',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 19:09:46',
+                'updated_at' => '2024-12-16 19:09:46',
+            ),
         ));
         
         

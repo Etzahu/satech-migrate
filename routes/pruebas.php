@@ -335,30 +335,35 @@ Route::get('money', function () {
 Route::get('pdf-order', function () {
     // return view('pdf.purchase-order.content');
     return pdf()
-            ->view('pdf.purchase-order.content' )
-            ->margins(40, 15, 15, 15)
-            ->headerView('pdf.purchase-order.header')
-            ->withBrowsershot(function (Browsershot $browsershot) {
-                $browsershot
+        ->view('pdf.purchase-order.content')
+        ->margins(40, 15, 15, 15)
+        ->headerView('pdf.purchase-order.header')
+        ->withBrowsershot(function (Browsershot $browsershot) {
+            $browsershot
                 ->noSandbox()
                 ->writeOptionsToFile();
-            })
-            ->name('invoice-2023-04-10.pdf');
+        })
+        ->name('invoice-2023-04-10.pdf');
 
-      // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla
-      $rq = PurchaseRequisition::with(['items','approvalChain','project','items.product','items.product.unit','company'])->findOrFail(1);
+    // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla
+    $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])->findOrFail(1);
 
-      // dd($rq->toArray());
-      return view('pdf.purchase-order',compact('rq'));
-      // $m1= $rq->getMedia('supports');
-      // $m2= $rq->getMedia('technical_data_sheets');
-      // dd($m1->toArray(),$m2->toArray());
-      $pdf = Pdf::loadView('pdf.purchase-order',compact('rq'));
-      return $pdf->stream($rq->folio.'.pdf');
+    // dd($rq->toArray());
+    return view('pdf.purchase-order', compact('rq'));
+    // $m1= $rq->getMedia('supports');
+    // $m2= $rq->getMedia('technical_data_sheets');
+    // dd($m1->toArray(),$m2->toArray());
+    $pdf = Pdf::loadView('pdf.purchase-order', compact('rq'));
+    return $pdf->stream($rq->folio . '.pdf');
 });
 
-Route::get('total',function(){
+Route::get('total', function () {
+ 
     $rq = PurchaseOrder::find(1);
     $service = new OrderCalculationService($rq->id);
-    $service->getItems();
+    $service->getSubtotalItems();
+    $service->getTaxIva();
+    $service->getRetentionIva();
+    $service->getRetentionIsr();
+    $service->getTotal();
 });

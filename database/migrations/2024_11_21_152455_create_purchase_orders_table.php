@@ -26,9 +26,9 @@ return new class extends Migration
             $table->text('shipping_method', 600);
 
             $table->integer('tax_iva')->default(0);
-            $table->decimal('retention_iva', 10, 2)->default(0);
-            $table->decimal('retention_isr', 10, 2)->default(0);
-            $table->decimal('retention_another', 10, 2)->default(0);
+            $table->decimal('retention_iva', 10, 3)->default(0);
+            $table->decimal('retention_isr', 10, 3)->default(0);
+            $table->decimal('retention_another', 10, 3)->default(0);
             $table->date('initial_delivery_date');
             $table->date('final_delivery_date');
             $table->text('observations', 600);

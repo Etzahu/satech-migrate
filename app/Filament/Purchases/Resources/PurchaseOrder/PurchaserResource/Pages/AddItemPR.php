@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaseOrderResource\Pages;
+namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 
 use Filament\Tables\Table;
 use App\Models\PurchaseOrderItem;
 use Filament\Resources\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
+use App\Models\PurchaseRequisitionItem;
 use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
@@ -16,8 +17,8 @@ use Filament\Tables\Concerns\InteractsWithTable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
-use App\Filament\Purchases\Resources\PurchaseOrderResource;
-use App\Models\PurchaseRequisitionItem;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
+
 
 class AddItemPR extends Page implements HasForms, HasTable
 {
@@ -25,7 +26,7 @@ class AddItemPR extends Page implements HasForms, HasTable
     use InteractsWithForms;
     use InteractsWithRecord;
 
-    protected static string $resource = PurchaseOrderResource::class;
+    protected static string $resource = PurchaserResource::class;
     protected static string $view = 'filament.purchases.resources.purchase-order-resource.pages.add-item-p-r';
     protected ?string $heading = 'Agregar partidas';
     protected static ?string $title = 'Partidas';

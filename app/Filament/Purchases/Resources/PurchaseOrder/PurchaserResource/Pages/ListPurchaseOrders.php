@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaseOrderResource\Pages;
+namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 
-use App\Filament\Purchases\Resources\PurchaseOrderResource;
+
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
 
 class ListPurchaseOrders extends ListRecords
 {
-    protected static string $resource = PurchaseOrderResource::class;
+    protected static string $resource = PurchaserResource::class;
 
     protected function getHeaderActions(): array
     {

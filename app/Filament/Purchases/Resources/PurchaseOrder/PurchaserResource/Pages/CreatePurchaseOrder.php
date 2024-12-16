@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaseOrderResource\Pages;
+namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 
 use Filament\Actions;
 use App\Services\OrderService;
 use Filament\Resources\Pages\CreateRecord;
-use App\Filament\Purchases\Resources\PurchaseOrderResource;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
+
 
 class CreatePurchaseOrder extends CreateRecord
 {
-    protected static string $resource = PurchaseOrderResource::class;
+    protected static string $resource = PurchaserResource::class;
     protected function mutateFormDataBeforeCreate(array $data): array
     {
 

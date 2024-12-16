@@ -2235,6 +2235,86 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-12-03 16:45:52',
                 'updated_at' => '2024-12-03 16:45:52',
             ),
+            277 => 
+            array (
+                'id' => 278,
+                'name' => 'view_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:20',
+                'updated_at' => '2024-12-16 18:59:20',
+            ),
+            278 => 
+            array (
+                'id' => 279,
+                'name' => 'view_any_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:20',
+                'updated_at' => '2024-12-16 18:59:20',
+            ),
+            279 => 
+            array (
+                'id' => 280,
+                'name' => 'create_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:20',
+                'updated_at' => '2024-12-16 18:59:20',
+            ),
+            280 => 
+            array (
+                'id' => 281,
+                'name' => 'update_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:20',
+                'updated_at' => '2024-12-16 18:59:20',
+            ),
+            281 => 
+            array (
+                'id' => 282,
+                'name' => 'delete_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:20',
+                'updated_at' => '2024-12-16 18:59:20',
+            ),
+            282 => 
+            array (
+                'id' => 283,
+                'name' => 'delete_any_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:20',
+                'updated_at' => '2024-12-16 18:59:20',
+            ),
+            283 => 
+            array (
+                'id' => 284,
+                'name' => 'view_approve-level-1_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:21',
+                'updated_at' => '2024-12-16 18:59:21',
+            ),
+            284 => 
+            array (
+                'id' => 285,
+                'name' => 'view_approve_level-2_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:21',
+                'updated_at' => '2024-12-16 18:59:21',
+            ),
+            285 => 
+            array (
+                'id' => 286,
+                'name' => 'view_approve-level-3_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:21',
+                'updated_at' => '2024-12-16 18:59:21',
+            ),
+            286 => 
+            array (
+                'id' => 287,
+                'name' => 'view_approve_level-4_purchase::order::purchaser',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-16 18:59:21',
+                'updated_at' => '2024-12-16 18:59:21',
+            ),
         ));
         
         

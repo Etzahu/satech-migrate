@@ -424,6 +424,36 @@ class StateHistoriesTableSeeder extends Seeder
                 'created_at' => '2024-12-03 17:13:10',
                 'updated_at' => '2024-12-03 17:13:10',
             ),
+            27 => 
+            array (
+                'id' => 28,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 1,
+                'field' => 'status',
+                'from' => NULL,
+                'to' => 'borrador',
+                'custom_properties' => '[]',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 274,
+                'changed_attributes' => '{"id": {"new": 1, "old": null}, "folio": {"new": "N/A", "old": null}, "status": {"new": "borrador", "old": null}, "tax_iva": {"new": "16", "old": null}, "currency": {"new": "MXN", "old": null}, "discount": {"new": "89", "old": null}, "use_cfdi": {"new": "107-Comunicaciones satelitales", "old": null}, "company_id": {"new": 1, "old": null}, "created_at": {"new": "2024-12-10 20:07:56", "old": null}, "updated_at": {"new": "2024-12-10 20:07:56", "old": null}, "provider_id": {"new": "3", "old": null}, "quote_folio": {"new": "Consectetur tempor ", "old": null}, "form_payment": {"new": "transferencia", "old": null}, "observations": {"new": "Qui laboriosam aut ", "old": null}, "term_payment": {"new": "30 días", "old": null}, "type_payment": {"new": "PUE - Pago en una sola exhibición", "old": null}, "retention_isr": {"new": "27", "old": null}, "retention_iva": {"new": "50", "old": null}, "requisition_id": {"new": "1", "old": null}, "shipping_method": {"new": "Ut labore ab sit di", "old": null}, "condition_payment": {"new": "Rerum magna voluptas", "old": null}, "purchaser_user_id": {"new": 274, "old": null}, "retention_another": {"new": "25", "old": null}, "final_delivery_date": {"new": "2024-12-12", "old": null}, "initial_delivery_date": {"new": "2024-12-10", "old": null}}',
+                'created_at' => '2024-12-10 20:07:56',
+                'updated_at' => '2024-12-10 20:07:56',
+            ),
+            28 => 
+            array (
+                'id' => 29,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 2,
+                'field' => 'status',
+                'from' => NULL,
+                'to' => 'borrador',
+                'custom_properties' => '[]',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 274,
+                'changed_attributes' => '{"id": {"new": 2, "old": null}, "folio": {"new": "N/A", "old": null}, "status": {"new": "borrador", "old": null}, "tax_iva": {"new": "0", "old": null}, "currency": {"new": "MXN", "old": null}, "discount": {"new": "6200", "old": null}, "use_cfdi": {"new": "108-Otra maquinaria y equipo", "old": null}, "company_id": {"new": 1, "old": null}, "created_at": {"new": "2024-12-11 15:37:13", "old": null}, "updated_at": {"new": "2024-12-11 15:37:13", "old": null}, "provider_id": {"new": "3", "old": null}, "quote_folio": {"new": "Excepteur cum asperi", "old": null}, "form_payment": {"new": "transferencia", "old": null}, "observations": {"new": "Voluptas vel aliquid", "old": null}, "term_payment": {"new": "45 días", "old": null}, "type_payment": {"new": "PPD - Pago en parcialidades o diferido", "old": null}, "retention_isr": {"new": "96", "old": null}, "retention_iva": {"new": "70", "old": null}, "requisition_id": {"new": "1", "old": null}, "shipping_method": {"new": "Porro amet enim nob", "old": null}, "condition_payment": {"new": "Tenetur qui sit ut a", "old": null}, "purchaser_user_id": {"new": 274, "old": null}, "retention_another": {"new": "64", "old": null}, "final_delivery_date": {"new": "2024-12-12", "old": null}, "initial_delivery_date": {"new": "2024-12-11", "old": null}}',
+                'created_at' => '2024-12-11 15:37:13',
+                'updated_at' => '2024-12-11 15:37:13',
+            ),
         ));
         
         

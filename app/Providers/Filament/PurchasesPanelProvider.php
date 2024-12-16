@@ -84,6 +84,9 @@ class PurchasesPanelProvider extends PanelProvider
                         'autorizador_requisicion_compra',
                         'director_general_requisicion_compra',
                         'comprador',
+                        'gerente_solicitante_orden_compra',
+                        'autoriza_nivel-1-orden_compra',
+                        'autoriza_nivel-2-orden_compra'
                     ]),
             ]);
     }

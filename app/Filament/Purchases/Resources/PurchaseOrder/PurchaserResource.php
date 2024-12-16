@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Purchases\Resources;
+namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
 use Filament\Forms;
 use Filament\Tables;
@@ -15,10 +15,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
-use App\Filament\Purchases\Resources\PurchaseOrderResource\Pages;
-use App\Filament\Purchases\Resources\PurchaseOrderResource\RelationManagers;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use App\Filament\Purchases\Resources\PurchaserResource\RelationManagers;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 
-class PurchaseOrderResource extends Resource
+class PurchaserResource extends Resource  implements HasShieldPermissions
 {
     protected static ?string $model = PurchaseOrder::class;
     protected static ?string $modelLabel = 'Orden';
@@ -27,8 +28,27 @@ class PurchaseOrderResource extends Resource
     protected static ?string $slug = 'ordenes';
     protected static ?string $navigationGroup = 'Orden';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasRole('comprador');
+    }
+    public static function getPermissionPrefixes(): array
+    {
+        return [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'delete',
+            'delete_any',
+            'view_approve-level-1', //Revisar gerente de compras
+            'view_approve_level-2', //Revisar gerente relacionado a la requisicion
+            'view_approve-level-3', //Revisar por direccion (Denisse)
+            'view_approve_level-4', //Si el total de la orden es mayor a X de valor revisa Carlos
+        ];
+    }
     public static function form(Form $form, array $options = []): Form
     {
         return $form
@@ -123,6 +143,10 @@ class PurchaseOrderResource extends Resource
                                     ->required()
                                     ->columnSpan('full'),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Partidas')->schema([
+                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(false)
+                        ])
+                            ->visible(isset($options['show_relation_items'])),
                         Tabs\Tab::make('Retenciones')
                             ->columns(3)
                             ->schema([
@@ -167,11 +191,11 @@ class PurchaseOrderResource extends Resource
                             ->schema([
                                 Forms\Components\DatePicker::make('initial_delivery_date') //TODO: falta validar esta logica cuando se edita
                                     ->label('Inicial')
-                                    ->minDate(now()->subDays(2))
+
                                     ->required(),
                                 Forms\Components\DatePicker::make('final_delivery_date') //TODO: falta validar esta logica cuando se edita
                                     ->label('Final')
-                                    ->minDate(now()->subDays(1))
+
                                     ->required(),
                             ]),
                         Tabs\Tab::make('Observaciones')
@@ -186,10 +210,9 @@ class PurchaseOrderResource extends Resource
                             ->columns(1)
                             ->visible(fn(string $operation) => $operation == 'view')
                             ->schema([
-                                // MoneyColumn::make('partidas')
-                                // ->currency('MXN')
-                                // ->locale('es_MX')
-                                // ->label('Partidas'),
+                                Forms\Components\KeyValue::make('total')
+                                    ->keyLabel('Concepto')
+                                    ->valueLabel('Resultado')
                             ]),
                     ])
                     ->activeTab(1)
@@ -210,7 +233,7 @@ class PurchaseOrderResource extends Resource
                     ->label('Requisición')
                     ->numeric()
                     ->sortable(),
-                    Tables\Columns\TextColumn::make('status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -233,7 +256,6 @@ class PurchaseOrderResource extends Resource
 
             ]);
     }
-
     public static function getRelations(): array
     {
         return [
