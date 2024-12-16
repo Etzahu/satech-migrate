@@ -13,6 +13,7 @@ use App\Models\PurchaseRequisition;
 use Filament\Forms\Components\Tabs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 use App\Filament\Purchases\Resources\PurchaseOrderResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseOrderResource\RelationManagers;
@@ -181,6 +182,15 @@ class PurchaseOrderResource extends Resource
                                     ->required()
                                     ->columnSpanFull(),
                             ]),
+                        Tabs\Tab::make('Resumen del total')
+                            ->columns(1)
+                            ->visible(fn(string $operation) => $operation == 'view')
+                            ->schema([
+                                // MoneyColumn::make('partidas')
+                                // ->currency('MXN')
+                                // ->locale('es_MX')
+                                // ->label('Partidas'),
+                            ]),
                     ])
                     ->activeTab(1)
             ]);
@@ -200,6 +210,9 @@ class PurchaseOrderResource extends Resource
                     ->label('Requisición')
                     ->numeric()
                     ->sortable(),
+                    Tables\Columns\TextColumn::make('status')
+                    ->label('Estatus')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
                     ->dateTime()

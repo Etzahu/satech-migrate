@@ -1,5 +1,4 @@
 <html lang="es">
-
 <head>
     <title>Orden</title>
     @vite('resources/css/order-pdf.css')

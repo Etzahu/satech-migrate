@@ -4,6 +4,7 @@ use Money\Currency;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Management;
+use App\Models\PurchaseOrder;
 use App\Models\CategoryFamily;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PurchaseProvider;
@@ -14,9 +15,10 @@ use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 
+use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
+use App\Services\OrderCalculationService;
 use function Spatie\LaravelPdf\Support\pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\PurchaseRequisitionApprovalChain;
@@ -353,4 +355,10 @@ Route::get('pdf-order', function () {
       // dd($m1->toArray(),$m2->toArray());
       $pdf = Pdf::loadView('pdf.purchase-order',compact('rq'));
       return $pdf->stream($rq->folio.'.pdf');
+});
+
+Route::get('total',function(){
+    $rq = PurchaseOrder::find(1);
+    $service = new OrderCalculationService($rq->id);
+    $service->getItems();
 });

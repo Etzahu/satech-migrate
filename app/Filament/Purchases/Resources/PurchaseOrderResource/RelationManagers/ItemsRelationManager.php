@@ -38,6 +38,13 @@ class ItemsRelationManager extends RelationManager
                     ->required()
                     ->minValue(0)
                     ->numeric(),
+                    Forms\Components\Select::make('product_id')
+                    ->label('Producto/Servicio')
+                    ->options(Product::all()->pluck('name', 'id'))
+                    ->searchPrompt('Busca los productos o servicios por su descripción')
+                    ->searchable()
+                    ->noSearchResultsMessage('No se encontró el producto/servicio.')
+                    ->columnSpan('full'),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observaciones')
             ]);
@@ -45,7 +52,6 @@ class ItemsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
-        $this->itemsExclude();
         return $table
             ->recordTitleAttribute('product.name')
             ->columns([
@@ -66,7 +72,11 @@ class ItemsRelationManager extends RelationManager
             ])
 
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                ->mutateFormDataUsing(function (array $data): array {
+                    $data['sub_total'] = $data['quantity'] * $data['unit_price'];
+                    return $data;
+                }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
@@ -75,16 +85,8 @@ class ItemsRelationManager extends RelationManager
                     $data['sub_total'] = $data['quantity'] * $data['unit_price'];
                     return $data;
                 }),
-                Tables\Actions\DeleteAction::make()
-                ->mutateFormDataUsing(function (array $data): array {
-                    $data['sub_total'] = $data['quantity'] * $data['unit_price'];
-                    return $data;
-                }),
+                Tables\Actions\DeleteAction::make(),
             ]);
     }
-    public function itemsExclude()
-    {
-        $items = $this->ownerRecord->items?->pluck('product_id')->all();
-        return $items;
-    }
+
 }

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Cknow\Money\Casts\MoneyDecimalCast;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -37,7 +37,7 @@ class PurchaseOrderItem extends Model
         'purchase_order_id' => 'integer',
         'product_id' => 'integer',
     ];
-   
+
     public function purchase(): BelongsTo
     {
         return $this->belongsTo(PurchaseOrder::class, 'purchase_order_id');

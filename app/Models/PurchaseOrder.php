@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Cknow\Money\Casts\MoneyDecimalCast;
 use Illuminate\Database\Eloquent\Model;
 use App\StateMachines\PurchaseOrderStateMachine;
 use Illuminate\Database\Eloquent\Relations\HasMany;
