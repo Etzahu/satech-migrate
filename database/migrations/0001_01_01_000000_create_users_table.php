@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone', 20)->nullable();
-            $table->string('depto', 100);
-            $table->string('puesto', 100);
             $table->boolean('active')->default(1);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();

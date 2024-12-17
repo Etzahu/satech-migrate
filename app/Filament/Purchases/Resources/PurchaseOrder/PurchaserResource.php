@@ -49,6 +49,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
             'view_approve_level-4', //Si el total de la orden es mayor a X de valor revisa Carlos
         ];
     }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->myRequisitions();
+    }
     public static function form(Form $form, array $options = []): Form
     {
         return $form

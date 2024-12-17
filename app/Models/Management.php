@@ -17,6 +17,7 @@ class Management extends Model
      */
     protected $fillable = [
         'name',
+        'depto',
         'acronym',
         'responsible_id',
     ];

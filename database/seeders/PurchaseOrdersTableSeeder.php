@@ -67,13 +67,13 @@ class PurchaseOrdersTableSeeder extends Seeder
                 'initial_delivery_date' => '2024-12-11',
                 'final_delivery_date' => '2024-12-12',
                 'observations' => 'Voluptas vel aliquid',
-                'status' => 'borrador',
+                'status' => 'aprobado por gerente solicitante',
                 'provider_id' => 3,
                 'purchaser_user_id' => 274,
                 'company_id' => 1,
                 'requisition_id' => 1,
                 'created_at' => '2024-12-11 15:37:13',
-                'updated_at' => '2024-12-11 15:37:13',
+                'updated_at' => '2024-12-17 19:43:08',
             ),
         ));
         

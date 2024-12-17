@@ -7,6 +7,7 @@ use App\StateMachines\PurchaseOrderStateMachine;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
+use Illuminate\Database\Eloquent\Builder;
 
 class PurchaseOrder extends Model
 {
@@ -50,5 +51,38 @@ class PurchaseOrder extends Model
     public function items(): HasMany
     {
         return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_id');
+    }
+    public function purchaser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'purchaser_user_id');
+    }
+
+    public function scopeMyRequisitions(Builder $query)
+    {
+        if (auth()->user()) {
+            return $query
+                ->where('purchaser_user_id', auth()->user()->id)
+                ->where('company_id', session()->get('company_id'))
+                ->orderBy('id', 'desc');
+        }
+    }
+    public function scopeReviewManagement(Builder $query)
+    {
+        if (auth()->user()) {
+            return $query->withWhereHas('requisition.approvalChain', function ($query) {
+                $query->where('approver_id', auth()->user()->id);
+            })
+                ->where('status', 'aprobado por gerente de compras')
+                ->where('company_id', session()->get('company_id'))
+                ->orderBy('id', 'desc');
+        }
+    }
+    public function scopeApprove(Builder $query)
+    {
+        if (auth()->user()) {
+            return $query
+                ->where('company_id', session()->get('company_id'))
+                ->orderBy('id', 'desc');
+        }
     }
 }

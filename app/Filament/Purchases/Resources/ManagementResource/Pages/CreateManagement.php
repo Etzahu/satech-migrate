@@ -16,4 +16,8 @@ class CreateManagement extends CreateRecord
         $data['acronym'] = Str::of($data['acronym'])->upper()->replace(' ', '');
         return $data;
     }
+    protected function afterCreate(): void
+    {
+        $this->record->responsible->assignRole('gerente_solicitante_orden_compra');
+    }
 }

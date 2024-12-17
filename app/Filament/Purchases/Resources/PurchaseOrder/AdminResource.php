@@ -30,10 +30,10 @@ class AdminResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 1;
 
-    // public static function canAccess(): bool
-    // {
-    //     return auth()->user()->can('view_approve-level-1_purchase::order::purchaser');
-    // }
+    public static function canAccess(): bool
+    {
+        return auth()->user()->can('view_approve-level-1_purchase::order::purchaser');
+    }
     public static function form(Form $form, array $options = []): Form
     {
         $options['show_relation_items'] = true;
@@ -52,6 +52,10 @@ class AdminResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('requisition.folio')
                     ->label('Requisición')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('purchaser.name')
+                    ->label('Comprador')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')

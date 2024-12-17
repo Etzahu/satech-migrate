@@ -34,12 +34,22 @@ class ApproveResource extends Resource
     {
         return auth()->user()->can('view_approve-level-3_purchase::order::purchaser')|| auth()->user()->can('view_approve-level-4_purchase::order::purchaser');
     }
+    public static function getEloquentQuery(): Builder
+    {
+        if(auth()->user()->can('view_approve-level-3_purchase::order::purchaser')){
+            return parent::getEloquentQuery()->approve()->where('status','aprobado por gerente solicitante');
+        }
+        if(auth()->user()->can('view_approve-level-4_purchase::order::purchaser')){
+            return parent::getEloquentQuery()->approve()->where('status','revision por DG nivel 2');
+        }
+    }
     public static function form(Form $form, array $options = []): Form
     {
         $options['show_relation_items'] = true;
         return PurchaserResource::form($form, $options);
 
     }
+
 
     public static function table(Table $table): Table
     {

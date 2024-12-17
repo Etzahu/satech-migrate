@@ -5,13 +5,11 @@ namespace App\Models;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use App\StateMachines\PROrderStateMachine;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\StateMachines\PurchaseRequisitionStateMachine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Asantibanez\LaravelEloquentStateMachines\Models\StateHistory;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
 class PurchaseRequisition extends Model implements HasMedia
@@ -57,7 +55,6 @@ class PurchaseRequisition extends Model implements HasMedia
 
     public $stateMachines = [
         'status' => PurchaseRequisitionStateMachine::class,
-        'status_order' => PROrderStateMachine::class,
     ];
     public function company(): BelongsTo
     {

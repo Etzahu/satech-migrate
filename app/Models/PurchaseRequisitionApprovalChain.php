@@ -34,11 +34,15 @@ class PurchaseRequisitionApprovalChain extends Model
     ];
 
 
+    public function requisitions()
+    {
+        return $this->hasMany(PurchaseRequisition::class,'approval_chain_id');
+    }
+
     public function requester(): BelongsTo
     {
         return $this->belongsTo(User::class, 'requester_id');
     }
-
     public function reviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewer_id');

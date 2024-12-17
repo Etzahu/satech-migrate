@@ -2,16 +2,16 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use App\Filament\Purchases\Resources\UserResource\Pages;
-use App\Filament\Purchases\Resources\UserResource\RelationManagers;
-use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Purchases\Resources\UserResource\Pages;
+use App\Filament\Purchases\Resources\UserResource\RelationManagers;
 
 class UserResource extends Resource
 {
@@ -27,41 +27,51 @@ class UserResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(1)
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nombre')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->label('Correo')
-                    ->required()
-                    ->email()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->label('Celular')
-                    ->tel()
-                    ->maxLength(20),
-                Forms\Components\Select::make('management_id')
-                    ->label('Gerencia')
-                    ->searchable()
-                    ->preload()
-                    ->relationship('management', 'name')
-                    ->required(),
-                Forms\Components\TextInput::make('depto')
-                    ->label('Departamento')
-                    ->required()
-                    ->maxLength(100),
-                Forms\Components\TextInput::make('puesto')
-                    ->required()
-                    ->maxLength(100),
-                Forms\Components\Toggle::make('active')
-                    ->default(1)
-                    ->required(),
-                Forms\Components\Select::make('roles')
-                    ->relationship('roles', 'name')
-                    ->multiple()
-                    ->preload()
-                    ->searchable()
+                Forms\Components\Tabs::make('Tabs')
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('General')
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->label('Nombre')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('email')
+                                    ->label('Correo')
+                                    ->required()
+                                    ->email()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('phone')
+                                    ->label('Celular')
+                                    ->tel()
+                                    ->maxLength(20),
+                                Forms\Components\Select::make('management_id')
+                                    ->label('Gerencia')
+                                    ->relationship('management', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->required(),
+                                Forms\Components\TextInput::make('puesto')
+                                    ->required()
+                                    ->maxLength(100),
+                                Forms\Components\Toggle::make('active')
+                                    ->default(1)
+                                    ->required(),
+
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Roles')
+                            ->schema([
+                                // Forms\Components\Select::make('roles')
+                                //     ->relationship('roles', 'name')
+                                //     ->multiple()
+                                //     ->preload()
+                                //     ->searchable(),
+                                Forms\Components\CheckboxList::make('roles')
+                                    ->relationship('roles', 'name')
+                                    ->searchable(),
+                            ])
+                    ]),
             ]);
     }
 

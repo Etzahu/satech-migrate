@@ -454,6 +454,51 @@ class StateHistoriesTableSeeder extends Seeder
                 'created_at' => '2024-12-11 15:37:13',
                 'updated_at' => '2024-12-11 15:37:13',
             ),
+            29 => 
+            array (
+                'id' => 30,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 2,
+                'field' => 'status',
+                'from' => 'borrador',
+                'to' => 'revisión gerente de compras',
+                'custom_properties' => '[]',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 274,
+                'changed_attributes' => '{"status": {"new": "revisión gerente de compras", "old": "borrador"}}',
+                'created_at' => '2024-12-17 15:42:29',
+                'updated_at' => '2024-12-17 15:42:29',
+            ),
+            30 => 
+            array (
+                'id' => 31,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 2,
+                'field' => 'status',
+                'from' => 'revisión gerente de compras',
+                'to' => 'aprobado por gerente de compras',
+                'custom_properties' => '{"respuesta": null}',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 199,
+                'changed_attributes' => '{"status": {"new": "aprobado por gerente de compras", "old": "revisión gerente de compras"}}',
+                'created_at' => '2024-12-17 17:28:46',
+                'updated_at' => '2024-12-17 17:28:46',
+            ),
+            31 => 
+            array (
+                'id' => 32,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 2,
+                'field' => 'status',
+                'from' => 'aprobado por gerente de compras',
+                'to' => 'aprobado por gerente solicitante',
+                'custom_properties' => '{"respuesta": null}',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 331,
+                'changed_attributes' => '{"status": {"new": "aprobado por gerente solicitante", "old": "aprobado por gerente de compras"}}',
+                'created_at' => '2024-12-17 19:43:08',
+                'updated_at' => '2024-12-17 19:43:08',
+            ),
         ));
         
         

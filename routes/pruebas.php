@@ -358,7 +358,7 @@ Route::get('pdf-order', function () {
 });
 
 Route::get('total', function () {
- 
+
     $rq = PurchaseOrder::find(1);
     $service = new OrderCalculationService($rq->id);
     $service->getSubtotalItems();
@@ -366,4 +366,24 @@ Route::get('total', function () {
     $service->getRetentionIva();
     $service->getRetentionIsr();
     $service->getTotal();
+});
+
+Route::get('res',function (){
+
+    $orders = PurchaseOrder::withWhereHas('requisition.approvalChain', function ($query) {
+        $query->where('approver_id', auth()->user()->id);
+    })
+    ->where('status','aprobado por gerente de compras')
+    ->get();
+
+
+return $orders;
+
+});
+
+Route::get('hasRole',function (){
+    $user = User::find(199);
+    dump($user->hasRole('gerente_solicitante_orden_compra'));
+    $user2 = User::find(19);
+    dump($user2->hasRole('gerente_solicitante_orden_compra'));
 });

@@ -29,8 +29,6 @@ class User extends Authenticatable
         'email',
         'phone',
         'profile_image',
-        'area',
-        'depto',
         'puesto',
         'active',
         'management_id',
@@ -63,7 +61,11 @@ class User extends Authenticatable
     }
     public function management()
     {
-        return $this->belongsTo(Management::class, 'management_id');
+        return $this->hasOne(Management::class,'id');
+    }
+    public function managementResponsible()
+    {
+        return $this->hasOne(Management::class, 'responsible_id');
     }
     public function approvalChainsPurchaseRequisition()
     {

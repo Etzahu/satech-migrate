@@ -11,7 +11,7 @@ use Filament\Tables\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Resources\RelationManagers\RelationManager;
-use App\Filament\Purchases\Resources\PurchaseOrderResource;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
 
 class OrdersRelationManager extends RelationManager
 {
@@ -21,7 +21,7 @@ class OrdersRelationManager extends RelationManager
     {
 
         $options['rq'] = true;
-        return PurchaseOrderResource::form($form, $options);
+        return PurchaserResource::form($form, $options);
         return $form
             ->schema([
                 Forms\Components\TextInput::make('company_name')
@@ -62,7 +62,7 @@ class OrdersRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\Action::make('Ver')
                         ->icon('heroicon-s-eye')
-                        ->url(fn(PurchaseOrder $record): string => PurchaseOrderResource::getUrl('view', ['record' => $record->id]))
+                        ->url(fn(PurchaseOrder $record): string => PurchaserResource::getUrl('view', ['record' => $record->id]))
             ]);
     }
 }

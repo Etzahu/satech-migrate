@@ -60,9 +60,9 @@ class ManagementTableSeeder extends Seeder
                 'id' => 5,
                 'name' => 'Ingeniería - Manufactura',
                 'acronym' => 'ING',
-                'responsible_id' => 106,
+                'responsible_id' => 19,
                 'created_at' => '2024-10-15 17:42:23',
-                'updated_at' => '2024-10-15 17:42:23',
+                'updated_at' => '2024-12-17 18:01:41',
             ),
             5 => 
             array (
@@ -123,9 +123,9 @@ class ManagementTableSeeder extends Seeder
                 'id' => 12,
                 'name' => 'Servicios Generales',
                 'acronym' => 'SG',
-                'responsible_id' => 106,
+                'responsible_id' => 331,
                 'created_at' => '2024-10-15 17:42:23',
-                'updated_at' => '2024-10-15 17:42:23',
+                'updated_at' => '2024-12-17 16:12:00',
             ),
             12 => 
             array (

@@ -30,7 +30,6 @@ class PRAssingResource extends Resource
 
     public static function canAccess(): bool
     {
-        return true;
         return auth()->user()->can('assing_purchase::requisition');
     }
 

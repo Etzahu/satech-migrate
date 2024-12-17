@@ -32,7 +32,11 @@ class ReviewResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->can('view_approve-level-2_purchase::order::purchaser');
+        return auth()->user()->can('view_approve_level-2_purchase::order::purchaser');
+    }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->reviewManagement();
     }
     public static function form(Form $form, array $options = []): Form
     {
@@ -52,6 +56,14 @@ class ReviewResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('requisition.folio')
                     ->label('Requisición')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('purchaser.name')
+                    ->label('Comprador')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('requisition.approvalChain.requester.name')
+                    ->label('Solicitante')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')

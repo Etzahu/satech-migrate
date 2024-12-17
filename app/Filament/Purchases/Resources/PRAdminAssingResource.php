@@ -25,9 +25,9 @@ class PRAdminAssingResource extends Resource
 
     public static function canAccess(): bool
     {
-        return true;
-        // return auth()->user()->can('view_approve_dg_purchase::requisition');
+        return auth()->user()->can('assing_purchase::requisition');
     }
+
 
     public static function getEloquentQuery(): Builder
     {

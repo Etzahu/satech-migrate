@@ -11,7 +11,7 @@ use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
 use App\Filament\Purchases\Resources\PRAssingResource;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
-use App\Filament\Purchases\Resources\PurchaseOrderResource;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
 
 class CreateOrder extends Page implements HasForms
 {
@@ -64,7 +64,7 @@ class CreateOrder extends Page implements HasForms
     {
         $form->statePath('data');
         $options['rq'] = true;
-        return PurchaseOrderResource::form($form, $options);
+        return PurchaserResource::form($form, $options);
     }
     public function create(): void
     {
