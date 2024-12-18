@@ -260,6 +260,8 @@ Route::get('change-category', function () {
 
 Route::get('media-test', function () {
     $collection_name = 'technical_data_sheets';
+    $rq = PurchaseRequisition::find(1);
+    dd($rq->getMedia('supports'));
     $media =  Media::where('model_id', 2)
         ->where('collection_name', $collection_name)->count();
 
@@ -386,4 +388,9 @@ Route::get('hasRole',function (){
     dump($user->hasRole('gerente_solicitante_orden_compra'));
     $user2 = User::find(19);
     dump($user2->hasRole('gerente_solicitante_orden_compra'));
+});
+
+Route::get('mana', function (){
+    $user = User::with('management')->find(199);
+    dd($user->toArray());
 });

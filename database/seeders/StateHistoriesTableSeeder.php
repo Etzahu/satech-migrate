@@ -499,6 +499,36 @@ class StateHistoriesTableSeeder extends Seeder
                 'created_at' => '2024-12-17 19:43:08',
                 'updated_at' => '2024-12-17 19:43:08',
             ),
+            32 => 
+            array (
+                'id' => 33,
+                'model_type' => 'App\\Models\\PurchaseRequisition',
+                'model_id' => 1,
+                'field' => 'status',
+                'from' => 'comprador asignado',
+                'to' => 'devuelto por comprador',
+                'custom_properties' => '{"respuesta": "Est dolorum omnis e"}',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 274,
+                'changed_attributes' => '{"status": {"new": "devuelto por comprador", "old": "comprador asignado"}}',
+                'created_at' => '2024-12-18 18:42:08',
+                'updated_at' => '2024-12-18 18:42:08',
+            ),
+            33 => 
+            array (
+                'id' => 34,
+                'model_type' => 'App\\Models\\PurchaseRequisition',
+                'model_id' => 1,
+                'field' => 'status',
+                'from' => 'devuelto por comprador',
+                'to' => 'revisión por almacén',
+                'custom_properties' => '[]',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 199,
+                'changed_attributes' => '{"status": {"new": "revisión por almacén", "old": "devuelto por comprador"}}',
+                'created_at' => '2024-12-18 18:45:50',
+                'updated_at' => '2024-12-18 18:45:50',
+            ),
         ));
         
         

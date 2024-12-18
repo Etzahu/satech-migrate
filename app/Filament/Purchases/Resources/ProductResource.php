@@ -4,6 +4,7 @@ namespace App\Filament\Purchases\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
+use App\Models\Brand;
 use App\Models\Product;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -38,6 +39,10 @@ class ProductResource extends Resource
             ->schema([
                 Forms\Components\Section::make('')
                     ->schema([
+                        Forms\Components\TextInput::make('code')
+                            ->label('Código')
+                            ->visible(fn(string $operation) => $operation == 'edit')
+                            ->required(),
                         Forms\Components\Select::make('category_id')
                             ->label('Categoría')
                             ->relationship('category', 'name')
@@ -71,6 +76,12 @@ class ProductResource extends Resource
                             ->preload()
                             ->live()
                             ->required(),
+                        Forms\Components\Select::make('brand_id')
+                            ->label('Márca')
+                            ->options(Brand::all()->pluck('name', 'id'))
+                            ->searchable()
+                            ->preload()
+                            ->nullable(),
                     ]),
                 Forms\Components\Section::make('')
                     ->schema([

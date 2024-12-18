@@ -25,12 +25,14 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'devuelto por gerencia' => ['revisión por almacén', 'revisión'],
             'devuelto por DG' => ['revisión por almacén', 'revisión'],
             'devuelto por almacén' => ['revisión por almacén'],
+            'devuelto por comprador'=> ['revisión por almacén'],
 
             'revisión por almacén' => ['revisión', 'devuelto por almacén'],
             'revisión' => ['aprobado por revisor', 'devuelto por revisor', 'cancelado por revisor'],
             'aprobado por revisor' => ['aprobado por gerencia', 'devuelto por gerencia', 'cancelado por gerencia'],
             'aprobado por gerencia' => ['aprobado por DG', 'devuelto por DG', 'cancelado por DG'],
-            'aprobado por DG' => ['comprador asignado']
+            'aprobado por DG' => ['comprador asignado'],
+            'comprador asignado' => ['devuelto por comprador']
         ];
     }
     public function defaultState(): ?string
@@ -165,6 +167,15 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     Mail::to($recipient)
                         ->cc($cc)
                         ->send(new Notification($data));
+                }
+            ],
+            'devuelto por comprador' => [
+                function ($to, $model) {
+                    $recipient = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    // $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('devuelto por comprador', $model);
+                    Mail::to($recipient)->send(new Notification($data));
                 }
             ],
         ];

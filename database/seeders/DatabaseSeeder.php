@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TaxesTableSeeder::class);
         $this->call(MediaTableSeeder::class);
         $this->call(PendingTransitionsTableSeeder::class);
+        $this->call(BrandsTableSeeder::class);
         $this->call(ProductsTableSeeder::class);
         $this->call(ProjectPurchasesTableSeeder::class);
         $this->call(ProjectPurchaseCategoryTableSeeder::class);

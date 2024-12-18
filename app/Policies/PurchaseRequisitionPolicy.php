@@ -57,9 +57,10 @@ class PurchaseRequisitionPolicy
     /**
      * Determine whether the user can update the model.
      */
+    //TODO:: falta implementar la logica para que dependiendo del status se pueda editar
     public function update(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('update_purchase::requisition');
+        return $user->can('update_purchase::requisition'); // && $purchaseRequisition->status=='borrador';
     }
 
     /**

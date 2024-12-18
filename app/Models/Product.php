@@ -18,6 +18,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'code',
+        'brand_id',
         'unit_id',
         'category_id',
         'category_family_id',
@@ -37,6 +38,10 @@ class Product extends Model
     public function unit(): BelongsTo
     {
         return $this->belongsTo(MeasureUnit::class,'unit_id');
+    }
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class,'brand_id');
     }
 
     public function category(): BelongsTo

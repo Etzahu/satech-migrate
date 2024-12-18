@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('name', 600);
             $table->string('code', 50);
+            $table->foreignId('brand_id')->nullable()->constrained('brands');
             $table->foreignId('unit_id')->constrained('measure_units');
             $table->foreignId('category_id')->constrained('categories');
             $table->foreignId('category_family_id')->constrained('category_families');

@@ -8,8 +8,10 @@ use Filament\Forms\Get;
 use Filament\Actions\Action;
 use App\Services\PRMediaService;
 use Filament\Infolists\Infolist;
+use Filament\Actions\ActionGroup;
 use App\Models\PurchaseRequisition;
 use Filament\Forms\Components\Select;
+use Filament\Support\Enums\ActionSize;
 use Filament\Forms\Components\Textarea;
 use Filament\Infolists\Components\Tabs;
 use Filament\Notifications\Notification;
@@ -29,108 +31,128 @@ use App\Filament\Purchases\Resources\PRAssingResource\RelationManagers;
 class View extends ViewRecord
 {
     use InteractsWithInfolists;
-    // use InteractsWithRecord;
-
     protected static string $resource = PRAssingResource::class;
-
-    // public function mount(int | string $record): void
-    // {
-    //     $this->record = $this->resolveRecord($record);
-    // }
 
     protected function getHeaderActions(): array
     {
+
         return [
-            Action::make('Crear orden de compra')
-                ->visible(blank($this->record->status_order))
-                ->url(fn(PurchaseRequisition $record): string => PRAssingResource::getUrl('orders.create', ['record' => $record->id])),
-            Action::make('Ver pdf')
-                ->color('danger')
-                ->icon('heroicon-m-document')
-                ->openUrlInNewTab()
+            ActionGroup::make([
+                Action::make('Crear orden de compra')
+                    ->visible(blank($this->record->status_order))
+                    ->url(fn(PurchaseRequisition $record): string => PRAssingResource::getUrl('orders.create', ['record' => $record->id])),
+                Action::make('Ver pdf')
+                    ->color('danger')
+                    ->icon('heroicon-m-document')
+                    ->openUrlInNewTab(),
+                Action::make('Devolver')
+                    ->form([
+                        Textarea::make('observation')
+                            ->label('Motivo')
+                            ->required(),
+                    ])
+                    ->action(function (array $data) {
+                        try {
+                            $this->record->status()->transitionTo('devuelto por comprador', ['respuesta' => $data['observation']]);
+                            Notification::make()
+                                ->title('Se devolvió la requisición')
+                                ->success()
+                                ->send();
+                            } catch (\Exception $e) {
+                                logger($e->getMessage());
+                            Notification::make()
+                                ->title('Ocurrió un error')
+                                ->danger()
+                                ->send();
+                        }
+                    })
+                    ->visible(blank($this->record->orders) && $this->record->status()->canBe('devuelto por comprador'))
+                    ->requiresConfirmation()
+            ])
+                ->label('Opciones')
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->size(ActionSize::Small)
+                ->color('primary')
+                ->button(),
         ];
     }
-    // public function infolist(Infolist $infolist): Infolist
-    // {
-    //     $service = new PRMediaService();
-    //     return $service->generateInfolist($infolist, $this->record);
-    // }
+
     public function infolist(Infolist $infolist): Infolist
     {
         return $infolist
-        ->record($this->record)
-        ->schema([
-            Tabs::make('Tabs')
-                ->tabs([
-                    Tabs\Tab::make('Información general')
-                        ->schema([
-                            TextEntry::make('approvalChain.requester.name')
-                                ->label('Solicitante'),
-                            TextEntry::make('motive')
-                                ->label('Referencia'),
-                            TextEntry::make('folio')
-                                ->label('Folio'),
-                            TextEntry::make('date_delivery')
-                                ->label('Fecha deseable de entrega')
-                                ->date(),
-                            TextEntry::make('project.name')
-                                ->label('Proyecto'),
-                            TextEntry::make('delivery_address')
-                                ->label('Dirección de entrega'),
-                            IconEntry::make('confidential')
-                                ->label('Confidencial')
-                                ->boolean(),
-                        ])
-                        ->columns(3),
-                    Tabs\Tab::make('Partidas')
-                        // ->visible($tabItems)
-                        ->schema([
-                            RepeatableEntry::make('items')
-                                ->label('')
-                                ->schema([
-                                    TextEntry::make('product.code')
-                                        ->label('Código'),
-                                    TextEntry::make('product.name')
-                                        ->label('Producto'),
-                                    // TextEntry::make('quantity_purchase')
-                                    //     ->label('Cantidad solicitada'),
-                                    TextEntry::make('quantity_warehouse')
-                                        ->label('Cantidad en almacén'),
-                                    TextEntry::make('quantity_purchase')
-                                        ->label('Cantidad para comprar'),
-                                    TextEntry::make('observation')
-                                        ->label('Observación')
-                                        ->columnSpan(2),
-                                ])
-                                ->columns(5)
-                        ]),
-                    Tabs\Tab::make('Flujo de aprobación')
-                        ->visible(!$this->record->confidential)
-                        ->schema([
-                            TextEntry::make('approvalChain.requester.name')
-                                ->label('Solicitante'),
-                            TextEntry::make('approvalChain.reviewer.name')
-                                ->label('Revisor'),
-                            TextEntry::make('approvalChain.approver.name')
-                                ->label('Aprobador'),
-                        ])
-                        ->columns(3),
+            ->record($this->record)
+            ->schema([
+                Tabs::make('Tabs')
+                    ->tabs([
+                        Tabs\Tab::make('Información general')
+                            ->schema([
+                                TextEntry::make('approvalChain.requester.name')
+                                    ->label('Solicitante'),
+                                TextEntry::make('motive')
+                                    ->label('Referencia'),
+                                TextEntry::make('folio')
+                                    ->label('Folio'),
+                                TextEntry::make('date_delivery')
+                                    ->label('Fecha deseable de entrega')
+                                    ->date(),
+                                TextEntry::make('project.name')
+                                    ->label('Proyecto'),
+                                TextEntry::make('delivery_address')
+                                    ->label('Dirección de entrega'),
+                                IconEntry::make('confidential')
+                                    ->label('Confidencial')
+                                    ->boolean(),
+                            ])
+                            ->columns(3),
+                        Tabs\Tab::make('Partidas')
+                            // ->visible($tabItems)
+                            ->schema([
+                                RepeatableEntry::make('items')
+                                    ->label('')
+                                    ->schema([
+                                        TextEntry::make('product.code')
+                                            ->label('Código'),
+                                        TextEntry::make('product.name')
+                                            ->label('Producto'),
+                                        // TextEntry::make('quantity_purchase')
+                                        //     ->label('Cantidad solicitada'),
+                                        TextEntry::make('quantity_warehouse')
+                                            ->label('Cantidad en almacén'),
+                                        TextEntry::make('quantity_purchase')
+                                            ->label('Cantidad para comprar'),
+                                        TextEntry::make('observation')
+                                            ->label('Observación')
+                                            ->columnSpan(2),
+                                    ])
+                                    ->columns(5)
+                            ]),
+                        Tabs\Tab::make('Flujo de aprobación')
+                            ->visible(!$this->record->confidential)
+                            ->schema([
+                                TextEntry::make('approvalChain.requester.name')
+                                    ->label('Solicitante'),
+                                TextEntry::make('approvalChain.reviewer.name')
+                                    ->label('Revisor'),
+                                TextEntry::make('approvalChain.approver.name')
+                                    ->label('Aprobador'),
+                            ])
+                            ->columns(3),
 
-                    Tabs\Tab::make('Observaciones')
-                        ->schema([
-                            TextEntry::make('observation')
-                                ->label('Observaciones'),
-                        ]),
-                    Tabs\Tab::make('Historial')
-                        ->schema([
-                            ViewEntry::make('status')
-                                ->view('filament.infolists.entries.history'),
-                        ]),
+                        Tabs\Tab::make('Observaciones')
+                            ->schema([
+                                TextEntry::make('observation')
+                                    ->label('Observaciones'),
+                            ]),
+                        Tabs\Tab::make('Historial')
+                            ->schema([
+                                ViewEntry::make('status')
+                                    ->view('filament.infolists.entries.history'),
+                            ]),
                         Tabs\Tab::make('Órdenes')->schema([
                             \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)->lazy(false)
                         ]),
                     ]),
 
-        ]);
+            ]);
     }
 }

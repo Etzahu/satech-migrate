@@ -2315,6 +2315,102 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-12-16 18:59:21',
                 'updated_at' => '2024-12-16 18:59:21',
             ),
+            287 => 
+            array (
+                'id' => 288,
+                'name' => 'view_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            288 => 
+            array (
+                'id' => 289,
+                'name' => 'view_any_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            289 => 
+            array (
+                'id' => 290,
+                'name' => 'create_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            290 => 
+            array (
+                'id' => 291,
+                'name' => 'update_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            291 => 
+            array (
+                'id' => 292,
+                'name' => 'restore_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            292 => 
+            array (
+                'id' => 293,
+                'name' => 'restore_any_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            293 => 
+            array (
+                'id' => 294,
+                'name' => 'replicate_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            294 => 
+            array (
+                'id' => 295,
+                'name' => 'reorder_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            295 => 
+            array (
+                'id' => 296,
+                'name' => 'delete_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            296 => 
+            array (
+                'id' => 297,
+                'name' => 'delete_any_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            297 => 
+            array (
+                'id' => 298,
+                'name' => 'force_delete_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
+            298 => 
+            array (
+                'id' => 299,
+                'name' => 'force_delete_any_brand',
+                'guard_name' => 'web',
+                'created_at' => '2024-12-18 15:54:34',
+                'updated_at' => '2024-12-18 15:54:34',
+            ),
         ));
         
         

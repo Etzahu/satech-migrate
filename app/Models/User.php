@@ -61,7 +61,7 @@ class User extends Authenticatable
     }
     public function management()
     {
-        return $this->hasOne(Management::class,'id');
+        return $this->hasOne(Management::class, 'id', 'management_id');
     }
     public function managementResponsible()
     {
@@ -78,10 +78,10 @@ class User extends Authenticatable
     public function approverChainsPR(): HasMany
     {
         return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'approver_id');
-
     }
-    public function scopeApprovers(){
+    public function scopeApprovers()
+    {
         $management = Management::all()->pluck('responsible_id')->unique();
-        return $this->whereIn('id',$management);
+        return $this->whereIn('id', $management);
     }
 }
