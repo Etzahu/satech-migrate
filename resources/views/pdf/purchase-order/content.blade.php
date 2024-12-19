@@ -5,6 +5,7 @@
 </head>
 
 <body>
+
     {{-- <div class="max-w-3xl px-2 py-8 mx-auto"> --}}
     <div class="w-full">
         {{-- <div class="flex items-center justify-between mb-8" style="margin-top: 100px;">
@@ -20,17 +21,17 @@
                 <p class="text-xs leading-none text-black ">Página 1 de 4</p>
             </div>
         </div> --}}
-        <div class="text-start">
+        {{-- <div class="text-start">
             <p class="text-lg font-bold leading-none text-black">Tech Energy Control, S.A. de C.V.</p>
             <p class="text-xs leading-none text-black ">Av. Santa Mónica No.33</p>
             <p class="text-xs leading-none text-black ">Col El Mirador</p>
             <p class="text-xs leading-none text-black ">Tlalnepantla de Baz</p>
             <p class="text-xs leading-none text-black ">Estado de Mexico, 54080</p>
-        </div>
+        </div> --}}
         <div class="flex justify-between mt-3">
             <div class="w-1/2 px-2">
-                <table class="w-full border border-collapse border-black">
-                    <thead class="bg-yellow-400">
+                <table class="w-full border-black">
+                    <thead class="border-b border-black">
                         <tr>
                             <th colspan="2" class="p-0 text-sm font-bold text-black">Proveedor</th>
                         </tr>
@@ -56,8 +57,8 @@
                 </table>
             </div>
             <div class="w-1/2 px-2">
-                <table class="w-full border border-collapse border-black">
-                    <thead class="bg-yellow-400">
+                <table class="w-full border-black">
+                    <thead class="border-b border-black">
                         <tr>
                             <th colspan="2" class="p-0 text-sm font-bold text-black">Cliente</th>
                         </tr>
@@ -85,18 +86,18 @@
 
         </div>
         {{-- partidas --}}
-        <div class="mt-4">
+        <div class="mt-6">
             <table class="w-full border border-collapse border-black">
-                <thead class="border border-red-500">
+                <thead class="border border-black">
                     <tr>
-                        <th class="px-1 text-sm font-bold text-black border border-red-600 ">#</th>
-                        <th class="px-1 text-sm font-bold text-black border border-red-600 ">Código</th>
-                        <th class="px-1 text-sm font-bold text-black border border-red-600 ">Descripción</th>
-                        <th class="px-1 text-sm font-bold text-black border border-red-600 ">Marca</th>
-                        <th class="px-1 text-sm font-bold text-black border border-red-600 ">Unidad</th>
-                        <th class="px-1 text-sm font-bold text-black border border-red-600 ">Cantidad</th>
-                        <th class="px-1 text-sm font-bold text-black border border-red-600 ">P.U.</th>
-                        <th class="px-1 text-sm font-bold text-black border border-red-600 ">Importe</th>
+                        <th class="px-1 text-sm font-bold text-black border border-black ">#</th>
+                        <th class="px-1 text-sm font-bold text-black border border-black ">Código</th>
+                        <th class="px-1 text-sm font-bold text-black border border-black ">Descripción</th>
+                        <th class="px-1 text-sm font-bold text-black border border-black ">Marca</th>
+                        <th class="px-1 text-sm font-bold text-black border border-black ">Unidad</th>
+                        <th class="px-1 text-sm font-bold text-black border border-black ">Cantidad</th>
+                        <th class="px-1 text-sm font-bold text-black border border-black ">P.U.</th>
+                        <th class="px-1 text-sm font-bold text-black border border-black ">Importe</th>
                     </tr>
                 </thead>
                 <tbody>

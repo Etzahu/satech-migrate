@@ -4,18 +4,15 @@ namespace App\Filament\Purchases\Resources\PRAdminAssingResource\Pages;
 
 use App\Models\User;
 
-use Filament\Forms\Get;
 use Filament\Actions\Action;
-use App\Services\PRMediaService;
 use Filament\Infolists\Infolist;
+use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use App\Filament\Purchases\Resources\PRAdminAssingResource;
-use App\Models\PurchaseRequisition;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use App\Filament\Purchases\Resources\PRAdminAssingResource;
 
 class View extends ViewRecord
 {
@@ -57,7 +54,7 @@ class View extends ViewRecord
     }
     public function infolist(Infolist $infolist): Infolist
     {
-        $service = new PRMediaService();
-        return $service->generateInfolist($infolist, $this->record);
+        $service = new PRInfolistService();
+        return $service->build($infolist, $this->record);
     }
 }

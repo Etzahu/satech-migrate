@@ -31,11 +31,11 @@ class PRApprovalResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->approve();
+            ->approveDG();
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::approve()->count();
+        return static::getModel()::approveDG()->count();
     }
 
     public static function form(Form $form): Form

@@ -11,36 +11,12 @@ use Spatie\MediaLibrary\Support\MediaStream;
 use Filament\Infolists\Components\Actions\Action;
 use Filament\Infolists\Components\RepeatableEntry;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Filament\Purchases\Resources\PRAssingResource\RelationManagers;
 
 
-class PRMediaService
+class PRInfolistService
 {
-    public function getMedia($modelId, $collectionName)
-    {
-        $media =  Media::where('model_id', $modelId)
-            ->where('collection_name', $collectionName)->get();
-        return $media;
-    }
-    public function getMediaInfo($modelId, $collectionName)
-    {
-        $data = [];
-        $media =  Media::where('model_id', $modelId)
-            ->where('collection_name', $collectionName)->get();
-        foreach ($media as $key => $value) {
-            // $data[$key]->url = $value->getUrl();
-            $data[$key]['file_name'] = $value->name;
-        }
-        return $data;
-    }
-
-    public function getMediaCount($modelId, $collectionName)
-    {
-        $media =  Media::where('model_id', $modelId)
-            ->where('collection_name', $collectionName)->count();
-        return (int)$media;
-    }
-
-    public function generateInfoList($infolist, $record, $tabItems = true)
+    public function build($infolist, $record, $tabItems = true, array $options = [])
     {
 
         return $infolist
@@ -102,11 +78,13 @@ class PRMediaService
                             ])
                             ->columns(3),
                         Tabs\Tab::make('Fichas técnicas')
-                            ->visible($this->getMediaCount($record->id, 'technical_data_sheets') > 0)
+                            // ->visible($this->getMediaCount($record->id, 'technical_data_sheets') > 0)
+                            ->visible($record->getMedia('technical_data_sheets')->count() > 0)
                             ->schema([
                                 RepeatableEntry::make('media')
                                     ->state(function ($record) {
-                                        $record->media = $this->getMediaInfo($record->id, 'technical_data_sheets');
+                                        // $record->media = $this->getMediaInfo($record->id, 'technical_data_sheets');
+                                        $record->media = $record->getMedia('technical_data_sheets');
                                         return $record->media;
                                     })
                                     ->label('')
@@ -117,17 +95,24 @@ class PRMediaService
                                 Actions::make([
                                     Action::make('Descargar fichas')
                                         ->action(function () use ($record) {
-                                            $downloads = $this->getMedia($record->id, 'technical_data_sheets');
+                                            // $downloads = $this->getMedia($record->id, 'technical_data_sheets');
+                                            $downloads = $record->getMedia('technical_data_sheets');
                                             return MediaStream::create($record->folio . '-fichas-tecnicas.zip')->addMedia($downloads);
                                         }),
                                 ]),
                             ]),
                         Tabs\Tab::make('Soportes')
-                            ->visible($this->getMediaCount($record->id, 'supports') > 0)
+                            // ->visible($this->getMediaCount($record->id, 'supports') > 0)
+                            ->visible($record->getMedia('supports')->count() > 0)
                             ->schema([
                                 RepeatableEntry::make('media')
                                     ->state(function ($record) {
-                                        $record->media = $this->getMediaInfo($record->id, 'supports');
+                                        // $record->media = $this->getMediaInfo($record->id, 'supports');
+                                        // return $record->media;
+                                        $media = Media::where('model_id', $record->id)
+                                            ->where('collection_name', 'supports')
+                                            ->get();
+                                        $record->media = $media;
                                         return $record->media;
                                     })
                                     ->label('')
@@ -138,7 +123,10 @@ class PRMediaService
                                 Actions::make([
                                     Action::make('Descargar soportes')
                                         ->action(function () use ($record) {
-                                            $downloads = $this->getMedia($record->id, 'supports');
+                                            // $downloads = $this->getMedia($record->id, 'supports');
+                                            $downloads = Media::where('model_id', $record->id)
+                                                ->where('collection_name', 'supports')
+                                                ->get();
                                             return MediaStream::create($record->folio . '-soportes.zip')->addMedia($downloads);
                                         }),
                                 ]),
@@ -154,7 +142,11 @@ class PRMediaService
                                 ViewEntry::make('status')
                                     ->view('filament.infolists.entries.history'),
                             ]),
-                    ]),
+
+                        ]),
+                        // Tabs\Tab::make('Órdenes')->schema([
+                        //     \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)
+                        // ]),
 
             ]);
     }

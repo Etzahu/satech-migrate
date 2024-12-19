@@ -40,7 +40,7 @@ class PRMediaService
         return (int)$media;
     }
 
-    public function generateInfoList($infolist, $record, $tabItems = true)
+    public function build($infolist, $record, $tabItems = true)
     {
 
         return $infolist

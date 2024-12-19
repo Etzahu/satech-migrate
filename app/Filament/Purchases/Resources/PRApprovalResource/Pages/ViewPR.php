@@ -2,10 +2,9 @@
 
 namespace App\Filament\Purchases\Resources\PRApprovalResource\Pages;
 
-use Filament\Forms\Get;
 use Filament\Actions\Action;
-use App\Services\PRMediaService;
 use Filament\Infolists\Infolist;
+use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
@@ -30,20 +29,20 @@ class ViewPR extends ViewRecord
         return [
             Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
-                ->visible(fn() => $this->record->status()->canBe('aprobado por gerencia') || $this->record->status()->canBe('devuelto por gerencia') || $this->record->status()->canBe('cancelado por gerencia'))
+                ->visible(fn() => $this->record->status()->canBe('aprobado por DG') || $this->record->status()->canBe('devuelto por DG') || $this->record->status()->canBe('cancelado por DG'))
                 ->color('success')
                 ->form([
                     Select::make('response')
                         ->label('Respuesta')
                         ->options([
-                            'aprobado por gerencia' => 'Aprobar',
-                            'devuelto por gerencia' => 'Devolver',
-                            'cancelado por gerencia' => 'Cancelar',
+                            'aprobado por DG' => 'Aprobar',
+                            'devuelto por DG' => 'Devolver',
+                            'cancelado por DG' => 'Cancelar',
                         ])
-                        ->default('aprobado por gerencia')
+                        ->default('aprobado por DG')
                         ->required(),
-                        Textarea::make('observation')
-                        ->requiredUnless('response','aprobado por gerencia')
+                    Textarea::make('observation')
+                        ->requiredUnless('response', 'aprobado por DG')
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
@@ -64,7 +63,7 @@ class ViewPR extends ViewRecord
     }
     public function infolist(Infolist $infolist): Infolist
     {
-        $service = new PRMediaService();
-        return $service->generateInfolist($infolist, $this->record);
+        $service = new PRInfolistService();
+        return $service->build($infolist, $this->record);
     }
 }

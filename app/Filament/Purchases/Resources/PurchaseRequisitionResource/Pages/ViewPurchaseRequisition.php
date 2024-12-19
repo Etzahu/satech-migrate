@@ -2,31 +2,26 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisitionResource\Pages;
 
-use Filament\Actions;
+
 use App\Models\Company;
-use Filament\Infolists;
 use Filament\Actions\Action;
-use App\Services\PRMediaService;
 use Filament\Actions\EditAction;
 use Filament\Infolists\Infolist;
 use Filament\Actions\ActionGroup;
+use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
 use Filament\Support\Enums\ActionSize;
 use Filament\Infolists\Components\Tabs;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
 use Spatie\MediaLibrary\Support\MediaStream;
-use Filament\Actions\Concerns\InteractsWithRecord;
 use Filament\Infolists\Components\RepeatableEntry;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Infolists\Components\Actions as InfolistAction;
-use Filament\Infolists\Components\SpatieMediaLibraryImageEntry;
 use App\Filament\Purchases\Resources\PurchaseRequisitionResource;
 use Filament\Infolists\Components\Actions\Action as InfolistComponentAction;
 
@@ -229,9 +224,8 @@ class ViewPurchaseRequisition extends ViewRecord
                                     ->view('filament.infolists.entries.history'),
                             ]),
                     ]),
-
             ]);
-        $service = new PRMediaService();
-        return $service->generateInfolist($infolist, $this->record, false);
+            $service = new PRInfolistService();
+        return $service->build($infolist, $this->record, false);
     }
 }

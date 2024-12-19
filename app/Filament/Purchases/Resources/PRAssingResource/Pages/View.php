@@ -10,6 +10,7 @@ use App\Services\PRMediaService;
 use Filament\Infolists\Infolist;
 use Filament\Actions\ActionGroup;
 use App\Models\PurchaseRequisition;
+use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
 use Filament\Support\Enums\ActionSize;
 use Filament\Forms\Components\Textarea;
@@ -79,6 +80,8 @@ class View extends ViewRecord
 
     public function infolist(Infolist $infolist): Infolist
     {
+        // $service = new PRInfolistService();
+        // return $service->build($infolist, $this->record);
         return $infolist
             ->record($this->record)
             ->schema([

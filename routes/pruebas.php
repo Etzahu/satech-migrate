@@ -175,6 +175,7 @@ Route::get('id/{id}', function ($id) {
     $user = User::findOrFail($id);
     Auth::login($user, $remember = true);
     setCompany(1, false);
+    return redirect()->route('filament.compras.pages.dashboard');
 });
 
 
@@ -393,4 +394,31 @@ Route::get('hasRole',function (){
 Route::get('mana', function (){
     $user = User::with('management')->find(199);
     dd($user->toArray());
+});
+
+
+Route::get('credencial', function () {
+    // return view('pdf.purchase-order.content');
+    return pdf()
+        ->view('test')
+        ->landscape()
+        ->margins(0,0,0,0)
+        ->paperSize(54, 86, 'mm')
+        ->withBrowsershot(function (Browsershot $browsershot) {
+            $browsershot
+                ->noSandbox()
+                ->writeOptionsToFile();
+        })
+        ->name('invoice-2023-04-10.pdf');
+
+    // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla
+    $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])->findOrFail(1);
+
+    // dd($rq->toArray());
+    return view('pdf.purchase-order', compact('rq'));
+    // $m1= $rq->getMedia('supports');
+    // $m2= $rq->getMedia('technical_data_sheets');
+    // dd($m1->toArray(),$m2->toArray());
+    $pdf = Pdf::loadView('pdf.purchase-order', compact('rq'));
+    return $pdf->stream($rq->folio . '.pdf');
 });

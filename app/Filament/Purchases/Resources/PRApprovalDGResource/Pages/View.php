@@ -2,18 +2,18 @@
 
 namespace App\Filament\Purchases\Resources\PRApprovalDGResource\Pages;
 
-use App\Filament\Purchases\Resources\PRApprovalDGResource;
-
 use Filament\Forms\Get;
+
 use Filament\Actions\Action;
-use App\Services\PRMediaService;
 use Filament\Infolists\Infolist;
+use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
-use Filament\Infolists\Concerns\InteractsWithInfolists;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Infolists\Concerns\InteractsWithInfolists;
+use App\Filament\Purchases\Resources\PRApprovalDGResource;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
 class View extends ViewRecord
 {
@@ -43,8 +43,8 @@ class View extends ViewRecord
                         ])
                         ->default('aprobado por DG')
                         ->required(),
-                        Textarea::make('observation')
-                        ->requiredUnless('response','aprobado por DG')
+                    Textarea::make('observation')
+                        ->requiredUnless('response', 'aprobado por DG')
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
@@ -64,7 +64,7 @@ class View extends ViewRecord
     }
     public function infolist(Infolist $infolist): Infolist
     {
-        $service = new PRMediaService();
-        return $service->generateInfolist($infolist, $this->record);
+        $service = new PRInfolistService();
+        return $service->build($infolist, $this->record);
     }
 }

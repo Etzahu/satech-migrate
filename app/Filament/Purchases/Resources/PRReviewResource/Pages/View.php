@@ -6,6 +6,7 @@ use Filament\Forms\Get;
 use Filament\Actions\Action;
 use App\Services\PRMediaService;
 use Filament\Infolists\Infolist;
+use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
@@ -42,8 +43,8 @@ class View extends ViewRecord
                         ])
                         ->default('aprobado por revisor')
                         ->required(),
-                        Textarea::make('observation')
-                        ->requiredUnless('response','aprobado por revisor')
+                    Textarea::make('observation')
+                        ->requiredUnless('response', 'aprobado por revisor')
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
@@ -53,7 +54,7 @@ class View extends ViewRecord
                         ->title('Respuesta enviada')
                         ->success()
                         ->send();
-                        return redirect(PRReviewResource::getUrl('index'));
+                    return redirect(PRReviewResource::getUrl('index'));
                 }),
             Action::make('Ver pdf')
                 ->color('danger')
@@ -63,7 +64,7 @@ class View extends ViewRecord
     }
     public function infolist(Infolist $infolist): Infolist
     {
-        $service = new PRMediaService();
-        return $service->generateInfolist($infolist, $this->record);
+        $service = new PRInfolistService();
+        return $service->build($infolist, $this->record);
     }
 }
