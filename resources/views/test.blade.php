@@ -15,8 +15,8 @@
 <body class="w-full bg-slate-500" style="background-color: #2e4d86;">
     <div class="grid h-full grid-cols-3">
         <div class="items-start justify-items-center">
-            <img src="https://res.cloudinary.com/gpt-services/image/upload/v1691717010/avatar_rcqowf.png" alt=""
-                class="p-4" width="100">
+            <img src="{{ asset('images/199.png') }}" alt=""
+                class="p-4" width="100" style="height: 120px;">
         </div>
         <div class="col-span-2">
             <div class="items-start py-4 justify-items-cente">
