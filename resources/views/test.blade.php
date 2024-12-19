@@ -24,6 +24,7 @@
             </div>
             <div class="pr-6">
                 <table class="text-white ">
+                    
                     <tbody>
                         <tr>
                             <td valign="top">
