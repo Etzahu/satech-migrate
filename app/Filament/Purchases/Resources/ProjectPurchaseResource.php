@@ -2,17 +2,24 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use App\Filament\Purchases\Resources\ProjectPurchaseResource\Pages;
-use App\Filament\Purchases\Resources\ProjectPurchaseResource\RelationManagers;
-use App\Models\ProjectPurchase;
+use Closure;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ProjectPurchase;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Actions;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Closure;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use App\Filament\Purchases\Resources\ProjectPurchaseResource\Pages;
+use Hugomyb\FilamentMediaAction\Forms\Components\Actions\MediaAction;
+use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
+use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
+use App\Filament\Purchases\Resources\ProjectPurchaseResource\RelationManagers;
 
 class ProjectPurchaseResource extends Resource
 {
@@ -71,6 +78,50 @@ class ProjectPurchaseResource extends Resource
                             ->default(true)
                             ->required(),
                     ]),
+                Forms\Components\Section::make('Documentacion para aprobacion por DG')
+                    // ->visible(fn($operation) => $operation == 'edit')
+                    ->schema([
+
+                        SpatieMediaLibraryFileUpload::make('doc_1')
+                            ->label('Doc 1')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->collection('docs_1')
+                            ->hintActions([
+                                MediaAction::make('ver documento')
+                                ->visible(fn($operation) => $operation == 'view')
+                                    ->media(function ($state) {
+                                        $key = array_keys($state);
+                                        $media = Media::find($key[0]);
+                                        $url = Storage::url($media->getPathRelativeToRoot());
+                                        return $url;
+                                    })
+                                    ->autoplay()
+                                    ->preload(false),
+                            ]),
+                        SpatieMediaLibraryFileUpload::make('doc_2')
+                            ->label('Doc 2')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->collection('docs_2'),
+                        SpatieMediaLibraryFileUpload::make('doc_3')
+                            ->label('Doc 3')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->collection('docs_3'),
+                    ]),
+                // Forms\Components\Section::make('Documentacion para aprobacion por DG')
+
+                //     ->visible(fn($operation) => $operation == 'view')
+                //     ->schema([
+                //         PdfViewerField::make('doc_1')
+                //             ->fileUrl(function ($state) {
+                //                 $key = array_keys($state);
+                //                 $media = Media::find($key[0]);
+                //                 $url =Storage::url($media->getPathRelativeToRoot());
+                //                 $state = $url;
+                //                 return $url;
+                //             })
+                //             ->label('View the PDF')
+                //             ->minHeight('40svh'),
+                //     ])
             ]);
     }
 
@@ -103,18 +154,19 @@ class ProjectPurchaseResource extends Resource
             ])
         ;
     }
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\CategoriesRelationManager::class,
-        ];
-    }
+    // public static function getRelations(): array
+    // {
+    //     return [
+    //         RelationManagers\CategoriesRelationManager::class,
+    //     ];
+    // }
 
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListProjectPurchases::route('/'),
             'create' => Pages\CreateProjectPurchase::route('/create'),
+            'view' => Pages\ViewProjectPurchase::route('/{record}'),
             'edit' => Pages\EditProjectPurchase::route('/{record}/edit'),
         ];
     }

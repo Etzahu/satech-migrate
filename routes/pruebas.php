@@ -336,6 +336,7 @@ Route::get('money', function () {
 });
 
 Route::get('pdf-order', function () {
+    
     // return view('pdf.purchase-order.content');
     return pdf()
         ->view('pdf.purchase-order.content')
