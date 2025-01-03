@@ -11,13 +11,17 @@ use App\Models\PurchaseProvider;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Forms\Components\Tabs;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use App\Filament\Purchases\Resources\PurchaserResource\RelationManagers;
+use Hugomyb\FilamentMediaAction\Forms\Components\Actions\MediaAction;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
+use App\Filament\Purchases\Resources\PurchaseResource\PurchaserResource\RelationManagers;
 
 class PurchaserResource extends Resource  implements HasShieldPermissions
 {
@@ -151,6 +155,56 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                             \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(false)
                         ])
                             ->visible(isset($options['show_relation_items'])),
+                        Tabs\Tab::make('Soporte')
+                            ->schema([
+                                SpatieMediaLibraryFileUpload::make('doc_1')
+                                    ->label('Justificación')
+                                    ->acceptedFileTypes(['application/pdf'])
+                                    ->collection('justification')
+                                    ->hintActions([
+                                        MediaAction::make('ver documento')
+                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                            ->media(function ($state) {
+                                                $key = array_keys($state);
+                                                $media = Media::where('uuid', $key[0])->first();
+                                                $url = Storage::url($media->getPathRelativeToRoot());
+                                                return $url;
+                                            })
+                                            ->autoplay()
+                                            ->preload(false),
+                                    ]),
+                                SpatieMediaLibraryFileUpload::make('doc_2')
+                                    ->label('Tabla comparativa')
+                                    ->acceptedFileTypes(['application/pdf'])
+                                    ->collection('comparative_table')->hintActions([
+                                        MediaAction::make('ver documento')
+                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                            ->media(function ($state) {
+                                                $key = array_keys($state);
+                                                $media = Media::where('uuid', $key[0])->first();
+                                                $url = Storage::url($media->getPathRelativeToRoot());
+                                                return $url;
+                                            })
+                                            ->autoplay()
+                                            ->preload(false),
+                                    ]),
+                                SpatieMediaLibraryFileUpload::make('doc_3')
+                                    ->label('Certificaciones')
+                                    ->acceptedFileTypes(['application/pdf'])
+                                    ->collection('certifications')
+                                    ->hintActions([
+                                        MediaAction::make('ver documento')
+                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                            ->media(function ($state) {
+                                                $key = array_keys($state);
+                                                $media = Media::where('uuid', $key[0])->first();
+                                                $url = Storage::url($media->getPathRelativeToRoot());
+                                                return $url;
+                                            })
+                                            ->autoplay()
+                                            ->preload(false),
+                                    ]),
+                            ]),
                         Tabs\Tab::make('Retenciones')
                             ->columns(3)
                             ->schema([

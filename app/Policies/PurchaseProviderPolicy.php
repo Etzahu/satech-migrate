@@ -39,10 +39,8 @@ class PurchaseProviderPolicy
      */
     public function update(User $user, PurchaseProvider $purchaseProvider): bool
     {
-        if (!$user->can('update_purchase::provider')) {
-           return false;
-        }
-        return $user->id === $purchaseProvider->user_request_id || $user->id === $purchaseProvider->user_approve_id;
+      
+        return $user->can('update_purchase::provider') &&($user->id === $purchaseProvider->user_request_id || $user->id === $purchaseProvider->user_approve_id);
     }
 
     /**

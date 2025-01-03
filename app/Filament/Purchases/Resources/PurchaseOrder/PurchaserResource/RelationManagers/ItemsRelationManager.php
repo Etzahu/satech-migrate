@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaserResource\RelationManagers;
+// namespace App\Filament\Purchases\Resources\PurchaserResource\RelationManagers;
+namespace App\Filament\Purchases\Resources\PurchaseResource\PurchaserResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
@@ -21,7 +22,6 @@ class ItemsRelationManager extends RelationManager
     protected static ?string $pluralModelLabel = 'Partidas';
     protected static ?string $navigationLabel = 'Partidas';
     protected static ?string $title = 'Partidas';
-
     public function form(Form $form): Form
     {
         return $form
@@ -49,7 +49,6 @@ class ItemsRelationManager extends RelationManager
                     ->label('Observaciones')
             ]);
     }
-
     public function table(Table $table): Table
     {
         return $table
@@ -72,7 +71,6 @@ class ItemsRelationManager extends RelationManager
                     ->label('Importe')
                     ->summarize(Sum::make()->label('Subtotal')->money('MXN', divideBy: 100, locale: 'es_MX')),
             ])
-
             ->headerActions([
                 Tables\Actions\CreateAction::make()
                     ->mutateFormDataUsing(function (array $data): array {

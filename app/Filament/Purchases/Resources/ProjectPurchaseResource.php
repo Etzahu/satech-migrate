@@ -83,15 +83,15 @@ class ProjectPurchaseResource extends Resource
                     ->schema([
 
                         SpatieMediaLibraryFileUpload::make('doc_1')
-                            ->label('Doc 1')
+                            ->label('Ficha de proyecto')
                             ->acceptedFileTypes(['application/pdf'])
-                            ->collection('docs_1')
+                            ->collection('project_sheet')
                             ->hintActions([
                                 MediaAction::make('ver documento')
-                                ->visible(fn($operation) => $operation == 'view')
+                                    ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
                                     ->media(function ($state) {
                                         $key = array_keys($state);
-                                        $media = Media::find($key[0]);
+                                        $media = Media::where('uuid', $key[0])->first();
                                         $url = Storage::url($media->getPathRelativeToRoot());
                                         return $url;
                                     })
@@ -99,29 +99,37 @@ class ProjectPurchaseResource extends Resource
                                     ->preload(false),
                             ]),
                         SpatieMediaLibraryFileUpload::make('doc_2')
-                            ->label('Doc 2')
+                            ->label('Cotización de cliente')
                             ->acceptedFileTypes(['application/pdf'])
-                            ->collection('docs_2'),
+                            ->collection('customer_quote')->hintActions([
+                                MediaAction::make('ver documento')
+                                    ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                    ->media(function ($state) {
+                                        $key = array_keys($state);
+                                        $media = Media::where('uuid', $key[0])->first();
+                                        $url = Storage::url($media->getPathRelativeToRoot());
+                                        return $url;
+                                    })
+                                    ->autoplay()
+                                    ->preload(false),
+                            ]),
                         SpatieMediaLibraryFileUpload::make('doc_3')
-                            ->label('Doc 3')
+                            ->label('Pedido')
                             ->acceptedFileTypes(['application/pdf'])
-                            ->collection('docs_3'),
+                            ->collection('order')
+                            ->hintActions([
+                                MediaAction::make('ver documento')
+                                    ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                    ->media(function ($state) {
+                                        $key = array_keys($state);
+                                        $media = Media::where('uuid', $key[0])->first();
+                                        $url = Storage::url($media->getPathRelativeToRoot());
+                                        return $url;
+                                    })
+                                    ->autoplay()
+                                    ->preload(false),
+                            ]),
                     ]),
-                // Forms\Components\Section::make('Documentacion para aprobacion por DG')
-
-                //     ->visible(fn($operation) => $operation == 'view')
-                //     ->schema([
-                //         PdfViewerField::make('doc_1')
-                //             ->fileUrl(function ($state) {
-                //                 $key = array_keys($state);
-                //                 $media = Media::find($key[0]);
-                //                 $url =Storage::url($media->getPathRelativeToRoot());
-                //                 $state = $url;
-                //                 return $url;
-                //             })
-                //             ->label('View the PDF')
-                //             ->minHeight('40svh'),
-                //     ])
             ]);
     }
 

@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use App\StateMachines\StatusPurchaseProviderMachine;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
-class PurchaseProvider extends Model
+class PurchaseProvider extends Model implements HasMedia
 {
-    Use HasStateMachines;
+    use HasStateMachines;
+    use InteractsWithMedia;
     protected $fillable = [
         'rfc',
         'company_name',
@@ -20,6 +23,9 @@ class PurchaseProvider extends Model
         'country',
         'cp',
         'web_company',
+        'bank',
+        'bank_account',
+        'bank_account_number',
         'status',
         'user_request_id',
         'user_approve_id',

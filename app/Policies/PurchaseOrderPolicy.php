@@ -55,7 +55,8 @@ class PurchaseOrderPolicy
      */
     public function update(User $user, PurchaseOrder $purchaseOrder): bool
     {
-        return $user->can('update_purchase::order::purchaser');
+        $options = ['borrador', 'devuelto por gerente solicitante', 'devuelto por DG nivel 1', 'devuelto por DG nivel 2'];
+        return $user->can('update_purchase::order::purchaser') && in_array($purchaseOrder->status, $options);
     }
 
     /**

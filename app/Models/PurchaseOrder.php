@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use App\StateMachines\PurchaseOrderStateMachine;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
-use Illuminate\Database\Eloquent\Builder;
 
-class PurchaseOrder extends Model
+class PurchaseOrder extends Model implements HasMedia
 {
     use HasStateMachines;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'folio',

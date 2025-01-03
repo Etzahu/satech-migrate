@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('purchase_providers', function (Blueprint $table) {
             $table->id();
-            $table->string('rfc',30)->unique();
+            $table->string('rfc', 30)->unique();
             $table->string('company_name')->unique();
             $table->string('street');
             $table->string('number');
@@ -23,6 +23,9 @@ return new class extends Migration
             $table->string('country');
             $table->string('cp');
             $table->string('web_company')->nullable();
+            $table->string('bank',50)->default('N/A');
+            $table->integer('bank_account')->default(00000000);
+            $table->integer('bank_account_number')->default(00000000);
             $table->string('status');
             $table->foreignId('user_request_id')->constrained('users');
             $table->foreignId('user_approve_id')->nullable()->constrained('users');
