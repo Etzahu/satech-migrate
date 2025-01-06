@@ -29,17 +29,17 @@ class ViewPR extends ViewRecord
         return [
             Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
-                ->visible(fn() => $this->record->status()->canBe('aprobado por DG') || $this->record->status()->canBe('devuelto por DG') || $this->record->status()->canBe('cancelado por DG'))
+                ->visible(fn() => $this->record->status()->canBe('aprobado por gerencia') || $this->record->status()->canBe('devuelto por gerencia') || $this->record->status()->canBe('cancelado por gerencia'))
                 ->color('success')
                 ->form([
                     Select::make('response')
                         ->label('Respuesta')
                         ->options([
-                            'aprobado por DG' => 'Aprobar',
-                            'devuelto por DG' => 'Devolver',
-                            'cancelado por DG' => 'Cancelar',
+                            'aprobado por gerencia' => 'Aprobar',
+                            'devuelto por gerencia' => 'Devolver',
+                            'cancelado por gerencia' => 'Cancelar',
                         ])
-                        ->default('aprobado por DG')
+                        ->default('aprobado por gerencia')
                         ->required(),
                     Textarea::make('observation')
                         ->requiredUnless('response', 'aprobado por DG')

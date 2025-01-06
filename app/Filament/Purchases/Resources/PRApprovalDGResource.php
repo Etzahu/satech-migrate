@@ -28,7 +28,6 @@ class PRApprovalDGResource extends Resource
         return auth()->user()->can('view_approve_dg_purchase::requisition');
     }
 
-
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
@@ -38,15 +37,6 @@ class PRApprovalDGResource extends Resource
     {
         return static::getModel()::approveDG()->count();
     }
-
-    public static function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                //
-            ]);
-    }
-
     public static function table(Table $table): Table
     {
         return $table

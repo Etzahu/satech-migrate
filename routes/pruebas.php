@@ -336,7 +336,7 @@ Route::get('money', function () {
 });
 
 Route::get('pdf-order', function () {
-    
+
     // return view('pdf.purchase-order.content');
     return pdf()
         ->view('pdf.purchase-order.content')
@@ -422,4 +422,9 @@ Route::get('credencial', function () {
     // dd($m1->toArray(),$m2->toArray());
     $pdf = Pdf::loadView('pdf.purchase-order', compact('rq'));
     return $pdf->stream($rq->folio . '.pdf');
+});
+
+Route::get('test-rq',function(){
+    $rq = PurchaseRequisition::all();
+    dd($rq->approve());
 });
