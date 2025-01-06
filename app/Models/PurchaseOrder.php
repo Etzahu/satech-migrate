@@ -80,6 +80,7 @@ class PurchaseOrder extends Model implements HasMedia
                 ->orderBy('id', 'desc');
         }
     }
+
     public function scopeApprove(Builder $query)
     {
         if (auth()->user()) {

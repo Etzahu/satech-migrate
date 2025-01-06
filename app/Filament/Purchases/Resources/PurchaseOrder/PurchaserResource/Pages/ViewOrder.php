@@ -24,24 +24,12 @@ class ViewOrder extends ViewRecord
             Actions\Action::make('Solicitar')
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
-                ->visible(fn() => $this->record->status()->canBe('revisión gerente de compras'))
-                // ->form([
-                //     Select::make('response')
-                //         ->label('Respuesta')
-                //         ->options([
-                //             'aprobado por DG' => 'Aprobar',
-                //             'devuelto por DG' => 'Devolver',
-                //             'cancelado por DG' => 'Cancelar',
-                //         ])
-                //         ->default('aprobado por DG')
-                //         ->required(),
-                //     Textarea::make('observation')
-                //         ->requiredUnless('response', 'aprobado por DG')
-                //         ->label('Observación'),
-                // ])
+                ->visible(function () {
+                    // TODO: fala la logica para que se muestre el boton una vez que el comprado agrege un precio unitario a cada item
+                    return $this->record->status()->canBe('revisión gerente de compras') && $this->record->items()->count() > 0;
+                })
                 ->requiresConfirmation()
                 ->action(function (array $data) {
-                    // $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
                     $this->record->status()->transitionTo('revisión gerente de compras');
                     Notification::make()
                         ->title('Respuesta enviada')

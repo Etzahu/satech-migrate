@@ -2,6 +2,7 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
 
+use Money\Money;
 use Filament\Actions;
 use App\Models\PurchaseOrder;
 use Filament\Actions\ActionGroup;
@@ -27,10 +28,10 @@ class ViewOrder extends ViewRecord
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(
-                    fn() =>
-                    $this->record->status()->canBe('aprobado por DG nivel 1') ||
+                    fn() => ($this->record->status()->canBe('aprobada para emisión') ||
+                        $this->record->status()->canBe('aprobado por DG nivel 1') ||
                         $this->record->status()->canBe('devuelto por DG nivel 1') ||
-                        $this->record->status()->canBe('cancelado por DG nivel 1')
+                        $this->record->status()->canBe('cancelado por DG nivel 1')) && auth()->user()->can('view_approve-level-3_purchase::order::purchaser')
                 )
                 ->form([
                     Select::make('response')
@@ -40,7 +41,7 @@ class ViewOrder extends ViewRecord
                             'devuelto por DG nivel 1' => 'Devolver',
                             'cancelado por DG nivel 1' => 'Cancelar',
                         ])
-                        ->default('aprobado por gerente de compras')
+                        ->default('aprobado por DG nivel 1')
                         ->required(),
                     Textarea::make('observation')
                         ->requiredUnless('response', 'aprobado por DG nivel 1')
@@ -48,7 +49,27 @@ class ViewOrder extends ViewRecord
                 ])
                 ->requiresConfirmation()
                 ->action(function (array $data) {
-                    $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
+                    // validar el tipo de moneda
+                    if ($data['response'] == 'aprobado por DG nivel 1') {
+                        $min = 0;
+                        $max = 0;
+                        if ($this->record->currency == 'USD') {
+                            $min = Money::USD(1);
+                            $max = Money::USD(10000);
+                        }
+                        if ($this->record->currency == 'MXN') {
+                            $min = Money::MXN(1);
+                            $max = Money::MXN(200000);
+                        }
+                        $service = new OrderCalculationService($this->record->id);
+                        $total = $service->getTotal();
+                        if ($total >= $min && $total <= $max) {
+                            $this->record->status()->transitionTo('aprobada para emisión');
+                        }
+                        if ($total > $max) {
+                            $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
+                        }
+                    }
                     Notification::make()
                         ->title('Respuesta enviada')
                         ->success()
@@ -56,12 +77,13 @@ class ViewOrder extends ViewRecord
                     return redirect(ApproveResource::getUrl('index'));
                 }),
             // Nivel 2
-            Actions\Action::make('Capturar respuesta 2')
+            Actions\Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(
-                    fn() =>
-                    $this->record->status()->canBe('revision por DG nivel 2')
+                    fn() => ($this->record->status()->canBe('aprobada para emisión') ||
+                        $this->record->status()->canBe('devuelto por DG nivel 2') ||
+                        $this->record->status()->canBe('cancelado por DG nivel 2')) && auth()->user()->can('view_approve_level-4_purchase::order::purchaser')
                 )
                 ->form([
                     Select::make('response')
@@ -71,7 +93,7 @@ class ViewOrder extends ViewRecord
                             'devuelto por DG nivel 2' => 'Devolver',
                             'cancelado por DG nivel 2' => 'Cancelar',
                         ])
-                        ->default('aprobado por gerente de compras')
+                        ->default('aprobada para emisión')
                         ->required(),
                     Textarea::make('observation')
                         ->requiredUnless('response', 'aprobada para emisión')

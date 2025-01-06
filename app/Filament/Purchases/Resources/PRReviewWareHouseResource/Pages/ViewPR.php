@@ -41,7 +41,7 @@ class ViewPR extends ViewRecord
                         ->default('revisión')
                         ->required(),
                     Textarea::make('observation')
-                        ->requiredUnless('response', 'revision')
+                        ->requiredUnless('response', 'revisión')
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()

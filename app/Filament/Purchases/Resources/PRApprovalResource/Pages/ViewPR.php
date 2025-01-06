@@ -42,7 +42,7 @@ class ViewPR extends ViewRecord
                         ->default('aprobado por gerencia')
                         ->required(),
                     Textarea::make('observation')
-                        ->requiredUnless('response', 'aprobado por DG')
+                        ->requiredUnless('response', 'aprobado por gerencia')
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()

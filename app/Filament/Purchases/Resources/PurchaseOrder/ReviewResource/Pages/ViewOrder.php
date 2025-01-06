@@ -37,7 +37,7 @@ class ViewOrder extends ViewRecord
                         'devuelto por gerente solicitante' => 'Devolver',
                         'cancelado por gerente solicitante' => 'Cancelar',
                     ])
-                    ->default('aprobado por gerente de compras')
+                    ->default('aprobado por gerente solicitante')
                     ->required(),
                 Textarea::make('observation')
                     ->requiredUnless('response', 'aprobado por gerente solicitante')

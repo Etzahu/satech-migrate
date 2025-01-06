@@ -22,15 +22,15 @@ class PurchaseRequisitionItemsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'quantity_requested' => 5,
+                'quantity_requested' => 2,
                 'quantity_warehouse' => 0,
-                'quantity_purchase' => 5,
-                'observation' => 'Fuga Aperiam voluptates temporibus quia molestiae velit eos',
+                'quantity_purchase' => 2,
+                'observation' => 'Enim omnis labore dolor deleniti aute dolorem sequi pariatur Cupidatat proident do repellendus Obcaecati',
                 'user_warehouse_id' => NULL,
                 'requisition_id' => 1,
                 'product_id' => 1,
-                'created_at' => '2024-11-14 16:32:06',
-                'updated_at' => '2024-11-14 16:32:06',
+                'created_at' => '2025-01-06 16:00:19',
+                'updated_at' => '2025-01-06 16:00:19',
             ),
             1 => 
             array (
@@ -38,12 +38,12 @@ class PurchaseRequisitionItemsTableSeeder extends Seeder
                 'quantity_requested' => 2,
                 'quantity_warehouse' => 0,
                 'quantity_purchase' => 2,
-                'observation' => 'Maxime qui tempora voluptate aliqua Velit est doloremque neque nemo voluptate nihil quae ullam',
+                'observation' => 'Laboris iure nobis dignissimos culpa dicta ipsam doloribus doloribus optio in sed',
                 'user_warehouse_id' => NULL,
-                'requisition_id' => 1,
+                'requisition_id' => 2,
                 'product_id' => 2,
-                'created_at' => '2024-11-14 16:32:15',
-                'updated_at' => '2024-11-14 16:32:15',
+                'created_at' => '2025-01-06 16:01:46',
+                'updated_at' => '2025-01-06 16:01:46',
             ),
         ));
         

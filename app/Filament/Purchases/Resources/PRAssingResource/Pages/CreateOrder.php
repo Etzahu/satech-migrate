@@ -26,7 +26,6 @@ class CreateOrder extends Page implements HasForms
     protected ?string $heading = 'Orden de compra';
     public function mount(int | string $record): void
     {
-
         $this->record = $this->resolveRecord($record);
         $this->data['currency'] = 'MXN';
         $this->data['type_payment'] = '';
@@ -49,6 +48,10 @@ class CreateOrder extends Page implements HasForms
         $this->data['purchaser_user_id'] = auth()->user()->id;
         $this->data['company_id'] = session()->get('company_id');
         $this->data['requisition_id'] = $this->record->id;
+
+        $this->data['doc_1'] = null;
+        $this->data['doc_2'] = null;
+        $this->data['doc_3'] = null;
     }
     public function getBreadcrumbs(): array
     {
@@ -68,7 +71,8 @@ class CreateOrder extends Page implements HasForms
     }
     public function create(): void
     {
-        // dd($this->data);
+        // TODO:falta la logica para guardar las imagenes 
+        $this->form->getState();
         $order = PurchaseOrder::create($this->data);
         $service = new OrderService();
         $order->folio = $service->generateFolio($order->requisition_id);
