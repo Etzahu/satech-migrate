@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('project_purchases', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 255)->unique();
+            $table->string('code', 255);
             $table->string('name', 255)->unique();
             $table->boolean('status');
             $table->foreignId('company_id');

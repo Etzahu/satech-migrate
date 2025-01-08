@@ -22,14 +22,14 @@ class CacheTableSeeder extends Seeder
             0 => 
             array (
                 'key' => '2952aeca0fe15cf310ede96c437acb94b2b208f1',
-                'value' => 'i:2;',
-                'expiration' => 1736179343,
+                'value' => 'i:3;',
+                'expiration' => 1736180151,
             ),
             1 => 
             array (
                 'key' => '2952aeca0fe15cf310ede96c437acb94b2b208f1:timer',
-                'value' => 'i:1736179343;',
-                'expiration' => 1736179343,
+                'value' => 'i:1736180151;',
+                'expiration' => 1736180151,
             ),
             2 => 
             array (

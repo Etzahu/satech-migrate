@@ -4,6 +4,7 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages
 
 use Filament\Actions;
 use App\Models\PurchaseOrder;
+use Filament\Infolists\Infolist;
 use Filament\Actions\ActionGroup;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
@@ -54,20 +55,17 @@ class ViewOrder extends ViewRecord
     /*
 
     */
-    protected function mutateFormDataBeforeFill(array $data): array
+    public function infolist(Infolist $infolist): Infolist
     {
         $service = new OrderCalculationService($this->record->id);
-        $service->getSubtotalItems();
-        $service->getTaxIva();
-        $service->getRetentionIva();
-        $service->getRetentionIsr();
-        $service->getTotal();
-        $data['total']['Subtotal'] =  $service->getSubtotalItems(true);
-        $data['total']['Descuento'] =  $service->getDiscountProvider(true);
-        $data['total']['IVA'] =  $service->getTaxIva(true);
-        $data['total']['Retención de IVA'] =  $service->getRetentionIva(true);
-        $data['total']['Retención de ISR'] =  $service->getRetentionIsr(true);
-        $data['total']['Total'] =  $service->getTotal(true);
-        return $data;
+        $this->record->total = [
+            'Subtotal' => $service->getSubtotalItems(true),
+            'Descuento' =>  $service->getDiscountProvider(true),
+            'IVA' =>  $service->getTaxIva(true),
+            'Retención de IVA' =>  $service->getRetentionIva(true),
+            'Retención de ISR' =>  $service->getRetentionIsr(true),
+            'Total' =>  $service->getTotal(true),
+        ];
+        return static::getResource()::infolist($infolist);
     }
 }

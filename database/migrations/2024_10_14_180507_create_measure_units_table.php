@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('measure_units', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique();
-            $table->string('acronym', 10)->unique();
+            $table->string('acronym', 50)->unique();
             $table->timestamps();
         });
     }

@@ -9,14 +9,15 @@ use Filament\Tables\Table;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseProvider;
 
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Forms\Components\Tabs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
 use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
+use App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
 
 
 class ApproveResource extends Resource
@@ -32,25 +33,23 @@ class ApproveResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->can('view_approve-level-3_purchase::order::purchaser')|| auth()->user()->can('view_approve_level-4_purchase::order::purchaser');
+        return auth()->user()->can('view_approve-level-3_purchase::order::purchaser') || auth()->user()->can('view_approve_level-4_purchase::order::purchaser');
     }
     public static function getEloquentQuery(): Builder
     {
-        if(auth()->user()->can('view_approve-level-3_purchase::order::purchaser')){
-            return parent::getEloquentQuery()->approve()->where('status','aprobado por gerente solicitante');
+        if (auth()->user()->can('view_approve-level-3_purchase::order::purchaser')) {
+            return parent::getEloquentQuery()->approve()->where('status', 'aprobado por gerente solicitante');
         }
-        if(auth()->user()->can('view_approve_level-4_purchase::order::purchaser')){
-            return parent::getEloquentQuery()->approve()->where('status','aprobado por DG nivel 1');
+        if (auth()->user()->can('view_approve_level-4_purchase::order::purchaser')) {
+            return parent::getEloquentQuery()->approve()->where('status', 'aprobado por DG nivel 1');
         }
-
     }
-    public static function form(Form $form, array $options = []): Form
+
+    public static function infolist(Infolist $infolist): Infolist
     {
-        $options['show_relation_items'] = true;
-        return PurchaserResource::form($form, $options);
-
+        $options[] = 'show_relation_items';
+        return PurchaserResource::infolist($infolist, $options);
     }
-
 
     public static function table(Table $table): Table
     {
@@ -85,8 +84,6 @@ class ApproveResource extends Resource
                 Tables\Actions\ViewAction::make(),
             ]);
     }
-
-
 
     public static function getPages(): array
     {

@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(ManagementTableSeeder::class);
         $this->call(UserManageSeeder::class);
-        $this->call(MeasureUnitsTableSeeder::class);
+        // $this->call(MeasureUnitsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(ModelHasPermissionsTableSeeder::class);
         $this->call(ModelHasRolesTableSeeder::class);
@@ -42,16 +42,16 @@ class DatabaseSeeder extends Seeder
         $this->call(MediaTableSeeder::class);
         $this->call(PendingTransitionsTableSeeder::class);
         $this->call(BrandsTableSeeder::class);
-        $this->call(ProductsTableSeeder::class);
+        // $this->call(ProductsTableSeeder::class);
         $this->call(ProjectPurchasesTableSeeder::class);
-        $this->call(ProjectPurchaseCategoryTableSeeder::class);
-        $this->call(PurchaseRequisitionsTableSeeder::class);
-        $this->call(PurchaseRequisitionItemsTableSeeder::class);
+        // $this->call(ProjectPurchaseCategoryTableSeeder::class);
+        // $this->call(PurchaseRequisitionsTableSeeder::class);
+        // $this->call(PurchaseRequisitionItemsTableSeeder::class);
         $this->call(NotificationsTableSeeder::class);
         $this->call(MigrationsTableSeeder::class);
+        $this->call(PurchaseProvidersTableSeeder::class);
         $this->call(ProviderContactsTableSeeder::class);
         // $this->call(PurchaseOrderItemsTableSeeder::class);
         // $this->call(PurchaseOrdersTableSeeder::class);
-        $this->call(PurchaseProvidersTableSeeder::class);
     }
 }
