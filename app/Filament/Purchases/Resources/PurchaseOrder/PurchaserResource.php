@@ -331,7 +331,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         $media = Media::where('model_id', $record->id)
                                                             ->where('collection_name', 'justification')
                                                             ->first();
-                                                        return 'test';
+                                                        return $media->name
                                                     })
                                                     ->hintActions([
                                                         MediaActionInfolist::make('ver documento')
@@ -358,7 +358,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         $media = Media::where('model_id', $record->id)
                                                             ->where('collection_name', 'justification')
                                                             ->first();
-                                                        return 'test';
+                                                        return $media->name
                                                     })
                                                     ->hintActions([
                                                         MediaActionInfolist::make('ver documento')
@@ -385,7 +385,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         $media = Media::where('model_id', $record->id)
                                                             ->where('collection_name', 'justification')
                                                             ->first();
-                                                        return 'test';
+                                                        return $media->name
                                                     })
                                                     ->hintActions([
                                                         MediaActionInfolist::make('ver documento')
@@ -412,7 +412,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         $media = Media::where('model_id', $record->requisition->project->id)
                                                             ->where('collection_name', 'project_sheet')
                                                             ->first();
-                                                        return 'test';
+                                                        return $media->name
                                                     })
                                                     ->hintActions([
                                                         MediaActionInfolist::make('ver documento')
@@ -439,7 +439,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         $media = Media::where('model_id', $record->requisition->project->id)
                                                             ->where('collection_name', 'customer_quote')
                                                             ->first();
-                                                        return 'test';
+                                                        return $media->name
                                                     })
                                                     ->hintActions([
                                                         MediaActionInfolist::make('ver documento')
@@ -466,7 +466,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         $media = Media::where('model_id', $record->requisition->project->id)
                                                             ->where('collection_name', 'order')
                                                             ->first();
-                                                        return 'test';
+                                                        return $media->name
                                                     })
                                                     ->hintActions([
                                                         MediaActionInfolist::make('ver documento')
