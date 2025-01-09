@@ -565,7 +565,18 @@ Route::get('users-migrate', function () {
     }
 });
 
-Route::get('cadenas-migrar', function () {});
+Route::get('cadenas-migrar', function () {
+    $collection = fastexcel()->import('migraciones-2.xlsx');
+    $collection =   $collection->flatten()->unique();
+    $users = User::all();
+    foreach ($collection as $user) {
+        $existsUser = $users->where('name', $user)->first();
+        echo '<br/>';
+        echo filled($existsUser) ? '' : "No existe: {$user}";
+        echo '<br/>';
+    }
+    // return $collection;
+});
 
 Route::get('correos', function () {
     $users = array(
@@ -683,11 +694,11 @@ Route::get('correos', function () {
         'ggutierrezm@gptservices.com',
         'igonzalez@gptservices.com',
     ];
-    $diff = array_diff($correos,$correosEncuesta);
+    $diff = array_diff($correos, $correosEncuesta);
 
-    $usersFaltantes=[];
-    foreach($diff as $item){
-        $falta = $users->where('email',$item)->first();
+    $usersFaltantes = [];
+    foreach ($diff as $item) {
+        $falta = $users->where('email', $item)->first();
         $usersFaltantes[] = $falta;
     }
     return fastexcel($usersFaltantes)->download('file.xlsx');
@@ -695,27 +706,27 @@ Route::get('correos', function () {
     return $diff;
 });
 
-Route::get('sin-correo',function(){
+Route::get('sin-correo', function () {
     $users = array(
-        array('id' => '202','nombre' => 'Daniel González García','email' => ''),
-        array('id' => '235','nombre' => 'Giovanni Lugardo Aguilar','email' => ''),
-        array('id' => '245','nombre' => 'Alfredo Vargas Ramírez','email' => ''),
-        array('id' => '253','nombre' => 'Daniel Nuñez Cruz','email' => ''),
-        array('id' => '256','nombre' => 'Rosa Maria Mendoza Gutierrez','email' => ''),
-        array('id' => '258','nombre' => 'Julia  Flores Valenzuela ','email' => ''),
-        array('id' => '265','nombre' => 'Alfonso  Gómez López ','email' => ''),
-        array('id' => '268','nombre' => 'Carlos Ivan Carbajal Cerezo','email' => ''),
-        array('id' => '275','nombre' => 'Agustín Quechol Millán','email' => NULL),
-        array('id' => '277','nombre' => 'Antonio  Guevara Galán ','email' => NULL),
-        array('id' => '283','nombre' => 'Héctor David Ramírez Robledo','email' => 'NA'),
-        array('id' => '284','nombre' => 'Diego Toribio Honorato','email' => ''),
-        array('id' => '285','nombre' => 'Juan Gabriel Castañeda Martínez','email' => 'NA'),
-        array('id' => '286','nombre' => 'Luis Enrique Pardo Sánchez','email' => 'NA'),
-        array('id' => '289','nombre' => 'Miguel Ángel Raya Espino','email' => 'NA'),
-        array('id' => '295','nombre' => 'Angel Millan Caralampio','email' => 'NA'),
-        array('id' => '297','nombre' => 'Rubén Estrada Rodulfo','email' => 'NA'),
-        array('id' => '299','nombre' => 'Christian Alberto Gómez Matilde','email' => 'NA'),
-        array('id' => '308','nombre' => 'José Ignacio Silva Chávez','email' => 'N/A')
-      );
-      return fastexcel($users)->download('file.xlsx');
+        array('id' => '202', 'nombre' => 'Daniel González García', 'email' => ''),
+        array('id' => '235', 'nombre' => 'Giovanni Lugardo Aguilar', 'email' => ''),
+        array('id' => '245', 'nombre' => 'Alfredo Vargas Ramírez', 'email' => ''),
+        array('id' => '253', 'nombre' => 'Daniel Nuñez Cruz', 'email' => ''),
+        array('id' => '256', 'nombre' => 'Rosa Maria Mendoza Gutierrez', 'email' => ''),
+        array('id' => '258', 'nombre' => 'Julia  Flores Valenzuela ', 'email' => ''),
+        array('id' => '265', 'nombre' => 'Alfonso  Gómez López ', 'email' => ''),
+        array('id' => '268', 'nombre' => 'Carlos Ivan Carbajal Cerezo', 'email' => ''),
+        array('id' => '275', 'nombre' => 'Agustín Quechol Millán', 'email' => NULL),
+        array('id' => '277', 'nombre' => 'Antonio  Guevara Galán ', 'email' => NULL),
+        array('id' => '283', 'nombre' => 'Héctor David Ramírez Robledo', 'email' => 'NA'),
+        array('id' => '284', 'nombre' => 'Diego Toribio Honorato', 'email' => ''),
+        array('id' => '285', 'nombre' => 'Juan Gabriel Castañeda Martínez', 'email' => 'NA'),
+        array('id' => '286', 'nombre' => 'Luis Enrique Pardo Sánchez', 'email' => 'NA'),
+        array('id' => '289', 'nombre' => 'Miguel Ángel Raya Espino', 'email' => 'NA'),
+        array('id' => '295', 'nombre' => 'Angel Millan Caralampio', 'email' => 'NA'),
+        array('id' => '297', 'nombre' => 'Rubén Estrada Rodulfo', 'email' => 'NA'),
+        array('id' => '299', 'nombre' => 'Christian Alberto Gómez Matilde', 'email' => 'NA'),
+        array('id' => '308', 'nombre' => 'José Ignacio Silva Chávez', 'email' => 'N/A')
+    );
+    return fastexcel($users)->download('file.xlsx');
 });
