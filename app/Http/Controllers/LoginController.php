@@ -75,7 +75,7 @@ class LoginController extends Controller
         $companies = Company::select('id', 'name', 'short_name', 'acronym')->get();
         session()->forget('companies');
         session(['companies' => $companies->toArray()]);
-        $company = Company::find($id);
+        $company = Company::findOrFail($id);
         session()->forget(['company_id', 'company_name']);
         session([
             'company_id' => $company->id,

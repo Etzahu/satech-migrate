@@ -29,10 +29,12 @@ class ViewOrder extends ViewRecord
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(
+                    
                     fn() => ($this->record->status()->canBe('aprobada para emisión') ||
                         $this->record->status()->canBe('aprobado por DG nivel 1') ||
                         $this->record->status()->canBe('devuelto por DG nivel 1') ||
-                        $this->record->status()->canBe('cancelado por DG nivel 1')) && auth()->user()->can('view_approve-level-3_purchase::order::purchaser')
+                        $this->record->status()->canBe('cancelado por DG nivel 1')) &&
+                        auth()->user()->can('view_approve-level-3_purchase::order::purchaser')
                 )
                 ->form([
                     Select::make('response')

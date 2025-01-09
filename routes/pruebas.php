@@ -564,3 +564,158 @@ Route::get('users-migrate', function () {
         throw new \Exception($e->getMessage());
     }
 });
+
+Route::get('cadenas-migrar', function () {});
+
+Route::get('correos', function () {
+    $users = array(
+        array('id' => '13', 'name' => 'Benjamín Alcántara Bautista', 'email' => 'balcantarab@gptservices.com'),
+        array('id' => '14', 'name' => 'Jesús Becerra Yebra', 'email' => 'jbecerray@gptservices.com'),
+        array('id' => '18', 'name' => 'Ana Lilia López Arreola', 'email' => 'alopeza@gptservices.com'),
+        array('id' => '19', 'name' => 'Rafael García Arroyo', 'email' => 'rgarciaa@gptservices.com'),
+        array('id' => '22', 'name' => 'Iván Ponce Reyes', 'email' => 'iponcer@gptservices.com'),
+        array('id' => '26', 'name' => 'Sinhue Ulloa Tello', 'email' => 'sulloat@gptservices.com'),
+        array('id' => '36', 'name' => 'Guillermo Gutiérrez Melo', 'email' => 'ggutierrezm@gptservices.com'),
+        array('id' => '37', 'name' => 'Luis Reyes Yáñez', 'email' => 'lreyesy@gptservices.com'),
+        array('id' => '40', 'name' => 'Fernando Basave Arce', 'email' => 'febasavea@gptservices.com'),
+        array('id' => '46', 'name' => 'Aquiles Gonzalo García Montiel', 'email' => 'agarciam@gptservices.com'),
+        array('id' => '50', 'name' => 'Aurelio Cruz Báez', 'email' => 'acruzb@gptservices.com'),
+        array('id' => '53', 'name' => 'Adriana González Huitrón', 'email' => 'agonzalezh@gptservices.com'),
+        array('id' => '64', 'name' => 'Luis Sandoval Cabello', 'email' => 'lsandovalc@gptservices.com'),
+        array('id' => '89', 'name' => 'Juan Jiménez Camacho', 'email' => 'jjimenezc@gptservices.com'),
+        array('id' => '92', 'name' => 'Néstor Adair Acosta Arroyo', 'email' => 'naacostaa@gptservices.com'),
+        array('id' => '99', 'name' => 'Raúl Rodríguez Guzmán', 'email' => 'rrodriguezg@gptservices.com'),
+        array('id' => '106', 'name' => 'Denise Marisol Reyes Ramírez', 'email' => 'dmreyesr@gptservices.com'),
+        array('id' => '114', 'name' => 'Manuel Antonio Ríos Cuautitla', 'email' => 'mariosc@gptservices.com'),
+        array('id' => '120', 'name' => 'Roberto González Muñoz', 'email' => 'rgonzalezm@gptservices.com'),
+        array('id' => '123', 'name' => 'Angélica Salgado Zúñiga', 'email' => 'asalgadoz@gptservices.com'),
+        array('id' => '131', 'name' => 'Axel Javier Martínez Segura', 'email' => 'ajmartinezs@gptservices.com'),
+        array('id' => '132', 'name' => 'Martín Paes Santillán', 'email' => 'mpaess@gptservices.com'),
+        array('id' => '137', 'name' => 'Luis Jesús Godínez Rivera', 'email' => 'lgodinez@gptservices.com'),
+        array('id' => '152', 'name' => 'Edgar David Meza Rivera', 'email' => 'emeza@gptservices.com'),
+        array('id' => '157', 'name' => 'Claudio Magdaleno Pérez Hernández', 'email' => 'cperez@gptservices.com'),
+        array('id' => '158', 'name' => 'Yanet Rosario Colín Antonio', 'email' => 'yrcolina@gptservices.com'),
+        array('id' => '166', 'name' => 'Rafael Alejandro Jiménez Ávila', 'email' => 'rajimeneza@gptservices.com'),
+        array('id' => '168', 'name' => 'Sergio Antonio Ordaz Espinoza', 'email' => 'santonio@gptservices.com'),
+        array('id' => '180', 'name' => 'Jorge Eduardo García Ojeda', 'email' => 'jegarciao@gptservices.com'),
+        array('id' => '187', 'name' => 'Alejandro Aldair Ramírez Pérez', 'email' => 'aramirezp@gptservices.com'),
+        array('id' => '191', 'name' => 'Jennifer Martínez Jarquín', 'email' => 'jmartinezj@gptservices.com'),
+        array('id' => '193', 'name' => 'Martín Alejandro Martínez Hernández', 'email' => 'mmartinez@gptservices.com'),
+        array('id' => '199', 'name' => 'Alan Etzahu Hernández Mendoza', 'email' => 'ahernandezm@gptservices.com'),
+        array('id' => '200', 'name' => 'Rocío Rojas González', 'email' => 'rrojasg@gptservices.com'),
+        array('id' => '205', 'name' => 'Erik David López Olvera', 'email' => 'edlopezo@gptservices.com'),
+        array('id' => '212', 'name' => 'Enrique Villafranca García', 'email' => 'evillafranca@gptservices.com'),
+        array('id' => '223', 'name' => 'José Héctor Avilés Nieto', 'email' => 'haviles@gptservices.com'),
+        array('id' => '227', 'name' => 'Kevin Hazael Pérez Rodríguez', 'email' => 'kperez@gptservices.com'),
+        array('id' => '230', 'name' => 'Ernesto Bautista Cruz', 'email' => 'ebautista@gptservices.com'),
+        array('id' => '233', 'name' => 'Israel Correa Cruz', 'email' => 'icorrea@gptservices.com'),
+        array('id' => '240', 'name' => 'Mónica Jazmín Pimentel García', 'email' => 'mpimentel@gptservices.com'),
+        array('id' => '247', 'name' => 'Juan Carlos Prado Hernández', 'email' => 'jprado@gptservices.com'),
+        array('id' => '249', 'name' => 'Rocío Salgado Rangel', 'email' => 'rsalgado@gptservices.com'),
+        array('id' => '250', 'name' => 'José Carlos Martínez Amador', 'email' => 'jmartinez@gptservices.com'),
+        array('id' => '251', 'name' => 'Alejandro Rodríguez Vázquez', 'email' => 'arodriguez@gptservices.com'),
+        array('id' => '252', 'name' => 'Israel Omar Mora Barrios', 'email' => 'imora@gptservices.com'),
+        array('id' => '257', 'name' => 'Sergio Martín Ramírez Jaimes', 'email' => 'sramirez@gptservices.com'),
+        array('id' => '260', 'name' => 'José de Jesús Lázaro Juárez', 'email' => 'jlazaro@gptservices.com'),
+        array('id' => '263', 'name' => 'Elizabeth García Real Joya', 'email' => 'egarcia@gptservices.com'),
+        array('id' => '264', 'name' => 'Juan Carlos López Hernández', 'email' => 'jhernandez@gptservices.com'),
+        array('id' => '266', 'name' => 'Omar Alvarado Bailey', 'email' => 'oalvarado@gptservices.com'),
+        array('id' => '269', 'name' => 'Javier Mozart Santos Cruces', 'email' => 'jsantos@gptservices.com'),
+        array('id' => '270', 'name' => 'Miguel Eduardo Orduña Álvarez', 'email' => 'eorduna@gptservices.com'),
+        array('id' => '271', 'name' => 'José Manuel Cardona Salinas', 'email' => 'jcardona@gptservices.com'),
+        array('id' => '274', 'name' => 'María Fernanda López Muñóz', 'email' => 'mlopez@gptservices.com'),
+        array('id' => '276', 'name' => 'Leonardo Paredes Chávez', 'email' => 'lparedes@gptservices.com'),
+        array('id' => '277', 'name' => 'Antonio  Guevara Galán ', 'email' => 'guevaraantonio376@gmail.com'),
+        array('id' => '282', 'name' => 'Diana Martínez Dolores', 'email' => 'dmartinez@gptservices.com'),
+        array('id' => '287', 'name' => 'Eduardo Moreno Carmona', 'email' => 'emoreno@gptservices.com'),
+        array('id' => '290', 'name' => 'Mariana Karina Jiménez Ortega', 'email' => 'mjimenez@gptservices.com'),
+        array('id' => '292', 'name' => 'Fernando Zamora González', 'email' => 'fzamora@gptservices.com'),
+        array('id' => '293', 'name' => 'Jatziri Yamile Alejo Osorio', 'email' => 'jalejo@gptservices.com'),
+        array('id' => '296', 'name' => 'Paola Chávez Huerta', 'email' => 'pchavez@gptservices.com'),
+        array('id' => '298', 'name' => 'Ingrid Danae González Cisneros', 'email' => 'igonzalez@gptservices.com'),
+        array('id' => '301', 'name' => 'Pablo Angel Vazquez Hernández', 'email' => 'pvazquez@gptservices.com'),
+        array('id' => '302', 'name' => 'Monica Esthela Padilla Gónzalez', 'email' => 'mpadilla@gptservices.com'),
+        array('id' => '303', 'name' => 'Luis Adrián Sánchez González', 'email' => 'lsanchez@gptservices.com'),
+        array('id' => '304', 'name' => 'Francisco Alejandro Contreras García', 'email' => 'fcontreras@gptservices.com'),
+        array('id' => '305', 'name' => 'María de los Ángeles Quintanar Pérez', 'email' => 'mquintanar@gptservices.com'),
+        array('id' => '306', 'name' => 'Bruno Cruz Montes', 'email' => 'bcruz@gptservices.com'),
+        array('id' => '307', 'name' => 'Francisco Luna García', 'email' => 'fluna@gptservices.com'),
+        array('id' => '309', 'name' => 'Fernando Butrón González', 'email' => 'fbutron@gptservices.com'),
+        array('id' => '310', 'name' => 'Daniel Iriarte Pérez', 'email' => 'diriarte@gptservices.com'),
+        array('id' => '311', 'name' => 'Miguel Ángel Guerrero Cruz', 'email' => 'vigilanciagpt@gptservices.com'),
+        array('id' => '313', 'name' => 'María Guadalupe Osorio Rodríguez', 'email' => 'mosorio@gptservices.com'),
+        array('id' => '314', 'name' => 'Edgar Domínguez Espinosa', 'email' => 'edominguez@gptservices.com'),
+        array('id' => '316', 'name' => 'Daniel Eduardo Serrano González', 'email' => 'dserrano@gptservices.com'),
+        array('id' => '331', 'name' => 'José Carmen Rodríguez Lara', 'email' => 'jrlara@gptservices.com')
+    );
+    $users = collect($users);
+    $correos = $users->pluck('email')->values()->all();
+
+    $correosEncuesta = [
+        'haviles@gptservices.com',
+        'lsanchez@gptservices.com',
+        'iponcer@gptservices.com',
+        'bcruz@gptservices.com',
+        'jegarciao@gptservices.com',
+        'asalgadoz@gptservices.com',
+        'mquintanar@gptservices.com',
+        'mpimentel@gptservices.com',
+        'pchavez@gptservices.com',
+        'mlopez@gptservices.com',
+        'mpadilla@gptservices.com',
+        'lgodinez@gptservices.com',
+        'diriarte@gptservices.com',
+        'alopeza@gptservices.com',
+        'diriarte@gptservices.com',
+        'oalvarado@gptservices.com',
+        'mariosc@gptservices.com',
+        'naacostaa@gptservices.com',
+        'fluna@gptservices.com',
+        'arodriguez@gptservices.com',
+        'fzamora@gptservices.com',
+        'sramirez@gptservices.com',
+        'agonzalezh@gptservices.com',
+        'pvazquez@gptservices.com',
+        'vigilanciagpt@gptservices.com',
+        'acruzb@gptservices.com',
+        'evillafranca@gptservices.com',
+        'ahernandezm@gptservices.com',
+        'ggutierrezm@gptservices.com',
+        'igonzalez@gptservices.com',
+    ];
+    $diff = array_diff($correos,$correosEncuesta);
+
+    $usersFaltantes=[];
+    foreach($diff as $item){
+        $falta = $users->where('email',$item)->first();
+        $usersFaltantes[] = $falta;
+    }
+    return fastexcel($usersFaltantes)->download('file.xlsx');
+    return $usersFaltantes;
+    return $diff;
+});
+
+Route::get('sin-correo',function(){
+    $users = array(
+        array('id' => '202','nombre' => 'Daniel González García','email' => ''),
+        array('id' => '235','nombre' => 'Giovanni Lugardo Aguilar','email' => ''),
+        array('id' => '245','nombre' => 'Alfredo Vargas Ramírez','email' => ''),
+        array('id' => '253','nombre' => 'Daniel Nuñez Cruz','email' => ''),
+        array('id' => '256','nombre' => 'Rosa Maria Mendoza Gutierrez','email' => ''),
+        array('id' => '258','nombre' => 'Julia  Flores Valenzuela ','email' => ''),
+        array('id' => '265','nombre' => 'Alfonso  Gómez López ','email' => ''),
+        array('id' => '268','nombre' => 'Carlos Ivan Carbajal Cerezo','email' => ''),
+        array('id' => '275','nombre' => 'Agustín Quechol Millán','email' => NULL),
+        array('id' => '277','nombre' => 'Antonio  Guevara Galán ','email' => NULL),
+        array('id' => '283','nombre' => 'Héctor David Ramírez Robledo','email' => 'NA'),
+        array('id' => '284','nombre' => 'Diego Toribio Honorato','email' => ''),
+        array('id' => '285','nombre' => 'Juan Gabriel Castañeda Martínez','email' => 'NA'),
+        array('id' => '286','nombre' => 'Luis Enrique Pardo Sánchez','email' => 'NA'),
+        array('id' => '289','nombre' => 'Miguel Ángel Raya Espino','email' => 'NA'),
+        array('id' => '295','nombre' => 'Angel Millan Caralampio','email' => 'NA'),
+        array('id' => '297','nombre' => 'Rubén Estrada Rodulfo','email' => 'NA'),
+        array('id' => '299','nombre' => 'Christian Alberto Gómez Matilde','email' => 'NA'),
+        array('id' => '308','nombre' => 'José Ignacio Silva Chávez','email' => 'N/A')
+      );
+      return fastexcel($users)->download('file.xlsx');
+});

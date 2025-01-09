@@ -216,7 +216,7 @@ class PurchaseProviderResource extends Resource
                                     ]),
                             ]),
                         Forms\Components\Tabs\Tab::make('Contactos')
-                            ->visible(fn($operation) => $operation == 'edit')
+                            ->visible(fn($operation) => $operation !== 'create')
                             ->schema([
                                 \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ContactsRelationManager::class)->lazy(true)
                             ])

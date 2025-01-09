@@ -14,12 +14,12 @@ class CompaniesTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('companies')->delete();
-
+        
         \DB::table('companies')->insert(array (
-            0 =>
+            0 => 
             array (
                 'id' => 1,
                 'name' => 'GPT Ingeniería Y Manufactura, S.A. de C.V.',
@@ -36,7 +36,7 @@ class CompaniesTableSeeder extends Seeder
                 'created_at' => '2024-12-03 08:59:39',
                 'updated_at' => '2024-12-03 08:59:39',
             ),
-            1 =>
+            1 => 
             array (
                 'id' => 2,
                 'name' => 'TECHENERGY CONTROL, S.A. de C.V.',
@@ -54,7 +54,7 @@ class CompaniesTableSeeder extends Seeder
                 'updated_at' => '2024-12-03 08:59:39',
             ),
         ));
-
-
+        
+        
     }
 }

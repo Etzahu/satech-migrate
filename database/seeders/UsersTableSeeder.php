@@ -31,8 +31,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 4,
             ),
             1 => 
             array (
@@ -46,8 +46,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             2 => 
             array (
@@ -61,8 +61,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             3 => 
             array (
@@ -76,8 +76,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             4 => 
             array (
@@ -91,8 +91,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 8,
             ),
             5 => 
             array (
@@ -106,8 +106,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 8,
             ),
             6 => 
             array (
@@ -121,8 +121,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             7 => 
             array (
@@ -136,8 +136,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 5,
             ),
             8 => 
             array (
@@ -151,8 +151,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             9 => 
             array (
@@ -166,8 +166,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 4,
             ),
             10 => 
             array (
@@ -181,8 +181,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 5,
             ),
             11 => 
             array (
@@ -196,8 +196,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             12 => 
             array (
@@ -211,8 +211,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 8,
             ),
             13 => 
             array (
@@ -226,8 +226,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 10,
             ),
             14 => 
             array (
@@ -241,8 +241,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 7,
             ),
             15 => 
             array (
@@ -256,8 +256,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 9,
             ),
             16 => 
             array (
@@ -269,10 +269,10 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'EEHYgLRrSquPA0yr9yOp3iSrJrPB90ffkz7M6BVLIAusAoDBp1MJDcHU5cYR',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             17 => 
             array (
@@ -286,8 +286,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             18 => 
             array (
@@ -301,8 +301,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 4,
             ),
             19 => 
             array (
@@ -316,8 +316,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             20 => 
             array (
@@ -331,8 +331,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             21 => 
             array (
@@ -346,8 +346,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             22 => 
             array (
@@ -361,8 +361,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 10,
             ),
             23 => 
             array (
@@ -376,8 +376,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 8,
             ),
             24 => 
             array (
@@ -391,8 +391,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 1,
             ),
             25 => 
             array (
@@ -406,8 +406,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             26 => 
             array (
@@ -421,8 +421,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             27 => 
             array (
@@ -436,8 +436,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             28 => 
             array (
@@ -451,8 +451,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             29 => 
             array (
@@ -466,8 +466,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 7,
             ),
             30 => 
             array (
@@ -481,8 +481,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 4,
             ),
             31 => 
             array (
@@ -496,8 +496,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             32 => 
             array (
@@ -509,10 +509,10 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'rL0gqqpuWXZaugMRkAg82gjENkOjiuePWf2TwxG0Bi1s10AyFKkmWhJzxpP8',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 9,
             ),
             33 => 
             array (
@@ -526,8 +526,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 9,
             ),
             34 => 
             array (
@@ -541,8 +541,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             35 => 
             array (
@@ -556,8 +556,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 10,
             ),
             36 => 
             array (
@@ -571,8 +571,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 10,
             ),
             37 => 
             array (
@@ -586,8 +586,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 8,
             ),
             38 => 
             array (
@@ -601,8 +601,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 7,
             ),
             39 => 
             array (
@@ -616,8 +616,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 1,
             ),
             40 => 
             array (
@@ -631,8 +631,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 1,
             ),
             41 => 
             array (
@@ -646,8 +646,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             42 => 
             array (
@@ -661,8 +661,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 5,
             ),
             43 => 
             array (
@@ -676,8 +676,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 8,
             ),
             44 => 
             array (
@@ -691,8 +691,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 7,
             ),
             45 => 
             array (
@@ -706,8 +706,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 7,
             ),
             46 => 
             array (
@@ -721,8 +721,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             47 => 
             array (
@@ -736,8 +736,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 7,
             ),
             48 => 
             array (
@@ -751,8 +751,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 9,
             ),
             49 => 
             array (
@@ -766,8 +766,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 4,
             ),
             50 => 
             array (
@@ -781,8 +781,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             51 => 
             array (
@@ -796,8 +796,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             52 => 
             array (
@@ -811,8 +811,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             53 => 
             array (
@@ -826,8 +826,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 1,
             ),
             54 => 
             array (
@@ -841,8 +841,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 8,
             ),
             55 => 
             array (
@@ -856,8 +856,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 1,
             ),
             56 => 
             array (
@@ -871,8 +871,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 10,
             ),
             57 => 
             array (
@@ -886,8 +886,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 7,
             ),
             58 => 
             array (
@@ -901,8 +901,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 1,
             ),
             59 => 
             array (
@@ -916,8 +916,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 8,
             ),
             60 => 
             array (
@@ -931,8 +931,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             61 => 
             array (
@@ -946,8 +946,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 10,
             ),
             62 => 
             array (
@@ -961,8 +961,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             63 => 
             array (
@@ -976,8 +976,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             64 => 
             array (
@@ -991,8 +991,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 5,
             ),
             65 => 
             array (
@@ -1006,8 +1006,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 7,
             ),
             66 => 
             array (
@@ -1021,8 +1021,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             67 => 
             array (
@@ -1036,8 +1036,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 1,
             ),
             68 => 
             array (
@@ -1051,8 +1051,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             69 => 
             array (
@@ -1066,8 +1066,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             70 => 
             array (
@@ -1081,8 +1081,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 7,
             ),
             71 => 
             array (
@@ -1096,8 +1096,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 9,
             ),
             72 => 
             array (
@@ -1111,8 +1111,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             73 => 
             array (
@@ -1126,8 +1126,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 10,
             ),
             74 => 
             array (
@@ -1141,8 +1141,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 9,
             ),
             75 => 
             array (
@@ -1156,8 +1156,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
             76 => 
             array (
@@ -1171,8 +1171,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 5,
             ),
             77 => 
             array (
@@ -1186,8 +1186,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             78 => 
             array (
@@ -1201,8 +1201,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 1,
             ),
             79 => 
             array (
@@ -1216,8 +1216,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 1,
             ),
             80 => 
             array (
@@ -1231,8 +1231,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 5,
             ),
             81 => 
             array (
@@ -1246,8 +1246,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             82 => 
             array (
@@ -1261,8 +1261,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             83 => 
             array (
@@ -1276,8 +1276,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 6,
             ),
             84 => 
             array (
@@ -1291,8 +1291,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 9,
             ),
             85 => 
             array (
@@ -1306,8 +1306,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 4,
             ),
             86 => 
             array (
@@ -1321,8 +1321,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 3,
             ),
             87 => 
             array (
@@ -1336,8 +1336,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 4,
             ),
             88 => 
             array (
@@ -1349,10 +1349,10 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'O8BeyLfJ59HuPc7sRYKEHxJDcgi5k9hTsg5IxfH2KR1dTNDpecHMLHnCZRr9',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 9,
             ),
             89 => 
             array (
@@ -1366,8 +1366,8 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 9,
             ),
             90 => 
             array (
@@ -1379,10 +1379,10 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'MW2DxkWTx6FvKmeffaGpMQ06vz0M50FVQPUDhYLenWOskawDlardawimsopy',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-08 19:59:00',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-09 16:25:29',
+                'management_id' => 2,
             ),
         ));
         
