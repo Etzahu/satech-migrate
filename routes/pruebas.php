@@ -3,6 +3,7 @@
 use Money\Currency;
 use App\Models\User;
 use App\Models\Company;
+use App\Models\Product;
 use App\Models\Category;
 use App\Models\Management;
 use App\Models\MeasureUnit;
@@ -16,15 +17,15 @@ use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
 use Money\Currencies\ISOCurrencies;
 use Spatie\Browsershot\Browsershot;
-use Spatie\LaravelPdf\Enums\Format;
 
+use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
-use App\Services\OrderCalculationService;
 
+use App\Services\OrderCalculationService;
 use Rap2hpoutre\FastExcel\SheetCollection;
 use function Spatie\LaravelPdf\Support\pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -215,13 +216,13 @@ Route::get('cadenas', function () {
 
 Route::get('excel', function () {
 
-    // $type = 'DN-NP';
+    $type = 'DN-NP';
     // $type = 'Stock';
     $type = 'Servicios generales';
-    $collection = fastexcel()->import('data.xlsx');
-    $collection =  $collection->groupBy('CATEGORIA');
-    // $collection =  $collection->groupBy('CATEGORÍA');
-
+    $collection = fastexcel()->import('clasificacion.xlsx');
+    // $collection =  $collection->groupBy('CATEGORÍAS');
+    $collection =  $collection->groupBy('CATEGORIAS');
+    // return $collection;
 
     $array = [];
     foreach ($collection as $key => $value) {
@@ -230,7 +231,7 @@ Route::get('excel', function () {
         foreach ($value as $k => $v) {
             $array[] = [
                 'name' => str($v['DESCRIPCIÓN'])->squish(),
-                'code' => $v['N° FAM.'],
+                'code' => $v['FAM'],
                 'type' => $type,
                 'category_id' => $category->id,
                 'created_at' => now(),
@@ -567,15 +568,27 @@ Route::get('users-migrate', function () {
 
 Route::get('cadenas-migrar', function () {
     $collection = fastexcel()->import('migraciones-2.xlsx');
-    $collection =   $collection->flatten()->unique();
     $users = User::all();
-    foreach ($collection as $user) {
-        $existsUser = $users->where('name', $user)->first();
-        echo '<br/>';
-        echo filled($existsUser) ? '' : "No existe: {$user}";
-        echo '<br/>';
+    try {
+        DB::beginTransaction();
+        foreach ($collection as $item) {
+            $solicita = $users->where('name', $item['Solicita'])->first();
+            $revisa = $users->where('name', $item['Revisa'])->first();
+            $autoriza = $users->where('name', $item['Aprueba'])->first();
+            $record = PurchaseRequisitionApprovalChain::create([
+                'requester_id' => $solicita->id,
+                'reviewer_id' => $revisa->id,
+                'approver_id' => $autoriza->id,
+            ]);
+            $record->requester->assignRole('solicitante_requisicion_compra');
+            $record->reviewer->assignRole('revisor_requisicion_compra');
+            $record->approver->assignRole('autorizador_requisicion_compra');
+        }
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw ($e);
     }
-    // return $collection;
 });
 
 Route::get('correos', function () {
@@ -761,58 +774,125 @@ Route::get('sin-correo', function () {
     return fastexcel($users)->download('file.xlsx');
 });
 
-Route::get('encuestas-migrate',function(){
+Route::get('encuestas-migrate', function () {
     $tickets_it = array(
-        array('folio' => 'TI2024-001','calificacion_servicio' => '0'),
-        array('folio' => 'TI2024-002','calificacion_servicio' => '0'),
-        array('folio' => 'TI2024-003','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-004','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-005','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-006','calificacion_servicio' => '0'),
-        array('folio' => 'TI2024-010','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-011','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-013','calificacion_servicio' => '3'),
-        array('folio' => 'TI2024-014','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-015','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-016','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-017','calificacion_servicio' => '4'),
-        array('folio' => 'TI2024-018','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-019','calificacion_servicio' => '3'),
-        array('folio' => 'TI2024-021','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-022','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-024','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-025','calificacion_servicio' => '1'),
-        array('folio' => 'TI2024-026','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-028','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-029','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-030','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-032','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-033','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-034','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-037','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-039','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-042','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-043','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-046','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-048','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-049','calificacion_servicio' => '4'),
-        array('folio' => 'TI2024-050','calificacion_servicio' => '4'),
-        array('folio' => 'TI2024-053','calificacion_servicio' => '1'),
-        array('folio' => 'TI2024-056','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-057','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-060','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-064','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-065','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-066','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-067','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-068','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-071','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-072','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-076','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-077','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-078','calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-079','calificacion_servicio' => '5')
-      );
+        array('folio' => 'TI2024-001', 'calificacion_servicio' => '0'),
+        array('folio' => 'TI2024-002', 'calificacion_servicio' => '0'),
+        array('folio' => 'TI2024-003', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-004', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-005', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-006', 'calificacion_servicio' => '0'),
+        array('folio' => 'TI2024-010', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-011', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-013', 'calificacion_servicio' => '3'),
+        array('folio' => 'TI2024-014', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-015', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-016', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-017', 'calificacion_servicio' => '4'),
+        array('folio' => 'TI2024-018', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-019', 'calificacion_servicio' => '3'),
+        array('folio' => 'TI2024-021', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-022', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-024', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-025', 'calificacion_servicio' => '1'),
+        array('folio' => 'TI2024-026', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-028', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-029', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-030', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-032', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-033', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-034', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-037', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-039', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-042', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-043', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-046', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-048', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-049', 'calificacion_servicio' => '4'),
+        array('folio' => 'TI2024-050', 'calificacion_servicio' => '4'),
+        array('folio' => 'TI2024-053', 'calificacion_servicio' => '1'),
+        array('folio' => 'TI2024-056', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-057', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-060', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-064', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-065', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-066', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-067', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-068', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-071', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-072', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-076', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-077', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-078', 'calificacion_servicio' => '5'),
+        array('folio' => 'TI2024-079', 'calificacion_servicio' => '5')
+    );
 
-      return fastexcel($tickets_it)->download('tickets_it.xlsx');
+    return fastexcel($tickets_it)->download('tickets_it.xlsx');
+});
+Route::get('concentrado', function () {
+    // $category = [];
+    $array = [];
+    $unidades = MeasureUnit::get();
+    $categorias = Category::with('families')->get();
+    $collection = fastexcel()->import('productos.xlsx');
+    $collection = $collection->groupBy('CAT');
+    try {
+        DB::beginTransaction();
+        foreach ($collection as $key => $item) {
+            $category = $categorias->where('code', $key)->first();
+            $familias = $category->families;
+            foreach ($item as $product) {
+                $unidad = $unidades->where('acronym', $product['unidad'])->first();
+                $familia = $familias->where('code', $product['FAM'])->first();
+                echo '<br>';
+                echo $category->code;
+                echo '<br>';
+                echo blank($familia) ? 'NO' : $familia->code;
+                echo '<br>';
+                echo $product['FAM'];
+                echo '<br>';
+                $array[] = [
+                    'name' => $product['DESCRIPCIÓN'],
+                    'code' => $product['CÓDIGO'],
+                    'category_id' => $category->id,
+                    'category_family_id' => $familia->id,
+                    'unit_id' => $unidad->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+        DB::table('products')->insert($array);
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+    }
+});
+Route::get('cat', function () {
+    $collection = fastexcel()->import('clasificacion.xlsx');
+    $categorias = Category::all();
+    $categoria = $categorias->where('code', $collection[0]['cat'])->first();
+    try {
+        DB::beginTransaction();
+        foreach ($collection as $item) {
+            CategoryFamily::updateOrCreate(
+                [
+                    'code' => $item['fam'],
+                    'category_id' => $categoria->id,
+                ],
+                [
+                    'name' => $item['des'],
+                    'code' => $item['fam'],
+                    'type' => 'Stock',
+                    'category_id' => $categoria->id,
+                ]
+            );
+        }
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+    }
+    // return $collection;
 });

@@ -24,9 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // if ($this->app->environment('local')) {
-        //     Mail::alwaysTo('ahernandezm@gptservices.com');
-        // }
+        if ($this->app->environment('local')) {
+            Mail::alwaysTo('ahernandezm@gptservices.com');
+        }
         FilamentView::registerRenderHook(
             PanelsRenderHook::USER_MENU_BEFORE,
             fn (): View => view('hooks.topbar-company-text'),

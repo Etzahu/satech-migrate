@@ -219,6 +219,22 @@ class CategoriesTableSeeder extends Seeder
                 'created_at' => '2024-10-23 15:05:11',
                 'updated_at' => '2024-10-23 15:05:11',
             ),
+            25 => 
+            array (
+                'id' => 26,
+                'name' => 'epp',
+                'code' => 'EP',
+                'created_at' => '2025-01-12 00:49:14',
+                'updated_at' => '2025-01-12 00:49:14',
+            ),
+            26 => 
+            array (
+                'id' => 27,
+                'name' => 'herreria',
+                'code' => 'HRR',
+                'created_at' => '2025-01-12 02:21:48',
+                'updated_at' => '2025-01-12 02:22:08',
+            ),
         ));
         
         

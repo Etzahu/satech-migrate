@@ -30,16 +30,24 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label('Nombre')
-                    ->unique(table: Category::class, ignoreRecord: true)
-                    ->required()
-                    ->maxLength(100),
-                Forms\Components\TextInput::make('code')
-                    ->unique(table: Category::class, ignoreRecord: true)
-                    ->label('Código')
-                    ->required()
-                    ->maxLength(30),
+                Forms\Components\Section::make('')
+                ->schema([
+                    Forms\Components\TextInput::make('name')
+                        ->label('Nombre')
+                        ->unique(table: Category::class, ignoreRecord: true)
+                        ->required()
+                        ->maxLength(100),
+                    Forms\Components\TextInput::make('code')
+                        ->unique(table: Category::class, ignoreRecord: true)
+                        ->label('Código')
+                        ->required()
+                        ->maxLength(30),
+                ]),
+                Forms\Components\Section::make('')
+                ->visible(fn($operation)=> $operation == 'view' || $operation == 'edit')
+                ->schema([
+                    \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\FamiliesRelationManager::class)->lazy(true)
+                ])
             ]);
     }
 
@@ -69,13 +77,6 @@ class CategoryResource extends Resource
                 Tables\Actions\EditAction::make(),
             ])
         ;
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\FamiliesRelationManager::class,
-        ];
     }
 
     public static function getPages(): array

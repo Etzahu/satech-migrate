@@ -35,13 +35,13 @@ class PurchaseRequisitionApprovalChainResource extends Resource
             ->schema([
                 Forms\Components\Select::make('requester_id')
                     ->label('Solicita')
-                    ->relationship('requester', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1))
+                    ->relationship('requester', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
                     ->searchable()
                     ->preload()
                     ->required(),
                 Forms\Components\Select::make('reviewer_id')
                     ->label('Revisa')
-                    ->relationship('reviewer', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1))
+                    ->relationship('reviewer', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
                     ->searchable()
                     ->preload()
                     ->required(),

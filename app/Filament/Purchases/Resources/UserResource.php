@@ -40,7 +40,8 @@ class UserResource extends Resource
                                 Forms\Components\TextInput::make('email')
                                     ->label('Correo')
                                     ->required()
-                                    ->email()
+                                    ->email('gptservices')
+                                    ->endsWith(['@gptservices.com'])
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('phone')
                                     ->label('Celular')

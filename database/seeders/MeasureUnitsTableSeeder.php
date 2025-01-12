@@ -46,10 +46,10 @@ class MeasureUnitsTableSeeder extends Seeder
             3 => 
             array (
                 'id' => 4,
-                'name' => 'Caja',
-                'acronym' => 'Caja',
+                'name' => 'caja',
+                'acronym' => 'Cj',
                 'created_at' => '2025-01-08 19:10:13',
-                'updated_at' => '2025-01-08 19:10:13',
+                'updated_at' => '2025-01-12 00:27:24',
             ),
             4 => 
             array (
@@ -110,10 +110,10 @@ class MeasureUnitsTableSeeder extends Seeder
             11 => 
             array (
                 'id' => 12,
-                'name' => 'Juego',
-                'acronym' => 'Jgo',
+                'name' => 'juego',
+                'acronym' => 'Jg',
                 'created_at' => '2025-01-08 19:10:13',
-                'updated_at' => '2025-01-08 19:10:13',
+                'updated_at' => '2025-01-12 00:29:38',
             ),
             12 => 
             array (
@@ -242,6 +242,30 @@ class MeasureUnitsTableSeeder extends Seeder
                 'acronym' => 'Bta',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
+            ),
+            28 => 
+            array (
+                'id' => 29,
+                'name' => 'juegos',
+                'acronym' => 'Jgo',
+                'created_at' => '2025-01-12 00:29:53',
+                'updated_at' => '2025-01-12 00:29:53',
+            ),
+            29 => 
+            array (
+                'id' => 30,
+                'name' => 'par',
+                'acronym' => 'Par',
+                'created_at' => '2025-01-12 00:30:37',
+                'updated_at' => '2025-01-12 00:30:37',
+            ),
+            30 => 
+            array (
+                'id' => 31,
+                'name' => 'litro',
+                'acronym' => 'Lt',
+                'created_at' => '2025-01-12 00:31:16',
+                'updated_at' => '2025-01-12 00:31:16',
             ),
         ));
         
