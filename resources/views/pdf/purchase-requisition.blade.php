@@ -78,7 +78,6 @@
             <tr>
                 <td rowspan="4" align="center" valing="middle">
                     {{-- row-1-1 --}}
-                    {{ secure_asset('images/logo/logotipo_GPT.png') }}
                     <img src="{{ secure_asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" />
                 </td>
                 <td colspan="4">
