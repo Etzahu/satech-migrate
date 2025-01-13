@@ -59,8 +59,8 @@ class View extends ViewRecord
                                 ->title('Se devolvió la requisición')
                                 ->success()
                                 ->send();
-                            } catch (\Exception $e) {
-                                logger($e->getMessage());
+                        } catch (\Exception $e) {
+                            logger($e->getMessage());
                             Notification::make()
                                 ->title('Ocurrió un error')
                                 ->danger()
@@ -151,7 +151,7 @@ class View extends ViewRecord
                                 ViewEntry::make('status')
                                     ->view('filament.infolists.entries.history'),
                             ]),
-                        Tabs\Tab::make('Órdenes')->schema([
+                        Tabs\Tab::make('Ordenes')->schema([
                             \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)->lazy(false)
                         ]),
                     ]),

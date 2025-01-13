@@ -38,4 +38,8 @@ class EditPurchaseOrder extends EditRecord
             $this->getSaveFormAction(),
         ];
     }
+    protected function afterSave(): void
+    {
+        $this->dispatch('refreshRelationManagerItems');
+    }
 }

@@ -235,7 +235,7 @@ class PurchaseProviderResource extends Resource
                     ->label('Razón social')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('UserRequest.name')
-                    ->label('Cargo información')
+                    ->label('Alta de información')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')

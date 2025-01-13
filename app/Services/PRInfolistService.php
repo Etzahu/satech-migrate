@@ -143,10 +143,10 @@ class PRInfolistService
                                     ->view('filament.infolists.entries.history'),
                             ]),
 
-                        ]),
-                        // Tabs\Tab::make('Órdenes')->schema([
-                        //     \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)
-                        // ]),
+                    ]),
+                // Tabs\Tab::make('Ordenes')->schema([
+                //     \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)
+                // ]),
 
             ]);
     }

@@ -35,6 +35,7 @@ return new class extends Migration
 
             $table->string('status', 200);
             $table->foreignId('provider_id')->constrained('purchase_providers');
+            $table->foreignId('provider_contact_id')->nullable()->constrained('provider_contacts');
             $table->foreignId('purchaser_user_id')->constrained('users');
             $table->foreignId('company_id')->constrained('companies');
             $table->foreignId('requisition_id')->constrained('purchase_requisitions')

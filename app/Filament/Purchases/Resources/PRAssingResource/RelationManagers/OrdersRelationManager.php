@@ -16,6 +16,10 @@ use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
 class OrdersRelationManager extends RelationManager
 {
     protected static string $relationship = 'orders';
+    protected static ?string $modelLabel = 'Orden';
+    protected static ?string $pluralModelLabel = 'Ordenes';
+    protected static ?string $navigationLabel = 'Ordenes';
+    protected static ?string $title = 'Orden';
 
     public function form(Form $form): Form
     {

@@ -35,6 +35,7 @@ class PurchaseOrder extends Model implements HasMedia
         'final_delivery_date',
         'observations',
         'provider_id',
+        'provider_contact_id',
         'purchaser_user_id',
         'company_id',
         'requisition_id',
@@ -50,6 +51,10 @@ class PurchaseOrder extends Model implements HasMedia
     public function provider(): BelongsTo
     {
         return $this->belongsTo(PurchaseProvider::class, 'provider_id');
+    }
+    public function providerContact(): BelongsTo
+    {
+        return $this->belongsTo(ProviderContact::class, 'provider_contact_id','id');
     }
     public function items(): HasMany
     {
