@@ -1,4 +1,5 @@
 <html lang="es">
+
 <head>
     <title>Orden</title>
     @vite('resources/css/order-pdf.css')
@@ -18,19 +19,20 @@
                     <tbody>
                         <tr>
                             <td class="p-0 text-xs text-gray-700 w-13 text-end">Compañía:</td>
-                            <td class="p-0 text-xs font-bold text-gray-700 ps-2">Ferretería Santander, S.A. de C.V</td>
+                            <td class="p-0 text-xs font-bold text-gray-700 ps-2">{{ $data['provider']['company_name'] }}
+                            </td>
                         </tr>
                         <tr>
                             <td class="p-0 text-xs text-gray-700 w-13 text-end">Para:</td>
-                            <td class="p-0 text-xs text-gray-700 ps-2">Ferretería Santander, S.A. de C.V</td>
+                            <td class="p-0 text-xs text-gray-700 ps-2">{{ $data['providerContact']['name'] }}</td>
                         </tr>
                         <tr>
                             <td class="p-0 text-xs text-gray-700 w-13 text-end">Correo:</td>
-                            <td class="p-0 text-xs text-gray-700 ps-2">Ferretería Santander, S.A. de C.V</td>
+                            <td class="p-0 text-xs text-gray-700 ps-2">{{ $data['providerContact']['email'] }}</td>
                         </tr>
                         <tr>
                             <td class="p-0 text-xs text-gray-700 w-13 text-end">No. Telefónico:</td>
-                            <td class="p-0 text-xs text-gray-700 ps-2">Ferretería Santander, S.A. de C.V</td>
+                            <td class="p-0 text-xs text-gray-700 ps-2">{{ $data['providerContact']['cell_phone'] }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -45,19 +47,19 @@
                     <tbody>
                         <tr>
                             <td class="p-0 text-xs text-gray-700 w-13 text-end">Compañía:</td>
-                            <td class="p-0 text-xs font-bold text-gray-700 ps-2">Ferretería Santander, S.A. de C.V</td>
+                            <td class="p-0 text-xs font-bold text-gray-700 ps-2">{{ $data['company']['name'] }}</td>
                         </tr>
                         <tr>
                             <td class="p-0 text-xs text-gray-700 w-13 text-end">De:</td>
-                            <td class="p-0 text-xs text-gray-700 ps-2">Ferretería Santander, S.A. de C.V</td>
+                            <td class="p-0 text-xs text-gray-700 ps-2">{{ $data['purchaser']['name'] }}</td>
                         </tr>
                         <tr>
                             <td class="p-0 text-xs text-gray-700 w-13 text-end">Correo:</td>
-                            <td class="p-0 text-xs text-gray-700 ps-2">Ferretería Santander, S.A. de C.V</td>
+                            <td class="p-0 text-xs text-gray-700 ps-2">{{ $data['purchaser']['email'] }}</td>
                         </tr>
                         <tr>
                             <td class="p-0 text-xs text-gray-700 w-13 text-end">No. Telefónico:</td>
-                            <td class="p-0 text-xs text-gray-700 ps-2">Ferretería Santander, S.A. de C.V</td>
+                            <td class="p-0 text-xs text-gray-700 ps-2">{{ $data['purchaser']['phone'] }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -80,19 +82,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">1</td>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">TCN004</td>
-                        <td class="px-1 text-xs text-justify text-gray-700 border border-black ">Junta espiro metálica
-                            P/brida 24" 600# RF ASME B16.5 – doble
-                            anillo CGI acero inoxidable 316 o 304 C/relleno de grafito flexible
-                            (libre de asbesto)</td>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">S/M</td>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">PZA</td>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">3.0</td>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">$2,510.00</td>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">$7,530.00</td>
-                    </tr>
+                    @foreach ($data['itemsFormatted'] as $item)
+                        <tr>
+                            <td class="px-1 text-xs text-center text-gray-700 border border-black ">
+                                {{ $loop->iteration }}</td>
+                            <td class="px-1 text-xs text-center text-gray-700 border border-black ">{{ $item['code'] }}
+                            </td>
+                            <td class="px-1 text-xs text-center text-gray-700 border border-black ">{{ $item['name'] }}
+                            </td>
+                            <td class="px-1 text-xs text-justify text-gray-700 border border-black ">
+                                {{ $item['brand'] }}</td>
+                            <td class="px-1 text-xs text-center text-gray-700 border border-black ">
+                                {{ $item['unit'] }}/M</td>
+                            <td class="px-1 text-xs text-center text-gray-700 border border-black ">
+                                {{ $item['quantity'] }}</td>
+                            <td class="px-1 text-xs text-center text-gray-700 border border-black ">
+                                {{ $item['unit_price'] }}</td>
+                            <td class="px-1 text-xs text-center text-gray-700 border border-black ">
+                                {{ $item['sub_total'] }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
                 <tfoot>
                     <tr>
@@ -103,7 +112,8 @@
                         <td class="px-1 border border-white"></td>
                         <td class="px-1 border border-white border-r-black"></td>
                         <td class="px-1 text-xs text-center text-gray-700 border border-black ">Subtotal:</td>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">$7,530.00</td>
+                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">
+                            {{ $data['total']['Subtotal'] }}</td>
                     </tr>
                     <tr>
                         <td class="px-1 border border-white"></td>
@@ -113,7 +123,8 @@
                         <td class="px-1 border border-white"></td>
                         <td class="px-1 border border-white border-r-black"></td>
                         <td class="px-1 text-xs text-center text-gray-700 border border-black ">Descuento:</td>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">$7,530.00</td>
+                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">
+                            {{ $data['total']['Descuento'] }}</td>
                     </tr>
                     <tr>
                         <td class="px-1 border border-white"></td>
@@ -123,7 +134,8 @@
                         <td class="px-1 border border-white"></td>
                         <td class="px-1 border border-white border-r-black"></td>
                         <td class="px-1 text-xs text-center text-gray-700 border border-black ">IVA:</td>
-                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">$7,530.00</td>
+                        <td class="px-1 text-xs text-center text-gray-700 border border-black ">
+                            {{ $data['total']['IVA'] }}</td>
                     </tr>
                     <tr>
                         <td class="px-1 border border-white"></td>
@@ -133,7 +145,8 @@
                         <td class="px-1 border border-white"></td>
                         <td class="px-1 border border-white border-r-black"></td>
                         <td class="px-1 text-xs font-bold text-center text-gray-700 border border-black ">Total:</td>
-                        <td class="px-1 text-xs font-bold text-center text-gray-700 border border-black ">$7,530.00</td>
+                        <td class="px-1 text-xs font-bold text-center text-gray-700 border border-black ">
+                            {{ $data['total']['Total'] }}</td>
                     </tr>
                     <tr>
                         <td class="px-1 border border-white"></td>
@@ -143,7 +156,8 @@
                         <td class="px-1 border border-white"></td>
                         <td class="px-1 border border-white border-r-black"></td>
                         <td class="px-1 text-xs font-bold text-center text-gray-700 border border-black ">Moneda:</td>
-                        <td class="px-1 text-xs font-bold text-center text-gray-700 border border-black ">MXN</td>
+                        <td class="px-1 text-xs font-bold text-center text-gray-700 border border-black ">
+                            {{ $data['currency'] }}</td>
                     </tr>
 
                 </tfoot>
@@ -158,10 +172,12 @@
                         Observaciones al proveedor</th>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="w-16 px-1 text-xs text-left text-gray-700">Partida 1:</td>
-                        <td class="px-1 text-xs text-left text-gray-700 ">Debe ser de 24”</td>
-                    </tr>
+                    @foreach ($data['itemsFormatted'] as $item)
+                        <tr>
+                            <td class="w-16 px-1 text-xs text-left text-gray-700">Partida {{ $loop->iteration }}:</td>
+                            <td class="px-1 text-xs text-left text-gray-700 ">{{ $item['observation'] }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
@@ -170,20 +186,24 @@
             <div class="pr-3">
                 <table class="w-full">
                     <thead>
-                        <th
-                            class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
+                        <th class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
                             Archivos Anexos</th>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Debe ser de 24”</td>
-                        </tr>
+                        @foreach ($data['media'] as $item)
+                            <tr>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">
+                                    <a href="{{ $item->getUrl() }}" target="_blank" class="underline">
+                                        {{ $item->name }} ({{ $item->extension }})
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
                 <table class="w-full mt-5">
                     <thead>
-                        <th
-                            class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
+                        <th class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
                             Ítems de Pago</th>
                     </thead>
                     <tbody>
@@ -211,8 +231,7 @@
                 <div class="grid w-full grid-cols-2">
                     <table class="border-r border-black ">
                         <thead>
-                            <th
-                                class="px-1 text-xs text-center text-black underline border-white decoration-solid">
+                            <th class="px-1 text-xs text-center text-black underline border-white decoration-solid">
                                 Dirección de entrega</th>
                         </thead>
                         <tbody>
@@ -232,8 +251,7 @@
                     </table>
                     <table class="pl-3">
                         <thead>
-                            <th
-                                class="px-1 text-xs text-center text-black underline border-white decoration-solid">
+                            <th class="px-1 text-xs text-center text-black underline border-white decoration-solid">
                                 Documentación para entrega</th>
                         </thead>
                         <tbody>

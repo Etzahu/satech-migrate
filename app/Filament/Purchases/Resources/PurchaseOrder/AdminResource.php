@@ -84,8 +84,6 @@ class AdminResource extends Resource
         return PurchaserResource::infolist($infolist, $options);
     }
 
-
-
     public static function getPages(): array
     {
         return [

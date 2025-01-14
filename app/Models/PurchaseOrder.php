@@ -52,9 +52,13 @@ class PurchaseOrder extends Model implements HasMedia
     {
         return $this->belongsTo(PurchaseProvider::class, 'provider_id');
     }
+    public function company(): BelongsTo
+    {
+        return $this->belongsTo(Company::class, 'company_id');
+    }
     public function providerContact(): BelongsTo
     {
-        return $this->belongsTo(ProviderContact::class, 'provider_contact_id','id');
+        return $this->belongsTo(ProviderContact::class, 'provider_contact_id', 'id');
     }
     public function items(): HasMany
     {
@@ -85,7 +89,6 @@ class PurchaseOrder extends Model implements HasMedia
                 ->orderBy('id', 'desc');
         }
     }
-
     public function scopeApprove(Builder $query)
     {
         if (auth()->user()) {

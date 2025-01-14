@@ -75,4 +75,6 @@ class OrderCalculationService
         $total = $total->subtract($this->getRetentionIva(),$this->getRetentionIsr());
         return $formatter ? $this->moneyFormatter($total) :$total;
     }
+
+    
 }

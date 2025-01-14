@@ -1,5 +1,6 @@
 <?php
 
+use Money\Money;
 use Money\Currency;
 use App\Models\User;
 use App\Models\Company;
@@ -16,15 +17,15 @@ use App\Models\PurchaseProvider;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
 use Money\Currencies\ISOCurrencies;
-use Spatie\Browsershot\Browsershot;
 
+use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
-use Filament\Notifications\Notification;
 
+use Filament\Notifications\Notification;
 use App\Services\OrderCalculationService;
 use Rap2hpoutre\FastExcel\SheetCollection;
 use function Spatie\LaravelPdf\Support\pdf;
@@ -345,12 +346,47 @@ Route::get('money', function () {
 
 Route::get('pdf-order', function () {
 
-    $data = PurchaseOrder::with(['requisition','provider','items','purchaser'])->first();
-    // return view('pdf.purchase-order.content');
+    $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->first();
+    $service = new OrderCalculationService($data->id);
+    $items = $data->items;
+    $media[] = $data->getMedia('justification')->first();
+    $media[] = $data->getMedia('direct_award')->first();
+    $media[] = $data->getMedia('certifications')->first();
+    $media[] = $data->getMedia('quote')->first();
+
+    $itemsFormatted = $items->map(function ($item) use ($data, $service) {
+        // dump($item->toArray());
+        $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
+        $subTotal =  new Money($item->sub_total, new Currency($data->currency));
+        return [
+            'code' => $item->product->code,
+            'name' => $item->product->name,
+            'brand' => $item->product->brand?->name,
+            'unit' => $item->product->unit->acronym,
+            "quantity" => $item->quantity,
+            "unit_price" => $service->moneyFormatter($unitPrice),
+            "sub_total" => $service->moneyFormatter($subTotal),
+            "observation" => $item->observation,
+        ];
+    });
+    $total = [
+        'Subtotal' =>  $service->getSubtotalItems(true),
+        'Descuento' =>  $service->getDiscountProvider(true),
+        'IVA' =>  $service->getTaxIva(true),
+        'Retención de IVA' =>  $service->getRetentionIva(true),
+        'Retención de ISR' =>  $service->getRetentionIsr(true),
+        'Total' =>  $service->getTotal(true),
+    ];
+
+
+    $data['total'] = $total;
+    $data['media'] = $media;
+    $data['itemsFormatted'] = $itemsFormatted;
+    // return $data;
     return pdf()
-        ->view('pdf.purchase-order.content',['data'=>$data])
+        ->view('pdf.purchase-order.content', ['data' => $data])
         ->margins(40, 15, 15, 15)
-        ->headerView('pdf.purchase-order.header',['data'=>$data])
+        ->headerView('pdf.purchase-order.header', ['data' => $data])
         ->withBrowsershot(function (Browsershot $browsershot) {
             $browsershot
                 ->noSandbox()
