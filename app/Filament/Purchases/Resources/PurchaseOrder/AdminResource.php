@@ -9,14 +9,15 @@ use Filament\Tables\Table;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseProvider;
 
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Forms\Components\Tabs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Purchases\Resources\PurchaseOrder\AdminResource\Pages;
 use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
+use App\Filament\Purchases\Resources\PurchaseOrder\AdminResource\Pages;
 
 
 class AdminResource extends Resource
@@ -76,6 +77,11 @@ class AdminResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
             ]);
+    }
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        $options[] = 'show_relation_items';
+        return PurchaserResource::infolist($infolist, $options);
     }
 
 

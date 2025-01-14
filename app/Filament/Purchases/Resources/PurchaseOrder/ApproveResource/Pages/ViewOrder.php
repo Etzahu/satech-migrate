@@ -25,11 +25,10 @@ class ViewOrder extends ViewRecord
         // aprobado por DG nivel 1
         return [
             // Nivel 1
-            Actions\Action::make('Capturar respuesta')
+            Actions\Action::make('Capturar respuesta-1')
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(
-                    
                     fn() => ($this->record->status()->canBe('aprobada para emisión') ||
                         $this->record->status()->canBe('aprobado por DG nivel 1') ||
                         $this->record->status()->canBe('devuelto por DG nivel 1') ||
@@ -80,7 +79,7 @@ class ViewOrder extends ViewRecord
                     return redirect(ApproveResource::getUrl('index'));
                 }),
             // Nivel 2
-            Actions\Action::make('Capturar respuesta')
+            Actions\Action::make('Capturar respuesta-2')
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(

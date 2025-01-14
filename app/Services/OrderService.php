@@ -5,6 +5,9 @@ namespace App\Services;
 use App\Models\Company;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseRequisition;
+use Spatie\Browsershot\Browsershot;
+use Illuminate\Support\Facades\Storage;
+use function Spatie\LaravelPdf\Support\pdf;
 
 class OrderService
 {
@@ -28,5 +31,24 @@ class OrderService
     {
         $rq = PurchaseRequisition::find($rq_id);
         return $rq->approvalChain->requester->management->acronym;
+    }
+
+    public function generatePdf($model)
+    {
+        return pdf()
+        ->view('pdf.purchase-order.content')
+        ->margins(40, 15, 15, 15)
+        ->headerView('pdf.purchase-order.header')
+        ->withBrowsershot(function (Browsershot $browsershot) {
+            $browsershot
+                ->noSandbox()
+                ->writeOptionsToFile();
+        })
+        ->disk('public')
+        ->save('orden-compra.pdf')
+        ->name('orden-compra.pdf');
+        // Storage::disk('public')->put('orden-compra.pdf', $pdf->output());
+
+
     }
 }

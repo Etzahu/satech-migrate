@@ -345,16 +345,19 @@ Route::get('money', function () {
 
 Route::get('pdf-order', function () {
 
+    $data = PurchaseOrder::with(['requisition','provider','items','purchaser'])->first();
     // return view('pdf.purchase-order.content');
     return pdf()
-        ->view('pdf.purchase-order.content')
+        ->view('pdf.purchase-order.content',['data'=>$data])
         ->margins(40, 15, 15, 15)
-        ->headerView('pdf.purchase-order.header')
+        ->headerView('pdf.purchase-order.header',['data'=>$data])
         ->withBrowsershot(function (Browsershot $browsershot) {
             $browsershot
                 ->noSandbox()
                 ->writeOptionsToFile();
         })
+        ->disk('public')
+        ->save('orden-compra.pdf')
         ->name('invoice-2023-04-10.pdf');
 
     // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla

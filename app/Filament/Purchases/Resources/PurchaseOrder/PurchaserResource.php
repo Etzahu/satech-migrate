@@ -165,7 +165,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->required()
                                     ->live()
                                     ->columnSpan('full')
-                                    ->afterStateUpdated(function (Forms\Set $set,Forms\Get $get) {
+                                    ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get) {
                                         $set('provider_contact_id', null);
                                     }),
                                 Forms\Components\Select::make('provider_contact_id')
@@ -173,7 +173,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->searchable()
                                     ->preload()
                                     ->live()
-                                    ->options(function (Forms\Set $set,Forms\Get $get) {
+                                    ->options(function (Forms\Set $set, Forms\Get $get) {
                                         return ProviderContact::where('provider_id', $get('provider_id'))->pluck('name', 'id');
                                     })
                                     ->required()
@@ -271,7 +271,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->minValue(0)
                                     ->default(0.00),
                                 Forms\Components\TextInput::make('retention_another')
-                                ->visible(false)
+                                    ->visible(false)
                                     ->label('OTRO')
                                     ->required()
                                     ->suffixIcon('heroicon-o-percent-badge')
@@ -284,7 +284,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                             ->columns(3)
                             ->schema([
                                 MoneyInput::make('discount')
-                                    ->visible(fn(Forms\Get $get)=> $get('currency') == 'MXN')
+                                    ->visible(fn(Forms\Get $get) => $get('currency') == 'MXN')
                                     ->label('Descuento')
                                     ->currency('MXN')
                                     ->locale('es_MX')
@@ -293,7 +293,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->live()
                                     ->numeric(),
                                 MoneyInput::make('discount')
-                                ->visible(fn(Forms\Get $get)=> $get('currency') == 'USD')
+                                    ->visible(fn(Forms\Get $get) => $get('currency') == 'USD')
                                     ->label('Descuento')
                                     ->currency('USD')
                                     ->locale('en_US')
@@ -331,7 +331,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
             ->schema([
                 Infolists\Components\Tabs::make('tabs')
                     ->tabs([
-                        Infolists\Components\Tabs\Tab::make('Order')
+                        Infolists\Components\Tabs\Tab::make('Orden de compra')
                             ->schema([
                                 Infolists\Components\Tabs::make('Tabs')
                                     ->tabs([
@@ -368,16 +368,16 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->label('Fecha de creación')
                                                     ->date(),
                                             ]),
-                                            Infolists\Components\Tabs\Tab::make('Proveedor')
+                                        Infolists\Components\Tabs\Tab::make('Proveedor')
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('provider.company_name')
-                                                ->label('Proveedor'),
+                                                    ->label('Proveedor'),
                                                 Infolists\Components\TextEntry::make('providerContact.name')
-                                                ->label('Nombre'),
+                                                    ->label('Nombre'),
                                                 Infolists\Components\TextEntry::make('providerContact.email')
-                                                ->label('Correo'),
+                                                    ->label('Correo'),
                                                 Infolists\Components\TextEntry::make('providerContact.cell_phone')
-                                                ->label('Teléfono'),
+                                                    ->label('Teléfono'),
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Partidas')->schema([
                                             \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
@@ -462,100 +462,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                             ->action(function ($record) {
                                                                 $media = Media::where('model_id', $record->id)
                                                                     ->where('collection_name', 'certifications')
-                                                                    ->first();
-                                                                return response()->download($media->getPath(), $media->file_name);
-                                                            }),
-                                                    ]),
-                                                Infolists\Components\TextEntry::make('doc_4')
-                                                    ->label('Ficha de proyecto')
-                                                    ->visible(fn($record) =>
-                                                     $record->status()->canBe('devuelto por DG nivel 2') ||
-                                                      $record->status()->canBe('devuelto por DG nivel 2')||
-                                                      $record->status()->canBe('aprobada para emisión'))
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->requisition->project->id)
-                                                            ->where('collection_name', 'project_sheet')
-                                                            ->first();
-                                                        // dd($media);
-                                                        return $media->name;
-                                                    })
-                                                    ->hintActions([
-                                                        MediaActionInfolist::make('ver documento')
-                                                            ->media(function ($record) {
-                                                                $media = Media::where('model_id', $record->requisition->project->id)
-                                                                    ->where('collection_name', 'project_sheet')
-                                                                    ->first();
-                                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                                return $url;
-                                                            })
-                                                            ->autoplay()
-                                                            ->preload(false),
-                                                        Action::make('Descargar')
-                                                            ->action(function ($record) {
-                                                                $media = Media::where('model_id', $record->requisition->project->id)
-                                                                    ->where('collection_name', 'project_sheet')
-                                                                    ->first();
-                                                                return response()->download($media->getPath(), $media->file_name);
-                                                            }),
-                                                    ]),
-                                                Infolists\Components\TextEntry::make('doc_5')
-                                                    ->label('Cotización de cliente')
-                                                    ->visible(fn($record) =>
-                                                     $record->status()->canBe('devuelto por DG nivel 2') ||
-                                                      $record->status()->canBe('devuelto por DG nivel 2')||
-                                                      $record->status()->canBe('aprobada para emisión'))
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->requisition->project->id)
-                                                            ->where('collection_name', 'customer_quote')
-                                                            ->first();
-                                                        return $media->name;
-                                                    })
-                                                    ->hintActions([
-                                                        MediaActionInfolist::make('ver documento')
-                                                            ->media(function ($record) {
-                                                                $media = Media::where('model_id', $record->requisition->project->id)
-                                                                    ->where('collection_name', 'customer_quote')
-                                                                    ->first();
-                                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                                return $url;
-                                                            })
-                                                            ->autoplay()
-                                                            ->preload(false),
-                                                        Action::make('Descargar')
-                                                            ->action(function ($record) {
-                                                                $media = Media::where('model_id', $record->requisition->project->id)
-                                                                    ->where('collection_name', 'customer_quote')
-                                                                    ->first();
-                                                                return response()->download($media->getPath(), $media->file_name);
-                                                            }),
-                                                    ]),
-                                                Infolists\Components\TextEntry::make('doc_6')
-                                                    ->label('Orden')
-                                                    ->visible(fn($record) =>
-                                                     $record->status()->canBe('devuelto por DG nivel 2') ||
-                                                      $record->status()->canBe('devuelto por DG nivel 2')||
-                                                      $record->status()->canBe('aprobada para emisión'))
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->requisition->project->id)
-                                                            ->where('collection_name', 'order')
-                                                            ->first();
-                                                        return $media->name;
-                                                    })
-                                                    ->hintActions([
-                                                        MediaActionInfolist::make('ver documento')
-                                                            ->media(function ($record) {
-                                                                $media = Media::where('model_id', $record->requisition->project->id)
-                                                                    ->where('collection_name', 'order')
-                                                                    ->first();
-                                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                                return $url;
-                                                            })
-                                                            ->autoplay()
-                                                            ->preload(false),
-                                                        Action::make('Descargar')
-                                                            ->action(function ($record) {
-                                                                $media = Media::where('model_id', $record->requisition->project->id)
-                                                                    ->where('collection_name', 'order')
                                                                     ->first();
                                                                 return response()->download($media->getPath(), $media->file_name);
                                                             }),
@@ -647,7 +553,8 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->activeTab(2)
                             ]),
                         Infolists\Components\Tabs\Tab::make('Requisición')
-                            ->schema([]),
+                            ->schema([])
+                            ->visible(false),
                     ])
             ]);
     }
