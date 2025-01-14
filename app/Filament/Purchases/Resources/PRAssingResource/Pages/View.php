@@ -39,9 +39,10 @@ class View extends ViewRecord
 
         return [
             ActionGroup::make([
-                Action::make('Crear orden de compra')
-                    ->visible(blank($this->record->status_order))
-                    ->url(fn(PurchaseRequisition $record): string => PRAssingResource::getUrl('orders.create', ['record' => $record->id])),
+                //TODO: tiene un error intenta llamar al relation manager
+                // Action::make('Crear orden de compra')
+                //     ->visible(blank($this->record->status_order))
+                //     ->url(fn(PurchaseRequisition $record): string => PRAssingResource::getUrl('orders.create', ['record' => $record->id])),
                 Action::make('Ver pdf')
                     ->color('danger')
                     ->icon('heroicon-m-document')

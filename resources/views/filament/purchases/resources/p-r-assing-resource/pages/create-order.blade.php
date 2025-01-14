@@ -1,7 +1,4 @@
 <x-filament-panels::page>
-    <div>
-        {{-- {{ $this->table }} --}}
-    </div>
     <form wire:submit="create">
         {{ $this->form }}
         <div class="my-6">

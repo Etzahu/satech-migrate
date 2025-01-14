@@ -57,7 +57,6 @@ class CreateOrder extends Page implements HasForms
     {
         $resource = static::getResource();
         return [
-            // PRAssingResource::getUrl() => 'Courses',
             $resource::getUrl() => 'Requisiciones',
             $resource::getUrl('view', ['record' => $this->record]) => $this->record->folio,
             $this->getBreadcrumb()
@@ -71,7 +70,7 @@ class CreateOrder extends Page implements HasForms
     }
     public function create(): void
     {
-        // TODO:falta la logica para guardar las imagenes 
+        // TODO:falta la logica para guardar las imagenes
         $this->form->getState();
         $order = PurchaseOrder::create($this->data);
         $service = new OrderService();
