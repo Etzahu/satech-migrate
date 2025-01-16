@@ -1,0 +1,3 @@
+<div>
+    {{ $observation }}
+</div>

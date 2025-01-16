@@ -33,6 +33,10 @@ class PRAssingResource extends Resource
         return auth()->user()->hasRole('comprador');
         // return auth()->user()->can('assing_purchase::requisition');
     }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function getEloquentQuery(): Builder
     {

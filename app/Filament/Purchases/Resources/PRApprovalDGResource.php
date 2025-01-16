@@ -27,6 +27,10 @@ class PRApprovalDGResource extends Resource
     {
         return auth()->user()->can('view_approve_dg_purchase::requisition');
     }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function getEloquentQuery(): Builder
     {

@@ -93,8 +93,8 @@ class ItemsRelationManager extends RelationManager
                     Tables\Columns\TextColumn::make('quantity')
                         ->label('Cantidad'),
                     MoneyColumn::make('unit_price')
-                    ->currency('USD')
-                    ->locale('en_US')
+                        ->currency('USD')
+                        ->locale('en_US')
                         ->label('Precio unitario'),
                     MoneyColumn::make('unit_price')
                         ->currency('USD')
@@ -145,10 +145,21 @@ class ItemsRelationManager extends RelationManager
                         ->locale('es_MX')
                         ->label('Precio unitario'),
                     MoneyColumn::make('sub_total')
-                    ->currency('MXN')
-                    ->locale('es_MX')
+                        ->currency('MXN')
+                        ->locale('es_MX')
                         ->label('Importe')
                         ->summarize(Sum::make()->label('Subtotal')->money('USD', divideBy: 100, locale: 'en_USD')),
+                    Tables\Columns\TextColumn::make('observation')
+                        ->label('Observaciones')
+                        ->limit(30)
+                        ->action(
+                            Tables\Actions\Action::make('Observaciones')
+                                ->modal()
+                                ->modalSubmitAction(false)
+                                ->modalCancelAction(false)
+                                ->modalContent(fn($record) => view('filament.table.view-observation', ['observation' => $record->observation]))
+                        )
+
                 ])
                 ->headerActions([
                     Tables\Actions\CreateAction::make()

@@ -27,6 +27,10 @@ class PRApprovalResource extends Resource
     {
         return auth()->user()->can('view_approve_purchase::requisition');
     }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function getEloquentQuery(): Builder
     {

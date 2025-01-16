@@ -39,6 +39,10 @@ class PRReviewWareHouseResource extends Resource
     {
         return auth()->user()->can('view_review_warehouse_purchase::requisition');
     }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

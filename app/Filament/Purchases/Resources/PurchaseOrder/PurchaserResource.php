@@ -338,6 +338,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                         Infolists\Components\Tabs\Tab::make('Datos generales')
                                             ->columns(3)
                                             ->schema([
+                                                Infolists\Components\TextEntry::make('status')
+                                                    ->label('Estatus')
+                                                    ->badge()
+                                                    ->color('success'),
                                                 Infolists\Components\TextEntry::make('currency')
                                                     ->label('Moneda'),
                                                 Infolists\Components\TextEntry::make('type_payment')
@@ -359,11 +363,12 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->icon('heroicon-o-percent-badge')
                                                     ->iconPosition(IconPosition::After)
                                                     ->iconColor('primary'),
-                                                Infolists\Components\TextEntry::make('requisition_id')
+                                                Infolists\Components\TextEntry::make('requisition.folio')
                                                     ->label('Requisición')
                                                     ->hidden($options['rq'] ?? false),
                                                 Infolists\Components\TextEntry::make('provider_id')
-                                                    ->label('Proveedor'),
+                                                    ->label('Proveedor')
+                                                    ,
                                                 Infolists\Components\TextEntry::make('created_at')
                                                     ->label('Fecha de creación')
                                                     ->date(),
@@ -550,7 +555,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ]),
                                     ])
                                     ->contained(false)
-                                    ->activeTab(2)
+                                    ->activeTab(1)
                             ]),
                         Infolists\Components\Tabs\Tab::make('Requisición')
                             ->schema([])
