@@ -44,8 +44,6 @@ class PurchasesPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->bootUsing(function (Panel $panel) {
-
-
             })
             ->discoverResources(in: app_path('Filament/Purchases/Resources'), for: 'App\\Filament\\Purchases\\Resources')
             ->discoverPages(in: app_path('Filament/Purchases/Pages'), for: 'App\\Filament\\Purchases\\Pages')
@@ -56,6 +54,12 @@ class PurchasesPanelProvider extends PanelProvider
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
+            ])
+            ->userMenuItems([
+                'logout' =>MenuItem::make()
+                    ->label('Salir')
+                    ->url(fn (): string => route('logout'))
+                    ->icon('heroicon-o-cog-6-tooth'),
             ])
             ->middleware([
                 EncryptCookies::class,

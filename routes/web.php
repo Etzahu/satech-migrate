@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\LoginController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -18,3 +20,8 @@ Route::get('empresa/{id}', [LoginController::class, 'setCompany'])
     ->name('company')
     ->middleware('auth');
 
+Route::post('/logout', function () {
+    Session::flush();
+    Auth::logout();
+    return redirect()->to('/');
+})->name('logout');

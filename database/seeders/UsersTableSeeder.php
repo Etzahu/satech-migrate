@@ -509,7 +509,7 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => 'rL0gqqpuWXZaugMRkAg82gjENkOjiuePWf2TwxG0Bi1s10AyFKkmWhJzxpP8',
+                'remember_token' => 'pM2kPsyCfuHJsQocSIHo9kj4XckN78j7KaHfEqqqfgggbVWjTD1mSLIABwHP',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-12 00:10:33',
                 'management_id' => 9,

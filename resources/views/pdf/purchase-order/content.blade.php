@@ -3,6 +3,11 @@
 <head>
     <title>Orden</title>
     @vite('resources/css/order-pdf.css')
+    <style>
+        html {
+            font-size: 13px;
+        }
+    </style>
 </head>
 
 <body>
@@ -223,9 +228,13 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="w-16 px-1 text-xs text-right text-gray-700">Partida 1:</td>
-                            <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Debe ser de 24”</td>
+                            <td class="px-1 text-xs text-right text-gray-700 w-28">Método de envío:</td>
+                            <td class="px-1 text-xs text-left text-gray-700 ms-2 ">{{ $data['shipping_method'] }}</td>
                         </tr>
+                        {{-- <tr>
+                            <td class="px-1 text-xs text-right text-gray-700 w-28">Tiempo de entrega:</td>
+                            <td class="px-1 text-xs text-left text-gray-700 ms-2 ">{{ $data['initial_delivery_date'] }}</td>
+                        </tr> --}}
                     </tbody>
                 </table>
                 <div class="grid w-full grid-cols-2">
@@ -236,16 +245,9 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
-                            </tr>
-                            <tr>
-                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
-                            </tr>
-                            <tr>
-                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
-                            </tr>
-                            <tr>
-                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
+                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">
+                                    <p>{{ $data['delivery_address'] }}</p>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -255,18 +257,14 @@
                                 Documentación para entrega</th>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
-                            </tr>
-                            <tr>
-                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
-                            </tr>
-                            <tr>
-                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
-                            </tr>
-                            <tr>
-                                <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Almacén</td>
-                            </tr>
+                            @if (filled($data['documentation_delivery']))
+                                @foreach ($data['documentation_delivery'] as $item)
+                                    <tr>
+                                        <td class="px-1 text-xs text-left text-gray-700 ms-2 ">{{ $item['name'] }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -282,7 +280,24 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="px-1 text-xs text-left text-gray-700 ">Debe ser de 24”</td>
+                        <td class="px-1 text-xs font-bold text-left text-gray-700">RFC: {{ $data['company']['rfc'] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 text-xs font-bold text-left text-gray-700">{{ $data['company']['name'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 text-xs text-left text-gray-700">{{ $data['company']['street'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 text-xs text-left text-gray-700">{{ $data['company']['neighborhood'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 text-xs text-left text-gray-700">{{ $data['company']['municipality'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="px-1 text-xs text-left text-gray-700">{{ $data['company']['state'] }},
+                            {{ $data['company']['cp'] }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -294,8 +309,24 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="w-16 px-1 text-xs text-left text-gray-700">Partida 1:</td>
-                        <td class="px-1 text-xs text-left text-gray-700 ">Debe ser de 24”</td>
+                        <td class="w-24 px-1 text-xs text-left text-gray-700">Uso de CFDI:</td>
+                        <td class="px-1 text-xs text-left text-gray-700 ">{{ $data['use_cfdi'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="w-24 px-1 text-xs text-left text-gray-700">Método de Pago:</td>
+                        <td class="px-1 text-xs text-left text-gray-700 ">{{ $data['form_payment'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="w-24 px-1 text-xs text-left text-gray-700">Tipo de Pago:</td>
+                        <td class="px-1 text-xs text-left text-gray-700 ">{{ $data['type_payment'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="w-24 px-1 text-xs text-left text-gray-700">Condiciones de Pago:</td>
+                        <td class="px-1 text-xs text-left text-gray-700 ">{{ $data['condition_payment'] }}</td>
+                    </tr>
+                    <tr>
+                        <td class="w-24 px-1 text-xs text-left text-gray-700">Enviar a:</td>
+                        <td class="px-1 text-xs text-left text-gray-700 ">{{ $data['purchaser']['email'] }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -307,8 +338,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="w-16 px-1 text-xs text-left text-gray-700">Partida 1:</td>
-                        <td class="px-1 text-xs text-left text-gray-700 ">Debe ser de 24”</td>
+                        <td VALIGN="top" class="px-1 py-0 text-xs text-left text-gray-700">
+                            <div>
+                                <p>&nbsp;&nbsp;Banco:&nbsp;{{ $data['provider']['bank'] }}</p>
+                                <p>&nbsp;Cuenta:&nbsp;{{ $data['provider']['bank_account'] }}</p>
+                                <p>&nbsp;&nbsp;&nbsp;Clabe:&nbsp;{{ $data['provider']['bank_account_number'] }}</p>
+                                <p>Enviar a:&nbsp;{{ $data->providerContact->email }}</p>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -1,6 +1,7 @@
 <?php
 
 use Money\Money;
+use Carbon\Carbon;
 use Money\Currency;
 use App\Models\User;
 use App\Models\Company;
@@ -16,15 +17,15 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PurchaseProvider;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
-use Money\Currencies\ISOCurrencies;
 
+use Money\Currencies\ISOCurrencies;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 
+use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
 use App\Services\OrderCalculationService;
 use Rap2hpoutre\FastExcel\SheetCollection;
@@ -383,6 +384,7 @@ Route::get('pdf-order', function () {
     $data['media'] = $media;
     $data['itemsFormatted'] = $itemsFormatted;
     // return $data;
+    // return view('pdf.purchase-order.content', compact('data'));
     return pdf()
         ->view('pdf.purchase-order.content', ['data' => $data])
         ->margins(40, 15, 15, 15)
@@ -400,12 +402,7 @@ Route::get('pdf-order', function () {
     $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])->findOrFail(1);
 
     // dd($rq->toArray());
-    return view('pdf.purchase-order', compact('rq'));
-    // $m1= $rq->getMedia('supports');
-    // $m2= $rq->getMedia('technical_data_sheets');
-    // dd($m1->toArray(),$m2->toArray());
-    $pdf = Pdf::loadView('pdf.purchase-order', compact('rq'));
-    return $pdf->stream($rq->folio . '.pdf');
+
 });
 
 Route::get('total', function () {
@@ -934,4 +931,8 @@ Route::get('cat', function () {
         throw $e;
     }
     // return $collection;
+});
+
+Route::get('test',function(){
+
 });

@@ -302,8 +302,8 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->live()
                                     ->numeric(),
                             ]),
-                        Tabs\Tab::make('Fecha de entrega')
-                            ->columns(2)
+                        Tabs\Tab::make('Entrega')
+                            ->columns(1)
                             ->schema([
                                 Forms\Components\DatePicker::make('initial_delivery_date') //TODO: falta validar esta logica cuando se edita
                                     ->label('Inicial')
@@ -311,6 +311,19 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                 Forms\Components\DatePicker::make('final_delivery_date') //TODO: falta validar esta logica cuando se edita
                                     ->label('Final')
                                     ->required(),
+                                Forms\Components\Textarea::make('delivery_address')
+                                ->label('Dirección de entrega')
+                                ->default('Almacén, Av. Santa Mónica No.33, Col El Mirador, Tlalnepantla de Baz, Estado de México 54080.'),
+                                Forms\Components\Repeater::make('documentation_delivery')
+                                ->label('Documentación de entrega')
+                                ->reorderableWithDragAndDrop(false)
+                                ->reorderable(false)
+                                ->default([['name'=>'Copia de remisión y/o Factura'],['name'=>'Orden de compra'],['name'=>'Certificados de calidad']])
+                                ->schema([
+                                    Forms\Components\TextInput::make('name')
+                                    ->label('Nombre del documento')
+                                    ->required(),
+                                ])
                             ]),
                         Tabs\Tab::make('Observaciones')
                             ->columns(2)
@@ -366,9 +379,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                 Infolists\Components\TextEntry::make('requisition.folio')
                                                     ->label('Requisición')
                                                     ->hidden($options['rq'] ?? false),
-                                                Infolists\Components\TextEntry::make('provider_id')
-                                                    ->label('Proveedor')
-                                                    ,
                                                 Infolists\Components\TextEntry::make('created_at')
                                                     ->label('Fecha de creación')
                                                     ->date(),
@@ -530,8 +540,8 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->currency('MXN')
                                                     ->locale('es_MX'),
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Fecha de entrega')
-                                            ->columns(2)
+                                        Infolists\Components\Tabs\Tab::make('Entrega')
+                                            ->columns(1)
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('initial_delivery_date')
                                                     ->label('Inicial')
@@ -539,9 +549,17 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                 Infolists\Components\TextEntry::make('final_delivery_date')
                                                     ->label('Final')
                                                     ->date(),
+                                                    Infolists\Components\Textentry::make('delivery_address')
+                                                    ->label('Dirección de entrega'),
+                                                    Infolists\Components\RepeatableEntry::make('documentation_delivery')
+                                                    ->label('Documentación de entrega')
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('name')
+                                                        ->label('Nombre del documento'),
+                                                    ]),
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Observaciones')
-                                            ->columns(2)
+                                            ->columns(1)
                                             ->schema([
                                                 Infolists\Components\Textentry::make('observations')
                                                     ->label('Observaciones'),

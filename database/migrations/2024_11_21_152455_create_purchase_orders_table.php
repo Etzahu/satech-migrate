@@ -31,7 +31,9 @@ return new class extends Migration
             $table->decimal('retention_another', 10, 3)->default(0);
             $table->date('initial_delivery_date');
             $table->date('final_delivery_date');
+            $table->text('delivery_address')->default('GPT');
             $table->text('observations', 600);
+            $table->json('documentation_delivery');
 
             $table->string('status', 200);
             $table->foreignId('provider_id')->constrained('purchase_providers');

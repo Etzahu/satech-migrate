@@ -33,6 +33,8 @@ class PurchaseOrder extends Model implements HasMedia
         'retention_another',
         'initial_delivery_date',
         'final_delivery_date',
+        'delivery_address',
+        'documentation_delivery',
         'observations',
         'provider_id',
         'provider_contact_id',
@@ -44,6 +46,14 @@ class PurchaseOrder extends Model implements HasMedia
     public $stateMachines = [
         'status' => PurchaseOrderStateMachine::class
     ];
+    protected function casts(): array
+    {
+        return [
+            'documentation_delivery' => 'array'
+        ];
+    }
+
+
     public function requisition(): BelongsTo
     {
         return $this->belongsTo(PurchaseRequisition::class, 'requisition_id');
