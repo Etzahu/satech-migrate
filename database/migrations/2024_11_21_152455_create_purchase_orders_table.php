@@ -31,7 +31,7 @@ return new class extends Migration
             $table->decimal('retention_another', 10, 3)->default(0);
             $table->date('initial_delivery_date');
             $table->date('final_delivery_date');
-            $table->text('delivery_address')->default('GPT');
+            $table->text('delivery_address');
             $table->text('observations', 600);
             $table->json('documentation_delivery');
 

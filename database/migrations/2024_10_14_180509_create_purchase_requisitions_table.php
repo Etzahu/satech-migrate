@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('motive', 600);
             $table->text('observation', 600);
             $table->date('date_delivery');
-            $table->string('delivery_address', 500);
+            $table->text('delivery_address');
             $table->string('status', 80)->nullable();
             $table->string('status_order', 80)->nullable();
             $table->foreignId('company_id')->constrained('companies');

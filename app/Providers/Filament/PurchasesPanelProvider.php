@@ -23,8 +23,6 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use App\Filament\Purchases\Resources\PurchaseRequisitionResource;
-use App\Filament\Purchases\Resources\PurchaseRequisitionReviewWareHouseResource;
 
 class PurchasesPanelProvider extends PanelProvider
 {

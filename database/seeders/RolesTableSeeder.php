@@ -14,12 +14,12 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('roles')->delete();
-        
+
         \DB::table('roles')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 1,
                 'name' => 'super_admin',
@@ -27,7 +27,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-10-07 01:17:55',
                 'updated_at' => '2024-10-07 01:17:55',
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 2,
                 'name' => 'admin_ing_panel',
@@ -35,7 +35,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-10-07 15:59:19',
                 'updated_at' => '2024-10-07 15:59:19',
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 3,
                 'name' => 'user_ing',
@@ -43,47 +43,47 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-10-07 16:00:17',
                 'updated_at' => '2024-10-07 16:01:00',
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 4,
-                'name' => 'solicitante_requisicion_compra',
+                'name' => 'solicita_requisicion_compra',
                 'guard_name' => 'web',
                 'created_at' => '2024-10-21 01:20:15',
                 'updated_at' => '2024-10-21 01:20:15',
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 5,
-                'name' => 'revisor_requisicion_compra',
+                'name' => 'revisa_requisicion_compra',
                 'guard_name' => 'web',
                 'created_at' => '2024-10-21 01:20:35',
                 'updated_at' => '2024-10-21 01:20:35',
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 6,
-                'name' => 'autorizador_requisicion_compra',
+                'name' => 'aprueba_requisicion_compra',
                 'guard_name' => 'web',
                 'created_at' => '2024-10-21 01:20:59',
                 'updated_at' => '2024-10-21 01:20:59',
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 7,
-                'name' => 'revisor_almacen_requisicion_compra',
+                'name' => 'revisa_almacen_requisicion_compra',
                 'guard_name' => 'web',
                 'created_at' => '2024-10-21 01:21:16',
                 'updated_at' => '2024-10-21 01:21:16',
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 8,
-                'name' => 'director_general_requisicion_compra',
+                'name' => 'autoriza_requisicion_compra',
                 'guard_name' => 'web',
                 'created_at' => '2024-10-21 01:21:31',
                 'updated_at' => '2024-10-21 01:21:31',
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 9,
                 'name' => 'administrador_compras',
@@ -91,7 +91,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-10-21 02:34:11',
                 'updated_at' => '2024-10-21 02:34:11',
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 10,
                 'name' => 'comprador',
@@ -99,7 +99,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-11-13 19:02:20',
                 'updated_at' => '2024-11-13 19:02:20',
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 11,
                 'name' => 'gerente_solicitante_orden_compra',
@@ -107,7 +107,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-12-16 19:07:26',
                 'updated_at' => '2024-12-16 19:07:26',
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 12,
                 'name' => 'autoriza_nivel-1-orden_compra',
@@ -115,7 +115,7 @@ class RolesTableSeeder extends Seeder
                 'created_at' => '2024-12-16 19:09:21',
                 'updated_at' => '2024-12-16 19:09:21',
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 13,
                 'name' => 'autoriza_nivel-2-orden_compra',
@@ -124,7 +124,7 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => '2024-12-16 19:09:46',
             ),
         ));
-        
-        
+
+
     }
 }

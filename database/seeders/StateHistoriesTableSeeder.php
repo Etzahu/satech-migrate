@@ -739,6 +739,21 @@ class StateHistoriesTableSeeder extends Seeder
                 'created_at' => '2025-01-15 15:36:55',
                 'updated_at' => '2025-01-15 15:36:55',
             ),
+            48 => 
+            array (
+                'id' => 49,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 4,
+                'field' => 'status',
+                'from' => NULL,
+                'to' => 'borrador',
+                'custom_properties' => '[]',
+                'responsible_type' => 'App\\Models\\User',
+                'responsible_id' => 199,
+                'changed_attributes' => '{"id": {"new": 4, "old": null}, "folio": {"new": "N/A", "old": null}, "status": {"new": "borrador", "old": null}, "tax_iva": {"new": "16", "old": null}, "currency": {"new": "MXN", "old": null}, "discount": {"new": "0", "old": null}, "use_cfdi": {"new": "105-Dados, troqueles, moldes, matrices y herramental", "old": null}, "company_id": {"new": 1, "old": null}, "created_at": {"new": "2025-01-17 20:03:47", "old": null}, "updated_at": {"new": "2025-01-17 20:03:47", "old": null}, "provider_id": {"new": "311", "old": null}, "quote_folio": {"new": "Sunt sit ab aute et ", "old": null}, "form_payment": {"new": "transferencia", "old": null}, "observations": {"new": "Non sed quas dolor v", "old": null}, "term_payment": {"new": "contado", "old": null}, "type_payment": {"new": "PUE - Pago en una sola exhibición", "old": null}, "retention_isr": {"new": 0, "old": null}, "retention_iva": {"new": 0, "old": null}, "requisition_id": {"new": "2", "old": null}, "shipping_method": {"new": "Sed quam facilis vol", "old": null}, "delivery_address": {"new": "Vitae aliquid non ra", "old": null}, "condition_payment": {"new": "Aliquam nisi et eu e", "old": null}, "purchaser_user_id": {"new": 199, "old": null}, "final_delivery_date": {"new": "2014-01-23", "old": null}, "provider_contact_id": {"new": "246", "old": null}, "initial_delivery_date": {"new": "1971-10-06", "old": null}, "documentation_delivery": {"new": "[{\\"name\\":\\"Serena Weaver\\"},{\\"name\\":\\"pp\\"}]", "old": null}}',
+                'created_at' => '2025-01-17 20:03:47',
+                'updated_at' => '2025-01-17 20:03:47',
+            ),
         ));
         
         

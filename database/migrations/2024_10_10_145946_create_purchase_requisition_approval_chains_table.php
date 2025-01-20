@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('requester_id')->constrained('users');
             $table->foreignId('reviewer_id')->constrained('users');
             $table->foreignId('approver_id')->constrained('users');
+            $table->foreignId('authorizer_id')->constrained('users')->default(106);
             $table->timestamps();
         });
     }

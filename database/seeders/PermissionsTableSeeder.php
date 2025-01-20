@@ -2411,6 +2411,102 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2024-12-18 15:54:34',
                 'updated_at' => '2024-12-18 15:54:34',
             ),
+            299 => 
+            array (
+                'id' => 300,
+                'name' => 'view_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            300 => 
+            array (
+                'id' => 301,
+                'name' => 'view_any_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            301 => 
+            array (
+                'id' => 302,
+                'name' => 'create_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            302 => 
+            array (
+                'id' => 303,
+                'name' => 'update_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            303 => 
+            array (
+                'id' => 304,
+                'name' => 'delete_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            304 => 
+            array (
+                'id' => 305,
+                'name' => 'delete_any_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            305 => 
+            array (
+                'id' => 306,
+                'name' => 'view_review_warehouse_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            306 => 
+            array (
+                'id' => 307,
+                'name' => 'view_review_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            307 => 
+            array (
+                'id' => 308,
+                'name' => 'view_approve_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            308 => 
+            array (
+                'id' => 309,
+                'name' => 'view_authorize_dg_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            309 => 
+            array (
+                'id' => 310,
+                'name' => 'assing_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:07',
+                'updated_at' => '2025-01-20 02:35:07',
+            ),
+            310 => 
+            array (
+                'id' => 311,
+                'name' => 'view_authorize_purchase::requisition::requester',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-20 02:35:35',
+                'updated_at' => '2025-01-20 02:35:35',
+            ),
         ));
         
         

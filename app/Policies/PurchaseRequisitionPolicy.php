@@ -10,29 +10,31 @@ class PurchaseRequisitionPolicy
 {
     use HandlesAuthorization;
 
-       // Custom permissions
-       public function viewReviewWarehouse(User $user): bool
-       {
-           return $user->can('view_review_warehouse_purchase::requisition');
-       }
-       public function viewReview(User $user): bool
-       {
-           return $user->can('view_review_purchase::requisition');
-       }
-       public function viewApprove(User $user): bool
-       {
-           return $user->can('view_approve_purchase::requisition');
-       }
-       public function viewApproveDg(User $user): bool
-       {
-           return $user->can('view_approve_dg_purchase::requisition');
-       }
-       public function assign(User $user): bool
-       {
-           return $user->can('assing_purchase::requisition');
-       }
 
-    // default permission
+    public function viewReviewWarehouse(User $user): bool
+    {
+        return $user->can('view_review_warehouse_purchase::requisition');
+    }
+    public function viewReview(User $user): bool
+    {
+        return $user->can('view_review_purchase::requisition');
+    }
+    public function viewApprove(User $user): bool
+    {
+        return $user->can('view_approve_purchase::requisition');
+    }
+    public function viewAuthorize(User $user): bool
+    {
+        return $user->can('view_authorize_purchase::requisition');
+    }
+    public function assign(User $user): bool
+    {
+        return $user->can('assing_purchase::requisition');
+    }
+
+    /**
+     * Determine whether the user can view any models.
+     */
     public function viewAny(User $user): bool
     {
         return $user->can('view_any_purchase::requisition');
@@ -57,10 +59,9 @@ class PurchaseRequisitionPolicy
     /**
      * Determine whether the user can update the model.
      */
-    //TODO:: falta implementar la logica para que dependiendo del status se pueda editar
     public function update(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('update_purchase::requisition'); // && $purchaseRequisition->status=='borrador';
+        return $user->can('update_purchase::requisition');
     }
 
     /**

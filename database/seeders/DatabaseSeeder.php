@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PasswordResetTokensTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
         $this->call(ProjectsDnNpCpTableSeeder::class);
-        $this->call(PurchaseRequisitionApprovalChainsTableSeeder::class);
+        // $this->call(PurchaseRequisitionApprovalChainsTableSeeder::class);
         $this->call(StateHistoriesTableSeeder::class);
         $this->call(RoleHasPermissionsTableSeeder::class);
         $this->call(SessionsTableSeeder::class);
