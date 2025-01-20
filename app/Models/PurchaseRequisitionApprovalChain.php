@@ -19,6 +19,7 @@ class PurchaseRequisitionApprovalChain extends Model
         'requester_id',
         'reviewer_id',
         'approver_id',
+        'authorizer_id'
     ];
 
     /**
@@ -31,6 +32,7 @@ class PurchaseRequisitionApprovalChain extends Model
         'requester_id' => 'integer',
         'reviewer_id' => 'integer',
         'approver_id' => 'integer',
+        'authorizer_id' => 'integer',
     ];
 
 
@@ -51,5 +53,9 @@ class PurchaseRequisitionApprovalChain extends Model
     public function approver(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approver_id');
+    }
+    public function authorizer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'authorizer_id');
     }
 }

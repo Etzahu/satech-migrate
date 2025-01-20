@@ -15,7 +15,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_purchase::requisition::approval::chain');
+        return $user->can('view_any_purchase::requisition::chain');
     }
 
     /**
@@ -23,7 +23,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function view(User $user, PurchaseRequisitionApprovalChain $purchaseRequisitionApprovalChain): bool
     {
-        return $user->can('view_purchase::requisition::approval::chain');
+        return $user->can('view_purchase::requisition::chain');
     }
 
     /**
@@ -31,7 +31,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_purchase::requisition::approval::chain');
+        return $user->can('create_purchase::requisition::chain');
     }
 
     /**
@@ -39,7 +39,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function update(User $user, PurchaseRequisitionApprovalChain $purchaseRequisitionApprovalChain): bool
     {
-        return $user->can('update_purchase::requisition::approval::chain');
+        return $user->can('update_purchase::requisition::chain');
     }
 
     /**
@@ -47,7 +47,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function delete(User $user, PurchaseRequisitionApprovalChain $purchaseRequisitionApprovalChain): bool
     {
-        return $user->can('delete_purchase::requisition::approval::chain');
+        return $user->can('delete_purchase::requisition::chain');
     }
 
     /**
@@ -55,7 +55,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_purchase::requisition::approval::chain');
+        return $user->can('delete_any_purchase::requisition::chain');
     }
 
     /**
@@ -63,7 +63,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function forceDelete(User $user, PurchaseRequisitionApprovalChain $purchaseRequisitionApprovalChain): bool
     {
-        return $user->can('force_delete_purchase::requisition::approval::chain');
+        return $user->can('force_delete_purchase::requisition::chain');
     }
 
     /**
@@ -71,7 +71,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_purchase::requisition::approval::chain');
+        return $user->can('force_delete_any_purchase::requisition::chain');
     }
 
     /**
@@ -79,7 +79,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function restore(User $user, PurchaseRequisitionApprovalChain $purchaseRequisitionApprovalChain): bool
     {
-        return $user->can('restore_purchase::requisition::approval::chain');
+        return $user->can('restore_purchase::requisition::chain');
     }
 
     /**
@@ -87,7 +87,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_purchase::requisition::approval::chain');
+        return $user->can('restore_any_purchase::requisition::chain');
     }
 
     /**
@@ -95,7 +95,7 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function replicate(User $user, PurchaseRequisitionApprovalChain $purchaseRequisitionApprovalChain): bool
     {
-        return $user->can('replicate_purchase::requisition::approval::chain');
+        return $user->can('replicate_purchase::requisition::chain');
     }
 
     /**
@@ -103,6 +103,6 @@ class PurchaseRequisitionApprovalChainPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_purchase::requisition::approval::chain');
+        return $user->can('reorder_purchase::requisition::chain');
     }
 }

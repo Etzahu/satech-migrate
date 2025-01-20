@@ -9,7 +9,6 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class PurchaseOrderPolicy
 {
     use HandlesAuthorization;
-
     public function viewApproveLevel1(User $user)
     {
         return $user->can(' view_approve-level-1_purchase::order::purchaser');
@@ -26,6 +25,7 @@ class PurchaseOrderPolicy
     {
         return $user->can(' view_approve-level-4_purchase::order::purchaser');
     }
+    
     /**
      * Determine whether the user can view any models.
      */
@@ -55,8 +55,7 @@ class PurchaseOrderPolicy
      */
     public function update(User $user, PurchaseOrder $purchaseOrder): bool
     {
-        $options = ['borrador', 'devuelto por gerente solicitante', 'devuelto por DG nivel 1', 'devuelto por DG nivel 2'];
-        return $user->can('update_purchase::order::purchaser') && in_array($purchaseOrder->status, $options);
+        return $user->can('update_purchase::order::purchaser');
     }
 
     /**

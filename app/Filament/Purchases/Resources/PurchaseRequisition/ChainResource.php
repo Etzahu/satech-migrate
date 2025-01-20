@@ -48,7 +48,7 @@ class ChainResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('approver_id')
                     ->label('Aprueba')
-                    ->options(User::approvers()->pluck('name', 'id'))
+                    ->options(User::role('aprueba_requisicion_compra')->pluck('name', 'id'))
                     ->searchable()
                     ->preload()
                     ->required(),
@@ -60,7 +60,6 @@ class ChainResource extends Resource
                     ->required(),
             ]);
     }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -74,7 +73,7 @@ class ChainResource extends Resource
                 Tables\Columns\TextColumn::make('approver.name')
                     ->label('Aprueba')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('approver.name')
+                Tables\Columns\TextColumn::make('authorizer.name')
                     ->label('Autoriza')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

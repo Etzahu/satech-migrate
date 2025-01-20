@@ -50,7 +50,6 @@ class PurchaseRequisitionCreationService
 
     public function generateDataForEmail($subject, $model)
     {
-
         $data = [
             'subject' => "REQUISICIÓN:{$model->folio} {$subject}",
             'company' => $model->company->name,
@@ -122,8 +121,8 @@ class PurchaseRequisitionCreationService
         $moreUsers = [];
         $moreUsers[] = $model->approvalChain->reviewer->email;
         $moreUsers[] = $model->approvalChain->approver->email;
-        $moreUsers[] = User::role('director_general_requisicion_compra')->first()->email;
-        $usersWareHouse = User::role('revisor_almacen_requisicion_compra')->get()->flatten();
+        $moreUsers[] = User::role('autoriza_requisicion_compra')->first()->email;
+        $usersWareHouse = User::role('revisa_almacen_requisicion_compra')->get()->flatten();
         foreach ($usersWareHouse as $user) {
             $moreUsers[] = $user->email;
         }

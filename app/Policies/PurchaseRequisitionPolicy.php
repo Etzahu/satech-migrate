@@ -10,7 +10,6 @@ class PurchaseRequisitionPolicy
 {
     use HandlesAuthorization;
 
-
     public function viewReviewWarehouse(User $user): bool
     {
         return $user->can('view_review_warehouse_purchase::requisition');
@@ -29,15 +28,14 @@ class PurchaseRequisitionPolicy
     }
     public function assign(User $user): bool
     {
-        return $user->can('assing_purchase::requisition');
+        return $user->can('view_assing_purchase::requisition::requester');
     }
-
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_purchase::requisition');
+        return $user->can('view_any_purchase::requisition::requester');
     }
 
     /**
@@ -45,7 +43,7 @@ class PurchaseRequisitionPolicy
      */
     public function view(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('view_purchase::requisition');
+        return $user->can('view_purchase::requisition::requester');
     }
 
     /**
@@ -53,7 +51,7 @@ class PurchaseRequisitionPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_purchase::requisition');
+        return $user->can('create_purchase::requisition::requester');
     }
 
     /**
@@ -61,7 +59,7 @@ class PurchaseRequisitionPolicy
      */
     public function update(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('update_purchase::requisition');
+        return $user->can('update_purchase::requisition::requester');
     }
 
     /**
@@ -69,7 +67,7 @@ class PurchaseRequisitionPolicy
      */
     public function delete(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('delete_purchase::requisition');
+        return $user->can('delete_purchase::requisition::requester');
     }
 
     /**
@@ -77,7 +75,7 @@ class PurchaseRequisitionPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_purchase::requisition');
+        return $user->can('delete_any_purchase::requisition::requester');
     }
 
     /**

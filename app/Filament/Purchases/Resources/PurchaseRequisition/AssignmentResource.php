@@ -32,7 +32,6 @@ class AssignmentResource extends Resource
     public static function canAccess(): bool
     {
         return auth()->user()->hasRole('comprador');
-        // return auth()->user()->can('assing_purchase::requisition');
     }
     public static function canCreate(): bool
     {

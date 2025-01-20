@@ -384,7 +384,7 @@ Route::get('pdf-order', function () {
     $data['media'] = $media;
     $data['itemsFormatted'] = $itemsFormatted;
     // return $data;
-    // return view('pdf.purchase-order.content', compact('data'));
+    // return view('pdf.purchase-order.header', compact('data'));
     return pdf()
         ->view('pdf.purchase-order.content', ['data' => $data])
         ->margins(40, 15, 15, 15)
@@ -603,8 +603,19 @@ Route::get('users-migrate', function () {
 });
 
 Route::get('cadenas-migrar', function () {
-    $collection = fastexcel()->import('migraciones-2.xlsx');
+    $collection = fastexcel()->import('cadenas.xlsx');
     $users = User::all();
+    // $collection = $collection->pluck('Revisa')->unique();
+
+    // foreach($collection as $item) {
+    //     $result= $users->where('name',$item)->first();
+    //     echo '<br>';
+    //     echo 'ITEM:'.$item;
+    //     echo '<br>';
+    //     echo 'DB:'. filled($result) ? $result?->id : 'VACIO';
+    //     echo '<br>';
+
+    // }
     try {
         DB::beginTransaction();
         foreach ($collection as $item) {
@@ -615,10 +626,11 @@ Route::get('cadenas-migrar', function () {
                 'requester_id' => $solicita->id,
                 'reviewer_id' => $revisa->id,
                 'approver_id' => $autoriza->id,
+                'authorizer_id' => $item['Autoriza'],
             ]);
-            $record->requester->assignRole('solicitante_requisicion_compra');
-            $record->reviewer->assignRole('revisor_requisicion_compra');
-            $record->approver->assignRole('autorizador_requisicion_compra');
+            $record->requester->assignRole('solicita_requisicion_compra');
+            $record->reviewer->assignRole('revisa_requisicion_compra');
+            $record->approver->assignRole('aprueba_requisicion_compra');
         }
         DB::commit();
     } catch (\Exception $e) {

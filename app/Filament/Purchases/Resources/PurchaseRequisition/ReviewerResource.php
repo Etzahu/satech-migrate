@@ -26,7 +26,7 @@ class ReviewerResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->can('view_review_purchase::requisition');
+        return auth()->user()->can('view_review_purchase::requisition::requester');
     }
     public static function canCreate(): bool
     {

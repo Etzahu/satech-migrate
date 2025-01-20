@@ -17,15 +17,15 @@ class AuthorizerResource extends Resource
     protected static ?string $model = PurchaseRequisition::class;
     protected static ?string $modelLabel = 'Requisición';
     protected static ?string $pluralModelLabel = 'Requisiciones';
-    protected static ?string $navigationLabel = 'Aprobar por DG';
-    protected static ?string $slug = 'requisiciones-aprobar-dg';
+    protected static ?string $navigationLabel = 'Autorizar';
+    protected static ?string $slug = 'requisiciones-autorizar';
     protected static ?string $navigationGroup = 'Requisiciones';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 5;
 
     public static function canAccess(): bool
     {
-        return auth()->user()->can('view_authorize_purchase::requisition');
+        return auth()->user()->can('view_authorize_purchase::requisition::requester');
     }
     public static function canCreate(): bool
     {
@@ -35,11 +35,11 @@ class AuthorizerResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->approveDG();
+            ->authorize();
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::approveDG()->count();
+        return static::getModel()::authorize()->count();
     }
     public static function table(Table $table): Table
     {

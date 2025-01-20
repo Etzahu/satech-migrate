@@ -26,7 +26,7 @@ class ApproverResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->can('view_approve_purchase::requisition');
+        return auth()->user()->can('view_approve_purchase::requisition::requester');
     }
     public static function canCreate(): bool
     {

@@ -31,11 +31,11 @@ class ManagementTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'name' => 'Compras',
+                'name' => 'Gerencia De Compras',
                 'acronym' => 'COM',
                 'responsible_id' => 180,
                 'created_at' => '2024-10-15 17:42:23',
-                'updated_at' => '2024-10-15 17:42:23',
+                'updated_at' => '2025-01-20 03:47:02',
             ),
             2 => 
             array (
@@ -76,20 +76,20 @@ class ManagementTableSeeder extends Seeder
             6 => 
             array (
                 'id' => 7,
-                'name' => 'Gerencia de Ingeniería Manufactura y Mantenimiento',
+                'name' => 'Gerencia De Ingeniería Manufactura Y Mantenimiento',
                 'acronym' => 'MTTO',
-                'responsible_id' => 19,
+                'responsible_id' => 36,
                 'created_at' => '2024-10-15 17:42:23',
-                'updated_at' => '2024-10-15 17:42:23',
+                'updated_at' => '2025-01-20 15:42:16',
             ),
             7 => 
             array (
                 'id' => 8,
-                'name' => 'Gerencia de Operaciones',
+                'name' => 'Gerencia De Operaciones',
                 'acronym' => 'GOP',
-                'responsible_id' => 46,
+                'responsible_id' => 22,
                 'created_at' => '2024-10-15 17:42:23',
-                'updated_at' => '2024-10-15 17:42:23',
+                'updated_at' => '2025-01-20 15:41:14',
             ),
             8 => 
             array (
@@ -108,6 +108,15 @@ class ManagementTableSeeder extends Seeder
                 'responsible_id' => 14,
                 'created_at' => '2024-10-15 17:42:23',
                 'updated_at' => '2024-10-15 17:42:23',
+            ),
+            10 => 
+            array (
+                'id' => 11,
+                'name' => 'Gerencia De Ingenieria',
+                'acronym' => 'ING',
+                'responsible_id' => 36,
+                'created_at' => '2025-01-20 15:43:34',
+                'updated_at' => '2025-01-20 15:43:34',
             ),
         ));
         

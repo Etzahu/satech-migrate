@@ -24,9 +24,10 @@ class PurchaseProviderResource extends Resource
     protected static ?string $pluralModelLabel = 'Proveedores';
     protected static ?string $navigationLabel = 'Proveedores';
     protected static ?string $slug = 'proveedores';
-    // protected static ?string $navigationGroup = '';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 1;
+    // protected static ?string $navigationGroup = '';
+    protected static ?string $navigationGroup = 'Administración';
+    protected static ?int $navigationSort = 11;
 
     public static function form(Form $form): Form
     {

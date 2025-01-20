@@ -137,9 +137,10 @@ class PurchaseRequisition extends Model implements HasMedia
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
-    public function scopeApproveDG(Builder $query)
+    public function scopeAuthorize(Builder $query)
     {
         return $query->where('status', 'aprobado por gerencia')
+            ->whereIn('approval_chain_id', auth()->user()->authorizerChainsPR->pluck('id')->toArray())
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }

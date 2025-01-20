@@ -20,8 +20,8 @@ class BrandResource extends Resource
     protected static ?string $pluralModelLabel = 'Marcas';
     protected static ?string $navigationLabel = 'Marcas';
     protected static ?string $slug = 'marcas';
-    protected static ?string $navigationGroup = 'Administración';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
+    protected static ?string $navigationGroup = 'Administración';
     protected static ?int $navigationSort = 9;
 
     public static function form(Form $form): Form

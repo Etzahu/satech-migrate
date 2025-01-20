@@ -14,12 +14,12 @@ class ProviderContactsTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('provider_contacts')->delete();
-
+        
         \DB::table('provider_contacts')->insert(array (
-            0 =>
+            0 => 
             array (
                 'id' => 1,
                 'name' => 'Francisco',
@@ -28,11 +28,10 @@ class ProviderContactsTableSeeder extends Seeder
             'cell_phone' => '(222) 710 6947',
                 'phone' => '0',
                 'provider_id' => 398,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            1 =>
+            1 => 
             array (
                 'id' => 2,
                 'name' => 'Norma Pereyra',
@@ -41,11 +40,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 518,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            2 =>
+            2 => 
             array (
                 'id' => 3,
                 'name' => 'Daniel Hernandez',
@@ -54,11 +52,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '771 403 0770',
                 'phone' => '0',
                 'provider_id' => 370,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            3 =>
+            3 => 
             array (
                 'id' => 4,
                 'name' => 'Ventas',
@@ -67,11 +64,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 352 5078',
                 'phone' => '0',
                 'provider_id' => 371,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            4 =>
+            4 => 
             array (
                 'id' => 5,
                 'name' => 'Leonardo Jesús García',
@@ -80,11 +76,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '334 780 0901',
                 'phone' => '0',
                 'provider_id' => 373,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            5 =>
+            5 => 
             array (
                 'id' => 6,
                 'name' => 'David Lopez',
@@ -93,11 +88,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 755 6740',
                 'phone' => '0',
                 'provider_id' => 374,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            6 =>
+            6 => 
             array (
                 'id' => 7,
                 'name' => 'Cecilia Pérez',
@@ -106,11 +100,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 368 1100',
                 'phone' => '0',
                 'provider_id' => 375,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            7 =>
+            7 => 
             array (
                 'id' => 8,
                 'name' => 'Ventas',
@@ -119,11 +112,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '993 350 6569',
                 'phone' => '0',
                 'provider_id' => 377,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            8 =>
+            8 => 
             array (
                 'id' => 9,
                 'name' => 'Ventas',
@@ -132,11 +124,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 742 0352',
                 'phone' => '0',
                 'provider_id' => 378,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            9 =>
+            9 => 
             array (
                 'id' => 10,
                 'name' => 'Sergio González',
@@ -145,11 +136,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '921 21 76462',
                 'phone' => '0',
                 'provider_id' => 379,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            10 =>
+            10 => 
             array (
                 'id' => 11,
                 'name' => 'Juan Carlos Orozco',
@@ -158,11 +148,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 361 9771',
                 'phone' => '0',
                 'provider_id' => 380,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            11 =>
+            11 => 
             array (
                 'id' => 12,
                 'name' => 'Ventas',
@@ -171,11 +160,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '999 946 0464',
                 'phone' => '0',
                 'provider_id' => 381,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            12 =>
+            12 => 
             array (
                 'id' => 13,
                 'name' => 'Eleine Ramos',
@@ -184,11 +172,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 565 7555',
                 'phone' => '0',
                 'provider_id' => 382,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            13 =>
+            13 => 
             array (
                 'id' => 14,
                 'name' => 'Alicia Herrera',
@@ -197,11 +184,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 683 3657',
                 'phone' => '0',
                 'provider_id' => 383,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            14 =>
+            14 => 
             array (
                 'id' => 15,
                 'name' => 'Ventas',
@@ -210,11 +196,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 043 8460',
                 'phone' => '0',
                 'provider_id' => 385,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            15 =>
+            15 => 
             array (
                 'id' => 16,
                 'name' => 'Jaqueline Bobadilla',
@@ -223,11 +208,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 268 7185',
                 'phone' => '0',
                 'provider_id' => 387,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            16 =>
+            16 => 
             array (
                 'id' => 17,
                 'name' => 'Carlos Gutiérrez',
@@ -236,11 +220,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 169 0470',
                 'phone' => '0',
                 'provider_id' => 390,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            17 =>
+            17 => 
             array (
                 'id' => 18,
                 'name' => 'Rodolfo Chaparro',
@@ -249,11 +232,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5553620207',
                 'phone' => '0',
                 'provider_id' => 388,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            18 =>
+            18 => 
             array (
                 'id' => 19,
                 'name' => 'Luis Chavarin',
@@ -262,11 +244,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '669 149 0035',
                 'phone' => '0',
                 'provider_id' => 391,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            19 =>
+            19 => 
             array (
                 'id' => 20,
                 'name' => 'Gabriel Ovanado',
@@ -275,11 +256,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 543 1209',
                 'phone' => '0',
                 'provider_id' => 392,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            20 =>
+            20 => 
             array (
                 'id' => 21,
                 'name' => 'Dulce Romero',
@@ -288,11 +268,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 389 1080',
                 'phone' => '0',
                 'provider_id' => 393,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            21 =>
+            21 => 
             array (
                 'id' => 22,
                 'name' => 'Mike Chojecki',
@@ -301,11 +280,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '17735232944',
                 'phone' => '0',
                 'provider_id' => 394,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            22 =>
+            22 => 
             array (
                 'id' => 23,
                 'name' => 'Mike Chojecki',
@@ -314,11 +292,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '1773 08010513',
                 'phone' => '0',
                 'provider_id' => 394,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            23 =>
+            23 => 
             array (
                 'id' => 24,
                 'name' => 'Felix Guzman',
@@ -327,11 +304,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '722 199 4551',
                 'phone' => '0',
                 'provider_id' => 395,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            24 =>
+            24 => 
             array (
                 'id' => 25,
                 'name' => 'Marco Díaz',
@@ -340,11 +316,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '333 812 5494',
                 'phone' => '0',
                 'provider_id' => 396,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            25 =>
+            25 => 
             array (
                 'id' => 26,
                 'name' => 'Ventas',
@@ -353,11 +328,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 872 6095',
                 'phone' => '0',
                 'provider_id' => 397,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            26 =>
+            26 => 
             array (
                 'id' => 27,
                 'name' => 'Antonio Espejel',
@@ -366,11 +340,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '1832 665 2850',
                 'phone' => '0',
                 'provider_id' => 399,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            27 =>
+            27 => 
             array (
                 'id' => 28,
                 'name' => 'Tania Salgado',
@@ -379,11 +352,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 876 5242',
                 'phone' => '0',
                 'provider_id' => 400,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            28 =>
+            28 => 
             array (
                 'id' => 29,
                 'name' => 'Alberto',
@@ -392,11 +364,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 4764 4182',
                 'phone' => '0',
                 'provider_id' => 401,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            29 =>
+            29 => 
             array (
                 'id' => 30,
                 'name' => 'Daniel Santos',
@@ -405,11 +376,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 398 5515',
                 'phone' => '0',
                 'provider_id' => 403,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            30 =>
+            30 => 
             array (
                 'id' => 31,
                 'name' => 'Daniel Santos',
@@ -418,11 +388,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 460 9538',
                 'phone' => '0',
                 'provider_id' => 403,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            31 =>
+            31 => 
             array (
                 'id' => 32,
                 'name' => 'Liz Ramirez',
@@ -431,11 +400,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 868 6730',
                 'phone' => '0',
                 'provider_id' => 404,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            32 =>
+            32 => 
             array (
                 'id' => 33,
                 'name' => 'Victor Medina',
@@ -444,11 +412,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 363 2577',
                 'phone' => '0',
                 'provider_id' => 405,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            33 =>
+            33 => 
             array (
                 'id' => 34,
                 'name' => 'Agustin Morales Cadena',
@@ -457,11 +424,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5558500400',
                 'phone' => '0',
                 'provider_id' => 408,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            34 =>
+            34 => 
             array (
                 'id' => 35,
                 'name' => 'Luis Dominguez',
@@ -470,11 +436,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 8022 9586',
                 'phone' => '0',
                 'provider_id' => 406,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            35 =>
+            35 => 
             array (
                 'id' => 36,
                 'name' => 'David Garcia',
@@ -483,11 +448,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 397 4000',
                 'phone' => '0',
                 'provider_id' => 407,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            36 =>
+            36 => 
             array (
                 'id' => 37,
                 'name' => 'Oscar Ocampos',
@@ -496,11 +460,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 361 0344',
                 'phone' => '0',
                 'provider_id' => 409,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            37 =>
+            37 => 
             array (
                 'id' => 38,
                 'name' => 'Oswaldo Chavez',
@@ -509,11 +472,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 999 9996',
                 'phone' => '0',
                 'provider_id' => 410,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            38 =>
+            38 => 
             array (
                 'id' => 39,
                 'name' => 'Ventas',
@@ -522,11 +484,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 999 9909',
                 'phone' => '0',
                 'provider_id' => 411,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            39 =>
+            39 => 
             array (
                 'id' => 40,
                 'name' => 'Manuel Abraham Figueroa',
@@ -535,11 +496,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 515 0524',
                 'phone' => '0',
                 'provider_id' => 413,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            40 =>
+            40 => 
             array (
                 'id' => 41,
                 'name' => 'Flor Silveria',
@@ -548,11 +508,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 455 8982',
                 'phone' => '0',
                 'provider_id' => 415,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            41 =>
+            41 => 
             array (
                 'id' => 42,
                 'name' => 'Ventas',
@@ -561,11 +520,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 379 4057',
                 'phone' => '0',
                 'provider_id' => 414,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            42 =>
+            42 => 
             array (
                 'id' => 43,
                 'name' => 'Lesly Martha Torres',
@@ -574,11 +532,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 621 8795',
                 'phone' => '0',
                 'provider_id' => 416,
-
                 'created_at' => '2025-01-08 18:40:34',
                 'updated_at' => '2025-01-08 18:40:34',
             ),
-            43 =>
+            43 => 
             array (
                 'id' => 44,
                 'name' => 'Paulina Barrientos',
@@ -587,11 +544,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 153 0300',
                 'phone' => '0',
                 'provider_id' => 417,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            44 =>
+            44 => 
             array (
                 'id' => 45,
                 'name' => 'Franco Flores',
@@ -600,11 +556,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 389 6355',
                 'phone' => '0',
                 'provider_id' => 420,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            45 =>
+            45 => 
             array (
                 'id' => 46,
                 'name' => 'Laura Ceballos',
@@ -613,11 +568,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5586787721',
                 'phone' => '0',
                 'provider_id' => 424,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            46 =>
+            46 => 
             array (
                 'id' => 47,
                 'name' => 'Blanca Martinez',
@@ -626,11 +580,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '899 455 9186',
                 'phone' => '0',
                 'provider_id' => 425,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            47 =>
+            47 => 
             array (
                 'id' => 48,
                 'name' => 'Ventas',
@@ -639,11 +592,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1101 2300',
                 'phone' => '0',
                 'provider_id' => 426,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            48 =>
+            48 => 
             array (
                 'id' => 49,
                 'name' => 'Ventas',
@@ -652,11 +604,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 362 5469',
                 'phone' => '0',
                 'provider_id' => 427,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            49 =>
+            49 => 
             array (
                 'id' => 50,
                 'name' => 'Sergio Garcia',
@@ -665,11 +616,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 165 9800',
                 'phone' => '0',
                 'provider_id' => 428,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            50 =>
+            50 => 
             array (
                 'id' => 51,
                 'name' => 'Manuel Antonio Cruz',
@@ -678,11 +628,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '777 101 1156',
                 'phone' => '0',
                 'provider_id' => 430,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            51 =>
+            51 => 
             array (
                 'id' => 52,
                 'name' => 'Pablo Garcia',
@@ -691,11 +640,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 868 4564',
                 'phone' => '0',
                 'provider_id' => 431,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            52 =>
+            52 => 
             array (
                 'id' => 53,
                 'name' => 'Pablo Villalobos',
@@ -704,11 +652,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '921 235 8289',
                 'phone' => '0',
                 'provider_id' => 432,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            53 =>
+            53 => 
             array (
                 'id' => 54,
                 'name' => 'Hilarios Muñoz',
@@ -717,11 +664,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 719 0394',
                 'phone' => '0',
                 'provider_id' => 436,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            54 =>
+            54 => 
             array (
                 'id' => 55,
                 'name' => 'Gerardo Espina',
@@ -730,11 +676,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 8025 1127',
                 'phone' => '0',
                 'provider_id' => 435,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            55 =>
+            55 => 
             array (
                 'id' => 56,
                 'name' => 'Simon Gallegos',
@@ -743,11 +688,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '833 338 6944',
                 'phone' => '0',
                 'provider_id' => 437,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            56 =>
+            56 => 
             array (
                 'id' => 57,
                 'name' => 'Gustavo Flores',
@@ -756,11 +700,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '557 050 4213',
                 'phone' => '0',
                 'provider_id' => 439,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            57 =>
+            57 => 
             array (
                 'id' => 58,
                 'name' => 'Magdalena Medrano',
@@ -769,11 +712,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 899 1700',
                 'phone' => '0',
                 'provider_id' => 445,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            58 =>
+            58 => 
             array (
                 'id' => 59,
                 'name' => 'Juan Borja',
@@ -782,11 +724,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1997 9124',
                 'phone' => '0',
                 'provider_id' => 446,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            59 =>
+            59 => 
             array (
                 'id' => 60,
                 'name' => 'JULIO MAYA RUBIO',
@@ -795,11 +736,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55580400',
                 'phone' => '0',
                 'provider_id' => 408,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            60 =>
+            60 => 
             array (
                 'id' => 61,
                 'name' => 'FERNANDA LOPEZ',
@@ -808,11 +748,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5525354556',
                 'phone' => '0',
                 'provider_id' => 515,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            61 =>
+            61 => 
             array (
                 'id' => 62,
                 'name' => 'FERNANDA LOPEZ',
@@ -821,11 +760,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5525354556',
                 'phone' => '0',
                 'provider_id' => 515,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            62 =>
+            62 => 
             array (
                 'id' => 63,
                 'name' => 'Daniel Gallardo',
@@ -834,11 +772,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '556 877 1381',
                 'phone' => '0',
                 'provider_id' => 447,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            63 =>
+            63 => 
             array (
                 'id' => 64,
                 'name' => 'Ricardo Souza',
@@ -847,11 +784,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 954 3107',
                 'phone' => '0',
                 'provider_id' => 448,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            64 =>
+            64 => 
             array (
                 'id' => 65,
                 'name' => 'German Bernal',
@@ -860,11 +796,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 359 0509',
                 'phone' => '0',
                 'provider_id' => 449,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            65 =>
+            65 => 
             array (
                 'id' => 66,
                 'name' => 'Christopher Monjardin',
@@ -873,11 +808,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 277 3426',
                 'phone' => '0',
                 'provider_id' => 450,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            66 =>
+            66 => 
             array (
                 'id' => 67,
                 'name' => 'Carlos Lara',
@@ -886,11 +820,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 938 4870',
                 'phone' => '0',
                 'provider_id' => 451,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            67 =>
+            67 => 
             array (
                 'id' => 68,
                 'name' => 'Alejandro Ramos',
@@ -899,11 +832,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '993 1427229',
                 'phone' => '0',
                 'provider_id' => 452,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            68 =>
+            68 => 
             array (
                 'id' => 69,
                 'name' => 'Nicolas Cantu',
@@ -912,11 +844,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '811 544 7502',
                 'phone' => '0',
                 'provider_id' => 453,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            69 =>
+            69 => 
             array (
                 'id' => 70,
                 'name' => 'Vicente Saldivar',
@@ -925,11 +856,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '993 337 9703',
                 'phone' => '0',
                 'provider_id' => 454,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            70 =>
+            70 => 
             array (
                 'id' => 71,
                 'name' => 'Ventas',
@@ -938,11 +868,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 020 5300',
                 'phone' => '0',
                 'provider_id' => 455,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            71 =>
+            71 => 
             array (
                 'id' => 72,
                 'name' => 'Ventas',
@@ -951,11 +880,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 870 4903',
                 'phone' => '0',
                 'provider_id' => 457,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            72 =>
+            72 => 
             array (
                 'id' => 73,
                 'name' => 'Claudia Islas',
@@ -964,11 +892,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 355 5540',
                 'phone' => '0',
                 'provider_id' => 458,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            73 =>
+            73 => 
             array (
                 'id' => 74,
                 'name' => 'Alvarado Santillán',
@@ -977,11 +904,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 077 1100',
                 'phone' => '0',
                 'provider_id' => 461,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            74 =>
+            74 => 
             array (
                 'id' => 75,
                 'name' => 'Rosendo Reyes',
@@ -990,11 +916,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '797 118 0109',
                 'phone' => '0',
                 'provider_id' => 462,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            75 =>
+            75 => 
             array (
                 'id' => 76,
                 'name' => 'Jesus Javier Vargas',
@@ -1003,11 +928,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '',
                 'phone' => '0',
                 'provider_id' => 463,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            76 =>
+            76 => 
             array (
                 'id' => 77,
                 'name' => 'Ventas',
@@ -1016,11 +940,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 819 5343',
                 'phone' => '0',
                 'provider_id' => 464,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            77 =>
+            77 => 
             array (
                 'id' => 78,
                 'name' => 'Jorge Sanchez',
@@ -1029,11 +952,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '561 066 2353',
                 'phone' => '0',
                 'provider_id' => 465,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            78 =>
+            78 => 
             array (
                 'id' => 79,
                 'name' => 'Jose Luis',
@@ -1042,11 +964,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 614 2669',
                 'phone' => '0',
                 'provider_id' => 469,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            79 =>
+            79 => 
             array (
                 'id' => 80,
                 'name' => 'Ventas',
@@ -1055,11 +976,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 396 0732',
                 'phone' => '0',
                 'provider_id' => 470,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            80 =>
+            80 => 
             array (
                 'id' => 81,
                 'name' => 'Emir González',
@@ -1068,11 +988,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '556 415 7823',
                 'phone' => '0',
                 'provider_id' => 471,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            81 =>
+            81 => 
             array (
                 'id' => 82,
                 'name' => 'Angel García',
@@ -1081,11 +1000,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 2629 4974',
                 'phone' => '0',
                 'provider_id' => 472,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            82 =>
+            82 => 
             array (
                 'id' => 83,
                 'name' => 'Alejandra Puentes',
@@ -1094,11 +1012,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '442 295 4141',
                 'phone' => '0',
                 'provider_id' => 473,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            83 =>
+            83 => 
             array (
                 'id' => 84,
                 'name' => 'Tomas Muñoz',
@@ -1107,11 +1024,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 357 2494',
                 'phone' => '0',
                 'provider_id' => 474,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            84 =>
+            84 => 
             array (
                 'id' => 85,
                 'name' => 'Adolfo Camarena',
@@ -1120,11 +1036,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 565 0445',
                 'phone' => '0',
                 'provider_id' => 475,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            85 =>
+            85 => 
             array (
                 'id' => 86,
                 'name' => 'Ventas',
@@ -1133,11 +1048,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 300 4297',
                 'phone' => '0',
                 'provider_id' => 480,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            86 =>
+            86 => 
             array (
                 'id' => 87,
                 'name' => 'J. Antonio Flores',
@@ -1146,11 +1060,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 633 7331',
                 'phone' => '0',
                 'provider_id' => 476,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            87 =>
+            87 => 
             array (
                 'id' => 88,
                 'name' => 'Cesar Aquino',
@@ -1159,11 +1072,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 490 3186',
                 'phone' => '0',
                 'provider_id' => 477,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            88 =>
+            88 => 
             array (
                 'id' => 89,
                 'name' => 'Miguel Monroy',
@@ -1172,11 +1084,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 049 8726',
                 'phone' => '0',
                 'provider_id' => 479,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            89 =>
+            89 => 
             array (
                 'id' => 90,
                 'name' => 'Ventas',
@@ -1185,11 +1096,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 593 7517',
                 'phone' => '0',
                 'provider_id' => 481,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            90 =>
+            90 => 
             array (
                 'id' => 91,
                 'name' => 'Elizabeth Lara',
@@ -1198,11 +1108,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 000 3600',
                 'phone' => '0',
                 'provider_id' => 482,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            91 =>
+            91 => 
             array (
                 'id' => 92,
                 'name' => 'Jorge Munguia',
@@ -1211,11 +1120,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 385 0630',
                 'phone' => '0',
                 'provider_id' => 484,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            92 =>
+            92 => 
             array (
                 'id' => 93,
                 'name' => 'Claudia Garcia',
@@ -1224,11 +1132,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 355 2530',
                 'phone' => '0',
                 'provider_id' => 485,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            93 =>
+            93 => 
             array (
                 'id' => 94,
                 'name' => 'Jaime Becerra',
@@ -1237,11 +1144,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 750 1414',
                 'phone' => '0',
                 'provider_id' => 486,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            94 =>
+            94 => 
             array (
                 'id' => 95,
                 'name' => 'Gabriel Resendiz',
@@ -1250,11 +1156,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '554 169 8840',
                 'phone' => '0',
                 'provider_id' => 487,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            95 =>
+            95 => 
             array (
                 'id' => 96,
                 'name' => '',
@@ -1263,11 +1168,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '',
                 'phone' => '0',
                 'provider_id' => 488,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            96 =>
+            96 => 
             array (
                 'id' => 97,
                 'name' => 'Christian Rodrigo Barrios',
@@ -1276,11 +1180,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 560 3221',
                 'phone' => '0',
                 'provider_id' => 489,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            97 =>
+            97 => 
             array (
                 'id' => 98,
                 'name' => 'Ivan Garcia',
@@ -1289,11 +1192,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 2065 5789',
                 'phone' => '0',
                 'provider_id' => 492,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            98 =>
+            98 => 
             array (
                 'id' => 99,
                 'name' => 'Edgar Grimaldo',
@@ -1302,11 +1204,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 390 4580',
                 'phone' => '0',
                 'provider_id' => 493,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            99 =>
+            99 => 
             array (
                 'id' => 100,
                 'name' => 'Jorge Ojeda',
@@ -1315,11 +1216,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '331 077 3531',
                 'phone' => '0',
                 'provider_id' => 494,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            100 =>
+            100 => 
             array (
                 'id' => 101,
                 'name' => 'Emanuel Alvarez',
@@ -1328,11 +1228,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '464 136 6898',
                 'phone' => '0',
                 'provider_id' => 495,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            101 =>
+            101 => 
             array (
                 'id' => 102,
                 'name' => 'Ventas',
@@ -1341,11 +1240,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '554 171 9733',
                 'phone' => '0',
                 'provider_id' => 497,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            102 =>
+            102 => 
             array (
                 'id' => 103,
                 'name' => 'Ivan Rojo',
@@ -1354,11 +1252,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 886 0357',
                 'phone' => '0',
                 'provider_id' => 499,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            103 =>
+            103 => 
             array (
                 'id' => 104,
                 'name' => 'Maria de los Angeles Herrera',
@@ -1367,11 +1264,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 125 7312',
                 'phone' => '0',
                 'provider_id' => 500,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            104 =>
+            104 => 
             array (
                 'id' => 105,
                 'name' => 'Naomi Escareño',
@@ -1380,11 +1276,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '871 387 8721',
                 'phone' => '0',
                 'provider_id' => 503,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            105 =>
+            105 => 
             array (
                 'id' => 106,
                 'name' => 'Samantha Orduña',
@@ -1393,11 +1288,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 6963 1134',
                 'phone' => '0',
                 'provider_id' => 502,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            106 =>
+            106 => 
             array (
                 'id' => 107,
                 'name' => 'Ventas',
@@ -1406,11 +1300,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '52-993-3540950',
                 'phone' => '0',
                 'provider_id' => 504,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            107 =>
+            107 => 
             array (
                 'id' => 108,
                 'name' => 'José Alvarez',
@@ -1419,11 +1312,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '993 314 69 00',
                 'phone' => '0',
                 'provider_id' => 505,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            108 =>
+            108 => 
             array (
                 'id' => 109,
                 'name' => 'Ventas',
@@ -1432,11 +1324,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 5305 2597',
                 'phone' => '0',
                 'provider_id' => 506,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            109 =>
+            109 => 
             array (
                 'id' => 110,
                 'name' => 'Otilia Carmona',
@@ -1445,11 +1336,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 384 5016',
                 'phone' => '0',
                 'provider_id' => 507,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            110 =>
+            110 => 
             array (
                 'id' => 111,
                 'name' => 'Miguel Grimaldo',
@@ -1458,11 +1348,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 445 0749',
                 'phone' => '0',
                 'provider_id' => 508,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            111 =>
+            111 => 
             array (
                 'id' => 112,
                 'name' => 'Miguel Pereyra',
@@ -1471,11 +1360,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 8057 3077',
                 'phone' => '0',
                 'provider_id' => 509,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            112 =>
+            112 => 
             array (
                 'id' => 113,
                 'name' => 'Ventas',
@@ -1484,11 +1372,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 347 5947',
                 'phone' => '0',
                 'provider_id' => 510,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            113 =>
+            113 => 
             array (
                 'id' => 114,
                 'name' => 'Patricia Reyes',
@@ -1497,11 +1384,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 767 3000',
                 'phone' => '0',
                 'provider_id' => 511,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            114 =>
+            114 => 
             array (
                 'id' => 115,
                 'name' => 'Brenda Perez',
@@ -1510,11 +1396,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '446 138 0579',
                 'phone' => '0',
                 'provider_id' => 512,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            115 =>
+            115 => 
             array (
                 'id' => 116,
                 'name' => 'Ventas',
@@ -1523,11 +1408,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 821 3496',
                 'phone' => '0',
                 'provider_id' => 513,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            116 =>
+            116 => 
             array (
                 'id' => 117,
                 'name' => 'Rocío Ceballos',
@@ -1536,11 +1420,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 4375 7783',
                 'phone' => '0',
                 'provider_id' => 517,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            117 =>
+            117 => 
             array (
                 'id' => 118,
                 'name' => 'Luis de la Fuente',
@@ -1549,11 +1432,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '81 2763 5392',
                 'phone' => '0',
                 'provider_id' => 520,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            118 =>
+            118 => 
             array (
                 'id' => 119,
                 'name' => 'REF 141819345',
@@ -1562,11 +1444,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 5246 4000',
                 'phone' => '0',
                 'provider_id' => 522,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            119 =>
+            119 => 
             array (
                 'id' => 120,
                 'name' => 'Silvia Exiga',
@@ -1575,11 +1456,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '444 822 2217',
                 'phone' => '0',
                 'provider_id' => 526,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            120 =>
+            120 => 
             array (
                 'id' => 121,
                 'name' => 'Silvia Exiga',
@@ -1588,11 +1468,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 2926',
                 'phone' => '0',
                 'provider_id' => 526,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            121 =>
+            121 => 
             array (
                 'id' => 122,
                 'name' => 'Paloma Abaroa',
@@ -1601,11 +1480,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5553410269',
                 'phone' => '0',
                 'provider_id' => 527,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            122 =>
+            122 => 
             array (
                 'id' => 123,
                 'name' => 'Gilberto Carmona',
@@ -1614,11 +1492,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 7830 5197',
                 'phone' => '0',
                 'provider_id' => 528,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            123 =>
+            123 => 
             array (
                 'id' => 124,
                 'name' => 'Fidel Márquez',
@@ -1627,11 +1504,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5521108857',
                 'phone' => '0',
                 'provider_id' => 478,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            124 =>
+            124 => 
             array (
                 'id' => 125,
                 'name' => 'Fidel Márquez',
@@ -1640,11 +1516,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5521108857',
                 'phone' => '0',
                 'provider_id' => 478,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            125 =>
+            125 => 
             array (
                 'id' => 126,
                 'name' => 'Purebaventas',
@@ -1653,11 +1528,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5578699058',
                 'phone' => '0',
                 'provider_id' => 543,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            126 =>
+            126 => 
             array (
                 'id' => 127,
                 'name' => 'Ventas Mostrador',
@@ -1666,11 +1540,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 7048 5267',
                 'phone' => '0',
                 'provider_id' => 529,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            127 =>
+            127 => 
             array (
                 'id' => 128,
                 'name' => 'Raymundo Alcayde',
@@ -1679,11 +1552,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 662 2701',
                 'phone' => '0',
                 'provider_id' => 530,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            128 =>
+            128 => 
             array (
                 'id' => 129,
                 'name' => 'Ventas',
@@ -1692,11 +1564,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '477 777 7777',
                 'phone' => '0',
                 'provider_id' => 531,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            129 =>
+            129 => 
             array (
                 'id' => 130,
                 'name' => 'Leticia Ponce',
@@ -1705,11 +1576,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 309 8516',
                 'phone' => '0',
                 'provider_id' => 532,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            130 =>
+            130 => 
             array (
                 'id' => 131,
                 'name' => 'Carolina A. Lopez',
@@ -1718,11 +1588,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 354 9500',
                 'phone' => '0',
                 'provider_id' => 533,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            131 =>
+            131 => 
             array (
                 'id' => 132,
                 'name' => 'Ventas',
@@ -1731,11 +1600,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 565 4227',
                 'phone' => '0',
                 'provider_id' => 534,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            132 =>
+            132 => 
             array (
                 'id' => 133,
                 'name' => 'Vicente Moreno',
@@ -1744,11 +1612,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 368 5700',
                 'phone' => '0',
                 'provider_id' => 535,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            133 =>
+            133 => 
             array (
                 'id' => 134,
                 'name' => 'Jorge Estrada',
@@ -1757,11 +1624,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 10690675',
                 'phone' => '0',
                 'provider_id' => 536,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            134 =>
+            134 => 
             array (
                 'id' => 135,
                 'name' => 'Ventas',
@@ -1770,11 +1636,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '26263013',
                 'phone' => '0',
                 'provider_id' => 538,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            135 =>
+            135 => 
             array (
                 'id' => 136,
                 'name' => 'Yesenia Ramirez',
@@ -1783,11 +1648,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '951  356 4182',
                 'phone' => '0',
                 'provider_id' => 539,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            136 =>
+            136 => 
             array (
                 'id' => 137,
                 'name' => 'Ventas',
@@ -1796,11 +1660,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5553861113',
                 'phone' => '0',
                 'provider_id' => 541,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            137 =>
+            137 => 
             array (
                 'id' => 138,
                 'name' => 'David Laureles',
@@ -1809,11 +1672,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 576 1210',
                 'phone' => '0',
                 'provider_id' => 542,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            138 =>
+            138 => 
             array (
                 'id' => 139,
                 'name' => 'Ventas',
@@ -1822,11 +1684,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 390 0090',
                 'phone' => '0',
                 'provider_id' => 544,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            139 =>
+            139 => 
             array (
                 'id' => 140,
                 'name' => 'Jose M. Orozco',
@@ -1835,11 +1696,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 4740 7638',
                 'phone' => '0',
                 'provider_id' => 546,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            140 =>
+            140 => 
             array (
                 'id' => 141,
                 'name' => 'Ventas',
@@ -1848,11 +1708,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '993 207 4792',
                 'phone' => '0',
                 'provider_id' => 547,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            141 =>
+            141 => 
             array (
                 'id' => 142,
                 'name' => 'Pablo Alberto Burelo',
@@ -1861,11 +1720,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '937 110 3407',
                 'phone' => '0',
                 'provider_id' => 550,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            142 =>
+            142 => 
             array (
                 'id' => 143,
                 'name' => 'Bruno Montesinos',
@@ -1874,11 +1732,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '728 688 1614',
                 'phone' => '0',
                 'provider_id' => 568,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            143 =>
+            143 => 
             array (
                 'id' => 144,
                 'name' => 'Antonio Rodriguez',
@@ -1887,11 +1744,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '814 444 1158',
                 'phone' => '0',
                 'provider_id' => 553,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            144 =>
+            144 => 
             array (
                 'id' => 145,
                 'name' => 'Silvia Maldonado',
@@ -1900,11 +1756,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 620 1706',
                 'phone' => '0',
                 'provider_id' => 554,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            145 =>
+            145 => 
             array (
                 'id' => 146,
                 'name' => 'Perla Sánchez',
@@ -1913,11 +1768,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '993 3536531',
                 'phone' => '0',
                 'provider_id' => 555,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            146 =>
+            146 => 
             array (
                 'id' => 147,
                 'name' => 'Ventas',
@@ -1926,11 +1780,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '449 914 1155',
                 'phone' => '0',
                 'provider_id' => 557,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            147 =>
+            147 => 
             array (
                 'id' => 148,
                 'name' => 'Rene Reyes',
@@ -1939,11 +1792,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 475 8960',
                 'phone' => '0',
                 'provider_id' => 558,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            148 =>
+            148 => 
             array (
                 'id' => 149,
                 'name' => 'Jessica Pamela Chapa',
@@ -1952,11 +1804,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 371 3177',
                 'phone' => '0',
                 'provider_id' => 559,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            149 =>
+            149 => 
             array (
                 'id' => 150,
                 'name' => 'Raul Villasana',
@@ -1965,11 +1816,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '556 353 0909',
                 'phone' => '0',
                 'provider_id' => 560,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            150 =>
+            150 => 
             array (
                 'id' => 151,
                 'name' => 'Alfredo Millán',
@@ -1978,11 +1828,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 5341 4499',
                 'phone' => '0',
                 'provider_id' => 561,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            151 =>
+            151 => 
             array (
                 'id' => 152,
                 'name' => 'Ventas',
@@ -1991,11 +1840,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 367 4995',
                 'phone' => '0',
                 'provider_id' => 562,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            152 =>
+            152 => 
             array (
                 'id' => 153,
                 'name' => 'Edgar Fierro',
@@ -2004,11 +1852,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 592 7156',
                 'phone' => '0',
                 'provider_id' => 563,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            153 =>
+            153 => 
             array (
                 'id' => 154,
                 'name' => 'Ventas',
@@ -2017,11 +1864,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 397 5903',
                 'phone' => '0',
                 'provider_id' => 564,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            154 =>
+            154 => 
             array (
                 'id' => 155,
                 'name' => 'Ventas',
@@ -2030,11 +1876,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 581 0019',
                 'phone' => '0',
                 'provider_id' => 565,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            155 =>
+            155 => 
             array (
                 'id' => 156,
                 'name' => 'Alvaro Carrasco',
@@ -2043,11 +1888,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 498 5033',
                 'phone' => '0',
                 'provider_id' => 567,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            156 =>
+            156 => 
             array (
                 'id' => 157,
                 'name' => 'Ventas',
@@ -2056,11 +1900,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '#ERROR!',
                 'phone' => '0',
                 'provider_id' => 569,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            157 =>
+            157 => 
             array (
                 'id' => 158,
                 'name' => 'Ventas',
@@ -2069,11 +1912,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '477 7701751',
                 'phone' => '0',
                 'provider_id' => 570,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            158 =>
+            158 => 
             array (
                 'id' => 159,
                 'name' => 'Ventas',
@@ -2082,11 +1924,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 106 2490',
                 'phone' => '0',
                 'provider_id' => 571,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            159 =>
+            159 => 
             array (
                 'id' => 160,
                 'name' => 'Ventas',
@@ -2095,11 +1936,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 188 007',
                 'phone' => '0',
                 'provider_id' => 573,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            160 =>
+            160 => 
             array (
                 'id' => 161,
                 'name' => 'Ventas',
@@ -2108,11 +1948,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 318 5430',
                 'phone' => '0',
                 'provider_id' => 573,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            161 =>
+            161 => 
             array (
                 'id' => 162,
                 'name' => 'Ventas mostrador',
@@ -2121,11 +1960,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '7712850074',
                 'phone' => '0',
                 'provider_id' => 362,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            162 =>
+            162 => 
             array (
                 'id' => 163,
                 'name' => 'Ana Laura Álvarez',
@@ -2134,11 +1972,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5574912817',
                 'phone' => '0',
                 'provider_id' => 320,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            163 =>
+            163 => 
             array (
                 'id' => 164,
                 'name' => 'Lourdes Huerta',
@@ -2147,11 +1984,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '228 275 1663',
                 'phone' => '0',
                 'provider_id' => 575,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            164 =>
+            164 => 
             array (
                 'id' => 165,
                 'name' => 'Ventas',
@@ -2160,11 +1996,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 207 8191',
                 'phone' => '0',
                 'provider_id' => 577,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            165 =>
+            165 => 
             array (
                 'id' => 166,
                 'name' => 'Ventas',
@@ -2173,11 +2008,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '22284717',
                 'phone' => '0',
                 'provider_id' => 578,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            166 =>
+            166 => 
             array (
                 'id' => 167,
                 'name' => 'Ventas',
@@ -2186,11 +2020,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 333 1742',
                 'phone' => '0',
                 'provider_id' => 579,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            167 =>
+            167 => 
             array (
                 'id' => 168,
                 'name' => 'Juan Vallejo',
@@ -2199,11 +2032,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 351 9650',
                 'phone' => '0',
                 'provider_id' => 580,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            168 =>
+            168 => 
             array (
                 'id' => 169,
                 'name' => 'Ventas',
@@ -2212,11 +2044,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '557 935 5536',
                 'phone' => '0',
                 'provider_id' => 581,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            169 =>
+            169 => 
             array (
                 'id' => 170,
                 'name' => 'Ricardo García',
@@ -2225,11 +2056,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 4911 5023',
                 'phone' => '0',
                 'provider_id' => 582,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            170 =>
+            170 => 
             array (
                 'id' => 171,
                 'name' => 'Roberto Martínez',
@@ -2238,11 +2068,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '722 652 8409',
                 'phone' => '0',
                 'provider_id' => 583,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            171 =>
+            171 => 
             array (
                 'id' => 172,
                 'name' => 'Brenda Tellez',
@@ -2251,11 +2080,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 660 5125',
                 'phone' => '0',
                 'provider_id' => 585,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            172 =>
+            172 => 
             array (
                 'id' => 173,
                 'name' => 'Irving Alvarado',
@@ -2264,11 +2092,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 366 6803',
                 'phone' => '0',
                 'provider_id' => 586,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            173 =>
+            173 => 
             array (
                 'id' => 174,
                 'name' => 'Ventas',
@@ -2277,11 +2104,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '993 353 0393',
                 'phone' => '0',
                 'provider_id' => 591,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            174 =>
+            174 => 
             array (
                 'id' => 175,
                 'name' => '',
@@ -2290,11 +2116,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 19544768',
                 'phone' => '0',
                 'provider_id' => 587,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            175 =>
+            175 => 
             array (
                 'id' => 176,
                 'name' => 'Susy Pérez',
@@ -2303,11 +2128,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '713 630 0505',
                 'phone' => '0',
                 'provider_id' => 588,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            176 =>
+            176 => 
             array (
                 'id' => 177,
                 'name' => 'Carlos Cisneros',
@@ -2316,11 +2140,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '791 688 0081',
                 'phone' => '0',
                 'provider_id' => 589,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            177 =>
+            177 => 
             array (
                 'id' => 178,
                 'name' => 'Edgar Arrambide',
@@ -2329,11 +2152,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '8115953911',
                 'phone' => '0',
                 'provider_id' => 590,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            178 =>
+            178 => 
             array (
                 'id' => 179,
                 'name' => 'Franco Flores',
@@ -2342,11 +2164,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 392 3370',
                 'phone' => '0',
                 'provider_id' => 593,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            179 =>
+            179 => 
             array (
                 'id' => 180,
                 'name' => 'Sandra Noguez',
@@ -2355,11 +2176,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 565 2819',
                 'phone' => '0',
                 'provider_id' => 594,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            180 =>
+            180 => 
             array (
                 'id' => 181,
                 'name' => 'Antonio de Nova',
@@ -2368,11 +2188,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '229 980 8291',
                 'phone' => '0',
                 'provider_id' => 595,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            181 =>
+            181 => 
             array (
                 'id' => 182,
                 'name' => 'Tomas Sanchez',
@@ -2381,11 +2200,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 962 1070',
                 'phone' => '0',
                 'provider_id' => 596,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            182 =>
+            182 => 
             array (
                 'id' => 183,
                 'name' => 'Ventas',
@@ -2394,11 +2212,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 358 9413',
                 'phone' => '0',
                 'provider_id' => 597,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            183 =>
+            183 => 
             array (
                 'id' => 184,
                 'name' => 'Esteban García',
@@ -2407,11 +2224,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 4801 7304',
                 'phone' => '0',
                 'provider_id' => 616,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            184 =>
+            184 => 
             array (
                 'id' => 185,
                 'name' => 'Ventas',
@@ -2420,11 +2236,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '281 566 12 00',
                 'phone' => '0',
                 'provider_id' => 617,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            185 =>
+            185 => 
             array (
                 'id' => 186,
                 'name' => 'Mar Stratmann',
@@ -2433,11 +2248,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 173 4300 ',
                 'phone' => '0',
                 'provider_id' => 618,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            186 =>
+            186 => 
             array (
                 'id' => 187,
                 'name' => 'Ventas',
@@ -2446,11 +2260,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '1800 295 5510',
                 'phone' => '0',
                 'provider_id' => 619,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            187 =>
+            187 => 
             array (
                 'id' => 188,
                 'name' => 'Francisco Gamiño',
@@ -2459,11 +2272,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 670 5155',
                 'phone' => '0',
                 'provider_id' => 620,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            188 =>
+            188 => 
             array (
                 'id' => 189,
                 'name' => 'Ventas',
@@ -2472,11 +2284,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 292 3144',
                 'phone' => '0',
                 'provider_id' => 621,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            189 =>
+            189 => 
             array (
                 'id' => 190,
                 'name' => 'Ventas',
@@ -2485,11 +2296,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 2971 3964',
                 'phone' => '0',
                 'provider_id' => 622,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            190 =>
+            190 => 
             array (
                 'id' => 191,
                 'name' => 'Luis Arturo Lamadrid',
@@ -2498,11 +2308,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 466 6399',
                 'phone' => '0',
                 'provider_id' => 623,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            191 =>
+            191 => 
             array (
                 'id' => 192,
                 'name' => 'Joaquin A. Cruz Faber',
@@ -2511,11 +2320,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '938 384 0625',
                 'phone' => '0',
                 'provider_id' => 625,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            192 =>
+            192 => 
             array (
                 'id' => 193,
                 'name' => 'Antonio Saavedra',
@@ -2524,11 +2332,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 321 3070',
                 'phone' => '0',
                 'provider_id' => 626,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            193 =>
+            193 => 
             array (
                 'id' => 194,
                 'name' => 'Miguel de la Rosa',
@@ -2537,11 +2344,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '442 680 0477',
                 'phone' => '0',
                 'provider_id' => 628,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            194 =>
+            194 => 
             array (
                 'id' => 195,
                 'name' => 'Ventas',
@@ -2550,11 +2356,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '281566-1200',
                 'phone' => '0',
                 'provider_id' => 629,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            195 =>
+            195 => 
             array (
                 'id' => 196,
                 'name' => 'Damian',
@@ -2563,11 +2368,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 3034 1206',
                 'phone' => '0',
                 'provider_id' => 630,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            196 =>
+            196 => 
             array (
                 'id' => 197,
                 'name' => 'Elena Tagua',
@@ -2576,11 +2380,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '34 955 300 424',
                 'phone' => '0',
                 'provider_id' => 632,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            197 =>
+            197 => 
             array (
                 'id' => 198,
                 'name' => 'Ventas',
@@ -2589,11 +2392,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '833 122 2824',
                 'phone' => '0',
                 'provider_id' => 633,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            198 =>
+            198 => 
             array (
                 'id' => 199,
                 'name' => 'Ventas',
@@ -2602,11 +2404,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '771 716 3200 - 05',
                 'phone' => '0',
                 'provider_id' => 634,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            199 =>
+            199 => 
             array (
                 'id' => 200,
                 'name' => 'Carlos Gonzalez',
@@ -2615,11 +2416,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '832 977 6106',
                 'phone' => '0',
                 'provider_id' => 638,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            200 =>
+            200 => 
             array (
                 'id' => 201,
                 'name' => 'Mariano Sereno',
@@ -2628,11 +2428,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '',
                 'phone' => '0',
                 'provider_id' => 322,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            201 =>
+            201 => 
             array (
                 'id' => 202,
                 'name' => 'Dr. Jorge Joaquin Cantó',
@@ -2641,11 +2440,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 5545 5000',
                 'phone' => '0',
                 'provider_id' => 369,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            202 =>
+            202 => 
             array (
                 'id' => 203,
                 'name' => 'Bladimir Vargas',
@@ -2654,11 +2452,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '899 187 2472',
                 'phone' => '0',
                 'provider_id' => 386,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            203 =>
+            203 => 
             array (
                 'id' => 204,
                 'name' => 'Ventas',
@@ -2667,11 +2464,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 391 3848',
                 'phone' => '0',
                 'provider_id' => 296,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            204 =>
+            204 => 
             array (
                 'id' => 205,
                 'name' => 'Ventas',
@@ -2680,11 +2476,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 565 7011',
                 'phone' => '0',
                 'provider_id' => 297,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            205 =>
+            205 => 
             array (
                 'id' => 206,
                 'name' => 'Elías Arellano',
@@ -2693,11 +2488,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5529223229',
                 'phone' => '0',
                 'provider_id' => 389,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            206 =>
+            206 => 
             array (
                 'id' => 207,
                 'name' => 'Tahiri Paola Ugalde',
@@ -2706,11 +2500,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 155 5400',
                 'phone' => '0',
                 'provider_id' => 298,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            207 =>
+            207 => 
             array (
                 'id' => 208,
                 'name' => 'Ivan Pacheco',
@@ -2719,11 +2512,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 367 2999',
                 'phone' => '0',
                 'provider_id' => 299,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            208 =>
+            208 => 
             array (
                 'id' => 209,
                 'name' => 'Claudia Martínez',
@@ -2732,11 +2524,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 333 2249',
                 'phone' => '0',
                 'provider_id' => 300,
-
                 'created_at' => '2025-01-08 18:40:35',
                 'updated_at' => '2025-01-08 18:40:35',
             ),
-            209 =>
+            209 => 
             array (
                 'id' => 210,
                 'name' => 'Ana Karen Gaspar',
@@ -2745,11 +2536,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '818 130 1515',
                 'phone' => '0',
                 'provider_id' => 301,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            210 =>
+            210 => 
             array (
                 'id' => 211,
                 'name' => 'Angelica Pérez',
@@ -2758,11 +2548,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '561 062 9139',
                 'phone' => '0',
                 'provider_id' => 302,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            211 =>
+            211 => 
             array (
                 'id' => 212,
                 'name' => 'Hugo Hernández',
@@ -2771,11 +2560,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '559 155 0608',
                 'phone' => '0',
                 'provider_id' => 304,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            212 =>
+            212 => 
             array (
                 'id' => 213,
                 'name' => 'Sonia Leija',
@@ -2784,11 +2572,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '811 520 0953',
                 'phone' => '0',
                 'provider_id' => 306,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            213 =>
+            213 => 
             array (
                 'id' => 214,
                 'name' => 'Ventas',
@@ -2797,11 +2584,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '337 233 6116',
                 'phone' => '0',
                 'provider_id' => 308,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            214 =>
+            214 => 
             array (
                 'id' => 215,
                 'name' => 'Salvador Rodríguez',
@@ -2810,11 +2596,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '4422161404',
                 'phone' => '0',
                 'provider_id' => 309,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            215 =>
+            215 => 
             array (
                 'id' => 216,
                 'name' => '',
@@ -2823,11 +2608,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '',
                 'phone' => '0',
                 'provider_id' => 498,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            216 =>
+            216 => 
             array (
                 'id' => 217,
                 'name' => 'Ventas',
@@ -2836,11 +2620,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55658762',
                 'phone' => '0',
                 'provider_id' => 598,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            217 =>
+            217 => 
             array (
                 'id' => 218,
                 'name' => 'Ventas',
@@ -2849,11 +2632,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 026 0716',
                 'phone' => '0',
                 'provider_id' => 599,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            218 =>
+            218 => 
             array (
                 'id' => 219,
                 'name' => 'Ventas',
@@ -2862,11 +2644,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5552364204',
                 'phone' => '0',
                 'provider_id' => 600,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            219 =>
+            219 => 
             array (
                 'id' => 220,
                 'name' => 'Ventas',
@@ -2875,11 +2656,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 578 6529',
                 'phone' => '0',
                 'provider_id' => 601,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            220 =>
+            220 => 
             array (
                 'id' => 221,
                 'name' => 'Cinthya Maldonado',
@@ -2888,11 +2668,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '938 118 9750',
                 'phone' => '0',
                 'provider_id' => 602,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            221 =>
+            221 => 
             array (
                 'id' => 222,
                 'name' => 'Ventas',
@@ -2901,11 +2680,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '477 266 1572',
                 'phone' => '0',
                 'provider_id' => 604,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            222 =>
+            222 => 
             array (
                 'id' => 223,
                 'name' => 'Yessenia Merinos',
@@ -2914,11 +2692,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '899 926 5720',
                 'phone' => '0',
                 'provider_id' => 605,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            223 =>
+            223 => 
             array (
                 'id' => 224,
                 'name' => 'Ventas',
@@ -2927,11 +2704,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 362 5168',
                 'phone' => '0',
                 'provider_id' => 606,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            224 =>
+            224 => 
             array (
                 'id' => 225,
                 'name' => 'Norma de Santiago',
@@ -2940,11 +2716,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '442 209 6600',
                 'phone' => '0',
                 'provider_id' => 607,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            225 =>
+            225 => 
             array (
                 'id' => 226,
                 'name' => 'Erika Anayeli Cura',
@@ -2953,11 +2728,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 365 6926',
                 'phone' => '0',
                 'provider_id' => 609,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            226 =>
+            226 => 
             array (
                 'id' => 227,
                 'name' => 'Jhonathan Mendoza',
@@ -2966,11 +2740,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5526039245',
                 'phone' => '0',
                 'provider_id' => 610,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            227 =>
+            227 => 
             array (
                 'id' => 228,
                 'name' => 'Ventas',
@@ -2979,11 +2752,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 565 9575',
                 'phone' => '0',
                 'provider_id' => 611,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            228 =>
+            228 => 
             array (
                 'id' => 229,
                 'name' => 'Teresa Ramirez',
@@ -2992,11 +2764,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55587666',
                 'phone' => '0',
                 'provider_id' => 613,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            229 =>
+            229 => 
             array (
                 'id' => 230,
                 'name' => 'Ventas',
@@ -3005,11 +2776,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 083 4180',
                 'phone' => '0',
                 'provider_id' => 614,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            230 =>
+            230 => 
             array (
                 'id' => 231,
                 'name' => 'Laura A. Aguilar',
@@ -3018,11 +2788,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '551 083 4180',
                 'phone' => '0',
                 'provider_id' => 614,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            231 =>
+            231 => 
             array (
                 'id' => 232,
                 'name' => 'Everardo Reyes',
@@ -3031,11 +2800,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '899 187 2472',
                 'phone' => '0',
                 'provider_id' => 307,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            232 =>
+            232 => 
             array (
                 'id' => 233,
                 'name' => 'Federico Delgado ',
@@ -3044,11 +2812,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 2654 5939',
                 'phone' => '0',
                 'provider_id' => 324,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            233 =>
+            233 => 
             array (
                 'id' => 234,
                 'name' => 'Verónica Quezada',
@@ -3057,11 +2824,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '442 444 9223',
                 'phone' => '0',
                 'provider_id' => 624,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            234 =>
+            234 => 
             array (
                 'id' => 235,
                 'name' => 'norma',
@@ -3070,11 +2836,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '444',
                 'phone' => '0',
                 'provider_id' => 408,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            235 =>
+            235 => 
             array (
                 'id' => 236,
                 'name' => 'Martha Villareal',
@@ -3083,11 +2848,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '81 8123 0986',
                 'phone' => '0',
                 'provider_id' => 525,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            236 =>
+            236 => 
             array (
                 'id' => 237,
                 'name' => 'MOSTRADOR',
@@ -3096,11 +2860,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '558989800',
                 'phone' => '0',
                 'provider_id' => 442,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            237 =>
+            237 => 
             array (
                 'id' => 238,
                 'name' => 'Elias Penhos',
@@ -3109,11 +2872,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 989 4443',
                 'phone' => '0',
                 'provider_id' => 551,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            238 =>
+            238 => 
             array (
                 'id' => 239,
                 'name' => 'Webpage',
@@ -3122,11 +2884,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '888 123 4567',
                 'phone' => '0',
                 'provider_id' => 316,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            239 =>
+            239 => 
             array (
                 'id' => 240,
                 'name' => 'norma',
@@ -3135,11 +2896,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 501,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            240 =>
+            240 => 
             array (
                 'id' => 241,
                 'name' => 'norma',
@@ -3148,11 +2908,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 501,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            241 =>
+            241 => 
             array (
                 'id' => 242,
                 'name' => 'norma',
@@ -3161,11 +2920,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 524,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            242 =>
+            242 => 
             array (
                 'id' => 243,
                 'name' => 'norma',
@@ -3174,11 +2932,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 524,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            243 =>
+            243 => 
             array (
                 'id' => 244,
                 'name' => 'Paloma María ',
@@ -3187,11 +2944,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5541341711',
                 'phone' => '0',
                 'provider_id' => 527,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            244 =>
+            244 => 
             array (
                 'id' => 245,
                 'name' => 'Juan Torres',
@@ -3200,11 +2956,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 685 8535',
                 'phone' => '0',
                 'provider_id' => 310,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            245 =>
+            245 => 
             array (
                 'id' => 246,
                 'name' => 'Alberto Alcazar',
@@ -3213,11 +2968,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 3106 1071',
                 'phone' => '0',
                 'provider_id' => 311,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            246 =>
+            246 => 
             array (
                 'id' => 247,
                 'name' => 'Alejandro Montero',
@@ -3226,11 +2980,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 5565 1834',
                 'phone' => '0',
                 'provider_id' => 313,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            247 =>
+            247 => 
             array (
                 'id' => 248,
                 'name' => 'Monserrat Yunuen',
@@ -3239,11 +2992,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 744 5404',
                 'phone' => '0',
                 'provider_id' => 314,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            248 =>
+            248 => 
             array (
                 'id' => 249,
                 'name' => 'Carlos Muñoz',
@@ -3252,11 +3004,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 870 5193',
                 'phone' => '0',
                 'provider_id' => 315,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            249 =>
+            249 => 
             array (
                 'id' => 250,
                 'name' => 'Alejandro Higuera',
@@ -3265,11 +3016,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5553105885',
                 'phone' => '0',
                 'provider_id' => 363,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            250 =>
+            250 => 
             array (
                 'id' => 251,
                 'name' => 'Alejandro Higuera',
@@ -3278,11 +3028,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5553105885',
                 'phone' => '0',
                 'provider_id' => 363,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            251 =>
+            251 => 
             array (
                 'id' => 252,
                 'name' => 'Ricardo Garniet',
@@ -3291,11 +3040,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5549115023',
                 'phone' => '0',
                 'provider_id' => 582,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            252 =>
+            252 => 
             array (
                 'id' => 253,
                 'name' => 'Dulce María López',
@@ -3304,11 +3052,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            253 =>
+            253 => 
             array (
                 'id' => 254,
                 'name' => 'Dulce María López',
@@ -3317,11 +3064,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            254 =>
+            254 => 
             array (
                 'id' => 255,
                 'name' => 'Dulce María López',
@@ -3330,11 +3076,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            255 =>
+            255 => 
             array (
                 'id' => 256,
                 'name' => 'Dulce María López',
@@ -3343,11 +3088,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            256 =>
+            256 => 
             array (
                 'id' => 257,
                 'name' => 'norma',
@@ -3356,11 +3100,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 357,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            257 =>
+            257 => 
             array (
                 'id' => 258,
                 'name' => 'norma',
@@ -3369,11 +3112,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 357,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            258 =>
+            258 => 
             array (
                 'id' => 259,
                 'name' => 'David Brito',
@@ -3382,11 +3124,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5534616558',
                 'phone' => '0',
                 'provider_id' => 423,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            259 =>
+            259 => 
             array (
                 'id' => 260,
                 'name' => 'Norma Pereyra',
@@ -3395,11 +3136,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 523,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            260 =>
+            260 => 
             array (
                 'id' => 261,
                 'name' => 'Norma Pereyra',
@@ -3408,11 +3148,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 523,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            261 =>
+            261 => 
             array (
                 'id' => 262,
                 'name' => 'AURORA CORTES',
@@ -3421,11 +3160,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5540547143',
                 'phone' => '0',
                 'provider_id' => 354,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            262 =>
+            262 => 
             array (
                 'id' => 263,
                 'name' => 'AURORA CORTES',
@@ -3434,11 +3172,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5540547143',
                 'phone' => '0',
                 'provider_id' => 354,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            263 =>
+            263 => 
             array (
                 'id' => 264,
                 'name' => 'norma',
@@ -3447,11 +3184,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 576,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            264 =>
+            264 => 
             array (
                 'id' => 265,
                 'name' => 'norma',
@@ -3460,11 +3196,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 576,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            265 =>
+            265 => 
             array (
                 'id' => 266,
                 'name' => 'Nicolas',
@@ -3473,11 +3208,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '556 812 1292',
                 'phone' => '0',
                 'provider_id' => 490,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            266 =>
+            266 => 
             array (
                 'id' => 267,
                 'name' => 'Nicolas',
@@ -3486,11 +3220,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '556 812 1292',
                 'phone' => '0',
                 'provider_id' => 490,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            267 =>
+            267 => 
             array (
                 'id' => 268,
                 'name' => 'Nicolas',
@@ -3499,11 +3232,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '556 812 1292',
                 'phone' => '0',
                 'provider_id' => 490,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            268 =>
+            268 => 
             array (
                 'id' => 269,
                 'name' => 'Norma Pereyra',
@@ -3512,11 +3244,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 433,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            269 =>
+            269 => 
             array (
                 'id' => 270,
                 'name' => 'Norma Pereyra',
@@ -3525,11 +3256,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 433,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            270 =>
+            270 => 
             array (
                 'id' => 271,
                 'name' => 'Jose Alejandro',
@@ -3538,11 +3268,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '441 213 7299',
                 'phone' => '0',
                 'provider_id' => 466,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            271 =>
+            271 => 
             array (
                 'id' => 272,
                 'name' => 'Jose Alejandro',
@@ -3551,11 +3280,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '441 213 7299',
                 'phone' => '0',
                 'provider_id' => 466,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            272 =>
+            272 => 
             array (
                 'id' => 273,
                 'name' => 'norma',
@@ -3564,11 +3292,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 4518 0906',
                 'phone' => '0',
                 'provider_id' => 459,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            273 =>
+            273 => 
             array (
                 'id' => 274,
                 'name' => 'norma',
@@ -3577,11 +3304,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 4518 0906',
                 'phone' => '0',
                 'provider_id' => 459,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            274 =>
+            274 => 
             array (
                 'id' => 275,
                 'name' => 'norma',
@@ -3590,11 +3316,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 4518 0906',
                 'phone' => '0',
                 'provider_id' => 459,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            275 =>
+            275 => 
             array (
                 'id' => 276,
                 'name' => 'MOSTRADOR',
@@ -3603,11 +3328,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '8007108352',
                 'phone' => '0',
                 'provider_id' => 323,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            276 =>
+            276 => 
             array (
                 'id' => 277,
                 'name' => 'MOSTRADOR',
@@ -3616,11 +3340,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '8007108352',
                 'phone' => '0',
                 'provider_id' => 323,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            277 =>
+            277 => 
             array (
                 'id' => 278,
                 'name' => 'MOSTRADOR',
@@ -3629,11 +3352,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '8007108352',
                 'phone' => '0',
                 'provider_id' => 323,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            278 =>
+            278 => 
             array (
                 'id' => 279,
                 'name' => 'MOSTRADOR',
@@ -3642,11 +3364,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '8007108352',
                 'phone' => '0',
                 'provider_id' => 323,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            279 =>
+            279 => 
             array (
                 'id' => 280,
                 'name' => 'Dulce María López',
@@ -3655,11 +3376,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            280 =>
+            280 => 
             array (
                 'id' => 281,
                 'name' => 'Dulce María López',
@@ -3668,11 +3388,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            281 =>
+            281 => 
             array (
                 'id' => 282,
                 'name' => 'Dulce María López',
@@ -3681,11 +3400,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            282 =>
+            282 => 
             array (
                 'id' => 283,
                 'name' => 'Dulce María López',
@@ -3694,11 +3412,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            283 =>
+            283 => 
             array (
                 'id' => 284,
                 'name' => 'Dulce María López',
@@ -3707,11 +3424,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            284 =>
+            284 => 
             array (
                 'id' => 285,
                 'name' => 'Dulce María López',
@@ -3720,11 +3436,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            285 =>
+            285 => 
             array (
                 'id' => 286,
                 'name' => 'Dulce María López',
@@ -3733,11 +3448,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            286 =>
+            286 => 
             array (
                 'id' => 287,
                 'name' => 'Dulce María López',
@@ -3746,11 +3460,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            287 =>
+            287 => 
             array (
                 'id' => 288,
                 'name' => 'Dulce María López',
@@ -3759,11 +3472,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            288 =>
+            288 => 
             array (
                 'id' => 289,
                 'name' => 'Dulce María López',
@@ -3772,11 +3484,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9212671773',
                 'phone' => '0',
                 'provider_id' => 460,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            289 =>
+            289 => 
             array (
                 'id' => 290,
                 'name' => 'norma',
@@ -3785,11 +3496,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 305,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            290 =>
+            290 => 
             array (
                 'id' => 291,
                 'name' => 'norma',
@@ -3798,11 +3508,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 305,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            291 =>
+            291 => 
             array (
                 'id' => 292,
                 'name' => 'norma',
@@ -3811,11 +3520,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 319,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            292 =>
+            292 => 
             array (
                 'id' => 293,
                 'name' => 'norma',
@@ -3824,11 +3532,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 319,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            293 =>
+            293 => 
             array (
                 'id' => 294,
                 'name' => 'Carlos Cerecedo',
@@ -3837,11 +3544,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 5651 6366',
                 'phone' => '0',
                 'provider_id' => 440,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            294 =>
+            294 => 
             array (
                 'id' => 295,
                 'name' => ' Juan Miguel Gómez',
@@ -3850,11 +3556,10 @@ class ProviderContactsTableSeeder extends Seeder
             'cell_phone' => '(477)  770-17-65',
                 'phone' => '0',
                 'provider_id' => 545,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            295 =>
+            295 => 
             array (
                 'id' => 296,
                 'name' => ' Juan Miguel Gómez',
@@ -3863,11 +3568,10 @@ class ProviderContactsTableSeeder extends Seeder
             'cell_phone' => '(477)  770-17-65',
                 'phone' => '0',
                 'provider_id' => 545,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            296 =>
+            296 => 
             array (
                 'id' => 297,
                 'name' => ' Juan Miguel Gómez',
@@ -3876,11 +3580,10 @@ class ProviderContactsTableSeeder extends Seeder
             'cell_phone' => '(477)  770-17-65',
                 'phone' => '0',
                 'provider_id' => 545,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            297 =>
+            297 => 
             array (
                 'id' => 298,
                 'name' => 'Gisela',
@@ -3889,11 +3592,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 252 2932',
                 'phone' => '0',
                 'provider_id' => 549,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            298 =>
+            298 => 
             array (
                 'id' => 299,
                 'name' => 'Gisela',
@@ -3902,11 +3604,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 252 2932',
                 'phone' => '0',
                 'provider_id' => 549,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            299 =>
+            299 => 
             array (
                 'id' => 300,
                 'name' => 'Gisela',
@@ -3915,11 +3616,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 252 2932',
                 'phone' => '0',
                 'provider_id' => 549,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            300 =>
+            300 => 
             array (
                 'id' => 301,
                 'name' => 'Ventas mostrador',
@@ -3928,11 +3628,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5518441475',
                 'phone' => '0',
                 'provider_id' => 615,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            301 =>
+            301 => 
             array (
                 'id' => 302,
                 'name' => 'Zecia Estrada',
@@ -3941,11 +3640,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '828 2811851',
                 'phone' => '0',
                 'provider_id' => 434,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            302 =>
+            302 => 
             array (
                 'id' => 303,
                 'name' => 'Zecia Estrada',
@@ -3954,11 +3652,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '828 2811851',
                 'phone' => '0',
                 'provider_id' => 434,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            303 =>
+            303 => 
             array (
                 'id' => 304,
                 'name' => 'Zecia Estrada',
@@ -3967,11 +3664,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '828 2811851',
                 'phone' => '0',
                 'provider_id' => 434,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            304 =>
+            304 => 
             array (
                 'id' => 305,
                 'name' => 'Rosalba Nieto',
@@ -3980,11 +3676,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '56 1312 5771',
                 'phone' => '0',
                 'provider_id' => 566,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            305 =>
+            305 => 
             array (
                 'id' => 306,
                 'name' => 'Rosalba Nieto',
@@ -3993,11 +3688,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '56 1312 5771',
                 'phone' => '0',
                 'provider_id' => 566,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            306 =>
+            306 => 
             array (
                 'id' => 307,
                 'name' => 'Rosalba Nieto',
@@ -4006,11 +3700,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '56 1312 5771',
                 'phone' => '0',
                 'provider_id' => 566,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            307 =>
+            307 => 
             array (
                 'id' => 308,
                 'name' => 'Miriam Prieto Toxtli',
@@ -4019,11 +3712,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5558500400',
                 'phone' => '0',
                 'provider_id' => 408,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            308 =>
+            308 => 
             array (
                 'id' => 309,
                 'name' => 'VENTAS ',
@@ -4032,11 +3724,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5516798000',
                 'phone' => '0',
                 'provider_id' => 603,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            309 =>
+            309 => 
             array (
                 'id' => 310,
                 'name' => 'norma',
@@ -4045,11 +3736,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '1',
                 'phone' => '0',
                 'provider_id' => 305,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            310 =>
+            310 => 
             array (
                 'id' => 311,
                 'name' => 'norma',
@@ -4058,11 +3748,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '1',
                 'phone' => '0',
                 'provider_id' => 305,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            311 =>
+            311 => 
             array (
                 'id' => 312,
                 'name' => 'norma',
@@ -4071,11 +3760,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 373,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            312 =>
+            312 => 
             array (
                 'id' => 313,
                 'name' => 'norma',
@@ -4084,11 +3772,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 376,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            313 =>
+            313 => 
             array (
                 'id' => 314,
                 'name' => 'norma',
@@ -4097,11 +3784,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 376,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            314 =>
+            314 => 
             array (
                 'id' => 315,
                 'name' => 'norma',
@@ -4110,11 +3796,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 376,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            315 =>
+            315 => 
             array (
                 'id' => 316,
                 'name' => 'Rosa Maria',
@@ -4123,11 +3808,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5515431306',
                 'phone' => '0',
                 'provider_id' => 443,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            316 =>
+            316 => 
             array (
                 'id' => 317,
                 'name' => 'Rosa Maria',
@@ -4136,11 +3820,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5515431306',
                 'phone' => '0',
                 'provider_id' => 443,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            317 =>
+            317 => 
             array (
                 'id' => 318,
                 'name' => 'Rosa Maria',
@@ -4149,11 +3832,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5515431306',
                 'phone' => '0',
                 'provider_id' => 443,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            318 =>
+            318 => 
             array (
                 'id' => 319,
                 'name' => 'norma1',
@@ -4162,11 +3844,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 635,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            319 =>
+            319 => 
             array (
                 'id' => 320,
                 'name' => 'norma1',
@@ -4175,11 +3856,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 635,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            320 =>
+            320 => 
             array (
                 'id' => 321,
                 'name' => 'norma1',
@@ -4188,11 +3868,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 635,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            321 =>
+            321 => 
             array (
                 'id' => 322,
                 'name' => 'Ventas mostrador',
@@ -4201,11 +3880,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5541708223',
                 'phone' => '0',
                 'provider_id' => 519,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            322 =>
+            322 => 
             array (
                 'id' => 323,
                 'name' => 'Norma Pereyra',
@@ -4214,11 +3892,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 574,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            323 =>
+            323 => 
             array (
                 'id' => 324,
                 'name' => 'Norma Pereyra',
@@ -4227,11 +3904,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 574,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            324 =>
+            324 => 
             array (
                 'id' => 325,
                 'name' => 'Norma Pereyra',
@@ -4240,11 +3916,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 516,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            325 =>
+            325 => 
             array (
                 'id' => 326,
                 'name' => 'Norma Pereyra',
@@ -4253,11 +3928,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 516,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            326 =>
+            326 => 
             array (
                 'id' => 327,
                 'name' => 'norma',
@@ -4266,11 +3940,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 429,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            327 =>
+            327 => 
             array (
                 'id' => 328,
                 'name' => 'norma',
@@ -4279,11 +3952,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 556,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            328 =>
+            328 => 
             array (
                 'id' => 329,
                 'name' => 'Felipe Alanis',
@@ -4292,11 +3964,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '811 74 59 081',
                 'phone' => '0',
                 'provider_id' => 421,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            329 =>
+            329 => 
             array (
                 'id' => 330,
                 'name' => 'norma',
@@ -4305,11 +3976,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 537,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            330 =>
+            330 => 
             array (
                 'id' => 331,
                 'name' => 'norma',
@@ -4318,11 +3988,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 537,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            331 =>
+            331 => 
             array (
                 'id' => 332,
                 'name' => 'Cristela Rodríguez',
@@ -4331,11 +4000,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '8991447447',
                 'phone' => '0',
                 'provider_id' => 326,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            332 =>
+            332 => 
             array (
                 'id' => 333,
                 'name' => 'Emmanuel',
@@ -4344,11 +4012,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '56 3687 1633',
                 'phone' => '0',
                 'provider_id' => 438,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            333 =>
+            333 => 
             array (
                 'id' => 334,
                 'name' => 'norma',
@@ -4357,11 +4024,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 312,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            334 =>
+            334 => 
             array (
                 'id' => 335,
                 'name' => 'norma',
@@ -4370,11 +4036,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 312,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            335 =>
+            335 => 
             array (
                 'id' => 336,
                 'name' => 'Norma Pereyra',
@@ -4383,11 +4048,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 450,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            336 =>
+            336 => 
             array (
                 'id' => 337,
                 'name' => 'Norma Pereyra',
@@ -4396,11 +4060,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 450,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            337 =>
+            337 => 
             array (
                 'id' => 338,
                 'name' => 'norma',
@@ -4409,11 +4072,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 341,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            338 =>
+            338 => 
             array (
                 'id' => 339,
                 'name' => 'norma',
@@ -4422,11 +4084,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 341,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            339 =>
+            339 => 
             array (
                 'id' => 340,
                 'name' => 'Claudia Pamela Torrijos Cerda',
@@ -4435,11 +4096,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5558657258',
                 'phone' => '0',
                 'provider_id' => 349,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            340 =>
+            340 => 
             array (
                 'id' => 341,
                 'name' => 'MOSTRADOR',
@@ -4448,11 +4108,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9222235407',
                 'phone' => '0',
                 'provider_id' => 384,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            341 =>
+            341 => 
             array (
                 'id' => 342,
                 'name' => 'MOSTRADOR',
@@ -4461,11 +4120,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9222235407',
                 'phone' => '0',
                 'provider_id' => 384,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            342 =>
+            342 => 
             array (
                 'id' => 343,
                 'name' => 'MOSTRADOR',
@@ -4474,11 +4132,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '9222235407',
                 'phone' => '0',
                 'provider_id' => 384,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            343 =>
+            343 => 
             array (
                 'id' => 344,
                 'name' => 'Norma Pereyra',
@@ -4487,11 +4144,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 412,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            344 =>
+            344 => 
             array (
                 'id' => 345,
                 'name' => 'Norma Pereyra',
@@ -4500,11 +4156,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 412,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            345 =>
+            345 => 
             array (
                 'id' => 346,
                 'name' => 'Norma Pereyra',
@@ -4513,11 +4168,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 349,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            346 =>
+            346 => 
             array (
                 'id' => 347,
                 'name' => 'Norma Pereyra',
@@ -4526,11 +4180,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 349,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            347 =>
+            347 => 
             array (
                 'id' => 348,
                 'name' => 'Erika Lopez',
@@ -4539,11 +4192,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '625 135 0107',
                 'phone' => '0',
                 'provider_id' => 496,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            348 =>
+            348 => 
             array (
                 'id' => 349,
                 'name' => 'Erika Lopez',
@@ -4552,11 +4204,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '625 135 0107',
                 'phone' => '0',
                 'provider_id' => 496,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            349 =>
+            349 => 
             array (
                 'id' => 350,
                 'name' => 'norma',
@@ -4565,11 +4216,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 456,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            350 =>
+            350 => 
             array (
                 'id' => 351,
                 'name' => 'norma',
@@ -4578,11 +4228,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 456,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            351 =>
+            351 => 
             array (
                 'id' => 352,
                 'name' => 'Norma Pereyra',
@@ -4591,11 +4240,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 483,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            352 =>
+            352 => 
             array (
                 'id' => 353,
                 'name' => 'Norma Pereyra',
@@ -4604,11 +4252,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 483,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            353 =>
+            353 => 
             array (
                 'id' => 354,
                 'name' => 'norma',
@@ -4617,11 +4264,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 521,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            354 =>
+            354 => 
             array (
                 'id' => 355,
                 'name' => 'norma',
@@ -4630,11 +4276,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 521,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            355 =>
+            355 => 
             array (
                 'id' => 356,
                 'name' => 'norma',
@@ -4643,11 +4288,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 402,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            356 =>
+            356 => 
             array (
                 'id' => 357,
                 'name' => 'norma',
@@ -4656,11 +4300,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 402,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            357 =>
+            357 => 
             array (
                 'id' => 358,
                 'name' => 'norma',
@@ -4669,11 +4312,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 402,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            358 =>
+            358 => 
             array (
                 'id' => 359,
                 'name' => 'norma',
@@ -4682,11 +4324,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 402,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            359 =>
+            359 => 
             array (
                 'id' => 360,
                 'name' => 'Victor Manuel Lugo Ramírez',
@@ -4695,11 +4336,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5544612540',
                 'phone' => '0',
                 'provider_id' => 446,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            360 =>
+            360 => 
             array (
                 'id' => 361,
                 'name' => 'Victor Manuel Lugo',
@@ -4708,11 +4348,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5544612540',
                 'phone' => '0',
                 'provider_id' => 446,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            361 =>
+            361 => 
             array (
                 'id' => 362,
                 'name' => 'MOSTRADOR',
@@ -4721,11 +4360,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5611936017',
                 'phone' => '0',
                 'provider_id' => 331,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            362 =>
+            362 => 
             array (
                 'id' => 363,
                 'name' => 'MOSTRADOR',
@@ -4734,11 +4372,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '56 4207 2944',
                 'phone' => '0',
                 'provider_id' => 441,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            363 =>
+            363 => 
             array (
                 'id' => 364,
                 'name' => 'MOSTRADOR',
@@ -4747,11 +4384,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '56 4207 2944',
                 'phone' => '0',
                 'provider_id' => 441,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            364 =>
+            364 => 
             array (
                 'id' => 365,
                 'name' => 'Norma Pereyra',
@@ -4760,11 +4396,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 540,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            365 =>
+            365 => 
             array (
                 'id' => 366,
                 'name' => 'Norma Pereyra',
@@ -4773,11 +4408,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 540,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            366 =>
+            366 => 
             array (
                 'id' => 367,
                 'name' => 'norma',
@@ -4786,11 +4420,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 467,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            367 =>
+            367 => 
             array (
                 'id' => 368,
                 'name' => 'norma',
@@ -4799,11 +4432,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 467,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            368 =>
+            368 => 
             array (
                 'id' => 369,
                 'name' => 'norma',
@@ -4812,11 +4444,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 467,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            369 =>
+            369 => 
             array (
                 'id' => 370,
                 'name' => 'norma',
@@ -4825,11 +4456,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 467,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            370 =>
+            370 => 
             array (
                 'id' => 371,
                 'name' => 'norma',
@@ -4838,11 +4468,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 631,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            371 =>
+            371 => 
             array (
                 'id' => 372,
                 'name' => 'norma',
@@ -4851,11 +4480,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 631,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            372 =>
+            372 => 
             array (
                 'id' => 373,
                 'name' => 'norma',
@@ -4864,11 +4492,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 631,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            373 =>
+            373 => 
             array (
                 'id' => 374,
                 'name' => 'Norma Pereyra',
@@ -4877,11 +4504,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 344,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            374 =>
+            374 => 
             array (
                 'id' => 375,
                 'name' => 'Norma Pereyra',
@@ -4890,11 +4516,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 344,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            375 =>
+            375 => 
             array (
                 'id' => 376,
                 'name' => 'norma',
@@ -4903,11 +4528,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 444,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            376 =>
+            376 => 
             array (
                 'id' => 377,
                 'name' => 'norma',
@@ -4916,11 +4540,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 444,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            377 =>
+            377 => 
             array (
                 'id' => 378,
                 'name' => 'norma',
@@ -4929,11 +4552,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 444,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            378 =>
+            378 => 
             array (
                 'id' => 379,
                 'name' => 'Magdalena Flores',
@@ -4942,11 +4564,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '56 3312 5700',
                 'phone' => '0',
                 'provider_id' => 334,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            379 =>
+            379 => 
             array (
                 'id' => 380,
                 'name' => 'norma',
@@ -4955,11 +4576,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 419,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            380 =>
+            380 => 
             array (
                 'id' => 381,
                 'name' => 'norma',
@@ -4968,11 +4588,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 419,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            381 =>
+            381 => 
             array (
                 'id' => 382,
                 'name' => 'norma',
@@ -4981,11 +4600,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 418,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            382 =>
+            382 => 
             array (
                 'id' => 383,
                 'name' => 'norma',
@@ -4994,11 +4612,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 418,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            383 =>
+            383 => 
             array (
                 'id' => 384,
                 'name' => 'Carlos Ramírez ',
@@ -5007,11 +4624,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '833 119 9424',
                 'phone' => '0',
                 'provider_id' => 608,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            384 =>
+            384 => 
             array (
                 'id' => 385,
                 'name' => 'Carlos Ramírez ',
@@ -5020,11 +4636,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '833 119 9424',
                 'phone' => '0',
                 'provider_id' => 608,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            385 =>
+            385 => 
             array (
                 'id' => 386,
                 'name' => 'MOSTRADOR',
@@ -5033,11 +4648,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5557159836',
                 'phone' => '0',
                 'provider_id' => 318,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            386 =>
+            386 => 
             array (
                 'id' => 387,
                 'name' => 'MOSTRADOR',
@@ -5046,11 +4660,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5557159836',
                 'phone' => '0',
                 'provider_id' => 318,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            387 =>
+            387 => 
             array (
                 'id' => 388,
                 'name' => 'MOSTRADOR',
@@ -5059,11 +4672,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5557159836',
                 'phone' => '0',
                 'provider_id' => 318,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            388 =>
+            388 => 
             array (
                 'id' => 389,
                 'name' => 'Manuel Martínez',
@@ -5072,11 +4684,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '558178 2223',
                 'phone' => '0',
                 'provider_id' => 491,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            389 =>
+            389 => 
             array (
                 'id' => 390,
                 'name' => 'Manuel Martínez',
@@ -5085,11 +4696,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '558178 2223',
                 'phone' => '0',
                 'provider_id' => 491,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            390 =>
+            390 => 
             array (
                 'id' => 391,
                 'name' => 'norma',
@@ -5098,11 +4708,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 468,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            391 =>
+            391 => 
             array (
                 'id' => 392,
                 'name' => 'norma',
@@ -5111,11 +4720,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 468,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            392 =>
+            392 => 
             array (
                 'id' => 393,
                 'name' => 'Edgar Zamudio',
@@ -5124,11 +4732,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5544341043',
                 'phone' => '0',
                 'provider_id' => 592,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            393 =>
+            393 => 
             array (
                 'id' => 394,
                 'name' => 'Edgar Zamudio',
@@ -5137,11 +4744,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5544341043',
                 'phone' => '0',
                 'provider_id' => 592,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            394 =>
+            394 => 
             array (
                 'id' => 395,
                 'name' => 'norma',
@@ -5150,11 +4756,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 612,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            395 =>
+            395 => 
             array (
                 'id' => 396,
                 'name' => 'norma',
@@ -5163,11 +4768,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 612,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            396 =>
+            396 => 
             array (
                 'id' => 397,
                 'name' => 'Norma Pereyra',
@@ -5176,11 +4780,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 514,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            397 =>
+            397 => 
             array (
                 'id' => 398,
                 'name' => 'Norma Pereyra',
@@ -5189,11 +4792,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 514,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            398 =>
+            398 => 
             array (
                 'id' => 399,
                 'name' => 'norma',
@@ -5202,11 +4804,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 552,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            399 =>
+            399 => 
             array (
                 'id' => 400,
                 'name' => 'norma',
@@ -5215,11 +4816,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 552,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            400 =>
+            400 => 
             array (
                 'id' => 401,
                 'name' => 'Norma Pereyra',
@@ -5228,11 +4828,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 303,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            401 =>
+            401 => 
             array (
                 'id' => 402,
                 'name' => 'Norma Pereyra',
@@ -5241,11 +4840,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 303,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            402 =>
+            402 => 
             array (
                 'id' => 403,
                 'name' => 'Elias Penhos',
@@ -5254,11 +4852,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 989 4443',
                 'phone' => '0',
                 'provider_id' => 551,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            403 =>
+            403 => 
             array (
                 'id' => 404,
                 'name' => 'norma',
@@ -5267,11 +4864,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 584,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            404 =>
+            404 => 
             array (
                 'id' => 405,
                 'name' => 'norma',
@@ -5280,11 +4876,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 584,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            405 =>
+            405 => 
             array (
                 'id' => 406,
                 'name' => 'norma',
@@ -5293,11 +4888,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 627,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            406 =>
+            406 => 
             array (
                 'id' => 407,
                 'name' => 'Scott McPherson',
@@ -5306,11 +4900,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '1832 660 5258',
                 'phone' => '0',
                 'provider_id' => 317,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            407 =>
+            407 => 
             array (
                 'id' => 408,
                 'name' => 'norma',
@@ -5319,11 +4912,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '',
                 'phone' => '0',
                 'provider_id' => 422,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            408 =>
+            408 => 
             array (
                 'id' => 409,
                 'name' => 'Victor Henkel',
@@ -5332,11 +4924,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '554 817 0007',
                 'phone' => '0',
                 'provider_id' => 319,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            409 =>
+            409 => 
             array (
                 'id' => 410,
                 'name' => 'Sofia Lopez',
@@ -5345,11 +4936,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 749 3614',
                 'phone' => '0',
                 'provider_id' => 321,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            410 =>
+            410 => 
             array (
                 'id' => 411,
                 'name' => 'Jorge Manuel Saravia',
@@ -5358,11 +4948,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '747 174 8724',
                 'phone' => '0',
                 'provider_id' => 328,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            411 =>
+            411 => 
             array (
                 'id' => 412,
                 'name' => 'Marco Rojas',
@@ -5371,11 +4960,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5553862886',
                 'phone' => '0',
                 'provider_id' => 325,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            412 =>
+            412 => 
             array (
                 'id' => 413,
                 'name' => 'Jorge Soto',
@@ -5384,11 +4972,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 8940330',
                 'phone' => '0',
                 'provider_id' => 295,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            413 =>
+            413 => 
             array (
                 'id' => 414,
                 'name' => 'Ventas',
@@ -5397,11 +4984,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '5522723668',
                 'phone' => '0',
                 'provider_id' => 429,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            414 =>
+            414 => 
             array (
                 'id' => 415,
                 'name' => 'Norma',
@@ -5410,11 +4996,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1954 4768',
                 'phone' => '0',
                 'provider_id' => 359,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            415 =>
+            415 => 
             array (
                 'id' => 416,
                 'name' => 'norma',
@@ -5423,11 +5008,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 358,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            416 =>
+            416 => 
             array (
                 'id' => 417,
                 'name' => 'norma',
@@ -5436,11 +5020,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 358,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            417 =>
+            417 => 
             array (
                 'id' => 418,
                 'name' => 'norma1',
@@ -5449,11 +5032,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 358,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            418 =>
+            418 => 
             array (
                 'id' => 419,
                 'name' => 'norma1',
@@ -5462,11 +5044,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '.',
                 'phone' => '0',
                 'provider_id' => 358,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            419 =>
+            419 => 
             array (
                 'id' => 420,
                 'name' => 'Jorge Bautista',
@@ -5475,11 +5056,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '556 620 2670',
                 'phone' => '0',
                 'provider_id' => 327,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            420 =>
+            420 => 
             array (
                 'id' => 421,
                 'name' => 'Mireya Chávez',
@@ -5488,11 +5068,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '594 957 5102',
                 'phone' => '0',
                 'provider_id' => 329,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            421 =>
+            421 => 
             array (
                 'id' => 422,
                 'name' => 'Corina Blancas',
@@ -5501,11 +5080,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 389 2864',
                 'phone' => '0',
                 'provider_id' => 330,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            422 =>
+            422 => 
             array (
                 'id' => 423,
                 'name' => 'Jesus Arturo',
@@ -5514,11 +5092,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '899 922 7187',
                 'phone' => '0',
                 'provider_id' => 332,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            423 =>
+            423 => 
             array (
                 'id' => 424,
                 'name' => 'Danny Atwood',
@@ -5527,11 +5104,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '800 299 1685',
                 'phone' => '0',
                 'provider_id' => 372,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            424 =>
+            424 => 
             array (
                 'id' => 425,
                 'name' => 'Ventas',
@@ -5540,11 +5116,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 770 1192',
                 'phone' => '0',
                 'provider_id' => 333,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            425 =>
+            425 => 
             array (
                 'id' => 426,
                 'name' => 'Estella Pallares',
@@ -5553,11 +5128,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 565 4429',
                 'phone' => '0',
                 'provider_id' => 335,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            426 =>
+            426 => 
             array (
                 'id' => 427,
                 'name' => 'Noemi Bocanegra',
@@ -5566,11 +5140,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 839 1648',
                 'phone' => '0',
                 'provider_id' => 336,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            427 =>
+            427 => 
             array (
                 'id' => 428,
                 'name' => 'Ventas',
@@ -5579,11 +5152,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '806 742 5057',
                 'phone' => '0',
                 'provider_id' => 337,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            428 =>
+            428 => 
             array (
                 'id' => 429,
                 'name' => 'Miguel Angel Amantla',
@@ -5592,11 +5164,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 536 6542',
                 'phone' => '0',
                 'provider_id' => 338,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            429 =>
+            429 => 
             array (
                 'id' => 430,
                 'name' => 'Carlos Lara',
@@ -5605,11 +5176,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 2778 7003',
                 'phone' => '0',
                 'provider_id' => 339,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            430 =>
+            430 => 
             array (
                 'id' => 431,
                 'name' => 'Raul Martinez',
@@ -5618,11 +5188,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 300 5934',
                 'phone' => '0',
                 'provider_id' => 340,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            431 =>
+            431 => 
             array (
                 'id' => 432,
                 'name' => 'Alicia Lopez',
@@ -5631,11 +5200,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '722 218 0093',
                 'phone' => '0',
                 'provider_id' => 342,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            432 =>
+            432 => 
             array (
                 'id' => 433,
                 'name' => 'Daniel Manjarrez',
@@ -5644,11 +5212,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 629 8080',
                 'phone' => '0',
                 'provider_id' => 343,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            433 =>
+            433 => 
             array (
                 'id' => 434,
                 'name' => 'Fernando Arredondo',
@@ -5657,11 +5224,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '462 268 3316',
                 'phone' => '0',
                 'provider_id' => 345,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            434 =>
+            434 => 
             array (
                 'id' => 435,
                 'name' => 'Carlos Arturo Valdez',
@@ -5670,11 +5236,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 361 2201',
                 'phone' => '0',
                 'provider_id' => 346,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            435 =>
+            435 => 
             array (
                 'id' => 436,
                 'name' => 'Grace Villavicencio',
@@ -5683,11 +5248,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '713 462 4449',
                 'phone' => '0',
                 'provider_id' => 347,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            436 =>
+            436 => 
             array (
                 'id' => 437,
                 'name' => 'Anastacio Balderas',
@@ -5696,11 +5260,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 089 1364',
                 'phone' => '0',
                 'provider_id' => 348,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            437 =>
+            437 => 
             array (
                 'id' => 438,
                 'name' => 'Deyanira Jesabel',
@@ -5709,11 +5272,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '552 065 9793',
                 'phone' => '0',
                 'provider_id' => 350,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            438 =>
+            438 => 
             array (
                 'id' => 439,
                 'name' => 'Yael Colin',
@@ -5722,11 +5284,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '55 1347 9472',
                 'phone' => '0',
                 'provider_id' => 351,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            439 =>
+            439 => 
             array (
                 'id' => 440,
                 'name' => 'Elsa González',
@@ -5735,11 +5296,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '56 2674 3735',
                 'phone' => '0',
                 'provider_id' => 352,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            440 =>
+            440 => 
             array (
                 'id' => 441,
                 'name' => 'Ventas',
@@ -5748,11 +5308,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '01 800 829 4933',
                 'phone' => '0',
                 'provider_id' => 353,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            441 =>
+            441 => 
             array (
                 'id' => 442,
                 'name' => 'Beatriz Mosqueda',
@@ -5761,11 +5320,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 360 0560',
                 'phone' => '0',
                 'provider_id' => 355,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            442 =>
+            442 => 
             array (
                 'id' => 443,
                 'name' => 'Carlos Lopez',
@@ -5774,11 +5332,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '559 000 1222',
                 'phone' => '0',
                 'provider_id' => 356,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            443 =>
+            443 => 
             array (
                 'id' => 444,
                 'name' => 'Guillermo Alvarado',
@@ -5787,11 +5344,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '871 750 0262',
                 'phone' => '0',
                 'provider_id' => 358,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            444 =>
+            444 => 
             array (
                 'id' => 445,
                 'name' => 'Miranda Ferrara',
@@ -5800,11 +5356,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '553 544 7926',
                 'phone' => '0',
                 'provider_id' => 360,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            445 =>
+            445 => 
             array (
                 'id' => 446,
                 'name' => 'Valeria Celis',
@@ -5813,11 +5368,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '442 159 5020',
                 'phone' => '0',
                 'provider_id' => 361,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            446 =>
+            446 => 
             array (
                 'id' => 447,
                 'name' => 'Guadalupe Mireles',
@@ -5826,11 +5380,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '81 8338 5731',
                 'phone' => '0',
                 'provider_id' => 364,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            447 =>
+            447 => 
             array (
                 'id' => 448,
                 'name' => 'Ventas',
@@ -5839,11 +5392,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '933 311 8547',
                 'phone' => '0',
                 'provider_id' => 365,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            448 =>
+            448 => 
             array (
                 'id' => 449,
                 'name' => 'Ventas',
@@ -5852,11 +5404,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '561 165 3939',
                 'phone' => '0',
                 'provider_id' => 366,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            449 =>
+            449 => 
             array (
                 'id' => 450,
                 'name' => 'Elizabeth Sanchez',
@@ -5865,11 +5416,10 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '555 236 4787',
                 'phone' => '0',
                 'provider_id' => 367,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
-            450 =>
+            450 => 
             array (
                 'id' => 451,
                 'name' => 'Laura Elizabeth Garcia',
@@ -5878,12 +5428,11 @@ class ProviderContactsTableSeeder extends Seeder
                 'cell_phone' => '899 929 2290',
                 'phone' => '0',
                 'provider_id' => 368,
-
                 'created_at' => '2025-01-08 18:40:36',
                 'updated_at' => '2025-01-08 18:40:36',
             ),
         ));
-
-
+        
+        
     }
 }

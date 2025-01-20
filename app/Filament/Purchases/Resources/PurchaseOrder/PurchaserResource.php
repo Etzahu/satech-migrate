@@ -484,7 +484,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                 Infolists\Components\TextEntry::make('doc_7')
                                                     ->label('Cotización')
                                                     ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->requisition->project->id)
+                                                        $media = Media::where('model_id', $record->id)
                                                             ->where('collection_name', 'quote')
                                                             ->first();
                                                         return $media->name;
@@ -492,7 +492,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->hintActions([
                                                         MediaActionInfolist::make('ver documento')
                                                             ->media(function ($record) {
-                                                                $media = Media::where('model_id', $record->requisition->project->id)
+                                                                $media = Media::where('model_id', $record->id)
                                                                     ->where('collection_name', 'quote')
                                                                     ->first();
                                                                 $url = Storage::url($media->getPathRelativeToRoot());
@@ -502,7 +502,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                             ->preload(false),
                                                         Action::make('Descargar')
                                                             ->action(function ($record) {
-                                                                $media = Media::where('model_id', $record->requisition->project->id)
+                                                                $media = Media::where('model_id', $record->id)
                                                                     ->where('collection_name', 'quote')
                                                                     ->first();
                                                                 return response()->download($media->getPath(), $media->file_name);

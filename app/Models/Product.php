@@ -22,6 +22,8 @@ class Product extends Model
         'unit_id',
         'category_id',
         'category_family_id',
+        'requester_id',
+        'registered_user_id'
     ];
 
     /**

@@ -79,6 +79,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'approver_id');
     }
+    public function authorizerChainsPR(): HasMany
+    {
+        return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'authorizer_id');
+    }
     public function scopeApprovers()
     {
         $management = Management::all()->pluck('responsible_id')->unique();

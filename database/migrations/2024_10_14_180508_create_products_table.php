@@ -19,6 +19,8 @@ return new class extends Migration
             $table->foreignId('unit_id')->constrained('measure_units');
             $table->foreignId('category_id')->nullable()->constrained('categories');
             $table->foreignId('category_family_id')->nullable()->constrained('category_families');
+            $table->foreignId('requester_id')->nullable()->constrained('users');
+            $table->foreignId('registered_user_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

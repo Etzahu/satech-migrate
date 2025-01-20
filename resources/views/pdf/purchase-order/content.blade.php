@@ -11,9 +11,8 @@
 </head>
 
 <body>
-    <div class="w-full">
-
-        <div class="flex justify-between mt-3">
+    <div class="w-full pt-7">
+        <div class="flex justify-between">
             <div class="w-1/2 px-2">
                 <table class="w-full border-black">
                     <thead class="border-b border-black">

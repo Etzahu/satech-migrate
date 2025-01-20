@@ -84,6 +84,12 @@ class ProductResource extends Resource
                             ->nullable(),
                     ]),
                 Forms\Components\Section::make('')
+                ->visible(fn($operation)=> $operation == 'view' || $operation == 'create')
+                ->schema([
+                    Forms\Components\Checkbox::make('automatic_code')
+                    ->label('Generar código de forma automática')
+                ]),
+                Forms\Components\Section::make('')
                     ->schema([
                         Forms\Components\Textarea::make('name')
                             ->label('Nombre del producto/servicio')

@@ -26,6 +26,10 @@ class PRInfolistService
                     ->tabs([
                         Tabs\Tab::make('Información general')
                             ->schema([
+                                TextEntry::make('status')
+                                    ->label('Estatus')
+                                    ->badge()
+                                    ->color('success'),
                                 TextEntry::make('approvalChain.requester.name')
                                     ->label('Solicitante'),
                                 TextEntry::make('motive')

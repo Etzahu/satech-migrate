@@ -22,2490 +22,1226 @@ class PermissionsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'name' => 'view_role',
+                'name' => 'view_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             1 => 
             array (
                 'id' => 2,
-                'name' => 'view_any_role',
+                'name' => 'view_any_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             2 => 
             array (
                 'id' => 3,
-                'name' => 'create_role',
+                'name' => 'create_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             3 => 
             array (
                 'id' => 4,
-                'name' => 'update_role',
+                'name' => 'update_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             4 => 
             array (
                 'id' => 5,
-                'name' => 'delete_role',
+                'name' => 'delete_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             5 => 
             array (
                 'id' => 6,
-                'name' => 'delete_any_role',
+                'name' => 'delete_any_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             6 => 
             array (
                 'id' => 7,
-                'name' => 'view_user',
+                'name' => 'view_review_warehouse_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             7 => 
             array (
                 'id' => 8,
-                'name' => 'view_any_user',
+                'name' => 'view_review_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             8 => 
             array (
                 'id' => 9,
-                'name' => 'create_user',
+                'name' => 'view_approve_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             9 => 
             array (
                 'id' => 10,
-                'name' => 'update_user',
+                'name' => 'view_authorize_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             10 => 
             array (
                 'id' => 11,
-                'name' => 'restore_user',
+                'name' => 'view_assing_purchase::requisition::requester',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:50:26',
+                'updated_at' => '2025-01-20 13:50:26',
             ),
             11 => 
             array (
                 'id' => 12,
-                'name' => 'restore_any_user',
+                'name' => 'view_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             12 => 
             array (
                 'id' => 13,
-                'name' => 'replicate_user',
+                'name' => 'view_any_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             13 => 
             array (
                 'id' => 14,
-                'name' => 'reorder_user',
+                'name' => 'create_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             14 => 
             array (
                 'id' => 15,
-                'name' => 'delete_user',
+                'name' => 'update_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             15 => 
             array (
                 'id' => 16,
-                'name' => 'delete_any_user',
+                'name' => 'delete_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             16 => 
             array (
                 'id' => 17,
-                'name' => 'force_delete_user',
+                'name' => 'delete_any_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             17 => 
             array (
                 'id' => 18,
-                'name' => 'force_delete_any_user',
+                'name' => 'view_approve-level-1_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 01:17:55',
-                'updated_at' => '2024-10-07 01:17:55',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             18 => 
             array (
                 'id' => 19,
-                'name' => 'view_drawing',
+                'name' => 'view_approve_level-2_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             19 => 
             array (
                 'id' => 20,
-                'name' => 'view_any_drawing',
+                'name' => 'view_approve-level-3_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             20 => 
             array (
                 'id' => 21,
-                'name' => 'create_drawing',
+                'name' => 'view_approve_level-4_purchase::order::purchaser',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:52:36',
+                'updated_at' => '2025-01-20 13:52:36',
             ),
             21 => 
             array (
                 'id' => 22,
-                'name' => 'update_drawing',
+                'name' => 'view_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             22 => 
             array (
                 'id' => 23,
-                'name' => 'restore_drawing',
+                'name' => 'view_any_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             23 => 
             array (
                 'id' => 24,
-                'name' => 'restore_any_drawing',
+                'name' => 'create_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             24 => 
             array (
                 'id' => 25,
-                'name' => 'replicate_drawing',
+                'name' => 'update_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             25 => 
             array (
                 'id' => 26,
-                'name' => 'reorder_drawing',
+                'name' => 'restore_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             26 => 
             array (
                 'id' => 27,
-                'name' => 'delete_drawing',
+                'name' => 'restore_any_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             27 => 
             array (
                 'id' => 28,
-                'name' => 'delete_any_drawing',
+                'name' => 'replicate_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             28 => 
             array (
                 'id' => 29,
-                'name' => 'force_delete_drawing',
+                'name' => 'reorder_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             29 => 
             array (
                 'id' => 30,
-                'name' => 'force_delete_any_drawing',
+                'name' => 'delete_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             30 => 
             array (
                 'id' => 31,
-                'name' => 'view_drawing::category',
+                'name' => 'delete_any_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             31 => 
             array (
                 'id' => 32,
-                'name' => 'view_any_drawing::category',
+                'name' => 'force_delete_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             32 => 
             array (
                 'id' => 33,
-                'name' => 'create_drawing::category',
+                'name' => 'force_delete_any_brand',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             33 => 
             array (
                 'id' => 34,
-                'name' => 'update_drawing::category',
+                'name' => 'view_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             34 => 
             array (
                 'id' => 35,
-                'name' => 'restore_drawing::category',
+                'name' => 'view_any_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             35 => 
             array (
                 'id' => 36,
-                'name' => 'restore_any_drawing::category',
+                'name' => 'create_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             36 => 
             array (
                 'id' => 37,
-                'name' => 'replicate_drawing::category',
+                'name' => 'update_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             37 => 
             array (
                 'id' => 38,
-                'name' => 'reorder_drawing::category',
+                'name' => 'restore_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             38 => 
             array (
                 'id' => 39,
-                'name' => 'delete_drawing::category',
+                'name' => 'restore_any_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             39 => 
             array (
                 'id' => 40,
-                'name' => 'delete_any_drawing::category',
+                'name' => 'replicate_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             40 => 
             array (
                 'id' => 41,
-                'name' => 'force_delete_drawing::category',
+                'name' => 'reorder_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             41 => 
             array (
                 'id' => 42,
-                'name' => 'force_delete_any_drawing::category',
+                'name' => 'delete_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             42 => 
             array (
                 'id' => 43,
-                'name' => 'view_sub::drawing::category',
+                'name' => 'delete_any_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             43 => 
             array (
                 'id' => 44,
-                'name' => 'view_any_sub::drawing::category',
+                'name' => 'force_delete_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             44 => 
             array (
                 'id' => 45,
-                'name' => 'create_sub::drawing::category',
+                'name' => 'force_delete_any_category',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             45 => 
             array (
                 'id' => 46,
-                'name' => 'update_sub::drawing::category',
+                'name' => 'view_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             46 => 
             array (
                 'id' => 47,
-                'name' => 'restore_sub::drawing::category',
+                'name' => 'view_any_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             47 => 
             array (
                 'id' => 48,
-                'name' => 'restore_any_sub::drawing::category',
+                'name' => 'create_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             48 => 
             array (
                 'id' => 49,
-                'name' => 'replicate_sub::drawing::category',
+                'name' => 'update_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             49 => 
             array (
                 'id' => 50,
-                'name' => 'reorder_sub::drawing::category',
+                'name' => 'restore_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             50 => 
             array (
                 'id' => 51,
-                'name' => 'delete_sub::drawing::category',
+                'name' => 'restore_any_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             51 => 
             array (
                 'id' => 52,
-                'name' => 'delete_any_sub::drawing::category',
+                'name' => 'replicate_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             52 => 
             array (
                 'id' => 53,
-                'name' => 'force_delete_sub::drawing::category',
+                'name' => 'reorder_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             53 => 
             array (
                 'id' => 54,
-                'name' => 'force_delete_any_sub::drawing::category',
+                'name' => 'delete_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-07 15:59:19',
-                'updated_at' => '2024-10-07 15:59:19',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             54 => 
             array (
                 'id' => 55,
-                'name' => 'view_purchase::requisition',
+                'name' => 'delete_any_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             55 => 
             array (
                 'id' => 56,
-                'name' => 'view_any_purchase::requisition',
+                'name' => 'force_delete_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             56 => 
             array (
                 'id' => 57,
-                'name' => 'create_purchase::requisition',
+                'name' => 'force_delete_any_company',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             57 => 
             array (
                 'id' => 58,
-                'name' => 'update_purchase::requisition',
+                'name' => 'view_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             58 => 
             array (
                 'id' => 59,
-                'name' => 'restore_purchase::requisition',
+                'name' => 'view_any_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             59 => 
             array (
                 'id' => 60,
-                'name' => 'restore_any_purchase::requisition',
+                'name' => 'create_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             60 => 
             array (
                 'id' => 61,
-                'name' => 'replicate_purchase::requisition',
+                'name' => 'update_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             61 => 
             array (
                 'id' => 62,
-                'name' => 'reorder_purchase::requisition',
+                'name' => 'restore_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             62 => 
             array (
                 'id' => 63,
-                'name' => 'delete_purchase::requisition',
+                'name' => 'restore_any_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             63 => 
             array (
                 'id' => 64,
-                'name' => 'delete_any_purchase::requisition',
+                'name' => 'replicate_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             64 => 
             array (
                 'id' => 65,
-                'name' => 'force_delete_purchase::requisition',
+                'name' => 'reorder_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             65 => 
             array (
                 'id' => 66,
-                'name' => 'force_delete_any_purchase::requisition',
+                'name' => 'delete_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-17 18:33:14',
-                'updated_at' => '2024-10-17 18:33:14',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             66 => 
             array (
                 'id' => 67,
-                'name' => 'publish_purchase::requisition',
+                'name' => 'delete_any_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-18 18:01:38',
-                'updated_at' => '2024-10-18 18:01:38',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             67 => 
             array (
                 'id' => 68,
-                'name' => 'view_reviewer_warehouse_purchase::requisition',
+                'name' => 'force_delete_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-18 18:01:38',
-                'updated_at' => '2024-10-18 18:01:38',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             68 => 
             array (
                 'id' => 69,
-                'name' => 'view_reviewer_purchase::requisition',
+                'name' => 'force_delete_any_management',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-18 18:01:38',
-                'updated_at' => '2024-10-18 18:01:38',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             69 => 
             array (
                 'id' => 70,
-                'name' => 'view_approver_purchase::requisition',
+                'name' => 'view_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-18 18:01:38',
-                'updated_at' => '2024-10-18 18:01:38',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             70 => 
             array (
                 'id' => 71,
-                'name' => 'view_reviewer_dg_purchase::requisition',
+                'name' => 'view_any_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-18 18:01:38',
-                'updated_at' => '2024-10-18 18:01:38',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             71 => 
             array (
                 'id' => 72,
-                'name' => 'view_management',
+                'name' => 'create_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             72 => 
             array (
                 'id' => 73,
-                'name' => 'view_any_management',
+                'name' => 'update_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             73 => 
             array (
                 'id' => 74,
-                'name' => 'create_management',
+                'name' => 'restore_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             74 => 
             array (
                 'id' => 75,
-                'name' => 'update_management',
+                'name' => 'restore_any_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             75 => 
             array (
                 'id' => 76,
-                'name' => 'restore_management',
+                'name' => 'replicate_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             76 => 
             array (
                 'id' => 77,
-                'name' => 'restore_any_management',
+                'name' => 'reorder_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             77 => 
             array (
                 'id' => 78,
-                'name' => 'replicate_management',
+                'name' => 'delete_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             78 => 
             array (
                 'id' => 79,
-                'name' => 'reorder_management',
+                'name' => 'delete_any_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             79 => 
             array (
                 'id' => 80,
-                'name' => 'delete_management',
+                'name' => 'force_delete_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             80 => 
             array (
                 'id' => 81,
-                'name' => 'delete_any_management',
+                'name' => 'force_delete_any_measure::unit',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             81 => 
             array (
                 'id' => 82,
-                'name' => 'force_delete_management',
+                'name' => 'view_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             82 => 
             array (
                 'id' => 83,
-                'name' => 'force_delete_any_management',
+                'name' => 'view_any_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             83 => 
             array (
                 'id' => 84,
-                'name' => 'view_measure::unit',
+                'name' => 'create_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             84 => 
             array (
                 'id' => 85,
-                'name' => 'view_any_measure::unit',
+                'name' => 'update_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             85 => 
             array (
                 'id' => 86,
-                'name' => 'create_measure::unit',
+                'name' => 'restore_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             86 => 
             array (
                 'id' => 87,
-                'name' => 'update_measure::unit',
+                'name' => 'restore_any_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             87 => 
             array (
                 'id' => 88,
-                'name' => 'restore_measure::unit',
+                'name' => 'replicate_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             88 => 
             array (
                 'id' => 89,
-                'name' => 'restore_any_measure::unit',
+                'name' => 'reorder_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             89 => 
             array (
                 'id' => 90,
-                'name' => 'replicate_measure::unit',
+                'name' => 'delete_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             90 => 
             array (
                 'id' => 91,
-                'name' => 'reorder_measure::unit',
+                'name' => 'delete_any_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             91 => 
             array (
                 'id' => 92,
-                'name' => 'delete_measure::unit',
+                'name' => 'force_delete_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             92 => 
             array (
                 'id' => 93,
-                'name' => 'delete_any_measure::unit',
+                'name' => 'force_delete_any_product',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             93 => 
             array (
                 'id' => 94,
-                'name' => 'force_delete_measure::unit',
+                'name' => 'view_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             94 => 
             array (
                 'id' => 95,
-                'name' => 'force_delete_any_measure::unit',
+                'name' => 'view_any_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             95 => 
             array (
                 'id' => 96,
-                'name' => 'view_product',
+                'name' => 'create_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             96 => 
             array (
                 'id' => 97,
-                'name' => 'view_any_product',
+                'name' => 'update_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             97 => 
             array (
                 'id' => 98,
-                'name' => 'create_product',
+                'name' => 'restore_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             98 => 
             array (
                 'id' => 99,
-                'name' => 'update_product',
+                'name' => 'restore_any_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             99 => 
             array (
                 'id' => 100,
-                'name' => 'restore_product',
+                'name' => 'replicate_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             100 => 
             array (
                 'id' => 101,
-                'name' => 'restore_any_product',
+                'name' => 'reorder_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             101 => 
             array (
                 'id' => 102,
-                'name' => 'replicate_product',
+                'name' => 'delete_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             102 => 
             array (
                 'id' => 103,
-                'name' => 'reorder_product',
+                'name' => 'delete_any_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             103 => 
             array (
                 'id' => 104,
-                'name' => 'delete_product',
+                'name' => 'force_delete_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             104 => 
             array (
                 'id' => 105,
-                'name' => 'delete_any_product',
+                'name' => 'force_delete_any_project::purchase',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             105 => 
             array (
                 'id' => 106,
-                'name' => 'force_delete_product',
+                'name' => 'view_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             106 => 
             array (
                 'id' => 107,
-                'name' => 'force_delete_any_product',
+                'name' => 'view_any_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             107 => 
             array (
                 'id' => 108,
-                'name' => 'view_project::purchase',
+                'name' => 'create_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             108 => 
             array (
                 'id' => 109,
-                'name' => 'view_any_project::purchase',
+                'name' => 'update_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             109 => 
             array (
                 'id' => 110,
-                'name' => 'create_project::purchase',
+                'name' => 'restore_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             110 => 
             array (
                 'id' => 111,
-                'name' => 'update_project::purchase',
+                'name' => 'restore_any_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             111 => 
             array (
                 'id' => 112,
-                'name' => 'restore_project::purchase',
+                'name' => 'replicate_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             112 => 
             array (
                 'id' => 113,
-                'name' => 'restore_any_project::purchase',
+                'name' => 'reorder_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             113 => 
             array (
                 'id' => 114,
-                'name' => 'replicate_project::purchase',
+                'name' => 'delete_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             114 => 
             array (
                 'id' => 115,
-                'name' => 'reorder_project::purchase',
+                'name' => 'delete_any_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             115 => 
             array (
                 'id' => 116,
-                'name' => 'delete_project::purchase',
+                'name' => 'force_delete_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             116 => 
             array (
                 'id' => 117,
-                'name' => 'delete_any_project::purchase',
+                'name' => 'force_delete_any_purchase::provider',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             117 => 
             array (
                 'id' => 118,
-                'name' => 'force_delete_project::purchase',
+                'name' => 'view_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             118 => 
             array (
                 'id' => 119,
-                'name' => 'force_delete_any_project::purchase',
+                'name' => 'view_any_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             119 => 
             array (
                 'id' => 120,
-                'name' => 'view_project::usage',
+                'name' => 'create_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             120 => 
             array (
                 'id' => 121,
-                'name' => 'view_any_project::usage',
+                'name' => 'update_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             121 => 
             array (
                 'id' => 122,
-                'name' => 'create_project::usage',
+                'name' => 'restore_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             122 => 
             array (
                 'id' => 123,
-                'name' => 'update_project::usage',
+                'name' => 'restore_any_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             123 => 
             array (
                 'id' => 124,
-                'name' => 'restore_project::usage',
+                'name' => 'replicate_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             124 => 
             array (
                 'id' => 125,
-                'name' => 'restore_any_project::usage',
+                'name' => 'reorder_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             125 => 
             array (
                 'id' => 126,
-                'name' => 'replicate_project::usage',
+                'name' => 'delete_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             126 => 
             array (
                 'id' => 127,
-                'name' => 'reorder_project::usage',
+                'name' => 'delete_any_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             127 => 
             array (
                 'id' => 128,
-                'name' => 'delete_project::usage',
+                'name' => 'force_delete_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             128 => 
             array (
                 'id' => 129,
-                'name' => 'delete_any_project::usage',
+                'name' => 'force_delete_any_purchase::requisition::chain',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             129 => 
             array (
                 'id' => 130,
-                'name' => 'force_delete_project::usage',
+                'name' => 'view_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             130 => 
             array (
                 'id' => 131,
-                'name' => 'force_delete_any_project::usage',
+                'name' => 'view_any_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             131 => 
             array (
                 'id' => 132,
-                'name' => 'view_purchase::requisition::approval::chain',
+                'name' => 'create_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             132 => 
             array (
                 'id' => 133,
-                'name' => 'view_any_purchase::requisition::approval::chain',
+                'name' => 'update_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             133 => 
             array (
                 'id' => 134,
-                'name' => 'create_purchase::requisition::approval::chain',
+                'name' => 'restore_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             134 => 
             array (
                 'id' => 135,
-                'name' => 'update_purchase::requisition::approval::chain',
+                'name' => 'restore_any_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             135 => 
             array (
                 'id' => 136,
-                'name' => 'restore_purchase::requisition::approval::chain',
+                'name' => 'replicate_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             136 => 
             array (
                 'id' => 137,
-                'name' => 'restore_any_purchase::requisition::approval::chain',
+                'name' => 'reorder_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             137 => 
             array (
                 'id' => 138,
-                'name' => 'replicate_purchase::requisition::approval::chain',
+                'name' => 'delete_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             138 => 
             array (
                 'id' => 139,
-                'name' => 'reorder_purchase::requisition::approval::chain',
+                'name' => 'delete_any_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             139 => 
             array (
                 'id' => 140,
-                'name' => 'delete_purchase::requisition::approval::chain',
+                'name' => 'force_delete_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             140 => 
             array (
                 'id' => 141,
-                'name' => 'delete_any_purchase::requisition::approval::chain',
+                'name' => 'force_delete_any_tax',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             141 => 
             array (
                 'id' => 142,
-                'name' => 'force_delete_purchase::requisition::approval::chain',
+                'name' => 'view_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             142 => 
             array (
                 'id' => 143,
-                'name' => 'force_delete_any_purchase::requisition::approval::chain',
+                'name' => 'view_any_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             143 => 
             array (
                 'id' => 144,
-                'name' => 'view_tax',
+                'name' => 'create_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             144 => 
             array (
                 'id' => 145,
-                'name' => 'view_any_tax',
+                'name' => 'update_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             145 => 
             array (
                 'id' => 146,
-                'name' => 'create_tax',
+                'name' => 'restore_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             146 => 
             array (
                 'id' => 147,
-                'name' => 'update_tax',
+                'name' => 'restore_any_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             147 => 
             array (
                 'id' => 148,
-                'name' => 'restore_tax',
+                'name' => 'replicate_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             148 => 
             array (
                 'id' => 149,
-                'name' => 'restore_any_tax',
+                'name' => 'reorder_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             149 => 
             array (
                 'id' => 150,
-                'name' => 'replicate_tax',
+                'name' => 'delete_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             150 => 
             array (
                 'id' => 151,
-                'name' => 'reorder_tax',
+                'name' => 'delete_any_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             151 => 
             array (
                 'id' => 152,
-                'name' => 'delete_tax',
+                'name' => 'force_delete_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
             152 => 
             array (
                 'id' => 153,
-                'name' => 'delete_any_tax',
+                'name' => 'force_delete_any_user',
                 'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
-            ),
-            153 => 
-            array (
-                'id' => 154,
-                'name' => 'force_delete_tax',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
-            ),
-            154 => 
-            array (
-                'id' => 155,
-                'name' => 'force_delete_any_tax',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:34:11',
-                'updated_at' => '2024-10-21 02:34:11',
-            ),
-            155 => 
-            array (
-                'id' => 156,
-                'name' => 'view_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            156 => 
-            array (
-                'id' => 157,
-                'name' => 'view_any_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            157 => 
-            array (
-                'id' => 158,
-                'name' => 'create_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            158 => 
-            array (
-                'id' => 159,
-                'name' => 'update_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            159 => 
-            array (
-                'id' => 160,
-                'name' => 'restore_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            160 => 
-            array (
-                'id' => 161,
-                'name' => 'restore_any_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            161 => 
-            array (
-                'id' => 162,
-                'name' => 'replicate_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            162 => 
-            array (
-                'id' => 163,
-                'name' => 'reorder_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            163 => 
-            array (
-                'id' => 164,
-                'name' => 'delete_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            164 => 
-            array (
-                'id' => 165,
-                'name' => 'delete_any_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            165 => 
-            array (
-                'id' => 166,
-                'name' => 'force_delete_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            166 => 
-            array (
-                'id' => 167,
-                'name' => 'force_delete_any_category',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            167 => 
-            array (
-                'id' => 168,
-                'name' => 'view_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            168 => 
-            array (
-                'id' => 169,
-                'name' => 'view_any_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            169 => 
-            array (
-                'id' => 170,
-                'name' => 'create_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            170 => 
-            array (
-                'id' => 171,
-                'name' => 'update_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            171 => 
-            array (
-                'id' => 172,
-                'name' => 'restore_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            172 => 
-            array (
-                'id' => 173,
-                'name' => 'restore_any_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            173 => 
-            array (
-                'id' => 174,
-                'name' => 'replicate_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            174 => 
-            array (
-                'id' => 175,
-                'name' => 'reorder_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            175 => 
-            array (
-                'id' => 176,
-                'name' => 'delete_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            176 => 
-            array (
-                'id' => 177,
-                'name' => 'delete_any_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            177 => 
-            array (
-                'id' => 178,
-                'name' => 'force_delete_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            178 => 
-            array (
-                'id' => 179,
-                'name' => 'force_delete_any_category::family',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            179 => 
-            array (
-                'id' => 180,
-                'name' => 'view_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            180 => 
-            array (
-                'id' => 181,
-                'name' => 'view_any_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            181 => 
-            array (
-                'id' => 182,
-                'name' => 'create_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            182 => 
-            array (
-                'id' => 183,
-                'name' => 'update_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            183 => 
-            array (
-                'id' => 184,
-                'name' => 'restore_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            184 => 
-            array (
-                'id' => 185,
-                'name' => 'restore_any_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            185 => 
-            array (
-                'id' => 186,
-                'name' => 'replicate_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            186 => 
-            array (
-                'id' => 187,
-                'name' => 'reorder_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            187 => 
-            array (
-                'id' => 188,
-                'name' => 'delete_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            188 => 
-            array (
-                'id' => 189,
-                'name' => 'delete_any_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            189 => 
-            array (
-                'id' => 190,
-                'name' => 'force_delete_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            190 => 
-            array (
-                'id' => 191,
-                'name' => 'force_delete_any_company',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            191 => 
-            array (
-                'id' => 192,
-                'name' => 'view_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            192 => 
-            array (
-                'id' => 193,
-                'name' => 'view_any_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            193 => 
-            array (
-                'id' => 194,
-                'name' => 'create_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            194 => 
-            array (
-                'id' => 195,
-                'name' => 'update_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            195 => 
-            array (
-                'id' => 196,
-                'name' => 'restore_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            196 => 
-            array (
-                'id' => 197,
-                'name' => 'restore_any_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            197 => 
-            array (
-                'id' => 198,
-                'name' => 'replicate_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            198 => 
-            array (
-                'id' => 199,
-                'name' => 'reorder_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            199 => 
-            array (
-                'id' => 200,
-                'name' => 'delete_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            200 => 
-            array (
-                'id' => 201,
-                'name' => 'delete_any_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            201 => 
-            array (
-                'id' => 202,
-                'name' => 'force_delete_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            202 => 
-            array (
-                'id' => 203,
-                'name' => 'force_delete_any_project::dn::np::cp',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:26',
-                'updated_at' => '2024-10-21 02:37:26',
-            ),
-            203 => 
-            array (
-                'id' => 204,
-                'name' => 'view_shield::role',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:27',
-                'updated_at' => '2024-10-21 02:37:27',
-            ),
-            204 => 
-            array (
-                'id' => 205,
-                'name' => 'view_any_shield::role',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:27',
-                'updated_at' => '2024-10-21 02:37:27',
-            ),
-            205 => 
-            array (
-                'id' => 206,
-                'name' => 'create_shield::role',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:27',
-                'updated_at' => '2024-10-21 02:37:27',
-            ),
-            206 => 
-            array (
-                'id' => 207,
-                'name' => 'update_shield::role',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:27',
-                'updated_at' => '2024-10-21 02:37:27',
-            ),
-            207 => 
-            array (
-                'id' => 208,
-                'name' => 'delete_shield::role',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:27',
-                'updated_at' => '2024-10-21 02:37:27',
-            ),
-            208 => 
-            array (
-                'id' => 209,
-                'name' => 'delete_any_shield::role',
-                'guard_name' => 'web',
-                'created_at' => '2024-10-21 02:37:27',
-                'updated_at' => '2024-10-21 02:37:27',
-            ),
-            209 => 
-            array (
-                'id' => 210,
-                'name' => 'view_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            210 => 
-            array (
-                'id' => 211,
-                'name' => 'view_any_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            211 => 
-            array (
-                'id' => 212,
-                'name' => 'create_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            212 => 
-            array (
-                'id' => 213,
-                'name' => 'update_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            213 => 
-            array (
-                'id' => 214,
-                'name' => 'restore_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            214 => 
-            array (
-                'id' => 215,
-                'name' => 'restore_any_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            215 => 
-            array (
-                'id' => 216,
-                'name' => 'replicate_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            216 => 
-            array (
-                'id' => 217,
-                'name' => 'reorder_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            217 => 
-            array (
-                'id' => 218,
-                'name' => 'delete_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            218 => 
-            array (
-                'id' => 219,
-                'name' => 'delete_any_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            219 => 
-            array (
-                'id' => 220,
-                'name' => 'force_delete_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            220 => 
-            array (
-                'id' => 221,
-                'name' => 'force_delete_any_p::r::review::ware::house',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-01 15:20:39',
-                'updated_at' => '2024-11-01 15:20:39',
-            ),
-            221 => 
-            array (
-                'id' => 222,
-                'name' => 'view_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            222 => 
-            array (
-                'id' => 223,
-                'name' => 'view_any_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            223 => 
-            array (
-                'id' => 224,
-                'name' => 'create_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            224 => 
-            array (
-                'id' => 225,
-                'name' => 'update_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            225 => 
-            array (
-                'id' => 226,
-                'name' => 'restore_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            226 => 
-            array (
-                'id' => 227,
-                'name' => 'restore_any_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            227 => 
-            array (
-                'id' => 228,
-                'name' => 'replicate_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            228 => 
-            array (
-                'id' => 229,
-                'name' => 'reorder_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            229 => 
-            array (
-                'id' => 230,
-                'name' => 'delete_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            230 => 
-            array (
-                'id' => 231,
-                'name' => 'delete_any_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            231 => 
-            array (
-                'id' => 232,
-                'name' => 'force_delete_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            232 => 
-            array (
-                'id' => 233,
-                'name' => 'force_delete_any_p::r::review',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:22',
-                'updated_at' => '2024-11-04 15:33:22',
-            ),
-            233 => 
-            array (
-                'id' => 234,
-                'name' => 'view_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            234 => 
-            array (
-                'id' => 235,
-                'name' => 'view_any_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            235 => 
-            array (
-                'id' => 236,
-                'name' => 'create_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            236 => 
-            array (
-                'id' => 237,
-                'name' => 'update_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            237 => 
-            array (
-                'id' => 238,
-                'name' => 'restore_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            238 => 
-            array (
-                'id' => 239,
-                'name' => 'restore_any_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            239 => 
-            array (
-                'id' => 240,
-                'name' => 'replicate_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            240 => 
-            array (
-                'id' => 241,
-                'name' => 'reorder_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            241 => 
-            array (
-                'id' => 242,
-                'name' => 'delete_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            242 => 
-            array (
-                'id' => 243,
-                'name' => 'delete_any_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            243 => 
-            array (
-                'id' => 244,
-                'name' => 'force_delete_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            244 => 
-            array (
-                'id' => 245,
-                'name' => 'force_delete_any_p::r::approval',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:24',
-                'updated_at' => '2024-11-04 15:33:24',
-            ),
-            245 => 
-            array (
-                'id' => 246,
-                'name' => 'view_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            246 => 
-            array (
-                'id' => 247,
-                'name' => 'view_any_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            247 => 
-            array (
-                'id' => 248,
-                'name' => 'create_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            248 => 
-            array (
-                'id' => 249,
-                'name' => 'update_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            249 => 
-            array (
-                'id' => 250,
-                'name' => 'restore_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            250 => 
-            array (
-                'id' => 251,
-                'name' => 'restore_any_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            251 => 
-            array (
-                'id' => 252,
-                'name' => 'replicate_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            252 => 
-            array (
-                'id' => 253,
-                'name' => 'reorder_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            253 => 
-            array (
-                'id' => 254,
-                'name' => 'delete_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            254 => 
-            array (
-                'id' => 255,
-                'name' => 'delete_any_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            255 => 
-            array (
-                'id' => 256,
-                'name' => 'force_delete_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            256 => 
-            array (
-                'id' => 257,
-                'name' => 'force_delete_any_p::r::approval::d::g',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-04 15:33:26',
-                'updated_at' => '2024-11-04 15:33:26',
-            ),
-            257 => 
-            array (
-                'id' => 258,
-                'name' => 'view_review_warehouse_purchase::requisition',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-05 18:53:37',
-                'updated_at' => '2024-11-05 18:53:37',
-            ),
-            258 => 
-            array (
-                'id' => 259,
-                'name' => 'view_review_purchase::requisition',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-05 20:49:43',
-                'updated_at' => '2024-11-05 20:49:43',
-            ),
-            259 => 
-            array (
-                'id' => 260,
-                'name' => 'view_approve_purchase::requisition',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-05 20:49:43',
-                'updated_at' => '2024-11-05 20:49:43',
-            ),
-            260 => 
-            array (
-                'id' => 261,
-                'name' => 'view_approve_dg_purchase::requisition',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-05 20:49:43',
-                'updated_at' => '2024-11-05 20:49:43',
-            ),
-            261 => 
-            array (
-                'id' => 262,
-                'name' => 'view_p::r::admin::assing',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-21 17:19:16',
-                'updated_at' => '2024-11-21 17:19:16',
-            ),
-            262 => 
-            array (
-                'id' => 263,
-                'name' => 'view_any_p::r::admin::assing',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-21 17:19:16',
-                'updated_at' => '2024-11-21 17:19:16',
-            ),
-            263 => 
-            array (
-                'id' => 264,
-                'name' => 'update_p::r::admin::assing',
-                'guard_name' => 'web',
-                'created_at' => '2024-11-21 17:19:16',
-                'updated_at' => '2024-11-21 17:19:16',
-            ),
-            264 => 
-            array (
-                'id' => 265,
-                'name' => 'view_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            265 => 
-            array (
-                'id' => 266,
-                'name' => 'view_any_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            266 => 
-            array (
-                'id' => 267,
-                'name' => 'create_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            267 => 
-            array (
-                'id' => 268,
-                'name' => 'update_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            268 => 
-            array (
-                'id' => 269,
-                'name' => 'restore_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            269 => 
-            array (
-                'id' => 270,
-                'name' => 'restore_any_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            270 => 
-            array (
-                'id' => 271,
-                'name' => 'replicate_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            271 => 
-            array (
-                'id' => 272,
-                'name' => 'reorder_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            272 => 
-            array (
-                'id' => 273,
-                'name' => 'delete_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            273 => 
-            array (
-                'id' => 274,
-                'name' => 'delete_any_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            274 => 
-            array (
-                'id' => 275,
-                'name' => 'force_delete_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            275 => 
-            array (
-                'id' => 276,
-                'name' => 'force_delete_any_purchase::provider',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:17:03',
-                'updated_at' => '2024-12-03 16:17:03',
-            ),
-            276 => 
-            array (
-                'id' => 277,
-                'name' => 'assing_purchase::requisition',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-03 16:45:52',
-                'updated_at' => '2024-12-03 16:45:52',
-            ),
-            277 => 
-            array (
-                'id' => 278,
-                'name' => 'view_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:20',
-                'updated_at' => '2024-12-16 18:59:20',
-            ),
-            278 => 
-            array (
-                'id' => 279,
-                'name' => 'view_any_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:20',
-                'updated_at' => '2024-12-16 18:59:20',
-            ),
-            279 => 
-            array (
-                'id' => 280,
-                'name' => 'create_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:20',
-                'updated_at' => '2024-12-16 18:59:20',
-            ),
-            280 => 
-            array (
-                'id' => 281,
-                'name' => 'update_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:20',
-                'updated_at' => '2024-12-16 18:59:20',
-            ),
-            281 => 
-            array (
-                'id' => 282,
-                'name' => 'delete_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:20',
-                'updated_at' => '2024-12-16 18:59:20',
-            ),
-            282 => 
-            array (
-                'id' => 283,
-                'name' => 'delete_any_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:20',
-                'updated_at' => '2024-12-16 18:59:20',
-            ),
-            283 => 
-            array (
-                'id' => 284,
-                'name' => 'view_approve-level-1_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:21',
-                'updated_at' => '2024-12-16 18:59:21',
-            ),
-            284 => 
-            array (
-                'id' => 285,
-                'name' => 'view_approve_level-2_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:21',
-                'updated_at' => '2024-12-16 18:59:21',
-            ),
-            285 => 
-            array (
-                'id' => 286,
-                'name' => 'view_approve-level-3_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:21',
-                'updated_at' => '2024-12-16 18:59:21',
-            ),
-            286 => 
-            array (
-                'id' => 287,
-                'name' => 'view_approve_level-4_purchase::order::purchaser',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-16 18:59:21',
-                'updated_at' => '2024-12-16 18:59:21',
-            ),
-            287 => 
-            array (
-                'id' => 288,
-                'name' => 'view_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            288 => 
-            array (
-                'id' => 289,
-                'name' => 'view_any_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            289 => 
-            array (
-                'id' => 290,
-                'name' => 'create_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            290 => 
-            array (
-                'id' => 291,
-                'name' => 'update_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            291 => 
-            array (
-                'id' => 292,
-                'name' => 'restore_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            292 => 
-            array (
-                'id' => 293,
-                'name' => 'restore_any_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            293 => 
-            array (
-                'id' => 294,
-                'name' => 'replicate_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            294 => 
-            array (
-                'id' => 295,
-                'name' => 'reorder_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            295 => 
-            array (
-                'id' => 296,
-                'name' => 'delete_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            296 => 
-            array (
-                'id' => 297,
-                'name' => 'delete_any_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            297 => 
-            array (
-                'id' => 298,
-                'name' => 'force_delete_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            298 => 
-            array (
-                'id' => 299,
-                'name' => 'force_delete_any_brand',
-                'guard_name' => 'web',
-                'created_at' => '2024-12-18 15:54:34',
-                'updated_at' => '2024-12-18 15:54:34',
-            ),
-            299 => 
-            array (
-                'id' => 300,
-                'name' => 'view_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            300 => 
-            array (
-                'id' => 301,
-                'name' => 'view_any_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            301 => 
-            array (
-                'id' => 302,
-                'name' => 'create_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            302 => 
-            array (
-                'id' => 303,
-                'name' => 'update_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            303 => 
-            array (
-                'id' => 304,
-                'name' => 'delete_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            304 => 
-            array (
-                'id' => 305,
-                'name' => 'delete_any_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            305 => 
-            array (
-                'id' => 306,
-                'name' => 'view_review_warehouse_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            306 => 
-            array (
-                'id' => 307,
-                'name' => 'view_review_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            307 => 
-            array (
-                'id' => 308,
-                'name' => 'view_approve_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            308 => 
-            array (
-                'id' => 309,
-                'name' => 'view_authorize_dg_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            309 => 
-            array (
-                'id' => 310,
-                'name' => 'assing_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:07',
-                'updated_at' => '2025-01-20 02:35:07',
-            ),
-            310 => 
-            array (
-                'id' => 311,
-                'name' => 'view_authorize_purchase::requisition::requester',
-                'guard_name' => 'web',
-                'created_at' => '2025-01-20 02:35:35',
-                'updated_at' => '2025-01-20 02:35:35',
+                'created_at' => '2025-01-20 13:53:17',
+                'updated_at' => '2025-01-20 13:53:17',
             ),
         ));
         

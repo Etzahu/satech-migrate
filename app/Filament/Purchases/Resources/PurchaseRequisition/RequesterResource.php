@@ -34,7 +34,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('solicitante_requisicion_compra');
+        return auth()->user()->hasRole('solicita_requisicion_compra');
     }
     public static function getPermissionPrefixes(): array
     {
@@ -49,7 +49,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
             'view_review',
             'view_approve',
             'view_authorize',
-            'assing'
+            'view_assing'
         ];
     }
     public static function getEloquentQuery(): Builder
@@ -94,6 +94,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ->required(),
                         Forms\Components\Toggle::make("confidential")
                             ->label("Confidencial")
+                            ->visible(false)
                             ->default(false)
                             ->live()
                     ]),
@@ -141,7 +142,6 @@ class RequesterResource extends Resource implements HasShieldPermissions
 
             ]);
     }
-
     public static function table(Table $table): Table
     {
         return $table

@@ -26,7 +26,7 @@ class AssignmentAdminResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->can('assing_purchase::requisition');
+        return auth()->user()->can('view_assing_purchase::requisition::requester');
     }
     public static function canCreate(): bool
     {

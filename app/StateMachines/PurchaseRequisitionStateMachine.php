@@ -45,7 +45,8 @@ class PurchaseRequisitionStateMachine extends StateMachine
         return [
             'revisión por almacén' => [
                 function ($to, $model) {
-                    $users = User::role('revisor_almacen_requisicion_compra')->get();
+                    $users = User::role('revisa_almacen_requisicion_compra')->get();
+    
                     $service = new PurchaseRequisitionCreationService();
                     $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('revisar existencia', $model);
@@ -104,9 +105,10 @@ class PurchaseRequisitionStateMachine extends StateMachine
             ],
             'aprobado por gerencia' => [
                 function ($to, $model) {
-                    $recipient = User::role('director_general_requisicion_compra')->get();
+                    // $recipient = User::role('autoriza_requisicion_compra')->get();
                     $service = new PurchaseRequisitionCreationService();
-                    // $recipient = $service->getUserForEmail($users?->toArray());
+
+                    $recipient = $model->approvalChain->authorizer;
                     $data = $service->generateDataForEmail('aprobar', $model);
                     Mail::to($recipient)->send(new Notification($data));
                 }
