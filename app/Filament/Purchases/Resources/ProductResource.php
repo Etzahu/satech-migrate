@@ -116,6 +116,8 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre'),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Estatus'),
                 Tables\Columns\TextColumn::make('unit.name')
                     ->label('Unidad de medida')
                     ->searchable(),
@@ -137,8 +139,9 @@ class ProductResource extends Resource
                 //
             ])
             ->actions([
-
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make()
+                ->visible(fn($record) => $record->status=='aprobado' ||$record->status=='pendiente'),
             ])
         ;
     }

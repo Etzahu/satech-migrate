@@ -14,12 +14,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('users')->delete();
-        
+
         \DB::table('users')->insert(array (
-            0 => 
+            0 =>
             array (
                 'id' => 13,
                 'name' => 'Benjamín Alcántara Bautista',
@@ -32,9 +32,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            1 => 
+            1 =>
             array (
                 'id' => 14,
                 'name' => 'Jesús Becerra Yebra',
@@ -47,9 +46,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            2 => 
+            2 =>
             array (
                 'id' => 18,
                 'name' => 'Ana Lilia López Arreola',
@@ -62,9 +60,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'r3GYFoUeurf9fzH0ozBTgvqjp4MhxwrgdUVdPSWvekkEoc09wveVpT9vlNrf',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            3 => 
+            3 =>
             array (
                 'id' => 19,
                 'name' => 'Rafael García Arroyo',
@@ -77,9 +74,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            4 => 
+            4 =>
             array (
                 'id' => 22,
                 'name' => 'Iván Ponce Reyes',
@@ -92,9 +88,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            5 => 
+            5 =>
             array (
                 'id' => 26,
                 'name' => 'Sinhue Ulloa Tello',
@@ -107,9 +102,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            6 => 
+            6 =>
             array (
                 'id' => 36,
                 'name' => 'Guillermo Gutiérrez Melo',
@@ -122,9 +116,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 1,
             ),
-            7 => 
+            7 =>
             array (
                 'id' => 37,
                 'name' => 'Luis Reyes Yáñez',
@@ -137,9 +130,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 1,
             ),
-            8 => 
+            8 =>
             array (
                 'id' => 40,
                 'name' => 'Fernando Basave Arce',
@@ -152,9 +144,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 7,
             ),
-            9 => 
+            9 =>
             array (
                 'id' => 46,
                 'name' => 'Aquiles Gonzalo García Montiel',
@@ -167,9 +158,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            10 => 
+            10 =>
             array (
                 'id' => 50,
                 'name' => 'Aurelio Cruz Báez',
@@ -182,9 +172,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 6,
             ),
-            11 => 
+            11 =>
             array (
                 'id' => 53,
                 'name' => 'Adriana González Huitrón',
@@ -197,9 +186,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 3,
             ),
-            12 => 
+            12 =>
             array (
                 'id' => 64,
                 'name' => 'Luis Sandoval Cabello',
@@ -212,9 +200,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 6,
             ),
-            13 => 
+            13 =>
             array (
                 'id' => 89,
                 'name' => 'Juan Jiménez Camacho',
@@ -227,9 +214,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 5,
             ),
-            14 => 
+            14 =>
             array (
                 'id' => 92,
                 'name' => 'Néstor Adair Acosta Arroyo',
@@ -242,9 +228,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 6,
             ),
-            15 => 
+            15 =>
             array (
                 'id' => 99,
                 'name' => 'Raúl Rodríguez Guzmán',
@@ -257,9 +242,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 7,
             ),
-            16 => 
+            16 =>
             array (
                 'id' => 106,
                 'name' => 'Denise Marisol Reyes Ramírez',
@@ -272,9 +256,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'EEHYgLRrSquPA0yr9yOp3iSrJrPB90ffkz7M6BVLIAusAoDBp1MJDcHU5cYR',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            17 => 
+            17 =>
             array (
                 'id' => 114,
                 'name' => 'Manuel Antonio Ríos Cuautitla',
@@ -287,9 +270,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 9,
             ),
-            18 => 
+            18 =>
             array (
                 'id' => 120,
                 'name' => 'Roberto González Muñoz',
@@ -302,9 +284,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 5,
             ),
-            19 => 
+            19 =>
             array (
                 'id' => 123,
                 'name' => 'Angélica Salgado Zúñiga',
@@ -317,9 +298,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 3,
             ),
-            20 => 
+            20 =>
             array (
                 'id' => 131,
                 'name' => 'Axel Javier Martínez Segura',
@@ -332,9 +312,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            21 => 
+            21 =>
             array (
                 'id' => 132,
                 'name' => 'Martín Paes Santillán',
@@ -347,9 +326,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            22 => 
+            22 =>
             array (
                 'id' => 137,
                 'name' => 'Luis Jesús Godínez Rivera',
@@ -362,9 +340,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 7,
             ),
-            23 => 
+            23 =>
             array (
                 'id' => 152,
                 'name' => 'Edgar David Meza Rivera',
@@ -377,9 +354,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 15:33:29',
-                'management_id' => 4,
             ),
-            24 => 
+            24 =>
             array (
                 'id' => 157,
                 'name' => 'Claudio Magdaleno Pérez Hernández',
@@ -392,9 +368,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            25 => 
+            25 =>
             array (
                 'id' => 158,
                 'name' => 'Yanet Rosario Colín Antonio',
@@ -407,9 +382,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 9,
             ),
-            26 => 
+            26 =>
             array (
                 'id' => 166,
                 'name' => 'Rafael Alejandro Jiménez Ávila',
@@ -422,9 +396,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            27 => 
+            27 =>
             array (
                 'id' => 168,
                 'name' => 'Sergio Antonio Ordaz Espinoza',
@@ -437,9 +410,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 3,
             ),
-            28 => 
+            28 =>
             array (
                 'id' => 180,
                 'name' => 'Jorge Eduardo García Ojeda',
@@ -452,9 +424,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'MEteYbvArL2QBLSJinpcIUuAVTVrs7cMh4AXq5NU3kLYlQXMPaoX9aMFZv1F',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 15:31:05',
-                'management_id' => 7,
             ),
-            29 => 
+            29 =>
             array (
                 'id' => 187,
                 'name' => 'Alejandro Aldair Ramírez Pérez',
@@ -467,9 +438,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 7,
             ),
-            30 => 
+            30 =>
             array (
                 'id' => 191,
                 'name' => 'Jennifer Martínez Jarquín',
@@ -482,9 +452,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            31 => 
+            31 =>
             array (
                 'id' => 193,
                 'name' => 'Martín Alejandro Martínez Hernández',
@@ -497,9 +466,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            32 => 
+            32 =>
             array (
                 'id' => 199,
                 'name' => 'Alan Etzahu Hernández Mendoza',
@@ -512,9 +480,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'fH8sUhyvytE7Mt9ef2qLRdW0zktc9sg9PkVo7N4kNGKVYPTjAtAqIezb8O91',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            33 => 
+            33 =>
             array (
                 'id' => 200,
                 'name' => 'Rocío Rojas González',
@@ -527,9 +494,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 3,
             ),
-            34 => 
+            34 =>
             array (
                 'id' => 202,
                 'name' => 'Daniel González García',
@@ -542,9 +508,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            35 => 
+            35 =>
             array (
                 'id' => 205,
                 'name' => 'Erik David López Olvera',
@@ -557,9 +522,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 3,
             ),
-            36 => 
+            36 =>
             array (
                 'id' => 212,
                 'name' => 'Enrique Villafranca García',
@@ -572,9 +536,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            37 => 
+            37 =>
             array (
                 'id' => 223,
                 'name' => 'José Héctor Avilés Nieto',
@@ -587,9 +550,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            38 => 
+            38 =>
             array (
                 'id' => 227,
                 'name' => 'Kevin Hazael Pérez Rodríguez',
@@ -602,9 +564,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            39 => 
+            39 =>
             array (
                 'id' => 230,
                 'name' => 'Ernesto Bautista Cruz',
@@ -617,9 +578,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            40 => 
+            40 =>
             array (
                 'id' => 233,
                 'name' => 'Israel Correa Cruz',
@@ -632,9 +592,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            41 => 
+            41 =>
             array (
                 'id' => 235,
                 'name' => 'Giovanni Lugardo Aguilar',
@@ -647,9 +606,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 7,
             ),
-            42 => 
+            42 =>
             array (
                 'id' => 240,
                 'name' => 'Mónica Jazmín Pimentel García',
@@ -662,9 +620,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 5,
             ),
-            43 => 
+            43 =>
             array (
                 'id' => 247,
                 'name' => 'Juan Carlos Prado Hernández',
@@ -677,9 +634,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 1,
             ),
-            44 => 
+            44 =>
             array (
                 'id' => 249,
                 'name' => 'Rocío Salgado Rangel',
@@ -692,9 +648,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            45 => 
+            45 =>
             array (
                 'id' => 250,
                 'name' => 'José Carlos Martínez Amador',
@@ -707,9 +662,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 1,
             ),
-            46 => 
+            46 =>
             array (
                 'id' => 251,
                 'name' => 'Alejandro Rodríguez Vázquez',
@@ -722,9 +676,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            47 => 
+            47 =>
             array (
                 'id' => 252,
                 'name' => 'Israel Omar Mora Barrios',
@@ -737,9 +690,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            48 => 
+            48 =>
             array (
                 'id' => 253,
                 'name' => 'Daniel Nuñez Cruz',
@@ -752,9 +704,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 5,
             ),
-            49 => 
+            49 =>
             array (
                 'id' => 256,
                 'name' => 'Rosa Maria Mendoza Gutierrez',
@@ -767,9 +718,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 6,
             ),
-            50 => 
+            50 =>
             array (
                 'id' => 257,
                 'name' => 'Sergio Martín Ramírez Jaimes',
@@ -782,9 +732,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            51 => 
+            51 =>
             array (
                 'id' => 258,
                 'name' => 'Julia  Flores Valenzuela ',
@@ -797,9 +746,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 1,
             ),
-            52 => 
+            52 =>
             array (
                 'id' => 260,
                 'name' => 'José de Jesús Lázaro Juárez',
@@ -812,9 +760,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            53 => 
+            53 =>
             array (
                 'id' => 263,
                 'name' => 'Elizabeth García Real Joya',
@@ -827,9 +774,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            54 => 
+            54 =>
             array (
                 'id' => 264,
                 'name' => 'Juan Carlos López Hernández',
@@ -842,9 +788,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            55 => 
+            55 =>
             array (
                 'id' => 265,
                 'name' => 'Alfonso  Gómez López ',
@@ -857,9 +802,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            56 => 
+            56 =>
             array (
                 'id' => 266,
                 'name' => 'Omar Alvarado Bailey',
@@ -872,9 +816,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            57 => 
+            57 =>
             array (
                 'id' => 268,
                 'name' => 'Carlos Ivan Carbajal Cerezo',
@@ -887,9 +830,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 1,
             ),
-            58 => 
+            58 =>
             array (
                 'id' => 269,
                 'name' => 'Javier Mozart Santos Cruces',
@@ -902,9 +844,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 9,
             ),
-            59 => 
+            59 =>
             array (
                 'id' => 270,
                 'name' => 'Miguel Eduardo Orduña Álvarez',
@@ -917,9 +858,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 5,
             ),
-            60 => 
+            60 =>
             array (
                 'id' => 271,
                 'name' => 'José Manuel Cardona Salinas',
@@ -932,9 +872,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 1,
             ),
-            61 => 
+            61 =>
             array (
                 'id' => 274,
                 'name' => 'María Fernanda López Muñóz',
@@ -947,9 +886,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 15:31:58',
-                'management_id' => 3,
             ),
-            62 => 
+            62 =>
             array (
                 'id' => 275,
                 'name' => 'Agustín Quechol Millán',
@@ -962,9 +900,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            63 => 
+            63 =>
             array (
                 'id' => 276,
                 'name' => 'Leonardo Paredes Chávez',
@@ -977,9 +914,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            64 => 
+            64 =>
             array (
                 'id' => 277,
                 'name' => 'Antonio  Guevara Galán ',
@@ -992,9 +928,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 7,
             ),
-            65 => 
+            65 =>
             array (
                 'id' => 282,
                 'name' => 'Diana Martínez Dolores',
@@ -1007,9 +942,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            66 => 
+            66 =>
             array (
                 'id' => 285,
                 'name' => 'Juan Gabriel Castañeda Martínez',
@@ -1022,9 +956,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 1,
             ),
-            67 => 
+            67 =>
             array (
                 'id' => 286,
                 'name' => 'Luis Enrique Pardo Sánchez',
@@ -1037,9 +970,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 9,
             ),
-            68 => 
+            68 =>
             array (
                 'id' => 287,
                 'name' => 'Eduardo Moreno Carmona',
@@ -1052,9 +984,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 9,
             ),
-            69 => 
+            69 =>
             array (
                 'id' => 289,
                 'name' => 'Miguel Ángel Raya Espino',
@@ -1067,9 +998,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            70 => 
+            70 =>
             array (
                 'id' => 290,
                 'name' => 'Mariana Karina Jiménez Ortega',
@@ -1082,9 +1012,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 3,
             ),
-            71 => 
+            71 =>
             array (
                 'id' => 292,
                 'name' => 'Fernando Zamora González',
@@ -1097,9 +1026,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            72 => 
+            72 =>
             array (
                 'id' => 293,
                 'name' => 'Jatziri Yamile Alejo Osorio',
@@ -1112,9 +1040,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            73 => 
+            73 =>
             array (
                 'id' => 296,
                 'name' => 'Paola Chávez Huerta',
@@ -1127,9 +1054,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            74 => 
+            74 =>
             array (
                 'id' => 298,
                 'name' => 'Ingrid Danae González Cisneros',
@@ -1142,9 +1068,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 15:31:35',
-                'management_id' => 6,
             ),
-            75 => 
+            75 =>
             array (
                 'id' => 299,
                 'name' => 'Christian Alberto Gómez Matilde',
@@ -1157,9 +1082,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 7,
             ),
-            76 => 
+            76 =>
             array (
                 'id' => 301,
                 'name' => 'Pablo Angel Vazquez Hernández',
@@ -1172,9 +1096,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            77 => 
+            77 =>
             array (
                 'id' => 302,
                 'name' => 'Monica Esthela Padilla Gónzalez',
@@ -1187,9 +1110,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 7,
             ),
-            78 => 
+            78 =>
             array (
                 'id' => 303,
                 'name' => 'Luis Adrián Sánchez González',
@@ -1202,9 +1124,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 3,
             ),
-            79 => 
+            79 =>
             array (
                 'id' => 304,
                 'name' => 'Francisco Alejandro Contreras García',
@@ -1217,9 +1138,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            80 => 
+            80 =>
             array (
                 'id' => 305,
                 'name' => 'María de los Ángeles Quintanar Pérez',
@@ -1232,9 +1152,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 15:32:28',
-                'management_id' => 8,
             ),
-            81 => 
+            81 =>
             array (
                 'id' => 306,
                 'name' => 'Bruno Cruz Montes',
@@ -1247,9 +1166,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            82 => 
+            82 =>
             array (
                 'id' => 307,
                 'name' => 'Francisco Luna García',
@@ -1262,9 +1180,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            83 => 
+            83 =>
             array (
                 'id' => 309,
                 'name' => 'Fernando Butrón González',
@@ -1277,9 +1194,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 1,
             ),
-            84 => 
+            84 =>
             array (
                 'id' => 310,
                 'name' => 'Daniel Iriarte Pérez',
@@ -1292,9 +1208,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 9,
             ),
-            85 => 
+            85 =>
             array (
                 'id' => 311,
                 'name' => 'Miguel Ángel Guerrero Cruz',
@@ -1307,9 +1222,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 2,
             ),
-            86 => 
+            86 =>
             array (
                 'id' => 313,
                 'name' => 'María Guadalupe Osorio Rodríguez',
@@ -1322,9 +1236,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 3,
             ),
-            87 => 
+            87 =>
             array (
                 'id' => 314,
                 'name' => 'Edgar Domínguez Espinosa',
@@ -1337,9 +1250,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 8,
             ),
-            88 => 
+            88 =>
             array (
                 'id' => 315,
                 'name' => 'Carlos Alonso Pérez',
@@ -1352,9 +1264,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'O8BeyLfJ59HuPc7sRYKEHxJDcgi5k9hTsg5IxfH2KR1dTNDpecHMLHnCZRr9',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 4,
             ),
-            89 => 
+            89 =>
             array (
                 'id' => 316,
                 'name' => 'Daniel Eduardo Serrano González',
@@ -1367,9 +1278,8 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 10,
             ),
-            90 => 
+            90 =>
             array (
                 'id' => 331,
                 'name' => 'José Carmen Rodríguez Lara',
@@ -1382,10 +1292,9 @@ class UsersTableSeeder extends Seeder
                 'remember_token' => 'MW2DxkWTx6FvKmeffaGpMQ06vz0M50FVQPUDhYLenWOskawDlardawimsopy',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-20 04:37:59',
-                'management_id' => 5,
             ),
         ));
-        
-        
+
+
     }
 }

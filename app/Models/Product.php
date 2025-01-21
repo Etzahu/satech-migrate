@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use App\StateMachines\CatalogStatusStateMachine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
+
 
 class Product extends Model
 {
     use HasFactory;
+    Use HasStateMachines;
 
     /**
      * The attributes that are mass assignable.
@@ -18,6 +22,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'code',
+        'status',
         'brand_id',
         'unit_id',
         'category_id',
@@ -35,6 +40,9 @@ class Product extends Model
         'id' => 'integer',
         'unit_id' => 'integer',
         'category_id' => 'integer',
+    ];
+    public $stateMachines = [
+        'status' => CatalogStatusStateMachine::class
     ];
 
     public function unit(): BelongsTo
