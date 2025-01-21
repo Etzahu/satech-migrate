@@ -17,28 +17,29 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
-use App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
+use App\Filament\Purchases\Resources\PurchaseOrder\AuthorizeResource\Pages;
 
 
-class ApproveResource extends Resource
+class AuthorizeResource extends Resource
 {
     protected static ?string $model = PurchaseOrder::class;
     protected static ?string $modelLabel = 'Orden';
     protected static ?string $pluralModelLabel = 'Orden';
-    protected static ?string $navigationLabel = 'Aprobar';
-    protected static ?string $slug = 'ordenes/aprobar';
+    protected static ?string $navigationLabel = 'Autorizar';
+    protected static ?string $slug = 'ordenes/autorizar';
     protected static ?string $navigationGroup = 'Orden';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 4;
 
     public static function canAccess(): bool
     {
-        return auth()->user()->can('view_approve-level-3_purchase::order::purchaser');
+        return auth()->user()->can('view_approve_level-4_purchase::order::purchaser');
     }
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->approve();
+        return parent::getEloquentQuery()->approve()->where('status', 'aprobado por DG nivel 2');
     }
+
     public static function infolist(Infolist $infolist): Infolist
     {
         $options[] = 'show_relation_items';
@@ -88,4 +89,3 @@ class ApproveResource extends Resource
         ];
     }
 }
-

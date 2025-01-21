@@ -32,11 +32,14 @@ class AddItemPR extends Page implements HasForms, HasTable
     protected static ?string $title = 'Partidas';
 
     public $rq;
-    public function mount(int | string $record): void
+    public function mount(int | string $record)
     {
         $this->record = $this->resolveRecord($record);
-        // $this->areItemsInOrder();
+        if($this->record->status!=='borrador'){
+            return redirect(PurchaserResource::getUrl('index'));
+        }
     }
+
     public function getBreadcrumbs(): array
     {
         $resource = static::getResource();

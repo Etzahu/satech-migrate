@@ -101,10 +101,12 @@ class PurchaseOrder extends Model implements HasMedia
     }
     public function scopeApprove(Builder $query)
     {
-        if (auth()->user()) {
-            return $query
-                ->where('company_id', session()->get('company_id'))
-                ->orderBy('id', 'desc');
-        }
+        return $query
+            ->withWhereHas('requisition', function ($query) {
+                $query->whereIn('approval_chain_id', auth()->user()->authorizerChainsPR->pluck('id')->unique()->toArray());
+            })
+            ->where('status', 'aprobado por gerente solicitante')
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
     }
 }

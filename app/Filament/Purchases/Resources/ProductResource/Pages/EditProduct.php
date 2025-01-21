@@ -43,6 +43,8 @@ class EditProduct extends EditRecord
                 ->action(function (array $data) {
                     $this->form->getState();
                     $this->record->status()->transitionTo($data['response']);
+                    $this->record->registered_user_id = auth()->user()->id;
+                    $this->record->save();
                     Notification::make()
                         ->title('Respuesta enviada')
                         ->success()
@@ -61,7 +63,7 @@ class EditProduct extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['registered_user_id'] = auth()->user()->id;
+        $data['registered_user_id']= auth()->user()->id;
         return $data;
     }
 

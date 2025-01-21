@@ -48,6 +48,7 @@ class ViewOrder extends ViewRecord
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')
                 ->color('primary')
+                ->visible($this->record->status == 'borrador')
                 ->dropdownWidth(MaxWidth::Large)
                 ->button()
         ];

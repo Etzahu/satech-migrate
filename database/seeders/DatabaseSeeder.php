@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PasswordResetTokensTableSeeder::class);
         $this->call(PermissionsTableSeeder::class);
         $this->call(ProjectsDnNpCpTableSeeder::class);
-        // $this->call(PurchaseRequisitionApprovalChainsTableSeeder::class);
+        $this->call(PurchaseRequisitionApprovalChainsTableSeeder::class);
         $this->call(StateHistoriesTableSeeder::class);
         $this->call(RoleHasPermissionsTableSeeder::class);
         $this->call(SessionsTableSeeder::class);
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         $this->call(MediaTableSeeder::class);
         $this->call(PendingTransitionsTableSeeder::class);
         $this->call(BrandsTableSeeder::class);
-        // $this->call(ProductsTableSeeder::class);
+        $this->call(ProductsTableSeeder::class);
         $this->call(ProjectPurchasesTableSeeder::class);
         // $this->call(ProjectPurchaseCategoryTableSeeder::class);
         // $this->call(PurchaseRequisitionsTableSeeder::class);

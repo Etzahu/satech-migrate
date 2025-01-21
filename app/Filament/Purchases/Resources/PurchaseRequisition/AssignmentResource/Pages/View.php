@@ -152,6 +152,12 @@ class View extends ViewRecord
                                 ViewEntry::make('status')
                                     ->view('filament.infolists.entries.history'),
                             ]),
+                        Tabs\Tab::make('Comprador')
+                            ->visible(fn($record) => filled($record->purchaser))
+                            ->schema([
+                                TextEntry::make('purchaser.name')
+                                    ->label('Asignado'),
+                            ]),
                         Tabs\Tab::make('Ordenes')->schema([
                             \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)->lazy(false)
                         ]),

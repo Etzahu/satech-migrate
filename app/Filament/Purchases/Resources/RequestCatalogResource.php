@@ -24,7 +24,7 @@ class RequestCatalogResource  extends Resource
     protected static ?string $pluralModelLabel = 'Productos/Servicios';
     protected static ?string $navigationLabel = 'Producto/Servicio';
     protected static ?string $slug = 'altas/catalogo';
-    protected static ?string $navigationGroup = 'Producto/Servicio';
+    protected static ?string $navigationGroup = 'Altas';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 1;
 
@@ -32,9 +32,12 @@ class RequestCatalogResource  extends Resource
     {
         return auth()->user()->hasRole('solicita_requisicion_compra');
     }
+
+
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('requester_id', auth()->user()->id);
+        return parent::getEloquentQuery()
+            ->where('requester_id', auth()->user()->id);
     }
     public static function form(Form $form): Form
     {

@@ -35,11 +35,11 @@ class PurchaseProvider extends Model implements HasMedia
         'status' => StatusPurchaseProviderMachine::class,
     ];
 
-    public function UserRequest()
+    public function userRequest()
     {
         return $this->belongsTo(User::class, 'user_request_id');
     }
-    public function UserApprove()
+    public function userApprove()
     {
         return $this->belongsTo(User::class, 'user_approve_id');
     }

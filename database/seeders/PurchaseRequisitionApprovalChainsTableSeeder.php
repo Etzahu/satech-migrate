@@ -14,12 +14,12 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('purchase_requisition_approval_chains')->delete();
-
+        
         \DB::table('purchase_requisition_approval_chains')->insert(array (
-            0 =>
+            0 => 
             array (
                 'id' => 1,
                 'requester_id' => 53,
@@ -29,7 +29,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            1 =>
+            1 => 
             array (
                 'id' => 2,
                 'requester_id' => 199,
@@ -39,7 +39,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            2 =>
+            2 => 
             array (
                 'id' => 3,
                 'requester_id' => 18,
@@ -49,7 +49,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            3 =>
+            3 => 
             array (
                 'id' => 4,
                 'requester_id' => 50,
@@ -59,7 +59,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            4 =>
+            4 => 
             array (
                 'id' => 5,
                 'requester_id' => 50,
@@ -69,7 +69,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            5 =>
+            5 => 
             array (
                 'id' => 6,
                 'requester_id' => 50,
@@ -79,7 +79,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            6 =>
+            6 => 
             array (
                 'id' => 7,
                 'requester_id' => 50,
@@ -89,7 +89,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            7 =>
+            7 => 
             array (
                 'id' => 8,
                 'requester_id' => 50,
@@ -99,7 +99,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            8 =>
+            8 => 
             array (
                 'id' => 9,
                 'requester_id' => 131,
@@ -109,7 +109,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            9 =>
+            9 => 
             array (
                 'id' => 10,
                 'requester_id' => 268,
@@ -119,7 +119,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            10 =>
+            10 => 
             array (
                 'id' => 11,
                 'requester_id' => 268,
@@ -129,7 +129,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            11 =>
+            11 => 
             array (
                 'id' => 12,
                 'requester_id' => 268,
@@ -139,7 +139,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            12 =>
+            12 => 
             array (
                 'id' => 13,
                 'requester_id' => 157,
@@ -149,7 +149,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            13 =>
+            13 => 
             array (
                 'id' => 14,
                 'requester_id' => 157,
@@ -159,7 +159,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            14 =>
+            14 => 
             array (
                 'id' => 15,
                 'requester_id' => 157,
@@ -169,7 +169,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            15 =>
+            15 => 
             array (
                 'id' => 16,
                 'requester_id' => 157,
@@ -179,7 +179,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:31',
                 'updated_at' => '2025-01-20 16:27:31',
             ),
-            16 =>
+            16 => 
             array (
                 'id' => 17,
                 'requester_id' => 157,
@@ -189,7 +189,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            17 =>
+            17 => 
             array (
                 'id' => 18,
                 'requester_id' => 253,
@@ -199,7 +199,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            18 =>
+            18 => 
             array (
                 'id' => 19,
                 'requester_id' => 253,
@@ -209,7 +209,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            19 =>
+            19 => 
             array (
                 'id' => 20,
                 'requester_id' => 253,
@@ -219,7 +219,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            20 =>
+            20 => 
             array (
                 'id' => 21,
                 'requester_id' => 152,
@@ -229,7 +229,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            21 =>
+            21 => 
             array (
                 'id' => 22,
                 'requester_id' => 287,
@@ -239,7 +239,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            22 =>
+            22 => 
             array (
                 'id' => 23,
                 'requester_id' => 270,
@@ -249,7 +249,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            23 =>
+            23 => 
             array (
                 'id' => 24,
                 'requester_id' => 270,
@@ -259,7 +259,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            24 =>
+            24 => 
             array (
                 'id' => 25,
                 'requester_id' => 270,
@@ -269,7 +269,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            25 =>
+            25 => 
             array (
                 'id' => 26,
                 'requester_id' => 270,
@@ -279,7 +279,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            26 =>
+            26 => 
             array (
                 'id' => 27,
                 'requester_id' => 270,
@@ -289,7 +289,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            27 =>
+            27 => 
             array (
                 'id' => 28,
                 'requester_id' => 212,
@@ -299,7 +299,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            28 =>
+            28 => 
             array (
                 'id' => 29,
                 'requester_id' => 212,
@@ -309,7 +309,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            29 =>
+            29 => 
             array (
                 'id' => 30,
                 'requester_id' => 212,
@@ -319,7 +319,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            30 =>
+            30 => 
             array (
                 'id' => 31,
                 'requester_id' => 212,
@@ -329,7 +329,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            31 =>
+            31 => 
             array (
                 'id' => 32,
                 'requester_id' => 212,
@@ -339,7 +339,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            32 =>
+            32 => 
             array (
                 'id' => 33,
                 'requester_id' => 212,
@@ -349,7 +349,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            33 =>
+            33 => 
             array (
                 'id' => 34,
                 'requester_id' => 212,
@@ -359,7 +359,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            34 =>
+            34 => 
             array (
                 'id' => 35,
                 'requester_id' => 212,
@@ -369,7 +369,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            35 =>
+            35 => 
             array (
                 'id' => 36,
                 'requester_id' => 212,
@@ -379,7 +379,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            36 =>
+            36 => 
             array (
                 'id' => 37,
                 'requester_id' => 212,
@@ -389,7 +389,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            37 =>
+            37 => 
             array (
                 'id' => 38,
                 'requester_id' => 205,
@@ -399,7 +399,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            38 =>
+            38 => 
             array (
                 'id' => 39,
                 'requester_id' => 205,
@@ -409,7 +409,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            39 =>
+            39 => 
             array (
                 'id' => 40,
                 'requester_id' => 205,
@@ -419,7 +419,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            40 =>
+            40 => 
             array (
                 'id' => 41,
                 'requester_id' => 205,
@@ -429,7 +429,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            41 =>
+            41 => 
             array (
                 'id' => 42,
                 'requester_id' => 205,
@@ -439,7 +439,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            42 =>
+            42 => 
             array (
                 'id' => 43,
                 'requester_id' => 230,
@@ -449,7 +449,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            43 =>
+            43 => 
             array (
                 'id' => 44,
                 'requester_id' => 230,
@@ -459,7 +459,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            44 =>
+            44 => 
             array (
                 'id' => 45,
                 'requester_id' => 40,
@@ -469,7 +469,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            45 =>
+            45 => 
             array (
                 'id' => 46,
                 'requester_id' => 309,
@@ -479,7 +479,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            46 =>
+            46 => 
             array (
                 'id' => 47,
                 'requester_id' => 292,
@@ -489,7 +489,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            47 =>
+            47 => 
             array (
                 'id' => 48,
                 'requester_id' => 292,
@@ -499,7 +499,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            48 =>
+            48 => 
             array (
                 'id' => 49,
                 'requester_id' => 304,
@@ -509,7 +509,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            49 =>
+            49 => 
             array (
                 'id' => 50,
                 'requester_id' => 307,
@@ -519,7 +519,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            50 =>
+            50 => 
             array (
                 'id' => 51,
                 'requester_id' => 307,
@@ -529,7 +529,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            51 =>
+            51 => 
             array (
                 'id' => 52,
                 'requester_id' => 293,
@@ -539,7 +539,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            52 =>
+            52 => 
             array (
                 'id' => 53,
                 'requester_id' => 269,
@@ -549,7 +549,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            53 =>
+            53 => 
             array (
                 'id' => 54,
                 'requester_id' => 191,
@@ -559,7 +559,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            54 =>
+            54 => 
             array (
                 'id' => 55,
                 'requester_id' => 250,
@@ -569,7 +569,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            55 =>
+            55 => 
             array (
                 'id' => 56,
                 'requester_id' => 250,
@@ -579,7 +579,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            56 =>
+            56 => 
             array (
                 'id' => 57,
                 'requester_id' => 260,
@@ -589,7 +589,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            57 =>
+            57 => 
             array (
                 'id' => 58,
                 'requester_id' => 223,
@@ -599,7 +599,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            58 =>
+            58 => 
             array (
                 'id' => 59,
                 'requester_id' => 264,
@@ -609,7 +609,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            59 =>
+            59 => 
             array (
                 'id' => 60,
                 'requester_id' => 227,
@@ -619,7 +619,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            60 =>
+            60 => 
             array (
                 'id' => 61,
                 'requester_id' => 303,
@@ -629,7 +629,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            61 =>
+            61 => 
             array (
                 'id' => 62,
                 'requester_id' => 137,
@@ -639,7 +639,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            62 =>
+            62 => 
             array (
                 'id' => 63,
                 'requester_id' => 137,
@@ -649,7 +649,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            63 =>
+            63 => 
             array (
                 'id' => 64,
                 'requester_id' => 137,
@@ -659,7 +659,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            64 =>
+            64 => 
             array (
                 'id' => 65,
                 'requester_id' => 114,
@@ -669,7 +669,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            65 =>
+            65 => 
             array (
                 'id' => 66,
                 'requester_id' => 313,
@@ -679,7 +679,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            66 =>
+            66 => 
             array (
                 'id' => 67,
                 'requester_id' => 193,
@@ -689,7 +689,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            67 =>
+            67 => 
             array (
                 'id' => 68,
                 'requester_id' => 132,
@@ -699,7 +699,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            68 =>
+            68 => 
             array (
                 'id' => 69,
                 'requester_id' => 92,
@@ -709,7 +709,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            69 =>
+            69 => 
             array (
                 'id' => 70,
                 'requester_id' => 92,
@@ -719,7 +719,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            70 =>
+            70 => 
             array (
                 'id' => 71,
                 'requester_id' => 92,
@@ -729,7 +729,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            71 =>
+            71 => 
             array (
                 'id' => 72,
                 'requester_id' => 92,
@@ -739,7 +739,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            72 =>
+            72 => 
             array (
                 'id' => 73,
                 'requester_id' => 92,
@@ -749,7 +749,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            73 =>
+            73 => 
             array (
                 'id' => 74,
                 'requester_id' => 92,
@@ -759,7 +759,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            74 =>
+            74 => 
             array (
                 'id' => 75,
                 'requester_id' => 266,
@@ -769,7 +769,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            75 =>
+            75 => 
             array (
                 'id' => 76,
                 'requester_id' => 301,
@@ -779,7 +779,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            76 =>
+            76 => 
             array (
                 'id' => 77,
                 'requester_id' => 166,
@@ -789,7 +789,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            77 =>
+            77 => 
             array (
                 'id' => 78,
                 'requester_id' => 120,
@@ -799,7 +799,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            78 =>
+            78 => 
             array (
                 'id' => 79,
                 'requester_id' => 200,
@@ -809,7 +809,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            79 =>
+            79 => 
             array (
                 'id' => 80,
                 'requester_id' => 249,
@@ -819,7 +819,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            80 =>
+            80 => 
             array (
                 'id' => 81,
                 'requester_id' => 257,
@@ -829,7 +829,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            81 =>
+            81 => 
             array (
                 'id' => 82,
                 'requester_id' => 257,
@@ -839,7 +839,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            82 =>
+            82 => 
             array (
                 'id' => 83,
                 'requester_id' => 158,
@@ -849,7 +849,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 16:27:32',
                 'updated_at' => '2025-01-20 16:27:32',
             ),
-            83 =>
+            83 => 
             array (
                 'id' => 84,
                 'requester_id' => 123,
@@ -860,7 +860,7 @@ class PurchaseRequisitionApprovalChainsTableSeeder extends Seeder
                 'updated_at' => '2025-01-20 16:27:32',
             ),
         ));
-
-
+        
+        
     }
 }

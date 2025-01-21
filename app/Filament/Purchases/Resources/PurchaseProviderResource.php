@@ -266,14 +266,7 @@ class PurchaseProviderResource extends Resource
             ])
         ;
     }
-
-    // public static function getRelations(): array
-    // {
-    //     return [
-    //         RelationManagers\ContactsRelationManager::class,
-    //     ];
-    // }
-
+    
     public static function getPages(): array
     {
         return [

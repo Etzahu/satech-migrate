@@ -281,8 +281,12 @@ Route::get('media-test', function () {
 
 // TODO: este codigo  es para reenviar un correo dependiendo el status de una requisicion
 Route::get('history', function () {
-    $model = PurchaseProvider::find(1);
-    $afterTransitionHooks = $model->status()->stateMachine()->afterTransitionHooks();
+    // $model = PurchaseProvider::find(1);
+    $model = PurchaseOrder::first();
+    $afterTransitionHooks = $model->status()->stateMachine()->transitions();
+
+    $afterTransitionHooks = collect($afterTransitionHooks)->flatten()->unique();
+
     dd($afterTransitionHooks);
     $afterTransitionHooks('', $model);
 });

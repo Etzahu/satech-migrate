@@ -1243,6 +1243,54 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2025-01-20 13:53:17',
                 'updated_at' => '2025-01-20 13:53:17',
             ),
+            153 => 
+            array (
+                'id' => 154,
+                'name' => 'view_shield::role',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-21 13:37:31',
+                'updated_at' => '2025-01-21 13:37:31',
+            ),
+            154 => 
+            array (
+                'id' => 155,
+                'name' => 'view_any_shield::role',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-21 13:37:31',
+                'updated_at' => '2025-01-21 13:37:31',
+            ),
+            155 => 
+            array (
+                'id' => 156,
+                'name' => 'create_shield::role',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-21 13:37:31',
+                'updated_at' => '2025-01-21 13:37:31',
+            ),
+            156 => 
+            array (
+                'id' => 157,
+                'name' => 'update_shield::role',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-21 13:37:31',
+                'updated_at' => '2025-01-21 13:37:31',
+            ),
+            157 => 
+            array (
+                'id' => 158,
+                'name' => 'delete_shield::role',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-21 13:37:31',
+                'updated_at' => '2025-01-21 13:37:31',
+            ),
+            158 => 
+            array (
+                'id' => 159,
+                'name' => 'delete_any_shield::role',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-21 13:37:31',
+                'updated_at' => '2025-01-21 13:37:31',
+            ),
         ));
         
         

@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\Pages;
 
 use Filament\Actions;
+use Livewire\Attributes\On;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Support\Enums\ActionSize;
@@ -11,6 +12,7 @@ use Filament\Resources\Pages\EditRecord;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
 
 
+#[On('refreshOwner')]
 class EditPurchaseRequisition extends EditRecord
 {
     protected static string $resource = RequesterResource::class;

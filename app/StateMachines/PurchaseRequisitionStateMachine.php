@@ -46,7 +46,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'revisión por almacén' => [
                 function ($to, $model) {
                     $users = User::role('revisa_almacen_requisicion_compra')->get();
-    
+
                     $service = new PurchaseRequisitionCreationService();
                     $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('revisar existencia', $model);

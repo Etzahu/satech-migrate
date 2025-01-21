@@ -32,8 +32,6 @@ class AssignmentAdminResource extends Resource
     {
         return false;
     }
-
-
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

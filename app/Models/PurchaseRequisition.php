@@ -82,7 +82,10 @@ class PurchaseRequisition extends Model implements HasMedia
     {
         return $this->hasMany(PurchaseOrder::class, 'requisition_id');
     }
-
+    public function purchaser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assign_user_id');
+    }
     // SCOPES
     public function scopeMyRequisitions(Builder $query)
     {

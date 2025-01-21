@@ -42,69 +42,6 @@ class MediaTableSeeder extends Seeder
             ),
             1 => 
             array (
-                'id' => 11,
-                'model_type' => 'App\\Models\\PurchaseRequisition',
-                'model_id' => 1,
-                'uuid' => 'f23b9f3a-7c70-499e-b588-5c33f0e75ddb',
-                'collection_name' => 'technical_data_sheets',
-                'name' => 'OC Tech',
-                'file_name' => '01JH61Y4BZTQ9D82C8XWBN8XRT.pdf',
-                'mime_type' => 'application/pdf',
-                'disk' => 'public',
-                'conversions_disk' => 'public',
-                'size' => 740032,
-                'manipulations' => '[]',
-                'custom_properties' => '[]',
-                'generated_conversions' => '[]',
-                'responsive_images' => '[]',
-                'order_column' => 3,
-                'created_at' => '2025-01-09 17:31:32',
-                'updated_at' => '2025-01-09 17:31:32',
-            ),
-            2 => 
-            array (
-                'id' => 12,
-                'model_type' => 'App\\Models\\PurchaseRequisition',
-                'model_id' => 1,
-                'uuid' => 'a4fb8a7f-3f0e-4320-acd7-86f87f100c64',
-                'collection_name' => 'supports',
-                'name' => 'OC Tech',
-                'file_name' => '01JH61Y4NYKAPEQMZDHRC2VG69.pdf',
-                'mime_type' => 'application/pdf',
-                'disk' => 'public',
-                'conversions_disk' => 'public',
-                'size' => 740032,
-                'manipulations' => '[]',
-                'custom_properties' => '[]',
-                'generated_conversions' => '[]',
-                'responsive_images' => '[]',
-                'order_column' => 4,
-                'created_at' => '2025-01-09 17:31:32',
-                'updated_at' => '2025-01-09 17:31:32',
-            ),
-            3 => 
-            array (
-                'id' => 13,
-                'model_type' => 'App\\Models\\PurchaseOrder',
-                'model_id' => 1,
-                'uuid' => 'afdd233b-e46b-4326-b829-3ee76e9ddbf5',
-                'collection_name' => 'justification',
-                'name' => 'OC Tech',
-                'file_name' => '01JH63AN0W5NGDQZRRA4BWEBTE.pdf',
-                'mime_type' => 'application/pdf',
-                'disk' => 'public',
-                'conversions_disk' => 'public',
-                'size' => 740032,
-                'manipulations' => '[]',
-                'custom_properties' => '[]',
-                'generated_conversions' => '[]',
-                'responsive_images' => '[]',
-                'order_column' => 4,
-                'created_at' => '2025-01-09 17:55:50',
-                'updated_at' => '2025-01-09 17:55:50',
-            ),
-            4 => 
-            array (
                 'id' => 14,
                 'model_type' => 'App\\Models\\PurchaseOrder',
                 'model_id' => 1,
@@ -124,28 +61,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-09 17:55:51',
                 'updated_at' => '2025-01-09 17:55:51',
             ),
-            5 => 
-            array (
-                'id' => 15,
-                'model_type' => 'App\\Models\\PurchaseOrder',
-                'model_id' => 1,
-                'uuid' => '07097953-a5b0-4593-83d4-f0bad508f986',
-                'collection_name' => 'certifications',
-                'name' => 'OC Tech',
-                'file_name' => '01JH63AN3AGQ3AAPCHESF9XT01.pdf',
-                'mime_type' => 'application/pdf',
-                'disk' => 'public',
-                'conversions_disk' => 'public',
-                'size' => 740032,
-                'manipulations' => '[]',
-                'custom_properties' => '[]',
-                'generated_conversions' => '[]',
-                'responsive_images' => '[]',
-                'order_column' => 6,
-                'created_at' => '2025-01-09 17:55:51',
-                'updated_at' => '2025-01-09 17:55:51',
-            ),
-            6 => 
+            2 => 
             array (
                 'id' => 16,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -166,7 +82,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-13 15:34:08',
                 'updated_at' => '2025-01-13 15:34:08',
             ),
-            7 => 
+            3 => 
             array (
                 'id' => 17,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -187,7 +103,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-13 15:34:08',
                 'updated_at' => '2025-01-13 15:34:08',
             ),
-            8 => 
+            4 => 
             array (
                 'id' => 18,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -208,7 +124,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-13 15:34:08',
                 'updated_at' => '2025-01-13 15:34:08',
             ),
-            9 => 
+            5 => 
             array (
                 'id' => 19,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -229,7 +145,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-13 15:34:08',
                 'updated_at' => '2025-01-13 15:34:08',
             ),
-            10 => 
+            6 => 
             array (
                 'id' => 20,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -250,7 +166,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-15 15:36:55',
                 'updated_at' => '2025-01-15 15:36:55',
             ),
-            11 => 
+            7 => 
             array (
                 'id' => 21,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -271,7 +187,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-15 15:36:55',
                 'updated_at' => '2025-01-15 15:36:55',
             ),
-            12 => 
+            8 => 
             array (
                 'id' => 22,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -292,7 +208,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-15 15:36:55',
                 'updated_at' => '2025-01-15 15:36:55',
             ),
-            13 => 
+            9 => 
             array (
                 'id' => 23,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -313,7 +229,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-15 15:36:55',
                 'updated_at' => '2025-01-15 15:36:55',
             ),
-            14 => 
+            10 => 
             array (
                 'id' => 24,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -334,7 +250,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-17 20:03:47',
                 'updated_at' => '2025-01-17 20:03:47',
             ),
-            15 => 
+            11 => 
             array (
                 'id' => 25,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -355,7 +271,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-17 20:03:47',
                 'updated_at' => '2025-01-17 20:03:47',
             ),
-            16 => 
+            12 => 
             array (
                 'id' => 26,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -376,7 +292,7 @@ class MediaTableSeeder extends Seeder
                 'created_at' => '2025-01-17 20:03:47',
                 'updated_at' => '2025-01-17 20:03:47',
             ),
-            17 => 
+            13 => 
             array (
                 'id' => 27,
                 'model_type' => 'App\\Models\\PurchaseOrder',
@@ -396,6 +312,90 @@ class MediaTableSeeder extends Seeder
                 'order_column' => 4,
                 'created_at' => '2025-01-17 20:03:47',
                 'updated_at' => '2025-01-17 20:03:47',
+            ),
+            14 => 
+            array (
+                'id' => 28,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 1,
+                'uuid' => '31803fae-17f1-491a-98e1-6eba7190a052',
+                'collection_name' => 'justification',
+                'name' => 'OC Tech',
+                'file_name' => '01JJ4XYY2Z0RZCZMBAA76AE6JY.pdf',
+                'mime_type' => 'application/pdf',
+                'disk' => 'public',
+                'conversions_disk' => 'public',
+                'size' => 740032,
+                'manipulations' => '[]',
+                'custom_properties' => '[]',
+                'generated_conversions' => '[]',
+                'responsive_images' => '[]',
+                'order_column' => 7,
+                'created_at' => '2025-01-21 17:18:31',
+                'updated_at' => '2025-01-21 17:18:31',
+            ),
+            15 => 
+            array (
+                'id' => 29,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 1,
+                'uuid' => '49119e27-7123-48bc-a452-29e7d377dc09',
+                'collection_name' => 'direct_award',
+            'name' => 'Infografias y comunicados (2)',
+                'file_name' => '01JJ4XYY4H7KNH4259R3Y04JQ9.pdf',
+                'mime_type' => 'application/pdf',
+                'disk' => 'public',
+                'conversions_disk' => 'public',
+                'size' => 54647,
+                'manipulations' => '[]',
+                'custom_properties' => '[]',
+                'generated_conversions' => '[]',
+                'responsive_images' => '[]',
+                'order_column' => 8,
+                'created_at' => '2025-01-21 17:18:31',
+                'updated_at' => '2025-01-21 17:18:31',
+            ),
+            16 => 
+            array (
+                'id' => 30,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 1,
+                'uuid' => 'b2c5b581-a462-4d6d-9c3f-1bb958358424',
+                'collection_name' => 'certifications',
+                'name' => 'generate_tickets',
+                'file_name' => '01JJ4XYY5PYS3GGTD7RTF7EZGD.pdf',
+                'mime_type' => 'application/pdf',
+                'disk' => 'public',
+                'conversions_disk' => 'public',
+                'size' => 320972,
+                'manipulations' => '[]',
+                'custom_properties' => '[]',
+                'generated_conversions' => '[]',
+                'responsive_images' => '[]',
+                'order_column' => 9,
+                'created_at' => '2025-01-21 17:18:31',
+                'updated_at' => '2025-01-21 17:18:31',
+            ),
+            17 => 
+            array (
+                'id' => 31,
+                'model_type' => 'App\\Models\\PurchaseOrder',
+                'model_id' => 1,
+                'uuid' => 'dbaa722c-31f8-4bc1-82f1-0fd9e0f9ca98',
+                'collection_name' => 'quote',
+                'name' => 'recibo_cfe',
+                'file_name' => '01JJ4XYY6JA8HH88777KFRT042.pdf',
+                'mime_type' => 'application/pdf',
+                'disk' => 'public',
+                'conversions_disk' => 'public',
+                'size' => 119798,
+                'manipulations' => '[]',
+                'custom_properties' => '[]',
+                'generated_conversions' => '[]',
+                'responsive_images' => '[]',
+                'order_column' => 10,
+                'created_at' => '2025-01-21 17:18:31',
+                'updated_at' => '2025-01-21 17:18:31',
             ),
         ));
         

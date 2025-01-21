@@ -25,11 +25,11 @@ class ViewOrder extends ViewRecord
         // aprobado por DG nivel 1
         return [
             // Nivel 1
-            Actions\Action::make('Capturar respuesta-1')
+            Actions\Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(
-                    fn() => ($this->record->status()->canBe('aprobada para emisión') ||
+                    fn() => ($this->record->status()->canBe('autorizada para proveedor') ||
                         $this->record->status()->canBe('aprobado por DG nivel 1') ||
                         $this->record->status()->canBe('devuelto por DG nivel 1') ||
                         $this->record->status()->canBe('cancelado por DG nivel 1')) &&
@@ -52,25 +52,23 @@ class ViewOrder extends ViewRecord
                 ->requiresConfirmation()
                 ->action(function (array $data) {
                     // validar el tipo de moneda
-                    if ($data['response'] == 'aprobado por DG nivel 1') {
-                        $min = 0;
-                        $max = 0;
-                        if ($this->record->currency == 'USD') {
-                            $min = Money::USD(1);
-                            $max = Money::USD(10000);
-                        }
-                        if ($this->record->currency == 'MXN') {
-                            $min = Money::MXN(1);
-                            $max = Money::MXN(200000);
-                        }
-                        $service = new OrderCalculationService($this->record->id);
-                        $total = $service->getTotal();
-                        if ($total >= $min && $total <= $max) {
-                            $this->record->status()->transitionTo('aprobada para emisión');
-                        }
-                        if ($total > $max) {
-                            $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
-                        }
+                    $min = 0;
+                    $max = 0;
+                    if ($this->record->currency == 'USD') {
+                        $min = Money::USD(1);
+                        $max = Money::USD(10000);
+                    }
+                    if ($this->record->currency == 'MXN') {
+                        $min = Money::MXN(1);
+                        $max = Money::MXN(200000);
+                    }
+                    $service = new OrderCalculationService($this->record->id);
+                    $total = $service->getTotal();
+                    if ($total >= $min && $total <= $max) {
+                        $this->record->status()->transitionTo('autorizada para proveedor');
+                    }
+                    if ($total > $max) {
+                        $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
                     }
                     Notification::make()
                         ->title('Respuesta enviada')
@@ -83,7 +81,7 @@ class ViewOrder extends ViewRecord
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(
-                    fn() => ($this->record->status()->canBe('aprobada para emisión') ||
+                    fn() => ($this->record->status()->canBe('autorizada para proveedor') ||
                         $this->record->status()->canBe('devuelto por DG nivel 2') ||
                         $this->record->status()->canBe('cancelado por DG nivel 2')) && auth()->user()->can('view_approve_level-4_purchase::order::purchaser')
                 )
@@ -91,14 +89,14 @@ class ViewOrder extends ViewRecord
                     Select::make('response')
                         ->label('Respuesta')
                         ->options([
-                            'aprobada para emisión' => 'Aprobar',
+                            'autorizada para proveedor' => 'Aprobar',
                             'devuelto por DG nivel 2' => 'Devolver',
                             'cancelado por DG nivel 2' => 'Cancelar',
                         ])
-                        ->default('aprobada para emisión')
+                        ->default('autorizada para proveedor')
                         ->required(),
                     Textarea::make('observation')
-                        ->requiredUnless('response', 'aprobada para emisión')
+                        ->requiredUnless('response', 'autorizada para proveedor')
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()

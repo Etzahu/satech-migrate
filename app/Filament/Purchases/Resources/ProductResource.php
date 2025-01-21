@@ -32,6 +32,10 @@ class ProductResource extends Resource
     protected static ?int $navigationSort = 4;
 
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasRole('administrador_compras');
+    }
 
     public static function form(Form $form): Form
     {

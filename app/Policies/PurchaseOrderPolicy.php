@@ -25,7 +25,7 @@ class PurchaseOrderPolicy
     {
         return $user->can(' view_approve-level-4_purchase::order::purchaser');
     }
-    
+
     /**
      * Determine whether the user can view any models.
      */
@@ -55,7 +55,7 @@ class PurchaseOrderPolicy
      */
     public function update(User $user, PurchaseOrder $purchaseOrder): bool
     {
-        return $user->can('update_purchase::order::purchaser');
+        return $user->can('update_purchase::order::purchaser') && $purchaseOrder->status ==='borrador';
     }
 
     /**

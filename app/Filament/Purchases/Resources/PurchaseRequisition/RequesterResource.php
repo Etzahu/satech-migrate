@@ -18,8 +18,6 @@ use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
 
-
-
 class RequesterResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = PurchaseRequisition::class;

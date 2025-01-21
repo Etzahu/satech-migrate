@@ -146,6 +146,12 @@ class PRInfolistService
                                 ViewEntry::make('status')
                                     ->view('filament.infolists.entries.history'),
                             ]),
+                        Tabs\Tab::make('Comprador')
+                        ->visible(fn($record)=> filled($record->purchaser))
+                        ->schema([
+                            TextEntry::make('purchaser.name')
+                            ->label('Asignado'),
+                        ]),
 
                     ]),
                 // Tabs\Tab::make('Ordenes')->schema([

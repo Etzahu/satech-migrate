@@ -32,10 +32,10 @@ class ProjectPurchaseResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 5;
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('company_id', session()->get('company_id'));
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()->where('company_id', session()->get('company_id'));
+    // }
     public static function form(Form $form): Form
     {
         return $form

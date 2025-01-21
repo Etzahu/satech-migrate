@@ -35,8 +35,8 @@ class CreatePurchaseRequisitionApprovalChain extends CreateRecord
     }
     protected function afterCreate(): void
     {
-        $this->record->requester->assignRole('solicitante_requisicion_compra');
-        $this->record->reviewer->assignRole('revisor_requisicion_compra');
-        $this->record->approver->assignRole('autorizador_requisicion_compra');
+        $this->record->requester->assignRole('solicita_requisicion_compra');
+        $this->record->reviewer->assignRole('revisa_requisicion_compra');
+        $this->record->approver->assignRole('aprueba_requisicion_compra');
     }
 }

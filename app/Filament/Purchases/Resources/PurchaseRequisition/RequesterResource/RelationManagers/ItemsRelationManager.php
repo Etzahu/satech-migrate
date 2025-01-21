@@ -71,6 +71,9 @@ class ItemsRelationManager extends RelationManager
                         $data['quantity_purchase'] = $data['quantity_requested'];
                         return $data;
                     })
+                    ->after(function (){
+                        $this->dispatch('refreshOwner');
+                    })
                     ->createAnother(false),
             ])
             ->actions([
@@ -78,4 +81,5 @@ class ItemsRelationManager extends RelationManager
                 Tables\Actions\DeleteAction::make(),
             ]);
     }
+
 }
