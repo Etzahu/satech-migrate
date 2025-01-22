@@ -33,7 +33,6 @@ class RequestCatalogResource  extends Resource
         return auth()->user()->hasRole('solicita_requisicion_compra');
     }
 
-
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()

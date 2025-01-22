@@ -922,12 +922,14 @@
                                                 </tr>
                                                 <tr>
                                                     <td style="font-size: 12px;font-family: 'Roboto';">Solicitante</td>
-                                                    <td
+                                                    <td colspan="3"
                                                         style="font-size: 12px;font-family: 'Roboto';text-align: left;font-weight: bold;color: var(--dark);">
                                                         {{ $data['requester'] }}</td>
+                                                </tr>
+                                                <tr>
                                                     <td style="font-size: 12px;font-family: 'Roboto';">Lugar de entrega
                                                     </td>
-                                                    <td
+                                                    <td colspan="3"
                                                         style="font-size: 12px;font-family: 'Roboto';font-weight: bold;color: var(--dark);">
                                                         {{ $data['delivery_address'] }}</td>
                                                 </tr>

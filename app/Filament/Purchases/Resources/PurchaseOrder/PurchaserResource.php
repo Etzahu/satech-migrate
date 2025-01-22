@@ -96,6 +96,22 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                         'transferencia' => 'Transferencia'
                                     ])
                                     ->required(),
+                                Forms\Components\Select::make('priority')
+                                    ->label('Prioridad')
+                                    ->options([
+                                        'baja' => 'Baja',
+                                        'media' => 'Media',
+                                        'alta' => 'Alta'
+                                    ])
+                                    ->default('baja')
+                                    ->required(),
+                                Forms\Components\Select::make('type')
+                                    ->label('Tipo de orden')
+                                    ->options([
+                                        'compra' => 'Compra',
+                                        'cotización' => 'Cotización'
+                                    ])
+                                    ->required(),
                                 Forms\Components\Select::make('term_payment')
                                     ->label('Término de pago')
                                     ->options([
@@ -289,6 +305,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->currency('MXN')
                                     ->locale('es_MX')
                                     ->required()
+                                    ->default(0)
                                     ->minValue(0)
                                     ->live()
                                     ->numeric(),
@@ -312,18 +329,18 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->label('Final')
                                     ->required(),
                                 Forms\Components\Textarea::make('delivery_address')
-                                ->label('Dirección de entrega')
-                                ->default('Almacén, Av. Santa Mónica No.33, Col El Mirador, Tlalnepantla de Baz, Estado de México 54080.'),
+                                    ->label('Dirección de entrega')
+                                    ->default('Almacén, Av. Santa Mónica No.33, Col El Mirador, Tlalnepantla de Baz, Estado de México 54080.'),
                                 Forms\Components\Repeater::make('documentation_delivery')
-                                ->label('Documentación de entrega')
-                                ->reorderableWithDragAndDrop(false)
-                                ->reorderable(false)
-                                ->default([['name'=>'Copia de remisión y/o Factura'],['name'=>'Orden de compra'],['name'=>'Certificados de calidad']])
-                                ->schema([
-                                    Forms\Components\TextInput::make('name')
-                                    ->label('Nombre del documento')
-                                    ->required(),
-                                ])
+                                    ->label('Documentación de entrega')
+                                    ->reorderableWithDragAndDrop(false)
+                                    ->reorderable(false)
+                                    ->default([['name' => 'Copia de remisión y/o Factura'], ['name' => 'Orden de compra'], ['name' => 'Certificados de calidad']])
+                                    ->schema([
+                                        Forms\Components\TextInput::make('name')
+                                            ->label('Nombre del documento')
+                                            ->required(),
+                                    ])
                             ]),
                         Tabs\Tab::make('Observaciones')
                             ->columns(2)
@@ -353,6 +370,14 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('status')
                                                     ->label('Estatus')
+                                                    ->badge()
+                                                    ->color('success'),
+                                                    Infolists\Components\TextEntry::make('type')
+                                                    ->label('Tipo de orde')
+                                                    ->badge()
+                                                    ->color('success'),
+                                                    Infolists\Components\TextEntry::make('priority')
+                                                    ->label('Prioridad')
                                                     ->badge()
                                                     ->color('success'),
                                                 Infolists\Components\TextEntry::make('currency')
@@ -549,13 +574,13 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                 Infolists\Components\TextEntry::make('final_delivery_date')
                                                     ->label('Final')
                                                     ->date(),
-                                                    Infolists\Components\Textentry::make('delivery_address')
+                                                Infolists\Components\Textentry::make('delivery_address')
                                                     ->label('Dirección de entrega'),
-                                                    Infolists\Components\RepeatableEntry::make('documentation_delivery')
+                                                Infolists\Components\RepeatableEntry::make('documentation_delivery')
                                                     ->label('Documentación de entrega')
                                                     ->schema([
                                                         Infolists\Components\TextEntry::make('name')
-                                                        ->label('Nombre del documento'),
+                                                            ->label('Nombre del documento'),
                                                     ]),
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Observaciones')

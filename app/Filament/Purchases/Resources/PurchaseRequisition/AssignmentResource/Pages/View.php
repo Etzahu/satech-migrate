@@ -105,6 +105,7 @@ class View extends ViewRecord
                                     ->label('Dirección de entrega'),
                                 IconEntry::make('confidential')
                                     ->label('Confidencial')
+                                    ->visible(false)
                                     ->boolean(),
                             ])
                             ->columns(3),
@@ -139,8 +140,9 @@ class View extends ViewRecord
                                     ->label('Revisor'),
                                 TextEntry::make('approvalChain.approver.name')
                                     ->label('Aprobador'),
-                            ])
-                            ->columns(3),
+                                TextEntry::make('approvalChain.authorizer.name')
+                                    ->label('Autoriza'),
+                            ]),
 
                         Tabs\Tab::make('Observaciones')
                             ->schema([

@@ -132,6 +132,7 @@ class ViewPurchaseRequisition extends ViewRecord
                                     ->label('Dirección de entrega'),
                                 IconEntry::make('confidential')
                                     ->label('Confidencial')
+                                    ->visible(false)
                                     ->boolean(),
                             ])
                             ->columns(3),
@@ -158,7 +159,6 @@ class ViewPurchaseRequisition extends ViewRecord
                                     ->columns(5)
                             ]),
                         Tabs\Tab::make('Flujo de aprobación')
-                            ->visible(!$this->record->confidential)
                             ->schema([
                                 TextEntry::make('approvalChain.requester.name')
                                     ->label('Solicitante'),
@@ -166,8 +166,10 @@ class ViewPurchaseRequisition extends ViewRecord
                                     ->label('Revisor'),
                                 TextEntry::make('approvalChain.approver.name')
                                     ->label('Aprobador'),
+                                TextEntry::make('approvalChain.authorizer.name')
+                                    ->label('Autoriza'),
                             ])
-                            ->columns(3),
+                            ->columns(4),
                         Tabs\Tab::make('Fichas técnicas')
                             ->visible($this->record->getMedia('technical_data_sheets')->count() > 0)
                             ->schema([

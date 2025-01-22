@@ -391,8 +391,8 @@ Route::get('pdf-order', function () {
     $data['itemsFormatted'] = $itemsFormatted;
 
 
-    return $data;
-    Mail::to('ahernandezm@gptservices.com')->send(new NotificationOrder($data));
+    // return $data;
+    // Mail::to('ahernandezm@gptservices.com')->send(new NotificationOrder($data));
     // return view('pdf.purchase-order.header', compact('data'));
     return pdf()
         ->view('pdf.purchase-order.content', ['data' => $data])

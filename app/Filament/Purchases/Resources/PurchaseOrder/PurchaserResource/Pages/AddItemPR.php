@@ -35,7 +35,7 @@ class AddItemPR extends Page implements HasForms, HasTable
     public function mount(int | string $record)
     {
         $this->record = $this->resolveRecord($record);
-        if($this->record->status!=='borrador'){
+        if ($this->record->status !== 'borrador') {
             return redirect(PurchaserResource::getUrl('index'));
         }
     }
@@ -101,9 +101,15 @@ class AddItemPR extends Page implements HasForms, HasTable
     }
     public function checkItemInOrder($product_id)
     {
-        $items = $this->record->items?->pluck('product_id')->all();
-        if (filled($items)) {
-            return in_array($product_id, $items) ? false : true;
+        // Obtengo todas las ordenes relacionadas
+        $orders = $this->record->requisition->orders;
+        $itemsWithOrder = [];
+        foreach ($orders as $order) {
+            $items = $order->items?->pluck('product_id')->all();
+            $itemsWithOrder[] = $items;
+        }
+        if (filled($itemsWithOrder)) {
+            return in_array($product_id, $itemsWithOrder) ? false : true;
         } else {
             return true;
         }

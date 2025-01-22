@@ -45,6 +45,7 @@ class PRInfolistService
                                     ->label('Dirección de entrega'),
                                 IconEntry::make('confidential')
                                     ->label('Confidencial')
+                                    ->visible(false)
                                     ->boolean(),
                             ])
                             ->columns(3),
@@ -70,8 +71,7 @@ class PRInfolistService
                                     ])
                                     ->columns(5)
                             ]),
-                        Tabs\Tab::make('Flujo de aprobación')
-                            ->visible(!$record->confidential)
+                            Tabs\Tab::make('Flujo de aprobación')
                             ->schema([
                                 TextEntry::make('approvalChain.requester.name')
                                     ->label('Solicitante'),
@@ -79,8 +79,9 @@ class PRInfolistService
                                     ->label('Revisor'),
                                 TextEntry::make('approvalChain.approver.name')
                                     ->label('Aprobador'),
-                            ])
-                            ->columns(3),
+                                TextEntry::make('approvalChain.authorizer.name')
+                                    ->label('Autoriza'),
+                            ]),
                         Tabs\Tab::make('Fichas técnicas')
                             // ->visible($this->getMediaCount($record->id, 'technical_data_sheets') > 0)
                             ->visible($record->getMedia('technical_data_sheets')->count() > 0)
@@ -121,7 +122,7 @@ class PRInfolistService
                                     })
                                     ->label('')
                                     ->schema([
-                                        TextEntry::make('file_name')
+                                        TextEntry::make('name')
                                             ->label('Nombre del archivo'),
                                     ]),
                                 Actions::make([

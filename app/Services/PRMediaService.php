@@ -65,6 +65,7 @@ class PRMediaService
                                     ->label('Dirección de entrega'),
                                 IconEntry::make('confidential')
                                     ->label('Confidencial')
+                                    ->visible(false)
                                     ->boolean(),
                             ])
                             ->columns(3),
@@ -90,8 +91,7 @@ class PRMediaService
                                     ])
                                     ->columns(5)
                             ]),
-                        Tabs\Tab::make('Flujo de aprobación')
-                            ->visible(!$record->confidential)
+                            Tabs\Tab::make('Flujo de aprobación')
                             ->schema([
                                 TextEntry::make('approvalChain.requester.name')
                                     ->label('Solicitante'),
@@ -99,8 +99,9 @@ class PRMediaService
                                     ->label('Revisor'),
                                 TextEntry::make('approvalChain.approver.name')
                                     ->label('Aprobador'),
-                            ])
-                            ->columns(3),
+                                TextEntry::make('approvalChain.authorizer.name')
+                                    ->label('Autoriza'),
+                            ]),
                         Tabs\Tab::make('Fichas técnicas')
                             ->visible($this->getMediaCount($record->id, 'technical_data_sheets') > 0)
                             ->schema([
@@ -132,7 +133,7 @@ class PRMediaService
                                     })
                                     ->label('')
                                     ->schema([
-                                        TextEntry::make('file_name')
+                                        TextEntry::make('name')
                                             ->label('Nombre del archivo'),
                                     ]),
                                 Actions::make([
