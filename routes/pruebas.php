@@ -22,9 +22,10 @@ use Money\Currencies\ISOCurrencies;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Rap2hpoutre\FastExcel\FastExcel;
-use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
 use App\Services\OrderCalculationService;
@@ -33,6 +34,7 @@ use function Spatie\LaravelPdf\Support\pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use App\Mail\PurchaseOrder\Notification as NotificationOrder;
 
 Route::get('tablas', function () {
 
@@ -352,6 +354,7 @@ Route::get('money', function () {
 Route::get('pdf-order', function () {
 
     $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->first();
+    // return $data;
     $service = new OrderCalculationService($data->id);
     $items = $data->items;
     $media[] = $data->getMedia('justification')->first();
@@ -360,7 +363,6 @@ Route::get('pdf-order', function () {
     $media[] = $data->getMedia('quote')->first();
 
     $itemsFormatted = $items->map(function ($item) use ($data, $service) {
-        // dump($item->toArray());
         $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
         $subTotal =  new Money($item->sub_total, new Currency($data->currency));
         return [
@@ -387,7 +389,10 @@ Route::get('pdf-order', function () {
     $data['total'] = $total;
     $data['media'] = $media;
     $data['itemsFormatted'] = $itemsFormatted;
-    // return $data;
+
+
+    return $data;
+    Mail::to('ahernandezm@gptservices.com')->send(new NotificationOrder($data));
     // return view('pdf.purchase-order.header', compact('data'));
     return pdf()
         ->view('pdf.purchase-order.content', ['data' => $data])

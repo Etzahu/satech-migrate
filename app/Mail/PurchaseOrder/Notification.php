@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\PurchaseRequisition;
+namespace App\Mail\PurchaseOrder;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -35,7 +35,7 @@ class Notification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.purchase-requisition.notification',
+            view: 'email.purchase-order.notification',
         );
     }
 

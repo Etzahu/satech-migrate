@@ -9,14 +9,15 @@ use Filament\Tables\Table;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseProvider;
 
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Forms\Components\Tabs;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Purchases\Resources\PurchaseOrder\ReviewResource\Pages;
 use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
+use App\Filament\Purchases\Resources\PurchaseOrder\ReviewResource\Pages;
 
 
 class ReviewResource extends Resource
@@ -38,10 +39,10 @@ class ReviewResource extends Resource
     {
         return parent::getEloquentQuery()->reviewManagement();
     }
-    public static function form(Form $form, array $options = []): Form
+    public static function infolist(Infolist $infolist): Infolist
     {
-        $options['show_relation_items'] = true;
-        return PurchaserResource::form($form, $options);
+        $options[] = 'show_relation_items';
+        return PurchaserResource::infolist($infolist, $options);
     }
 
     public static function table(Table $table): Table
