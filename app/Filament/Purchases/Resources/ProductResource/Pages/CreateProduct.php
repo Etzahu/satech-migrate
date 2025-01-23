@@ -17,6 +17,7 @@ class CreateProduct extends CreateRecord
         $data['name'] = Str::of($data['name'])->squish()->lower();
         $data['company_id'] = session()->get('company_id');
         $data['registered_user_id']= auth()->user()->id;
+        $data['requester_id']= auth()->user()->id;
         $data['code'] = $data['automatic_code'] ? $this->generateCode($data['category_family_id']) : 'Sin código asignado';
         return $data;
     }
@@ -30,4 +31,10 @@ class CreateProduct extends CreateRecord
         $code = $codeCategory . $codeFamily . Str::of($numberRecord)->padLeft(4, 0);
         return $code;
     }
+    protected function afterCreate(): void
+    {
+        $this->record->status()->transitionTo('aprobado');
+    }
+
+
 }

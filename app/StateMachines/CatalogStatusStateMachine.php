@@ -29,9 +29,12 @@ class CatalogStatusStateMachine extends StateMachine
         return [
             'aprobado' => [
                 function ($to, $model) {
-                    $model->load('company', 'requester', 'unit');
-                    $recipient = $model->requester->email;
-                    Mail::to($recipient)->send(new CatalogNotification($model));
+                
+                    if ($model->requester_id !== $model->registered_user_id) {
+                        $model->load('company', 'requester', 'unit');
+                        $recipient = $model->requester->email;
+                        Mail::to($recipient)->send(new CatalogNotification($model));
+                    }
                 }
             ],
             'rechazado' => [
