@@ -914,12 +914,12 @@
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';text-align: left;font-weight: bold;color: var(--dark);">
                                                         {{ $data['purchaser']['name'] }}
-                                                      </td>
+                                                    </td>
                                                     <td style="font-size: 12px;font-family: 'Roboto';">Moneda</td>
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';text-align: left;font-weight: bold;color: var(--dark);">
                                                         {{ $data['currency'] }}
-                                                      </td>
+                                                    </td>
                                                 </tr>
                                                 <tr>
 
@@ -1041,7 +1041,8 @@
                                             cellpadding="0" cellspacing="0" role="presentation">
                                             <tbody>
                                                 <tr>
-                                                    <td class="btn-content"><a href="#">VER SOLICITUD</a></td>
+                                                    <td class="btn-content"><a href="https://app.gptsatech.com">VER
+                                                            SOLICITUD</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>

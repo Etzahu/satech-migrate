@@ -1035,7 +1035,8 @@
                                             cellpadding="0" cellspacing="0" role="presentation">
                                             <tbody>
                                                 <tr>
-                                                    <td class="btn-content"><a href="#">VER SOLICITUD</a></td>
+                                                    <td class="btn-content"><a href="https://app.gptsatech.com">VER
+                                                            SOLICITUD</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
