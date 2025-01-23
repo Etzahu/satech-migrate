@@ -36,7 +36,7 @@
     <table class="btn btn-success btn-md btn-rounded" border="0" cellpadding="0" cellspacing="0" role="presentation">
         <tbody>
             <tr>
-                <td class="btn-content"><a href="#">VER</a></td>
+                <td class="btn-content"><a href="https://app.gptsatech.com">VER</a></td>
             </tr>
         </tbody>
     </table>
