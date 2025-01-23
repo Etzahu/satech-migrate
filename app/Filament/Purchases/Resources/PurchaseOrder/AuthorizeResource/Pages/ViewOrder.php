@@ -59,8 +59,10 @@ class ViewOrder extends ViewRecord
 
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
-                    ->color('success')
-                    ->url(fn(PurchaseOrder $record): string => AuthorizeResource::getUrl('view-pdf', ['record' => $record->id]))
+    ->color('danger')
+    ->url(route('order.pdf', ['id' => $this->record->id]))
+    ->icon('heroicon-m-document')
+    ->openUrlInNewTab(),
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')

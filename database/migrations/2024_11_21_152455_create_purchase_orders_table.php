@@ -24,8 +24,6 @@ return new class extends Migration
             $table->string('quote_folio', 100);
             $table->string('use_cfdi', 100);
 
-            $table->string('priority', 100)->default('baja');
-            $table->string('type', 100)->default('compra');
 
             $table->text('shipping_method', 600);
 

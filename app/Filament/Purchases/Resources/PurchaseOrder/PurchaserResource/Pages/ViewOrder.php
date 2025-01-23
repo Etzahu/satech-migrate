@@ -46,6 +46,7 @@ class ViewOrder extends ViewRecord
                         ->send();
                     return redirect(PurchaserResource::getUrl('index'));
                 }),
+
             ActionGroup::make([
                 Actions\EditAction::make(),
                 Actions\Action::make('Ver pdf')
@@ -72,7 +73,6 @@ class ViewOrder extends ViewRecord
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')
                 ->color('primary')
-                ->visible($this->record->status == 'borrador')
                 ->dropdownWidth(MaxWidth::Large)
                 ->button()
         ];

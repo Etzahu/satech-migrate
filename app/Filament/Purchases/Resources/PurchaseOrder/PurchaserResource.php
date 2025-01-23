@@ -216,9 +216,25 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ->autoplay()
                                             ->preload(false),
                                     ]),
+                                SpatieMediaLibraryFileUpload::make('doc_4')
+                                    ->label('Cotización')
+                                    ->required()
+                                    ->acceptedFileTypes(['application/pdf'])
+                                    ->collection('quote')
+                                    ->hintActions([
+                                        MediaAction::make('ver documento')
+                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                            ->media(function ($state) {
+                                                $key = array_keys($state);
+                                                $media = Media::where('uuid', $key[0])->first();
+                                                $url = Storage::url($media->getPathRelativeToRoot());
+                                                return $url;
+                                            })
+                                            ->autoplay()
+                                            ->preload(false),
+                                    ]),
                                 SpatieMediaLibraryFileUpload::make('doc_2')
                                     ->label('Adjudicación directa')
-                                    ->required()
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->collection('direct_award')->hintActions([
                                         MediaAction::make('ver documento')
@@ -234,26 +250,8 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ]),
                                 SpatieMediaLibraryFileUpload::make('doc_3')
                                     ->label('Certificaciones')
-                                    ->required()
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->collection('certifications')
-                                    ->hintActions([
-                                        MediaAction::make('ver documento')
-                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                            ->media(function ($state) {
-                                                $key = array_keys($state);
-                                                $media = Media::where('uuid', $key[0])->first();
-                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                return $url;
-                                            })
-                                            ->autoplay()
-                                            ->preload(false),
-                                    ]),
-                                SpatieMediaLibraryFileUpload::make('doc_4')
-                                    ->label('Cotización')
-                                    ->required()
-                                    ->acceptedFileTypes(['application/pdf'])
-                                    ->collection('quote')
                                     ->hintActions([
                                         MediaAction::make('ver documento')
                                             ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
@@ -375,11 +373,11 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->label('Estatus')
                                                     ->badge()
                                                     ->color('success'),
-                                                    Infolists\Components\TextEntry::make('type')
+                                                Infolists\Components\TextEntry::make('type')
                                                     ->label('Tipo de orde')
                                                     ->badge()
                                                     ->color('success'),
-                                                    Infolists\Components\TextEntry::make('priority')
+                                                Infolists\Components\TextEntry::make('priority')
                                                     ->label('Prioridad')
                                                     ->badge()
                                                     ->color('success'),
@@ -455,6 +453,33 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                 return response()->download($media->getPath(), $media->file_name);
                                                             }),
                                                     ]),
+                                                Infolists\Components\TextEntry::make('doc_7')
+                                                    ->label('Cotización')
+                                                    ->state(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'quote')
+                                                            ->first();
+                                                        return $media->name;
+                                                    })
+                                                    ->hintActions([
+                                                        MediaActionInfolist::make('ver documento')
+                                                            ->media(function ($record) {
+                                                                $media = Media::where('model_id', $record->id)
+                                                                    ->where('collection_name', 'quote')
+                                                                    ->first();
+                                                                $url = Storage::url($media->getPathRelativeToRoot());
+                                                                return $url;
+                                                            })
+                                                            ->autoplay()
+                                                            ->preload(false),
+                                                        Action::make('Descargar')
+                                                            ->action(function ($record) {
+                                                                $media = Media::where('model_id', $record->id)
+                                                                    ->where('collection_name', 'quote')
+                                                                    ->first();
+                                                                return response()->download($media->getPath(), $media->file_name);
+                                                            }),
+                                                    ]),
                                                 Infolists\Components\TextEntry::make('doc_2')
                                                     ->label('Adjudicación directa')
                                                     ->state(function ($record) {
@@ -509,34 +534,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                 return response()->download($media->getPath(), $media->file_name);
                                                             }),
                                                     ]),
-                                                Infolists\Components\TextEntry::make('doc_7')
-                                                    ->label('Cotización')
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->id)
-                                                            ->where('collection_name', 'quote')
-                                                            ->first();
-                                                        return $media->name;
-                                                    })
-                                                    ->hintActions([
-                                                        MediaActionInfolist::make('ver documento')
-                                                            ->media(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'quote')
-                                                                    ->first();
-                                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                                return $url;
-                                                            })
-                                                            ->autoplay()
-                                                            ->preload(false),
-                                                        Action::make('Descargar')
-                                                            ->action(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'quote')
-                                                                    ->first();
-                                                                return response()->download($media->getPath(), $media->file_name);
-                                                            }),
-                                                    ]),
-
                                             ]),
 
                                         Infolists\Components\Tabs\Tab::make('Retenciones')

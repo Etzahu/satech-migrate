@@ -1256,7 +1256,7 @@ class UsersTableSeeder extends Seeder
                 'id' => 315,
                 'name' => 'Carlos Alonso Pérez',
                 'puesto' => 'Dirección General',
-                'email' => 'calonso@gptservices.com',
+                'email' => 'fileserver@gptservices.com',
                 'phone' => '832 270 8700',
                 'active' => 1,
                 'email_verified_at' => NULL,

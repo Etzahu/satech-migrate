@@ -118,6 +118,7 @@ class ReviewerWareHouseResource extends Resource
                         Forms\Components\Textarea::make('observation')
                             ->label('Observación adicionales')
                             ->maxLength(600)
+                            ->default('Sin observaciones')
                             ->required(),
                     ])
 

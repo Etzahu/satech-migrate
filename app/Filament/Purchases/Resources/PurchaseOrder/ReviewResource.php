@@ -94,7 +94,6 @@ class ReviewResource extends Resource
         return [
             'index' => Pages\ListPurchaseOrders::route('/'),
             'view' => Pages\ViewOrder::route('/{record}/ver'),
-            'view-pdf' => Pages\ViewPdf::route('/{record}/pdf'),
         ];
     }
 }

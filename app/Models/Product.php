@@ -47,12 +47,12 @@ class Product extends Model
         'status' => CatalogStatusStateMachine::class
     ];
 
-    protected static function booted(): void
-    {
-        static::addGlobalScope('company', function (Builder $builder) {
-            $builder->where('company_id', session()->get('company_id'));
-        });
-    }
+    // protected static function booted(): void
+    // {
+    //     static::addGlobalScope('company', function (Builder $builder) {
+    //         $builder->where('company_id', session()->get('company_id'));
+    //     });
+    // }
 
     public function unit(): BelongsTo
     {

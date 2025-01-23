@@ -52,6 +52,8 @@ class ItemsRelationManager extends RelationManager
                         ->columnSpan('full'),
                     Forms\Components\Textarea::make('observation')
                         ->label('Observaciones')
+                        ->default('Sin observaciones')
+                        ->required()
                 ]);
         } else {
             return $form

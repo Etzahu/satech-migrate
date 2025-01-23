@@ -34,6 +34,8 @@ class ItemsRelationManager extends RelationManager
                     ->required(),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observación')
+                    ->default('Sin observaciones')
+                    ->required()
                     ->maxLength(600),
             ]);
     }

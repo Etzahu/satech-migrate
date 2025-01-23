@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('folio', 255);
             $table->boolean('confidential')->default(false);
             $table->text('motive', 600);
+
+            $table->string('priority', 100)->default('baja');
+            $table->string('type', 100)->default('compra');
+            
             $table->text('observation', 600);
             $table->date('date_delivery');
             $table->text('delivery_address');

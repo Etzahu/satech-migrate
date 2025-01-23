@@ -22,8 +22,6 @@ class PurchaseOrder extends Model implements HasMedia
         'type_payment',
         'form_payment',
         'priority',
-        'type',
-        'term_payment',
         'condition_payment',
         'quote_folio',
         'use_cfdi',
@@ -114,7 +112,7 @@ class PurchaseOrder extends Model implements HasMedia
     public function scopeAuthorize(Builder $query)
     {
         return $query
-        
+
             ->where('status', 'aprobado por DG nivel 1')
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');

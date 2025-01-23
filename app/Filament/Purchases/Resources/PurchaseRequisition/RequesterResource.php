@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
 
@@ -73,6 +74,22 @@ class RequesterResource extends Resource implements HasShieldPermissions
                         Forms\Components\Textarea::make('motive')
                             ->label('Referencia')
                             ->maxLength(600)
+                            ->required(),
+                        Forms\Components\Select::make('priority')
+                            ->label('Prioridad')
+                            ->options([
+                                'baja' => 'Baja',
+                                'media' => 'Media',
+                                'alta' => 'Alta'
+                            ])
+                            ->default('baja')
+                            ->required(),
+                        Forms\Components\Select::make('type')
+                            ->label('Tipo de requisición')
+                            ->options([
+                                'compra' => 'Compra',
+                                'cotización' => 'Cotización'
+                            ])
                             ->required(),
                         Forms\Components\DatePicker::make('date_delivery')
                             ->label('Fecha deseable de entrega')

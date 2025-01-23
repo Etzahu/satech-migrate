@@ -27,12 +27,12 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="login-card">
-                        <div class="theme-form login-form shadow-lg">
+                        <div class="shadow-lg theme-form login-form">
                             <div class="d-flex justify-content-center">
                                 <img src="{{ asset('assets/images/logo/logo_GPT.svg') }}" alt="Logo de la empresa" class="img-fluid">
                             </div>
-                            <h1 class="text-center  f-w-600 font-warning">Depto IT</h1>
-                            <h2 class="text-center  f-w-600 font-primary">¡BIENVENID@!</h2>
+                            <h1 class="text-center f-w-600 font-warning">Sa-Tech</h1>
+                            <h2 class="text-center f-w-600 font-primary">¡BIENVENID@!</h2>
                             <div class="login-social-title">
                                 <h5>
                                     Si eres colaborador:
