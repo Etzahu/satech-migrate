@@ -111,4 +111,12 @@ class PurchaseOrder extends Model implements HasMedia
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
+    public function scopeAuthorize(Builder $query)
+    {
+        return $query
+        
+            ->where('status', 'aprobado por DG nivel 1')
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
+    }
 }

@@ -19,6 +19,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
     public function transitions(): array
     {
         return [
+            '*'=>['comprador reasignado'],
             'borrador' => ['revisión por almacén', 'revisión', 'aprobado por revisor'],
 
             'devuelto por revisor' => ['revisión por almacén', 'revisión'],
@@ -32,7 +33,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'aprobado por revisor' => ['aprobado por gerencia', 'devuelto por gerencia', 'cancelado por gerencia'],
             'aprobado por gerencia' => ['aprobado por DG', 'devuelto por DG', 'cancelado por DG'],
             'aprobado por DG' => ['comprador asignado'],
-            'comprador asignado' => ['devuelto por comprador']
+            'comprador asignado' => ['devuelto por comprador'],
         ];
     }
     public function defaultState(): ?string
@@ -166,6 +167,18 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $cc = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
                     $data = $service->generateDataForEmail('colocar orden de compra', $model);
+                    Mail::to($recipient)
+                        ->cc($cc)
+                        ->send(new Notification($data));
+                }
+            ],
+            'comprador reasignado' => [
+                function ($to, $model) {
+                    $model->load('responsiblePurchaseOrder');
+                    $recipient = $model->responsiblePurchaseOrder->email;
+                    $cc = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    $data = $service->generateDataForEmail('comprador reasignado-colocar orden de compra', $model);
                     Mail::to($recipient)
                         ->cc($cc)
                         ->send(new Notification($data));

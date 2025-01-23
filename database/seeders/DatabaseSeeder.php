@@ -45,13 +45,13 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductsTableSeeder::class);
         $this->call(ProjectPurchasesTableSeeder::class);
         // $this->call(ProjectPurchaseCategoryTableSeeder::class);
-        $this->call(PurchaseRequisitionsTableSeeder::class);
-        $this->call(PurchaseRequisitionItemsTableSeeder::class);
+        // $this->call(PurchaseRequisitionsTableSeeder::class);
+        // $this->call(PurchaseRequisitionItemsTableSeeder::class);
         $this->call(NotificationsTableSeeder::class);
         $this->call(MigrationsTableSeeder::class);
         $this->call(PurchaseProvidersTableSeeder::class);
         $this->call(ProviderContactsTableSeeder::class);
-        $this->call(PurchaseOrdersTableSeeder::class);
-        $this->call(PurchaseOrderItemsTableSeeder::class);
+        // $this->call(PurchaseOrdersTableSeeder::class);
+        // $this->call(PurchaseOrderItemsTableSeeder::class);
     }
 }

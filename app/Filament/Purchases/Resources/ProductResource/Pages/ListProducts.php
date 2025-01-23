@@ -31,6 +31,8 @@ class ListProducts extends ListRecords
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'aprobado')),
             'rechazado' => Tab::make('Rechazados')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'rechazado')),
+            'admin' => Tab::make('Alta Admin')
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereNull('status')),
         ];
     }
     public function getDefaultActiveTab(): string | int | null

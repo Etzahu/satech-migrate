@@ -52,22 +52,23 @@ class ViewOrder extends ViewRecord
                 ->requiresConfirmation()
                 ->action(function (array $data) {
                     // validar el tipo de moneda
-                    $min = 0;
-                    $max = 0;
+                    $minAmount = 0;
+                    $maxAmount = 0;
                     if ($this->record->currency == 'USD') {
-                        $min = Money::USD(1);
-                        $max = Money::USD(10000);
+                        $minAmount = Money::USD(1);
+                        $maxAmount = Money::USD(1000000);
                     }
                     if ($this->record->currency == 'MXN') {
-                        $min = Money::MXN(1);
-                        $max = Money::MXN(200000);
+                        $minAmount = Money::MXN(1);
+                        $maxAmount = Money::MXN(20000000);
                     }
                     $service = new OrderCalculationService($this->record->id);
                     $total = $service->getTotal();
-                    if ($total >= $min && $total <= $max) {
+
+                    if ($total->greaterThanOrEqual($minAmount) && $total->lessThanOrEqual($maxAmount)) {
                         $this->record->status()->transitionTo('autorizada para proveedor');
                     }
-                    if ($total > $max) {
+                    if ($total->greaterThan($maxAmount)) {
                         $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
                     }
                     Notification::make()

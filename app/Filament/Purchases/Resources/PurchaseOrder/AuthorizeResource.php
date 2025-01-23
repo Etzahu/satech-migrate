@@ -37,7 +37,7 @@ class AuthorizeResource extends Resource
     }
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->approve()->where('status', 'aprobado por DG nivel 2');
+        return parent::getEloquentQuery()->authorize();
     }
 
     public static function infolist(Infolist $infolist): Infolist

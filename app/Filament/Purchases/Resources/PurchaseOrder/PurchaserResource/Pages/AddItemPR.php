@@ -106,8 +106,10 @@ class AddItemPR extends Page implements HasForms, HasTable
         $itemsWithOrder = [];
         foreach ($orders as $order) {
             $items = $order->items?->pluck('product_id')->all();
-            $itemsWithOrder[] = $items;
+            // $itemsWithOrder[] = $items;
+            $itemsWithOrder = array_merge($itemsWithOrder, $items);
         }
+
         if (filled($itemsWithOrder)) {
             return in_array($product_id, $itemsWithOrder) ? false : true;
         } else {

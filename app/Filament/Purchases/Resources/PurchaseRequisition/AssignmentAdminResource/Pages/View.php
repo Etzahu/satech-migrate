@@ -46,6 +46,23 @@ class View extends ViewRecord
                         ->success()
                         ->send();
                 }),
+            Action::make('Reasignar comprador')
+                ->visible(filled($this->record->responsiblePurchaseOrder))
+                ->form([
+                    Select::make('responsible')
+                        ->label('Responsable')
+                        ->options((User::whereNot('id',$this->record->purchaser->id)->role('comprador')->pluck('name', 'id')))
+                        ->required(),
+                ])
+                ->action(function (array $data): void {
+                    $this->record->assign_user_id = $data['responsible'];
+                    $this->record->save();
+                    $this->record->status()->transitionTo('comprador reasignado');
+                    Notification::make()
+                        ->title('Se ha reasignado comprador')
+                        ->success()
+                        ->send();
+                }),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->icon('heroicon-m-document')

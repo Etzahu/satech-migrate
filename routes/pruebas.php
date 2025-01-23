@@ -955,5 +955,16 @@ Route::get('cat', function () {
 });
 
 Route::get('test',function(){
-
+    $data = Product::all();
+    try{
+        DB::beginTransaction();
+        foreach ($data as $key => $product) {
+            $product->id = $key +1;
+            $product->save();
+        }
+        DB::commit();
+    }catch(Exception $e){
+        DB::rollBack();
+        throw $e;
+    }
 });

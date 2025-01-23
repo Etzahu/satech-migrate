@@ -50,8 +50,9 @@ class PurchaseRequisitionCreationService
 
     public function generateDataForEmail($subject, $model)
     {
+        $subject = str($subject)->upper();
         $data = [
-            'subject' => "REQUISICIÓN:{$model->folio} {$subject}",
+            'subject' => "{$subject} REQUISICIÓN:{$model->folio}",
             'company' => $model->company->name,
             'management' => $model->approvalChain->requester->management->name,
             'requester' => $model->approvalChain->requester->name,

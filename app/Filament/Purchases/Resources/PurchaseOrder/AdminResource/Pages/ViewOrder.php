@@ -23,36 +23,37 @@ class ViewOrder extends ViewRecord
     {
         return [
             Actions\Action::make('Capturar respuesta')
-            ->modalHeading('Enviar respuesta')
-            ->color('success')
-            ->visible(fn() =>
-            $this->record->status()->canBe('aprobado por gerente de compras')||
-            $this->record->status()->canBe('devuelto por gerente de compras')||
-            $this->record->status()->canBe('cancelado por gerente de compras')
-            )
-            ->form([
-                Select::make('response')
-                    ->label('Respuesta')
-                    ->options([
-                        'aprobado por gerente de compras' => 'Aprobar',
-                        'devuelto por gerente de compras' => 'Devolver',
-                        'cancelado por gerente de compras' => 'Cancelar',
-                    ])
-                    ->default('aprobado por gerente de compras')
-                    ->required(),
-                Textarea::make('observation')
-                    ->requiredUnless('response', 'aprobado por gerente de compras')
-                    ->label('Observación'),
-            ])
-            ->requiresConfirmation()
-            ->action(function (array $data) {
-                $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
-                Notification::make()
-                    ->title('Respuesta enviada')
-                    ->success()
-                    ->send();
-                return redirect(AdminResource::getUrl('index'));
-            }),
+                ->modalHeading('Enviar respuesta')
+                ->color('success')
+                ->visible(
+                    fn() =>
+                    $this->record->status()->canBe('aprobado por gerente de compras') ||
+                        $this->record->status()->canBe('devuelto por gerente de compras') ||
+                        $this->record->status()->canBe('cancelado por gerente de compras')
+                )
+                ->form([
+                    Select::make('response')
+                        ->label('Respuesta')
+                        ->options([
+                            'aprobado por gerente de compras' => 'Aprobar',
+                            'devuelto por gerente de compras' => 'Devolver',
+                            'cancelado por gerente de compras' => 'Cancelar',
+                        ])
+                        ->default('aprobado por gerente de compras')
+                        ->required(),
+                    Textarea::make('observation')
+                        ->requiredUnless('response', 'aprobado por gerente de compras')
+                        ->label('Observación'),
+                ])
+                ->requiresConfirmation()
+                ->action(function (array $data) {
+                    $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
+                    Notification::make()
+                        ->title('Respuesta enviada')
+                        ->success()
+                        ->send();
+                    return redirect(AdminResource::getUrl('index'));
+                }),
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
                     ->color('success')

@@ -368,6 +368,9 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                         Infolists\Components\Tabs\Tab::make('Datos generales')
                                             ->columns(3)
                                             ->schema([
+                                                Infolists\Components\TextEntry::make('folio')
+                                                    ->label('Folio')
+                                                    ->columnSpan('full'),
                                                 Infolists\Components\TextEntry::make('status')
                                                     ->label('Estatus')
                                                     ->badge()

@@ -86,7 +86,8 @@ class OrderService
         $data['total'] = $total;
         $data['media'] = $media;
         $data['itemsFormatted'] = $itemsFormatted;
-        $data['subject']="ORDEN DE COMPRA {$data['folio']} {$subject}";
+        $subject = str($subject)->upper();
+        $data['subject']="{$subject} ORDEN DE COMPRA {$data['folio']}";
         return $data;
     }
 
