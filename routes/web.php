@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\LoginController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Http\Controllers\PurchaseOrderController;
 use Vormkracht10\FilamentMails\Facades\FilamentMails;
 use App\Http\Controllers\PurchaseRequisitionController;
 
@@ -33,3 +34,5 @@ FilamentMails::routes();
 
 Route::get('compras/requisiciones/{id}/pdf',[PurchaseRequisitionController::class,'pdf'])
 ->name('requisition.pdf');
+Route::get('compras/ordenes/{id}/pdf',[PurchaseOrderController::class,'pdf'])
+->name('order.pdf');

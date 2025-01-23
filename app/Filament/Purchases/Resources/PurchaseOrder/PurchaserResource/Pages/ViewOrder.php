@@ -48,6 +48,11 @@ class ViewOrder extends ViewRecord
                 }),
             ActionGroup::make([
                 Actions\EditAction::make(),
+                Actions\Action::make('Ver pdf')
+                ->color('danger')
+                ->url(route('order.pdf', ['id' => $this->record->id]))
+                ->icon('heroicon-m-document')
+                ->openUrlInNewTab(),
                 Actions\Action::make('Agregar partidas de la requisición')
                     ->visible(function () {
                         // dd($this->record);
@@ -89,3 +94,6 @@ class ViewOrder extends ViewRecord
         return static::getResource()::infolist($infolist);
     }
 }
+
+
+// order.pdf

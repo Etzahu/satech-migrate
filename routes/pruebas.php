@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
 
 use Money\Currencies\ISOCurrencies;
-use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -30,6 +29,7 @@ use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
 use App\Services\OrderCalculationService;
 use Rap2hpoutre\FastExcel\SheetCollection;
+use Spatie\Browsershot\Browsershot;
 use function Spatie\LaravelPdf\Support\pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\PurchaseRequisitionApprovalChain;
@@ -353,59 +353,7 @@ Route::get('money', function () {
 
 Route::get('pdf-order', function () {
 
-    $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->first();
-    // return $data;
-    $service = new OrderCalculationService($data->id);
-    $items = $data->items;
-    $media[] = $data->getMedia('justification')->first();
-    $media[] = $data->getMedia('direct_award')->first();
-    $media[] = $data->getMedia('certifications')->first();
-    $media[] = $data->getMedia('quote')->first();
 
-    $itemsFormatted = $items->map(function ($item) use ($data, $service) {
-        $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
-        $subTotal =  new Money($item->sub_total, new Currency($data->currency));
-        return [
-            'code' => $item->product->code,
-            'name' => $item->product->name,
-            'brand' => $item->product->brand?->name,
-            'unit' => $item->product->unit->acronym,
-            "quantity" => $item->quantity,
-            "unit_price" => $service->moneyFormatter($unitPrice),
-            "sub_total" => $service->moneyFormatter($subTotal),
-            "observation" => $item->observation,
-        ];
-    });
-    $total = [
-        'Subtotal' =>  $service->getSubtotalItems(true),
-        'Descuento' =>  $service->getDiscountProvider(true),
-        'IVA' =>  $service->getTaxIva(true),
-        'Retención de IVA' =>  $service->getRetentionIva(true),
-        'Retención de ISR' =>  $service->getRetentionIsr(true),
-        'Total' =>  $service->getTotal(true),
-    ];
-
-
-    $data['total'] = $total;
-    $data['media'] = $media;
-    $data['itemsFormatted'] = $itemsFormatted;
-
-
-    // return $data;
-    // Mail::to('ahernandezm@gptservices.com')->send(new NotificationOrder($data));
-    // return view('pdf.purchase-order.header', compact('data'));
-    return pdf()
-        ->view('pdf.purchase-order.content', ['data' => $data])
-        ->margins(40, 15, 15, 15)
-        ->headerView('pdf.purchase-order.header', ['data' => $data])
-        ->withBrowsershot(function (Browsershot $browsershot) {
-            $browsershot
-                ->noSandbox()
-                ->writeOptionsToFile();
-        })
-        ->disk('public')
-        ->save('orden-compra.pdf')
-        ->name('invoice-2023-04-10.pdf');
 
     // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla
     $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])->findOrFail(1);
