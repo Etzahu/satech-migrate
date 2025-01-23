@@ -1,10 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\LoginController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Vormkracht10\FilamentMails\Facades\FilamentMails;
+use App\Http\Controllers\PurchaseRequisitionController;
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::get('/login/google', [LoginController::class, 'redirectToProvider'])->name('login.redirect');
@@ -25,3 +27,9 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect()->to('/');
 })->name('logout');
+
+
+FilamentMails::routes();
+
+Route::get('compras/requisiciones/{id}/pdf',[PurchaseRequisitionController::class,'pdf'])
+->name('requisition.pdf');

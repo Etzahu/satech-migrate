@@ -319,7 +319,7 @@
     <br>
     {{-- Firmas --}}
     <div>
-        <table style="w-full">
+        {{-- <table style="w-full">
             <tbody>
                 <tr>
                     <td>
@@ -405,7 +405,7 @@
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table> --}}
     </div>
     <footer>
         <img src="{{ secure_asset('images/watermark.jpg') }}" alt="watermark" style="height: 50px;">

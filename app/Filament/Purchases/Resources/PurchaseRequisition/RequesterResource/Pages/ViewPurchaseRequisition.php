@@ -67,7 +67,8 @@ class ViewPurchaseRequisition extends ViewRecord
                 Action::make('Ver pdf')
                     ->color('danger')
                     ->icon('heroicon-m-document')
-                    ->url(RequesterResource::getUrl('view-pdf', ['record' => $this->record->id]))
+                    // ->url(RequesterResource::getUrl('view-pdf', ['record' => $this->record->id]))
+                    ->url(route('requisition.pdf', ['id' => $this->record->id]))
                     ->openUrlInNewTab(),
                 Action::make('Cambiar de empresa')
                     ->requiresConfirmation()

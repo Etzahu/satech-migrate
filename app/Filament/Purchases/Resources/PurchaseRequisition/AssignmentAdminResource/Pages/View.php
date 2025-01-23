@@ -47,11 +47,11 @@ class View extends ViewRecord
                         ->send();
                 }),
             Action::make('Reasignar comprador')
-                ->visible(filled($this->record->responsiblePurchaseOrder))
+                ->visible((filled($this->record->responsiblePurchaseOrder)))
                 ->form([
                     Select::make('responsible')
                         ->label('Responsable')
-                        ->options((User::whereNot('id',$this->record->purchaser->id)->role('comprador')->pluck('name', 'id')))
+                        ->options((User::whereNot('id',$this->record->purchaser?->id)->role('comprador')->pluck('name', 'id')))
                         ->required(),
                 ])
                 ->action(function (array $data): void {
@@ -65,6 +65,7 @@ class View extends ViewRecord
                 }),
             Action::make('Ver pdf')
                 ->color('danger')
+                ->url(route('requisition.pdf', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
                 ->openUrlInNewTab()
         ];

@@ -57,6 +57,7 @@ class ViewPR extends ViewRecord
                 }),
             Action::make('Ver pdf')
                 ->color('danger')
+                ->url(route('requisition.pdf', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
                 ->openUrlInNewTab()
         ];
