@@ -21,7 +21,7 @@ class PurchaseOrder extends Model implements HasMedia
         'currency',
         'type_payment',
         'form_payment',
-        'priority',
+        'term_payment',
         'condition_payment',
         'quote_folio',
         'use_cfdi',
