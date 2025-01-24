@@ -82,7 +82,16 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $recipient = $model->approvalChain->approver;
                     $service = new PurchaseRequisitionCreationService();
                     // $recipient = $service->getUserForEmail($users?->toArray());
-                    $data = $service->generateDataForEmail('revisar', $model);
+                    $data = $service->generateDataForEmail('revisar', $model,true);
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
+            'devuelto por almacén' => [
+                function ($to, $model) {
+                    $recipient = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+                    // $recipient = $service->getUserForEmail($users?->toArray());
+                    $data = $service->generateDataForEmail('devuelto por almacén', $model);
                     Mail::to($recipient)->send(new Notification($data));
                 }
             ],
@@ -110,7 +119,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $service = new PurchaseRequisitionCreationService();
 
                     $recipient = $model->approvalChain->authorizer;
-                    $data = $service->generateDataForEmail('aprobar', $model);
+                    $data = $service->generateDataForEmail('aprobar', $model,true);
                     Mail::to($recipient)->send(new Notification($data));
                 }
             ],
@@ -137,7 +146,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $recipient = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
                     // $recipient = $service->getUserForEmail($users?->toArray());
-                    $data = $service->generateDataForEmail('aprobado por dirección general', $model);
+                    $data = $service->generateDataForEmail('aprobado por dirección general', $model,true);
                     $moreUsers = $service->getUserForEmailPRFinish($model);
                     Mail::to($recipient)->cc($moreUsers)->send(new Notification($data));
                 }
@@ -166,7 +175,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $recipient = $model->responsiblePurchaseOrder->email;
                     $cc = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
-                    $data = $service->generateDataForEmail('colocar orden de compra', $model);
+                    $data = $service->generateDataForEmail('colocar orden de compra', $model,true);
                     Mail::to($recipient)
                         ->cc($cc)
                         ->send(new Notification($data));
@@ -178,7 +187,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $recipient = $model->responsiblePurchaseOrder->email;
                     $cc = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
-                    $data = $service->generateDataForEmail('comprador reasignado-colocar orden de compra', $model);
+                    $data = $service->generateDataForEmail('comprador reasignado-colocar orden de compra', $model,true);
                     Mail::to($recipient)
                         ->cc($cc)
                         ->send(new Notification($data));

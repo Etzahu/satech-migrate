@@ -67,7 +67,6 @@ class ViewPurchaseRequisition extends ViewRecord
                 Action::make('Ver pdf')
                     ->color('danger')
                     ->icon('heroicon-m-document')
-                    // ->url(RequesterResource::getUrl('view-pdf', ['record' => $this->record->id]))
                     ->url(route('requisition.pdf', ['id' => $this->record->id]))
                     ->openUrlInNewTab(),
                 Action::make('Cambiar de empresa')
@@ -116,6 +115,14 @@ class ViewPurchaseRequisition extends ViewRecord
                             ->schema([
                                 TextEntry::make('status')
                                     ->label('Estatus')
+                                    ->badge()
+                                    ->color('success'),
+                                TextEntry::make('type')
+                                    ->label('Tipo de orde')
+                                    ->badge()
+                                    ->color('success'),
+                                TextEntry::make('priority')
+                                    ->label('Prioridad')
                                     ->badge()
                                     ->color('success'),
                                 TextEntry::make('approvalChain.requester.name')

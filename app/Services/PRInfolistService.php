@@ -30,6 +30,14 @@ class PRInfolistService
                                     ->label('Estatus')
                                     ->badge()
                                     ->color('success'),
+                                TextEntry::make('type')
+                                    ->label('Tipo de orde')
+                                    ->badge()
+                                    ->color('success'),
+                                TextEntry::make('priority')
+                                    ->label('Prioridad')
+                                    ->badge()
+                                    ->color('success'),
                                 TextEntry::make('approvalChain.requester.name')
                                     ->label('Solicitante'),
                                 TextEntry::make('motive')
@@ -71,7 +79,7 @@ class PRInfolistService
                                     ])
                                     ->columns(5)
                             ]),
-                            Tabs\Tab::make('Flujo de aprobación')
+                        Tabs\Tab::make('Flujo de aprobación')
                             ->schema([
                                 TextEntry::make('approvalChain.requester.name')
                                     ->label('Solicitante'),
@@ -148,11 +156,11 @@ class PRInfolistService
                                     ->view('filament.infolists.entries.history'),
                             ]),
                         Tabs\Tab::make('Comprador')
-                        ->visible(fn($record)=> filled($record->purchaser))
-                        ->schema([
-                            TextEntry::make('purchaser.name')
-                            ->label('Asignado'),
-                        ]),
+                            ->visible(fn($record) => filled($record->purchaser))
+                            ->schema([
+                                TextEntry::make('purchaser.name')
+                                    ->label('Asignado'),
+                            ]),
 
                     ]),
                 // Tabs\Tab::make('Ordenes')->schema([

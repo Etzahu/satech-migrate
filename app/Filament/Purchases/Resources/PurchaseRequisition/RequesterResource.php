@@ -219,7 +219,6 @@ class RequesterResource extends Resource implements HasShieldPermissions
 
     public static function getPages(): array
     {
-
         return [
             'index' => Pages\ListPurchaseRequisitions::route('/'),
             'create' => Pages\CreatePurchaseRequisition::route('/create'),

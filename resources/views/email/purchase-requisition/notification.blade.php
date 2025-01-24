@@ -861,7 +861,7 @@
                                         <!--[if mso]><img class="img-fluid" src="{{ asset('images/watermark.jpg') }}" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
                                             class="img-fluid" src="{{ asset('images/watermark.jpg') }}"
                                             style="width: 174px;"><!--<![endif]-->
-                                        <table class="spacer" role="presentation" border="0" cellpadding="0"
+                                            <table class="spacer" role="presentation" border="0" cellpadding="0"
                                             cellspacing="0" style="width: 100%;height: 20px;">
                                             <tbody>
                                                 <tr>
@@ -869,6 +869,17 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        @if(!$data['informative'])
+                                        <table class="btn btn-success btn-md btn-rounded" border="0"
+                                        cellpadding="0" cellspacing="0" role="presentation">
+                                        <tbody>
+                                            <tr>
+                                                <td class="btn-content"><a href="https://app.gptsatech.com">VER
+                                                    SOLICITUD</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        @endif
                                         <h1
                                             style="background-color: #ffffff;font-size: 18px;font-family: Roboto, sans-serif;color: #162d4d;text-transform: uppercase;">
                                             Requisición de compra</h1>
@@ -1028,15 +1039,6 @@
                                             <tbody>
                                                 <tr>
                                                     <td width="100%" height="30"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <table class="btn btn-success btn-md btn-rounded" border="0"
-                                            cellpadding="0" cellspacing="0" role="presentation">
-                                            <tbody>
-                                                <tr>
-                                                    <td class="btn-content"><a href="https://app.gptsatech.com">VER
-                                                            SOLICITUD</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>

@@ -44,6 +44,13 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'temp-email-pdf' => [
+            'driver' => 'local',
+            'root' => storage_path('app/temp-email-pdf'),
+            'url' => env('APP_URL').'/temp-email-pdf',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         's3' => [
             'driver' => 's3',
@@ -56,7 +63,7 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
-        
+
 
     ],
 
@@ -73,6 +80,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('temp-email-pdf') => storage_path('app/temp-email-pdf'),
     ],
 
 ];

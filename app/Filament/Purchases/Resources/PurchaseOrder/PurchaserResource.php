@@ -373,14 +373,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->label('Estatus')
                                                     ->badge()
                                                     ->color('success'),
-                                                Infolists\Components\TextEntry::make('type')
-                                                    ->label('Tipo de orde')
-                                                    ->badge()
-                                                    ->color('success'),
-                                                Infolists\Components\TextEntry::make('priority')
-                                                    ->label('Prioridad')
-                                                    ->badge()
-                                                    ->color('success'),
                                                 Infolists\Components\TextEntry::make('currency')
                                                     ->label('Moneda'),
                                                 Infolists\Components\TextEntry::make('type_payment')

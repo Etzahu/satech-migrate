@@ -48,10 +48,11 @@ class PurchaseRequisitionCreationService
         return Company::find(session()->get('company_id'))->acronym;
     }
 
-    public function generateDataForEmail($subject, $model)
+    public function generateDataForEmail($subject, $model,$informative = false)
     {
         $subject = str($subject)->upper();
         $data = [
+            'id' => $model->id,
             'subject' => "{$subject} REQUISICIÓN:{$model->folio}",
             'company' => $model->company->name,
             'management' => $model->approvalChain->requester->management->name,
@@ -64,7 +65,8 @@ class PurchaseRequisitionCreationService
             'observation' => $model->observation,
             'items' => $this->getItemsForEmail($model->items),
             'mensaje' => '',
-            'url_btn' => ''
+            'url_btn' => '',
+            'informative' => $informative
         ];
 
         return $data;
