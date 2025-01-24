@@ -456,8 +456,15 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                 return response()->download($media->getPath(), $media->file_name);
                                                             }),
                                                     ]),
+                                                // documentacion opcional
                                                 Infolists\Components\TextEntry::make('doc_2')
                                                     ->label('Adjudicación directa')
+                                                    ->visible(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'direct_award')
+                                                            ->first();
+                                                        return filled($media);
+                                                    })
                                                     ->state(function ($record) {
                                                         $media = Media::where('model_id', $record->id)
                                                             ->where('collection_name', 'direct_award')
@@ -485,6 +492,12 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ]),
                                                 Infolists\Components\TextEntry::make('doc_3')
                                                     ->label('Certificaciones')
+                                                    ->visible(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'certifications')
+                                                            ->first();
+                                                        return filled($media);
+                                                    })
                                                     ->state(function ($record) {
                                                         $media = Media::where('model_id', $record->id)
                                                             ->where('collection_name', 'certifications')
