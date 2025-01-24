@@ -96,22 +96,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                         'transferencia' => 'Transferencia'
                                     ])
                                     ->required(),
-                                Forms\Components\Select::make('priority')
-                                    ->label('Prioridad')
-                                    ->options([
-                                        'baja' => 'Baja',
-                                        'media' => 'Media',
-                                        'alta' => 'Alta'
-                                    ])
-                                    ->default('baja')
-                                    ->required(),
-                                Forms\Components\Select::make('type')
-                                    ->label('Tipo de orden')
-                                    ->options([
-                                        'compra' => 'Compra',
-                                        'cotización' => 'Cotización'
-                                    ])
-                                    ->required(),
                                 Forms\Components\Select::make('term_payment')
                                     ->label('Término de pago')
                                     ->options([

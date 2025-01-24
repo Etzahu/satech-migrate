@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-            //Mail::alwaysTo('ahernandezm@gptservices.com');
+            Mail::alwaysTo('ahernandezm@gptservices.com');
         // if ($this->app->environment('local')) {
         //     Mail::alwaysTo('ahernandezm@gptservices.com');
         // }

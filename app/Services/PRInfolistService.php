@@ -31,7 +31,7 @@ class PRInfolistService
                                     ->badge()
                                     ->color('success'),
                                 TextEntry::make('type')
-                                    ->label('Tipo de orde')
+                                    ->label('Tipo de requisición')
                                     ->badge()
                                     ->color('success'),
                                 TextEntry::make('priority')
