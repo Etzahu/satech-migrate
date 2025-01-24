@@ -20,10 +20,15 @@ class PurchaseOrderController extends Controller
         // return $data;
         $service = new OrderCalculationService($data->id);
         $items = $data->items;
-        $media[] = $data->getMedia('justification')->first();
-        $media[] = $data->getMedia('direct_award')->first();
-        $media[] = $data->getMedia('certifications')->first();
         $media[] = $data->getMedia('quote')->first();
+        $media[] = $data->getMedia('justification')->first();
+        // opcionales
+        if(filled($data->getMedia('direct_award')->first())){
+            $media[] = $data->getMedia('direct_award')->first();
+        }
+        if(filled($data->getMedia('certifications')->first())){
+            $media[] = $data->getMedia('certifications')->first();
+        }
 
         $itemsFormatted = $items->map(function ($item) use ($data, $service) {
             $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
