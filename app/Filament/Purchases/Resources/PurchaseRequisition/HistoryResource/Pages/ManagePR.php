@@ -82,7 +82,7 @@ class ManagePR extends ManageRecords
                         });
                 });
         }
-        if (auth()->user()->hasRole('gerente_compras')) {
+        if (auth()->user()->hasRole('gerente_compras') ||auth()->user()->hasRole('administrador_compras')) {
             $tabs['all'] = Tab::make('Todas');
         }
         return $tabs;

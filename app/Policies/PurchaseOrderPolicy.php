@@ -11,19 +11,19 @@ class PurchaseOrderPolicy
     use HandlesAuthorization;
     public function viewApproveLevel1(User $user)
     {
-        return $user->can(' view_approve-level-1_purchase::order::purchaser');
+        return $user->can('view_approve-level-1_purchase::order::purchaser');
     }
     public function viewApproveLevel2(User $user)
     {
-        return $user->can(' view_approve-level-2_purchase::order::purchaser');
+        return $user->can('view_approve-level-2_purchase::order::purchaser');
     }
     public function viewApproveLevel3(User $user)
     {
-        return $user->can(' view_approve-level-3_purchase::order::purchaser');
+        return $user->can('view_approve-level-3_purchase::order::purchaser');
     }
     public function viewApproveLevel4(User $user)
     {
-        return $user->can(' view_approve-level-4_purchase::order::purchaser');
+        return $user->can('view_approve-level-4_purchase::order::purchaser');
     }
 
     /**
