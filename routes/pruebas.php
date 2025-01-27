@@ -4,6 +4,7 @@ use Money\Money;
 use Carbon\Carbon;
 use Money\Currency;
 use App\Models\User;
+use App\Models\Brand;
 use App\Models\Company;
 use App\Models\Product;
 use App\Models\Category;
@@ -16,20 +17,20 @@ use App\Models\ProviderContact;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PurchaseProvider;
 use Illuminate\Support\Facades\DB;
-use App\Models\PurchaseRequisition;
 
+use App\Models\PurchaseRequisition;
 use Money\Currencies\ISOCurrencies;
+use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Mail;
 use Rap2hpoutre\FastExcel\FastExcel;
-
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use Filament\Notifications\Notification;
 use App\Services\OrderCalculationService;
 use Rap2hpoutre\FastExcel\SheetCollection;
-use Spatie\Browsershot\Browsershot;
 use function Spatie\LaravelPdf\Support\pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\PurchaseRequisitionApprovalChain;
@@ -1019,7 +1020,12 @@ Route::get('history-filter', function () {
 
 
 Route::get('migrar-catalogo',function(){
+    $unidades = MeasureUnit::all();
+    $marcas = Brand::all();
     $collection = fastexcel()->import('data-catalogo.csv');
     $duplicates = $collection->unique('nombre');
-    return $duplicates->count();
+    $duplicates = $duplicates->pluck('marca')->flatten()->unique();
+    $marcas = $marcas->pluck('name')->flatten();
+    dump($marcas->sort(),$duplicates->sort());
+     dump($duplicates->diff($unidades)->sort());
 });
