@@ -23,17 +23,20 @@ class CreateProduct extends CreateRecord
         $data['requester_id'] = auth()->user()->id;
         return $data;
     }
-    //:void
     protected function afterCreate(): void
     {
         //   enviar correo al usuario que da de alta
         $this->record->load('company', 'requester', 'unit');
-        $usersPurchase = User::role('administrador_compras')->get();
+        $usersPurchase = User::role('gerente_compras')->get();
+        $usersAdmin = User::role('administrador_compras')->get();
 
 
         $recipients = [];
         foreach ($usersPurchase as $user) {
             $recipients[] = $user->email;
+        }
+        foreach ($usersPurchase as $user) {
+            $usersAdmin[] = $user->email;
         }
         Mail::to($recipients)->send(new CatalogNotification($this->record));
     }

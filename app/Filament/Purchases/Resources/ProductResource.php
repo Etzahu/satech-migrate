@@ -34,7 +34,7 @@ class ProductResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('administrador_compras');
+        return auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('super_admin');
     }
 
     public static function form(Form $form): Form
@@ -88,11 +88,11 @@ class ProductResource extends Resource
                             ->nullable(),
                     ]),
                 Forms\Components\Section::make('')
-                ->visible(fn($operation)=> $operation == 'view' || $operation == 'create')
-                ->schema([
-                    Forms\Components\Checkbox::make('automatic_code')
-                    ->label('Generar código de forma automática')
-                ]),
+                    ->visible(fn($operation) => $operation == 'view' || $operation == 'create')
+                    ->schema([
+                        Forms\Components\Checkbox::make('automatic_code')
+                            ->label('Generar código de forma automática')
+                    ]),
                 Forms\Components\Section::make('')
                     ->schema([
                         Forms\Components\Textarea::make('name')
@@ -145,7 +145,7 @@ class ProductResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
-                ->visible(fn($record) => $record->status=='aprobado' ||$record->status=='pendiente'),
+                    ->visible(fn($record) => $record->status == 'aprobado' || $record->status == 'pendiente'),
             ])
         ;
     }

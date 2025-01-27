@@ -1010,22 +1010,71 @@ Route::get('history-filter', function () {
     $rq = PurchaseRequisition::first();
 
     $usersWarehouse = User::role('revisa_almacen_requisicion_compra')->get()->pluck('id')->toArray();
-    $usersAdminPurchase = User::role('administrador_compras')->get()->pluck('id')->toArray();
+    $usersAdminPurchase = User::role('gerente_compras')->get()->pluck('id')->toArray();
     $allowedIds = $rq->approvalChain->only(['requester_id', 'reviewer_id', 'approver_id', 'authorizer_id']);
-    $allowedIds = array_merge($allowedIds,$usersWarehouse,$usersAdminPurchase);
+    $allowedIds = array_merge($allowedIds, $usersWarehouse, $usersAdminPurchase);
     $allowedIds = array_values($allowedIds);
     dump($allowedIds);
     return;
 });
 
 
-Route::get('migrar-catalogo',function(){
+Route::get('migrar-catalogo', function () {
+    // $unidades = MeasureUnit::all();
+    // $marcas = Brand::all();
+    // $collection = fastexcel()->import('data-catalogo.csv');
+    // $duplicates = $collection->unique('nombre');
+    // $duplicates = $duplicates->pluck('marca')->flatten()->unique();
+    // $marcas = $marcas->pluck('name')->flatten();
+
+    // $marcas = [];
+    //  foreach ($duplicates as $k => $v) {
+    //     $marcas[] = [
+    //         'name' => $v,
+    //         'created_at' => now(),
+    //         'updated_at' => now(),
+    //     ];
+    // }
+    // try{
+    //     DB::beginTransaction();
+    //     DB::table('brands')->insert($marcas);
+    //     DB::commit();
+    // }catch(\Exception $e){
+    //     DB::rollBack();
+    //     throw $e;
+    // }
     $unidades = MeasureUnit::all();
     $marcas = Brand::all();
     $collection = fastexcel()->import('data-catalogo.csv');
-    $duplicates = $collection->unique('nombre');
-    $duplicates = $duplicates->pluck('marca')->flatten()->unique();
-    $marcas = $marcas->pluck('name')->flatten();
-    dump($marcas->sort(),$duplicates->sort());
-     dump($duplicates->diff($unidades)->sort());
+    $collection = $collection->unique('nombre');
+    // $duplicates = $duplicates->pluck('marca')->flatten()->unique();
+    // return $collection;
+
+    $data = [];
+    foreach ($collection as $item) {
+        $marca = $marcas->where('name', $item['marca'])->first();
+        $unidad = $unidades->where('name', $item['unidad'])->first();
+        $data[] = [
+            'name' => $item['nombre'],
+            'code' => $item['codigo'],
+            'status' => 'aprobado',
+            'company_id' => null,
+            'brand_id' => $marca->id,
+            'unit_id' => $unidad->id,
+            'requester_id' => auth()->user()->id,
+            'registered_user_id' => auth()->user()->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+    }
+    try {
+        DB::beginTransaction();
+        DB::table('products')->insert($data);
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+    }
+
+    return $data;
 });

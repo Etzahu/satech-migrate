@@ -43,16 +43,16 @@ class PurchaseOrderStateMachine extends StateMachine
         return [
             'revisión gerente de compras' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'revisar');
+                $data = $service->generateDataEmail($model->id, 'revisar');
 
-                $recipients = User::role('administrador_compras')->get();
+                $recipients = User::role('gerente_compras')->get();
                 $recipients = $service->getRecipientsArray($recipients);
                 Mail::to($recipients)->send(new Notification($data));
             }],
 
             'aprobado por gerente de compras' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'revisar');
+                $data = $service->generateDataEmail($model->id, 'revisar');
 
                 $recipient = $model->requisition->approvalChain->approver->email;
 
@@ -61,7 +61,7 @@ class PurchaseOrderStateMachine extends StateMachine
 
             'devuelto por gerente de compras' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'devuelto por gerente de compras');
+                $data = $service->generateDataEmail($model->id, 'devuelto por gerente de compras');
 
                 $recipient = $model->purchaser->email;
 
@@ -69,7 +69,7 @@ class PurchaseOrderStateMachine extends StateMachine
             }],
             'cancelado por gerente de compras' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'cancelado por gerente de compras');
+                $data = $service->generateDataEmail($model->id, 'cancelado por gerente de compras');
 
                 $recipient = $model->purchaser->email;
 
@@ -77,7 +77,7 @@ class PurchaseOrderStateMachine extends StateMachine
             }],
             'aprobado por gerente solicitante' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'revision');
+                $data = $service->generateDataEmail($model->id, 'revision');
 
                 $recipient = $model->requisition->approvalChain->authorizer->email;
 
@@ -85,7 +85,7 @@ class PurchaseOrderStateMachine extends StateMachine
             }],
             'devuelto por gerente solicitante' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'devuelto por gerente solicitante');
+                $data = $service->generateDataEmail($model->id, 'devuelto por gerente solicitante');
 
                 $recipient = $model->purchaser->email;
 
@@ -93,7 +93,7 @@ class PurchaseOrderStateMachine extends StateMachine
             }],
             'cancelado por gerente solicitante' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'cancelado por gerente solicitantee');
+                $data = $service->generateDataEmail($model->id, 'cancelado por gerente solicitantee');
 
                 $recipient = $model->purchaser->email;
 
@@ -101,16 +101,15 @@ class PurchaseOrderStateMachine extends StateMachine
             }],
             'autorizada para proveedor' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'autorizada para proveedor');
+                $data = $service->generateDataEmail($model->id, 'autorizada para proveedor');
 
                 $recipient = $model->purchaser->email;
 
                 Mail::to($recipient)->send(new Notification($data));
-
             }],
             'aprobado por DG nivel 1' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'revisar');
+                $data = $service->generateDataEmail($model->id, 'revisar');
 
                 $recipients = User::role('autoriza_nivel-2-orden_compra')->get();
                 $recipients = $service->getRecipientsArray($recipients);
@@ -118,7 +117,7 @@ class PurchaseOrderStateMachine extends StateMachine
             }],
             'devuelto por DG nivel 1' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'devuelto por DG');
+                $data = $service->generateDataEmail($model->id, 'devuelto por DG');
 
                 $recipient = $model->purchaser->email;
 
@@ -126,7 +125,7 @@ class PurchaseOrderStateMachine extends StateMachine
             }],
             'cancelado por DG nivel 1' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'cancelado por DG');
+                $data = $service->generateDataEmail($model->id, 'cancelado por DG');
 
                 $recipient = $model->purchaser->email;
 
@@ -134,7 +133,7 @@ class PurchaseOrderStateMachine extends StateMachine
             }],
             'devuelto por DG nivel 2' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'devuelto por DG');
+                $data = $service->generateDataEmail($model->id, 'devuelto por DG');
 
                 $recipient = $model->purchaser->email;
 
@@ -142,7 +141,7 @@ class PurchaseOrderStateMachine extends StateMachine
             }],
             'cancelado por DG nivel 2' => [function ($to, $model) {
                 $service = new OrderService();
-                $data = $service->generateDataEmail($model->id,'cancelado por DG');
+                $data = $service->generateDataEmail($model->id, 'cancelado por DG');
 
                 $recipient = $model->purchaser->email;
 

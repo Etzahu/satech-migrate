@@ -22,7 +22,7 @@ class MeasureUnitsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'name' => 'Bote 16 Kg',
+            'name' => 'Bote (16 kg)',
             'acronym' => 'Bote (16 Kg)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -30,7 +30,7 @@ class MeasureUnitsTableSeeder extends Seeder
             1 => 
             array (
                 'id' => 2,
-                'name' => 'Bote 19 Litros',
+            'name' => 'Bote (19 litros)',
             'acronym' => 'Bote (19 Lts)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -38,7 +38,7 @@ class MeasureUnitsTableSeeder extends Seeder
             2 => 
             array (
                 'id' => 3,
-                'name' => 'Bote 40 Litros',
+            'name' => 'Bote (40 litros)',
             'acronym' => 'Bote (40 Lts)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -46,7 +46,7 @@ class MeasureUnitsTableSeeder extends Seeder
             3 => 
             array (
                 'id' => 4,
-                'name' => 'caja',
+                'name' => 'Caja',
                 'acronym' => 'Cj',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-12 00:27:24',
@@ -54,7 +54,7 @@ class MeasureUnitsTableSeeder extends Seeder
             4 => 
             array (
                 'id' => 5,
-                'name' => 'Cubeta 10 Litros',
+            'name' => 'Cubeta(10 litros)',
             'acronym' => 'Cubeta(10 Lts)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -62,7 +62,7 @@ class MeasureUnitsTableSeeder extends Seeder
             5 => 
             array (
                 'id' => 6,
-                'name' => 'Cubeta 10 Kilos',
+            'name' => 'Cubeta (1O kg)',
             'acronym' => 'Cubeta (10 Kg)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -78,7 +78,7 @@ class MeasureUnitsTableSeeder extends Seeder
             7 => 
             array (
                 'id' => 8,
-                'name' => 'Garrafon 20 Litros',
+            'name' => 'Garrafón (20 litros)',
             'acronym' => 'Garrafón (20 Lts)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -86,7 +86,7 @@ class MeasureUnitsTableSeeder extends Seeder
             8 => 
             array (
                 'id' => 9,
-                'name' => 'Garrafon 9.5 Litros',
+            'name' => 'Garrafón (9.5 litros)',
             'acronym' => 'Garrafón (9.5 Lts)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -102,7 +102,7 @@ class MeasureUnitsTableSeeder extends Seeder
             10 => 
             array (
                 'id' => 11,
-                'name' => 'Pulgada',
+                'name' => 'Inch',
                 'acronym' => 'Inch',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -110,7 +110,7 @@ class MeasureUnitsTableSeeder extends Seeder
             11 => 
             array (
                 'id' => 12,
-                'name' => 'juego',
+                'name' => 'Juego',
                 'acronym' => 'Jg',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-12 00:29:38',
@@ -118,7 +118,7 @@ class MeasureUnitsTableSeeder extends Seeder
             12 => 
             array (
                 'id' => 13,
-                'name' => 'Kilogramo',
+                'name' => 'Kg',
                 'acronym' => 'Kg',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -134,15 +134,15 @@ class MeasureUnitsTableSeeder extends Seeder
             14 => 
             array (
                 'id' => 15,
-                'name' => 'Litros',
-                'acronym' => 'Lts',
+                'name' => 'Ltrs',
+                'acronym' => 'Ltrs',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
             ),
             15 => 
             array (
                 'id' => 16,
-                'name' => 'Metro',
+                'name' => 'M',
                 'acronym' => 'Mtr',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -150,7 +150,7 @@ class MeasureUnitsTableSeeder extends Seeder
             16 => 
             array (
                 'id' => 17,
-                'name' => 'Metro Cuadrado',
+                'name' => 'm2',
                 'acronym' => 'M2',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -158,7 +158,7 @@ class MeasureUnitsTableSeeder extends Seeder
             17 => 
             array (
                 'id' => 18,
-                'name' => 'Metro lineal',
+                'name' => 'ml',
                 'acronym' => 'Mtl',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -182,15 +182,15 @@ class MeasureUnitsTableSeeder extends Seeder
             20 => 
             array (
                 'id' => 21,
-                'name' => 'Servicio',
-                'acronym' => 'Srv',
+                'name' => 'SRV',
+                'acronym' => 'Servicio',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
             ),
             21 => 
             array (
                 'id' => 22,
-                'name' => 'Tambo 206 Litros',
+                'name' => 'Tambo 206 lts',
                 'acronym' => 'Tambo 206 Lts',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -198,7 +198,7 @@ class MeasureUnitsTableSeeder extends Seeder
             22 => 
             array (
                 'id' => 23,
-                'name' => 'Tanque 10 Litros',
+            'name' => 'Tanque (10 lt)',
             'acronym' => 'Tanque (10 Lts)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -206,7 +206,7 @@ class MeasureUnitsTableSeeder extends Seeder
             23 => 
             array (
                 'id' => 24,
-                'name' => 'Tanque  20 Litros',
+            'name' => 'Tanque (20 lt)',
             'acronym' => 'Tanque (20 Lts)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -214,7 +214,7 @@ class MeasureUnitsTableSeeder extends Seeder
             24 => 
             array (
                 'id' => 25,
-                'name' => 'Tanque 45 Litros',
+            'name' => 'Tanque (45 lt)',
             'acronym' => 'Tanque (45 Lts)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -222,7 +222,7 @@ class MeasureUnitsTableSeeder extends Seeder
             25 => 
             array (
                 'id' => 26,
-                'name' => 'Tanque 50 Litros',
+            'name' => 'Tanque (50 lt)',
             'acronym' => 'Tanque (50 Lts)',
                 'created_at' => '2025-01-08 19:10:13',
                 'updated_at' => '2025-01-08 19:10:13',
@@ -246,7 +246,7 @@ class MeasureUnitsTableSeeder extends Seeder
             28 => 
             array (
                 'id' => 29,
-                'name' => 'juegos',
+                'name' => 'Juegos',
                 'acronym' => 'Jgo',
                 'created_at' => '2025-01-12 00:29:53',
                 'updated_at' => '2025-01-12 00:29:53',
@@ -254,7 +254,7 @@ class MeasureUnitsTableSeeder extends Seeder
             29 => 
             array (
                 'id' => 30,
-                'name' => 'par',
+                'name' => 'Par',
                 'acronym' => 'Par',
                 'created_at' => '2025-01-12 00:30:37',
                 'updated_at' => '2025-01-12 00:30:37',
@@ -262,10 +262,34 @@ class MeasureUnitsTableSeeder extends Seeder
             30 => 
             array (
                 'id' => 31,
-                'name' => 'litro',
+                'name' => 'Litro',
                 'acronym' => 'Lt',
                 'created_at' => '2025-01-12 00:31:16',
                 'updated_at' => '2025-01-12 00:31:16',
+            ),
+            31 => 
+            array (
+                'id' => 32,
+                'name' => 'Kilos',
+                'acronym' => 'Kilos',
+                'created_at' => '2025-01-27 09:22:25',
+                'updated_at' => '2025-01-27 09:22:25',
+            ),
+            32 => 
+            array (
+                'id' => 33,
+                'name' => 'Mts',
+                'acronym' => 'Mts',
+                'created_at' => '2025-01-27 09:30:34',
+                'updated_at' => '2025-01-27 09:30:34',
+            ),
+            33 => 
+            array (
+                'id' => 34,
+                'name' => 'P/Montacargas',
+                'acronym' => 'P/Montacargas',
+                'created_at' => '2025-01-27 09:30:54',
+                'updated_at' => '2025-01-27 09:30:54',
             ),
         ));
         

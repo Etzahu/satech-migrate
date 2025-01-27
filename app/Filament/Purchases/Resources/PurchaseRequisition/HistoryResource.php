@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
 
@@ -27,12 +28,12 @@ class HistoryResource extends Resource
     public static function canAccess(): bool
     {
         return
-         auth()->user()->hasRole('solicita_requisicion_compra')||
-         auth()->user()->hasRole('revisa_almacen_requisicion_compra')||
-         auth()->user()->hasRole('revisa_requisicion_compra')||
-         auth()->user()->hasRole('aprueba_requisicion_compra')||
-        auth()->user()->hasRole('autoriza_requisicion_compra')||
-        auth()->user()->hasRole('administrador_compras');
+            auth()->user()->hasRole('solicita_requisicion_compra') ||
+            auth()->user()->hasRole('revisa_almacen_requisicion_compra') ||
+            auth()->user()->hasRole('revisa_requisicion_compra') ||
+            auth()->user()->hasRole('aprueba_requisicion_compra') ||
+            auth()->user()->hasRole('autoriza_requisicion_compra') ||
+            auth()->user()->hasRole('gerente_compras');
     }
     public static function canCreate(): bool
     {

@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->text('name', 600);
-            $table->string('code', 50);
+            $table->string('code', 100);
             $table->string('status', 100)->nullable();
-            $table->foreignId('company_id')->default(1)->constrained('companies');
+            $table->foreignId('company_id')->nullabe()->default(1)->constrained('companies');
             $table->foreignId('brand_id')->nullable()->constrained('brands');
             $table->foreignId('unit_id')->constrained('measure_units');
             $table->foreignId('category_id')->nullable()->constrained('categories');

@@ -30,11 +30,11 @@ class PurchasesPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
         return $panel
-        ->id('compras')
-        ->path('compras')
-        ->databaseNotifications()
-        ->sidebarFullyCollapsibleOnDesktop()
-        // ->unsavedChangesAlerts()
+            ->id('compras')
+            ->path('compras')
+            ->databaseNotifications()
+            ->sidebarFullyCollapsibleOnDesktop()
+            // ->unsavedChangesAlerts()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->spaUrlExceptions([
                 '*/empresa/*',
@@ -43,8 +43,7 @@ class PurchasesPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->bootUsing(function (Panel $panel) {
-            })
+            ->bootUsing(function (Panel $panel) {})
             ->discoverResources(in: app_path('Filament/Purchases/Resources'), for: 'App\\Filament\\Purchases\\Resources')
             ->discoverPages(in: app_path('Filament/Purchases/Pages'), for: 'App\\Filament\\Purchases\\Pages')
             ->pages([
@@ -56,9 +55,9 @@ class PurchasesPanelProvider extends PanelProvider
                 // Widgets\FilamentInfoWidget::class,
             ])
             ->userMenuItems([
-                'logout' =>MenuItem::make()
+                'logout' => MenuItem::make()
                     ->label('Salir')
-                    ->url(fn (): string => route('logout'))
+                    ->url(fn(): string => route('logout'))
                     ->icon('heroicon-o-cog-6-tooth'),
             ])
             ->middleware([
@@ -82,7 +81,7 @@ class PurchasesPanelProvider extends PanelProvider
                 PanelRoles::make()
                     ->restrictedRoles([
                         'super_admin',
-                        'administrador_compras',
+                        'gerente_compras',
                         'solicita_requisicion_compra',
                         'revisa_almacen_requisicion_compra',
                         'revisa_requisicion_compra',
