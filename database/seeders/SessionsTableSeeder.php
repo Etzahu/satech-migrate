@@ -48,6 +48,15 @@ class SessionsTableSeeder extends Seeder
             ),
             3 => 
             array (
+                'id' => 'ufpZ1T5edVvM1vbdiEBYp0nAsxzoer4CCpA5iUs8',
+                'user_id' => 199,
+                'ip_address' => '127.0.0.1',
+            'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+                'payload' => 'YTo5OntzOjY6Il90b2tlbiI7czo0MDoiYmNKcEx1V2N0QmIyVmNDelpHNDViM242Q1RvaEJoNGRGVkFmZGxQZiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTk5O3M6MTU6ImNvbXBhbnlfYWNyb255bSI7czoxOiJHIjtzOjk6Il9wcmV2aW91cyI7YToxOntzOjM6InVybCI7czozNDoiaHR0cHM6Ly9zYXRlY2gtbWlncmF0ZS5vcmcvY29tcHJhcyI7fXM6ODoiZmlsYW1lbnQiO2E6MDp7fXM6OToiY29tcGFuaWVzIjthOjI6e2k6MDthOjQ6e3M6MjoiaWQiO2k6MTtzOjQ6Im5hbWUiO3M6NDM6IkdQVCBJbmdlbmllcsOtYSBZIE1hbnVmYWN0dXJhLCBTLkEuIGRlIEMuVi4iO3M6MTA6InNob3J0X25hbWUiO3M6MTI6IkdQVCBTZXJ2aWNlcyI7czo3OiJhY3JvbnltIjtzOjE6IkciO31pOjE7YTo0OntzOjI6ImlkIjtpOjI7czo0OiJuYW1lIjtzOjMyOiJURUNIRU5FUkdZIENPTlRST0wsIFMuQS4gZGUgQy5WLiI7czoxMDoic2hvcnRfbmFtZSI7czoxMDoiVEVDSEVORVJHWSI7czo3OiJhY3JvbnltIjtzOjE6IlQiO319czoxMDoiY29tcGFueV9pZCI7aToxO3M6MTI6ImNvbXBhbnlfbmFtZSI7czo0MzoiR1BUIEluZ2VuaWVyw61hIFkgTWFudWZhY3R1cmEsIFMuQS4gZGUgQy5WLiI7fQ==',
+                'last_activity' => 1737750340,
+            ),
+            4 => 
+            array (
                 'id' => 'YhENr4Z7JxqBPthP6MQRqe5o03bRAmDY7aBWuf0E',
                 'user_id' => 180,
                 'ip_address' => '127.0.0.1',

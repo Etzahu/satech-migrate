@@ -8,12 +8,16 @@ use App\Models\Brand;
 use App\Models\Product;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use Filament\Infolists;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\CategoryFamily;
-use Filament\Resources\Resource;
+use Filament\Infolists\Infolist;
 
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\Support\MediaStream;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\RequestCatalogResource\Pages;
 
 
@@ -56,9 +60,52 @@ class RequestCatalogResource  extends Resource
                             ->searchable()
                             ->required(),
                     ]),
+                Forms\Components\Section::make('Documentación')
+                    ->schema([
+                        SpatieMediaLibraryFileUpload::make('documents')
+                            ->label('Ficha técnica, etc')
+                            ->hint('Puedes adjuntar más de un documento.')
+                            ->hintColor('danger')
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->collection('documents')
+                            ->multiple(),
+                    ])
             ]);
     }
-
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\Section::make('Información general')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('name')
+                            ->label('Descripción del producto/servicio'),
+                        Infolists\Components\TextEntry::make('unit.name')
+                            ->label('Unidad de medida')
+                    ]),
+                Infolists\Components\Section::make('Documentación')
+                    ->visible(fn($record) => $record->getMedia('documents')->count() > 0)
+                    ->schema([
+                        Infolists\Components\RepeatableEntry::make('media')
+                            ->state(function ($record) {
+                                $record->media = $record->getMedia('documents');
+                                return $record->media;
+                            })
+                            ->label('')
+                            ->schema([
+                                Infolists\Components\TextEntry::make('name')
+                                    ->label('Nombre del archivo'),
+                            ]),
+                        Infolists\Components\Actions::make([
+                            Infolists\Components\Actions\Action::make('Descargar')
+                                ->action(function ($record) {
+                                    $downloads = $record->getMedia('documents');
+                                    return MediaStream::create($record->code . '-documentos.zip')->addMedia($downloads);
+                                }),
+                        ]),
+                    ]),
+            ]);
+    }
     public static function table(Table $table): Table
     {
         return $table
@@ -94,12 +141,6 @@ class RequestCatalogResource  extends Resource
         ;
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
 
     public static function getPages(): array
     {

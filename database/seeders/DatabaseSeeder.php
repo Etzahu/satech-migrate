@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call(JobsTableSeeder::class);
         $this->call(UsersTableSeeder::class);
         $this->call(ManagementTableSeeder::class);
-        $this->call(UserManageSeeder::class);
+        // $this->call(UserManageSeeder::class);
         $this->call(MeasureUnitsTableSeeder::class);
         $this->call(RolesTableSeeder::class);
         $this->call(ModelHasPermissionsTableSeeder::class);
@@ -53,5 +53,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ProviderContactsTableSeeder::class);
         // $this->call(PurchaseOrdersTableSeeder::class);
         // $this->call(PurchaseOrderItemsTableSeeder::class);
+        $this->call(MailAttachmentsTableSeeder::class);
+        $this->call(MailEventsTableSeeder::class);
+        $this->call(MailablesTableSeeder::class);
+        $this->call(MailsTableSeeder::class);
     }
 }

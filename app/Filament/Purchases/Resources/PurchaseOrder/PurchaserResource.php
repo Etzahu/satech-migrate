@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Filament\Support\Enums\IconPosition;
 use App\Services\OrderCalculationService;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\Support\MediaStream;
 use Filament\Infolists\Components\Actions\Action;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -590,8 +591,129 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->activeTab(1)
                             ]),
                         Infolists\Components\Tabs\Tab::make('Requisición')
-                            ->schema([])
-                            ->visible(false),
+                            ->schema([
+                                Infolists\Components\Tabs::make('Tabs')
+                                    // inicio infolist
+                                    ->contained(false)
+                                    ->tabs([
+                                        Infolists\Components\Tabs\Tab::make('Información general')
+                                            ->schema([
+                                                Infolists\Components\TextEntry::make('requisition.status')
+                                                    ->label('Estatus')
+                                                    ->badge()
+                                                    ->color('success'),
+                                                Infolists\Components\TextEntry::make('requisition.type')
+                                                    ->label('Tipo de requisición')
+                                                    ->badge()
+                                                    ->color('success'),
+                                                Infolists\Components\TextEntry::make('requisition.priority')
+                                                    ->label('Prioridad')
+                                                    ->badge()
+                                                    ->color('success'),
+                                                Infolists\Components\TextEntry::make('requisition.approvalChain.requester.name')
+                                                    ->label('Solicitante'),
+                                                Infolists\Components\TextEntry::make('requisition.motive')
+                                                    ->label('Referencia'),
+                                                Infolists\Components\TextEntry::make('requisition.folio')
+                                                    ->label('Folio'),
+                                                Infolists\Components\TextEntry::make('requisition.date_delivery')
+                                                    ->label('Fecha deseable de entrega')
+                                                    ->date(),
+                                                Infolists\Components\TextEntry::make('requisition.project.name')
+                                                    ->label('Proyecto'),
+                                                Infolists\Components\TextEntry::make('requisition.delivery_address')
+                                                    ->label('Dirección de entrega'),
+                                            ])
+                                            ->columns(3),
+                                        Infolists\Components\Tabs\Tab::make('Partidas')
+                                            ->schema([
+                                                Infolists\Components\RepeatableEntry::make('requisition.items')
+                                                    ->label('')
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('product.code')
+                                                            ->label('Código'),
+                                                        Infolists\Components\TextEntry::make('product.name')
+                                                            ->label('Producto'),
+                                                        Infolists\Components\TextEntry::make('quantity_warehouse')
+                                                            ->label('Cantidad en almacén'),
+                                                        Infolists\Components\TextEntry::make('quantity_purchase')
+                                                            ->label('Cantidad para comprar'),
+                                                        Infolists\Components\TextEntry::make('observation')
+                                                            ->label('Observación')
+                                                            ->columnSpan(2),
+                                                    ])
+                                                    ->columns(5)
+                                            ]),
+                                        Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
+                                            ->schema([
+                                                Infolists\Components\TextEntry::make('requisition.approvalChain.requester.name')
+                                                    ->label('Solicitante'),
+                                                Infolists\Components\TextEntry::make('requisition.approvalChain.reviewer.name')
+                                                    ->label('Revisor'),
+                                                Infolists\Components\TextEntry::make('requisition.approvalChain.approver.name')
+                                                    ->label('Aprobador'),
+                                                Infolists\Components\TextEntry::make('requisition.approvalChain.authorizer.name')
+                                                    ->label('Autoriza'),
+                                            ])
+                                            ->columns(4),
+                                        Infolists\Components\Tabs\Tab::make('Observaciones')
+                                            ->schema([
+                                                Infolists\Components\TextEntry::make('observation')
+                                                    ->label('Observaciones'),
+                                            ]),
+                                        Infolists\Components\Tabs\Tab::make('Fichas técnicas')
+                                            ->visible(fn($record) => $record->requisition->getMedia('technical_data_sheets')->count() > 0)
+                                            ->schema([
+                                                Infolists\Components\RepeatableEntry::make('media')
+                                                    ->state(function ($record) {
+                                                        $record->media = $record->requisition->getMedia('technical_data_sheets');
+                                                        return $record->media;
+                                                    })
+                                                    ->label('')
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('name')
+                                                            ->label('Nombre del archivo'),
+                                                    ]),
+                                                Infolists\Components\Actions::make([
+                                                    Infolists\Components\Actions\Action::make('Descargar fichas')
+                                                        ->action(function ($record) {
+                                                            $downloads = $record->requisition->getMedia('technical_data_sheets');
+                                                            return MediaStream::create($record->requisition->folio . '-fichas-tecnicas.zip')->addMedia($downloads);
+                                                        }),
+                                                ]),
+                                            ]),
+                                            Infolists\Components\Tabs\Tab::make('Soportes')
+                                            ->visible(fn($record) => $record->requisition->getMedia('supports')->count() > 0)
+                                            ->schema([
+                                                Infolists\Components\RepeatableEntry::make('media')
+                                                    ->state(function ($record) {
+                                                        $media = Media::where('model_id', $record->requisition->id)
+                                                            ->where('collection_name', 'supports')
+                                                            ->get();
+                                                        $record->media = $media;
+                                                        return $record->media;
+                                                    })
+                                                    ->label('')
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('name')
+                                                            ->label('Nombre del archivo'),
+                                                    ]),
+                                                Infolists\Components\Actions::make([
+                                                    Infolists\Components\Actions\Action::make('Descargar soportes')
+                                                        ->action(function ($record) {
+                                                            $downloads = Media::where('model_id', $record->requisition->id)
+                                                                ->where('collection_name', 'supports')
+                                                                ->get();
+                                                            return MediaStream::create($record->requisition->folio . '-soportes.zip')->addMedia($downloads);
+                                                        }),
+                                                ]),
+                                            ]),
+
+
+                                    ])
+                                // fin infolist
+
+                            ]),
                     ])
             ]);
     }

@@ -16,14 +16,7 @@ use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentAdminResource
 
 class View extends ViewRecord
 {
-    use InteractsWithInfolists;
-    use InteractsWithRecord;
     protected static string $resource = AssignmentAdminResource::class;
-
-    public function mount(int | string $record): void
-    {
-        $this->record = $this->resolveRecord($record);
-    }
 
     protected function getHeaderActions(): array
     {
@@ -70,9 +63,5 @@ class View extends ViewRecord
                 ->openUrlInNewTab()
         ];
     }
-    public function infolist(Infolist $infolist): Infolist
-    {
-        $service = new PRInfolistService();
-        return $service->build($infolist, $this->record);
-    }
+
 }

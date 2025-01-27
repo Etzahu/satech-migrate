@@ -304,11 +304,40 @@ Route::get('change-status', function () {
 });
 
 Route::get('management-user', function () {
-    $user = User::approvers()->get();
-    $management = Management::all()->pluck('responsible_id')->unique();
-    dd($user->toArray(), $management);
-    $user = User::withWhereHas('management', function ($query) {})->get();
-    // return $user;
+    $collection = fastexcel()->import('cadenas-2025.xlsx');
+    $users = User::all();
+
+    // gerencias 1-9
+    $gerenciaId = 9;
+
+    $collection = $collection->where('Gerencia', $gerenciaId);
+    // return $collection;
+
+    $collection = $collection->map(function ($item) {
+        $item = collect($item);
+        return $item->only(['Solicita', 'Revisa', 'Aprueba']);
+    });
+    $flatten = $collection->flatten()->unique();
+    try {
+        DB::beginTransaction();
+        foreach ($flatten as $item) {
+            $user = $users->where('name', $item)->first();
+            $user->management_id = $gerenciaId;
+            $user->save();
+        }
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+    }
+
+
+    return;
+
+
+
+
+    return;
 });
 
 Route::get('chains', function () {
@@ -353,7 +382,7 @@ Route::get('money', function () {
 
 Route::get('pdf-order', function () {
 
-    $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail($id);
+    $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->first();
     // return $data;
     $service = new OrderCalculationService($data->id);
     $items = $data->items;
@@ -405,7 +434,6 @@ Route::get('pdf-order', function () {
         })
         ->disk('public')
         ->name("{$data->folio}.pdf");
-
 });
 
 Route::get('total', function () {
@@ -606,19 +634,20 @@ Route::get('users-migrate', function () {
 });
 
 Route::get('cadenas-migrar', function () {
-    $collection = fastexcel()->import('cadenas.xlsx');
+    $collection = fastexcel()->import('cadenas-2025.xlsx');
     $users = User::all();
-    // $collection = $collection->pluck('Revisa')->unique();
-
+    // $collection = $collection->flatten()->unique();
+    // return ($collection);
     // foreach($collection as $item) {
     //     $result= $users->where('name',$item)->first();
     //     echo '<br>';
     //     echo 'ITEM:'.$item;
     //     echo '<br>';
-    //     echo 'DB:'. filled($result) ? $result?->id : 'VACIO';
+    //     echo 'DB:'. (filled($result) ? $result?->id : 'VACIO');
     //     echo '<br>';
 
-    // }
+    //  }
+    //  return ;
     try {
         DB::beginTransaction();
         foreach ($collection as $item) {
@@ -948,17 +977,49 @@ Route::get('cat', function () {
     // return $collection;
 });
 
-Route::get('test',function(){
+Route::get('test', function () {
     $data = Product::all();
-    try{
+    try {
         DB::beginTransaction();
         foreach ($data as $key => $product) {
-            $product->id = $key +1;
+            $product->id = $key + 1;
             $product->save();
         }
         DB::commit();
-    }catch(Exception $e){
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
+});
+
+Route::get('history-filter', function () {
+    $rq = PurchaseRequisition::find(5);
+    dd($rq->status()->timesWas('aprobado por gerencia'));
+    return $rq->status->history();
+
+    // $rqs = PurchaseRequisition::with('company')
+    // ->whereHasStatus(function ($query) {
+    //     $query
+    //         ->from('aprobado por DG');
+    // })
+    // ->get();
+
+    // return $rqs;
+
+    $rq = PurchaseRequisition::first();
+
+    $usersWarehouse = User::role('revisa_almacen_requisicion_compra')->get()->pluck('id')->toArray();
+    $usersAdminPurchase = User::role('administrador_compras')->get()->pluck('id')->toArray();
+    $allowedIds = $rq->approvalChain->only(['requester_id', 'reviewer_id', 'approver_id', 'authorizer_id']);
+    $allowedIds = array_merge($allowedIds,$usersWarehouse,$usersAdminPurchase);
+    $allowedIds = array_values($allowedIds);
+    dump($allowedIds);
+    return;
+});
+
+
+Route::get('migrar-catalogo',function(){
+    $collection = fastexcel()->import('data-catalogo.csv');
+    $duplicates = $collection->unique('nombre');
+    return $duplicates->count();
 });

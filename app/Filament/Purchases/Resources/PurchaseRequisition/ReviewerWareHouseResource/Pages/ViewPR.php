@@ -19,10 +19,6 @@ use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResour
 
 class ViewPR extends ViewRecord
 {
-
-    use InteractsWithInfolists;
-    use InteractsWithRecord;
-
     protected static string $resource = ReviewerWareHouseResource::class;
     protected function getHeaderActions(): array
     {
@@ -59,10 +55,5 @@ class ViewPR extends ViewRecord
                 ->url(route('requisition.pdf', ['id' => $this->record->id]))
                 ->openUrlInNewTab()
         ];
-    }
-    public function infolist(Infolist $infolist): Infolist
-    {
-        $service = new PRInfolistService();
-        return $service->build($infolist, $this->record, false);
     }
 }

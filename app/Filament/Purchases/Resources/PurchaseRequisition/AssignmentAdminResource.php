@@ -7,10 +7,12 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
 use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentAdminResource\Pages;
 
 class AssignmentAdminResource extends Resource
@@ -40,6 +42,11 @@ class AssignmentAdminResource extends Resource
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::readyAssingCount();
+    }
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        $options = [];
+        return RequesterResource::infolist($infolist, $options);
     }
 
     public static function table(Table $table): Table
@@ -79,8 +86,9 @@ class AssignmentAdminResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
-                        ->icon('heroicon-m-document')
-                        ->url(fn(PurchaseRequisition $record): string => AssignmentAdminResource::getUrl('view-pdf', ['record' => $record->id]))
+                    ->icon('heroicon-m-document')
+                    ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                    ->openUrlInNewTab(),
                 ]),
             ]);
     }
@@ -90,7 +98,6 @@ class AssignmentAdminResource extends Resource
         return [
             'index' => Pages\ManagePRAdminAssing::route('/'),
             'view' => Pages\View::route('/{record}'),
-            'view-pdf' => Pages\ViewPdf::route('/{record}/pdf'),
         ];
     }
 }

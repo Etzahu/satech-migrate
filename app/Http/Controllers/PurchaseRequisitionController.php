@@ -18,7 +18,9 @@ class PurchaseRequisitionController extends Controller
         // $m1= $rq->getMedia('supports');
         // $m2= $rq->getMedia('technical_data_sheets');
         // dd($m1->toArray(),$m2->toArray());
-        $pdf = Pdf::loadView('pdf.purchase-requisition',compact('rq'))->setPaper('a4', 'landscape');
+        $revisions = $rq->status()->timesWas('aprobado por gerencia');
+
+        $pdf = Pdf::loadView('pdf.purchase-requisition',compact('rq','revisions'))->setPaper('a4', 'landscape');
         return $pdf->stream($rq->folio.'.pdf');
     }
 }

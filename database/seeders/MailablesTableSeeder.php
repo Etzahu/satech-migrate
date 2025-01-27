@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class StateHistoriesTableSeeder extends Seeder
+class MailablesTableSeeder extends Seeder
 {
 
     /**
@@ -16,7 +16,7 @@ class StateHistoriesTableSeeder extends Seeder
     {
         
 
-        \DB::table('state_histories')->delete();
+        \DB::table('mailables')->delete();
         
         
         

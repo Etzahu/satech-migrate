@@ -27,13 +27,10 @@ use Filament\Infolists\Components\Actions\Action as InfolistComponentAction;
 
 class ViewPurchaseRequisition extends ViewRecord
 {
-    use InteractsWithInfolists;
-
     protected static string $resource = RequesterResource::class;
 
     protected function getHeaderActions(): array
     {
-
         return [
             ActionGroup::make([
                 Action::make('Enviar requisición')
@@ -104,142 +101,147 @@ class ViewPurchaseRequisition extends ViewRecord
                 ->button(),
         ];
     }
-    public function infolist(Infolist $infolist): Infolist
-    {
-        return $infolist
-            ->record($this->record)
-            ->schema([
-                Tabs::make('Tabs')
-                    ->tabs([
-                        Tabs\Tab::make('Información general')
-                            ->schema([
-                                TextEntry::make('status')
-                                    ->label('Estatus')
-                                    ->badge()
-                                    ->color('success'),
-                                TextEntry::make('type')
-                                    ->label('Tipo de requisición')
-                                    ->badge()
-                                    ->color('success'),
-                                TextEntry::make('priority')
-                                    ->label('Prioridad')
-                                    ->badge()
-                                    ->color('success'),
-                                TextEntry::make('approvalChain.requester.name')
-                                    ->label('Solicitante'),
-                                TextEntry::make('motive')
-                                    ->label('Referencia'),
-                                TextEntry::make('folio')
-                                    ->label('Folio'),
-                                TextEntry::make('date_delivery')
-                                    ->label('Fecha deseable de entrega')
-                                    ->date(),
-                                TextEntry::make('project.name')
-                                    ->label('Proyecto'),
-                                TextEntry::make('delivery_address')
-                                    ->label('Dirección de entrega'),
-                                IconEntry::make('confidential')
-                                    ->label('Confidencial')
-                                    ->visible(false)
-                                    ->boolean(),
-                            ])
-                            ->columns(3),
-                        Tabs\Tab::make('Partidas')
-                            ->visible(true)
-                            ->schema([
-                                RepeatableEntry::make('items')
-                                    ->label('')
-                                    ->schema([
-                                        TextEntry::make('product.code')
-                                            ->label('Código'),
-                                        TextEntry::make('product.name')
-                                            ->label('Producto'),
-                                        // TextEntry::make('quantity_purchase')
-                                        //     ->label('Cantidad solicitada'),
-                                        TextEntry::make('quantity_warehouse')
-                                            ->label('Cantidad en almacén'),
-                                        TextEntry::make('quantity_purchase')
-                                            ->label('Cantidad para comprar'),
-                                        TextEntry::make('observation')
-                                            ->label('Observación')
-                                            ->columnSpan(2),
-                                    ])
-                                    ->columns(5)
-                            ]),
-                        Tabs\Tab::make('Flujo de aprobación')
-                            ->schema([
-                                TextEntry::make('approvalChain.requester.name')
-                                    ->label('Solicitante'),
-                                TextEntry::make('approvalChain.reviewer.name')
-                                    ->label('Revisor'),
-                                TextEntry::make('approvalChain.approver.name')
-                                    ->label('Aprobador'),
-                                TextEntry::make('approvalChain.authorizer.name')
-                                    ->label('Autoriza'),
-                            ])
-                            ->columns(4),
-                        Tabs\Tab::make('Fichas técnicas')
-                            ->visible($this->record->getMedia('technical_data_sheets')->count() > 0)
-                            ->schema([
-                                RepeatableEntry::make('media')
-                                    ->state(function ($record) {
-                                        $this->record->media = $this->record->getMedia('technical_data_sheets');
-                                        return $this->record->media;
-                                    })
-                                    ->label('')
-                                    ->schema([
-                                        TextEntry::make('name')
-                                            ->label('Nombre del archivo'),
-                                    ]),
-                                InfolistAction::make([
-                                    InfolistComponentAction::make('Descargar fichas')
-                                        ->action(function () {
-                                            $downloads = $this->record->getMedia('technical_data_sheets');
-                                            return MediaStream::create($this->record->folio . '-fichas-tecnicas.zip')->addMedia($downloads);
-                                        }),
-                                ]),
-                            ]),
-                        Tabs\Tab::make('Soportes')
-                            ->visible($this->record->getMedia('supports')->count() > 0)
-                            ->schema([
-                                RepeatableEntry::make('media')
-                                    ->state(function ($record) {
-                                        $media = Media::where('model_id', $record->id)
-                                            ->where('collection_name', 'supports')
-                                            ->get();
-                                        $this->record->media = $media;
-                                        return $this->record->media;
-                                    })
-                                    ->label('')
-                                    ->schema([
-                                        TextEntry::make('name')
-                                            ->label('Nombre del archivo'),
-                                    ]),
-                                InfolistAction::make([
-                                    InfolistComponentAction::make('Descargar soportes')
-                                        ->action(function () {
-                                            // $downloads = $this->record->getMedia('supports');
-                                            $downloads = Media::where('model_id', $this->record->id)
-                                                ->where('collection_name', 'supports')
-                                                ->get();
-                                            return MediaStream::create($this->record->folio . '-soportes.zip')->addMedia($downloads);
-                                        }),
-                                ]),
-                            ]),
 
-                        Tabs\Tab::make('Observaciones')
-                            ->schema([
-                                TextEntry::make('observation')
-                                    ->label('Observaciones'),
-                            ]),
-                        Tabs\Tab::make('Historial')
-                            ->schema([
-                                ViewEntry::make('status')
-                                    ->view('filament.infolists.entries.history'),
-                            ]),
-                    ]),
-            ]);
-        $service = new PRInfolistService();
-        return $service->build($infolist, $this->record, false);
-    }
+    // public function infolist(Infolist $infolist): Infolist
+    // {
+    //     return static::getResource()::infolist($infolist);
+    // }
+    // public function infolist(Infolist $infolist): Infolist
+    // {
+    //     return $infolist
+    //         ->record($this->record)
+    //         ->schema([
+    //             Tabs::make('Tabs')
+    //                 ->tabs([
+    //                     Tabs\Tab::make('Información general')
+    //                         ->schema([
+    //                             TextEntry::make('status')
+    //                                 ->label('Estatus')
+    //                                 ->badge()
+    //                                 ->color('success'),
+    //                             TextEntry::make('type')
+    //                                 ->label('Tipo de requisición')
+    //                                 ->badge()
+    //                                 ->color('success'),
+    //                             TextEntry::make('priority')
+    //                                 ->label('Prioridad')
+    //                                 ->badge()
+    //                                 ->color('success'),
+    //                             TextEntry::make('approvalChain.requester.name')
+    //                                 ->label('Solicitante'),
+    //                             TextEntry::make('motive')
+    //                                 ->label('Referencia'),
+    //                             TextEntry::make('folio')
+    //                                 ->label('Folio'),
+    //                             TextEntry::make('date_delivery')
+    //                                 ->label('Fecha deseable de entrega')
+    //                                 ->date(),
+    //                             TextEntry::make('project.name')
+    //                                 ->label('Proyecto'),
+    //                             TextEntry::make('delivery_address')
+    //                                 ->label('Dirección de entrega'),
+    //                             IconEntry::make('confidential')
+    //                                 ->label('Confidencial')
+    //                                 ->visible(false)
+    //                                 ->boolean(),
+    //                         ])
+    //                         ->columns(3),
+    //                     Tabs\Tab::make('Partidas')
+    //                         ->visible(true)
+    //                         ->schema([
+    //                             RepeatableEntry::make('items')
+    //                                 ->label('')
+    //                                 ->schema([
+    //                                     TextEntry::make('product.code')
+    //                                         ->label('Código'),
+    //                                     TextEntry::make('product.name')
+    //                                         ->label('Producto'),
+    //                                     // TextEntry::make('quantity_purchase')
+    //                                     //     ->label('Cantidad solicitada'),
+    //                                     TextEntry::make('quantity_warehouse')
+    //                                         ->label('Cantidad en almacén'),
+    //                                     TextEntry::make('quantity_purchase')
+    //                                         ->label('Cantidad para comprar'),
+    //                                     TextEntry::make('observation')
+    //                                         ->label('Observación')
+    //                                         ->columnSpan(2),
+    //                                 ])
+    //                                 ->columns(5)
+    //                         ]),
+    //                     Tabs\Tab::make('Flujo de aprobación')
+    //                         ->schema([
+    //                             TextEntry::make('approvalChain.requester.name')
+    //                                 ->label('Solicitante'),
+    //                             TextEntry::make('approvalChain.reviewer.name')
+    //                                 ->label('Revisor'),
+    //                             TextEntry::make('approvalChain.approver.name')
+    //                                 ->label('Aprobador'),
+    //                             TextEntry::make('approvalChain.authorizer.name')
+    //                                 ->label('Autoriza'),
+    //                         ])
+    //                         ->columns(4),
+    //                     Tabs\Tab::make('Fichas técnicas')
+    //                         ->visible($this->record->getMedia('technical_data_sheets')->count() > 0)
+    //                         ->schema([
+    //                             RepeatableEntry::make('media')
+    //                                 ->state(function ($record) {
+    //                                     $this->record->media = $this->record->getMedia('technical_data_sheets');
+    //                                     return $this->record->media;
+    //                                 })
+    //                                 ->label('')
+    //                                 ->schema([
+    //                                     TextEntry::make('name')
+    //                                         ->label('Nombre del archivo'),
+    //                                 ]),
+    //                             InfolistAction::make([
+    //                                 InfolistComponentAction::make('Descargar fichas')
+    //                                     ->action(function () {
+    //                                         $downloads = $this->record->getMedia('technical_data_sheets');
+    //                                         return MediaStream::create($this->record->folio . '-fichas-tecnicas.zip')->addMedia($downloads);
+    //                                     }),
+    //                             ]),
+    //                         ]),
+    //                     Tabs\Tab::make('Soportes')
+    //                         ->visible($this->record->getMedia('supports')->count() > 0)
+    //                         ->schema([
+    //                             RepeatableEntry::make('media')
+    //                                 ->state(function ($record) {
+    //                                     $media = Media::where('model_id', $record->id)
+    //                                         ->where('collection_name', 'supports')
+    //                                         ->get();
+    //                                     $this->record->media = $media;
+    //                                     return $this->record->media;
+    //                                 })
+    //                                 ->label('')
+    //                                 ->schema([
+    //                                     TextEntry::make('name')
+    //                                         ->label('Nombre del archivo'),
+    //                                 ]),
+    //                             InfolistAction::make([
+    //                                 InfolistComponentAction::make('Descargar soportes')
+    //                                     ->action(function () {
+    //                                         // $downloads = $this->record->getMedia('supports');
+    //                                         $downloads = Media::where('model_id', $this->record->id)
+    //                                             ->where('collection_name', 'supports')
+    //                                             ->get();
+    //                                         return MediaStream::create($this->record->folio . '-soportes.zip')->addMedia($downloads);
+    //                                     }),
+    //                             ]),
+    //                         ]),
+
+    //                     Tabs\Tab::make('Observaciones')
+    //                         ->schema([
+    //                             TextEntry::make('observation')
+    //                                 ->label('Observaciones'),
+    //                         ]),
+    //                     Tabs\Tab::make('Historial')
+    //                         ->schema([
+    //                             ViewEntry::make('status')
+    //                                 ->view('filament.infolists.entries.history'),
+    //                         ]),
+    //                 ]),
+    //         ]);
+    //     $service = new PRInfolistService();
+    //     return $service->build($infolist, $this->record, false);
+    // }
 }

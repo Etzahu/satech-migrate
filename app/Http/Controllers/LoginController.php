@@ -79,7 +79,7 @@ class LoginController extends Controller
         session()->forget(['company_id', 'company_name']);
         session([
             'company_id' => $company->id,
-            'company_name' => $company->short_name,
+            'company_name' => $company->name,
             'company_acronym' => $company->acronym,
         ]);
         $intended_url = request()->session()->get('url.intended');

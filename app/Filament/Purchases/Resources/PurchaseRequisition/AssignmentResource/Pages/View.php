@@ -31,7 +31,6 @@ use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource\Rela
 
 class View extends ViewRecord
 {
-    use InteractsWithInfolists;
     protected static string $resource = AssignmentResource::class;
 
     protected function getHeaderActions(): array
@@ -79,104 +78,4 @@ class View extends ViewRecord
         ];
     }
 
-    public function infolist(Infolist $infolist): Infolist
-    {
-        // $service = new PRInfolistService();
-        // return $service->build($infolist, $this->record);
-        return $infolist
-            ->record($this->record)
-            ->schema([
-                Tabs::make('Tabs')
-                    ->tabs([
-                        Tabs\Tab::make('Información general')
-                            ->schema([
-                               TextEntry::make('status')
-                                ->label('Estatus')
-                                ->badge()
-                                ->color('success'),
-                               TextEntry::make('type')
-                                ->label('Tipo de requisición')
-                                ->badge()
-                                ->color('success'),
-                           TextEntry::make('priority')
-                                ->label('Prioridad')
-                                ->badge()
-                                ->color('success'),
-                                TextEntry::make('approvalChain.requester.name')
-                                    ->label('Solicitante'),
-                                TextEntry::make('motive')
-                                    ->label('Referencia'),
-                                TextEntry::make('folio')
-                                    ->label('Folio'),
-                                TextEntry::make('date_delivery')
-                                    ->label('Fecha deseable de entrega')
-                                    ->date(),
-                                TextEntry::make('project.name')
-                                    ->label('Proyecto'),
-                                TextEntry::make('delivery_address')
-                                    ->label('Dirección de entrega'),
-                                IconEntry::make('confidential')
-                                    ->label('Confidencial')
-                                    ->visible(false)
-                                    ->boolean(),
-                            ])
-                            ->columns(3),
-                        Tabs\Tab::make('Partidas')
-                            // ->visible($tabItems)
-                            ->schema([
-                                RepeatableEntry::make('items')
-                                    ->label('')
-                                    ->schema([
-                                        TextEntry::make('product.code')
-                                            ->label('Código'),
-                                        TextEntry::make('product.name')
-                                            ->label('Producto'),
-                                        // TextEntry::make('quantity_purchase')
-                                        //     ->label('Cantidad solicitada'),
-                                        TextEntry::make('quantity_warehouse')
-                                            ->label('Cantidad en almacén'),
-                                        TextEntry::make('quantity_purchase')
-                                            ->label('Cantidad para comprar'),
-                                        TextEntry::make('observation')
-                                            ->label('Observación')
-                                            ->columnSpan(2),
-                                    ])
-                                    ->columns(5)
-                            ]),
-                        Tabs\Tab::make('Flujo de aprobación')
-                            ->visible(!$this->record->confidential)
-                            ->schema([
-                                TextEntry::make('approvalChain.requester.name')
-                                    ->label('Solicitante'),
-                                TextEntry::make('approvalChain.reviewer.name')
-                                    ->label('Revisor'),
-                                TextEntry::make('approvalChain.approver.name')
-                                    ->label('Aprobador'),
-                                TextEntry::make('approvalChain.authorizer.name')
-                                    ->label('Autoriza'),
-                            ]),
-
-                        Tabs\Tab::make('Observaciones')
-                            ->schema([
-                                TextEntry::make('observation')
-                                    ->label('Observaciones'),
-                            ]),
-                        Tabs\Tab::make('Historial')
-                            ->schema([
-                                ViewEntry::make('status')
-                                    ->view('filament.infolists.entries.history'),
-                            ]),
-                        Tabs\Tab::make('Comprador')
-                            ->visible(fn($record) => filled($record->purchaser))
-                            ->schema([
-                                TextEntry::make('purchaser.name')
-                                    ->label('Asignado'),
-                            ]),
-                        Tabs\Tab::make('Ordenes')->schema([
-                            \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)->lazy(false)
-                        ]),
-                    ]),
-
-            ]);
-    }
 }

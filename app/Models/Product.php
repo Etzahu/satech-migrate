@@ -2,16 +2,19 @@
 
 namespace App\Models;
 
-use App\StateMachines\CatalogStatusStateMachine;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use App\StateMachines\CatalogStatusStateMachine;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
     use HasStateMachines;
 

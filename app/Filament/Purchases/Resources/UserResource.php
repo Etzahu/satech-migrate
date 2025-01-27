@@ -87,7 +87,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('puesto')
+                Tables\Columns\TextColumn::make('management.name')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('active')
                     ->boolean(),

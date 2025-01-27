@@ -15,8 +15,6 @@ use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
 class ViewPR extends ViewRecord
 {
-    use InteractsWithInfolists;
-    use InteractsWithRecord;
     protected static string $resource = ApproverResource::class;
 
     public function mount(int | string $record): void
@@ -62,9 +60,5 @@ class ViewPR extends ViewRecord
                 ->openUrlInNewTab()
         ];
     }
-    public function infolist(Infolist $infolist): Infolist
-    {
-        $service = new PRInfolistService();
-        return $service->build($infolist, $this->record);
-    }
+
 }

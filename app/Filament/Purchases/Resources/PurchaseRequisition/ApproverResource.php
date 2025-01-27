@@ -7,6 +7,7 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Tables\Actions\ActionGroup;
@@ -82,10 +83,17 @@ class ApproverResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
-                        ->icon('heroicon-m-document')
-                        ->url(fn(PurchaseRequisition $record): string => ApproverResource::getUrl('view-pdf', ['record' => $record->id]))
+                    ->icon('heroicon-m-document')
+                    ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                    ->openUrlInNewTab(),
                 ]),
             ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        $options = [];
+        return RequesterResource::infolist($infolist, $options);
     }
 
     public static function getPages(): array
@@ -93,7 +101,6 @@ class ApproverResource extends Resource
         return [
             'index' => Pages\ManagePRApprovals::route('/'),
             'view' => Pages\ViewPR::route('/{record}'),
-            'view-pdf' => Pages\ViewPdf::route('/{record}/pdf'),
         ];
     }
 }

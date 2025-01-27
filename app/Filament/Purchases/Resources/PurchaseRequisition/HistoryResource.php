@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
 
@@ -9,44 +8,35 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Resources\Pages\Page;
 use App\Models\PurchaseRequisition;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Pages\SubNavigationPosition;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource\Pages;
-use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource\RelationManagers;
+use App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
 
-
-class AssignmentResource extends Resource
+class HistoryResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
-    protected static ?string $modelLabel = 'Requisición';
-    protected static ?string $pluralModelLabel = 'Requisiciones';
-    protected static ?string $navigationLabel = 'Mis asignaciones';
-    protected static ?string $slug = 'requisiciones/asignacion';
+    protected static ?string $modelLabel = 'Historial de requisición';
+    protected static ?string $pluralModelLabel = 'Historial de requisiciónes';
+    protected static ?string $navigationLabel = 'Historial';
+    protected static ?string $slug = 'requisiciones-historial';
     protected static ?string $navigationGroup = 'Requisiciones';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 7;
-    // protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
+    protected static ?int $navigationSort = 12;
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('comprador');
+        return
+         auth()->user()->hasRole('solicita_requisicion_compra')||
+         auth()->user()->hasRole('revisa_almacen_requisicion_compra')||
+         auth()->user()->hasRole('revisa_requisicion_compra')||
+         auth()->user()->hasRole('aprueba_requisicion_compra')||
+        auth()->user()->hasRole('autoriza_requisicion_compra')||
+        auth()->user()->hasRole('administrador_compras');
     }
     public static function canCreate(): bool
     {
         return false;
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->myAssing();
-    }
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::myAssing()->count();
     }
 
     public static function infolist(Infolist $infolist): Infolist
@@ -91,20 +81,18 @@ class AssignmentResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
-                    ->icon('heroicon-m-document')
-                    ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
-                    ->openUrlInNewTab(),
+                        ->icon('heroicon-m-document')
+                        ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                        ->openUrlInNewTab(),
                 ]),
             ]);
     }
 
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageAssignmentResource::route('/'),
+            'index' => Pages\ManagePR::route('/'),
             'view' => Pages\View::route('/{record}'),
-            'orders.create' => Pages\CreateOrder::route('{record}/orden/crear'),
         ];
     }
 }

@@ -117,7 +117,7 @@
                     <p style="font-size:10px; padding:1px;margin:0;">Revisión</p>
                 </td>
                 <td>
-                    <p style="font-size:10px; padding:1px;margin:0;text-align:right;">03</p>
+                    <p style="font-size:10px; padding:1px;margin:0;text-align:right;">{{ $revisions }}</p>
                 </td>
             </tr>
             <tr>

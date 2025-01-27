@@ -34,7 +34,6 @@ class PurchaseRequisition extends Model implements HasMedia
         'confidential',
         'observation',
         'status',
-        'status_order',
         'company_id',
         'project_id',
         'assign_user_id',
@@ -89,25 +88,8 @@ class PurchaseRequisition extends Model implements HasMedia
         return $this->belongsTo(User::class, 'assign_user_id');
     }
     // SCOPES
-    public function scopeMyRequisitions(Builder $query)
-    {
-
-        if (auth()->user()) {
-            // return $query->whereIn('status', [
-            //     'borrador',
-            //     'devuelto por revisor',
-            //     'devuelto por gerencia',
-            //     'devuelto por DG'
-            // ])
-            return $query
-                ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
-                ->where('company_id', session()->get('company_id'))
-                ->orderBy('id', 'desc');
-        }
-    }
     public function scopeMyRequisitionsDraft(Builder $query)
     {
-        if (auth()->user()) {
             return $query
                 ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
                 ->where('company_id', session()->get('company_id'))
@@ -120,7 +102,7 @@ class PurchaseRequisition extends Model implements HasMedia
                     'devuelto por comprador'
                 ])
                 ->orderBy('id', 'desc');
-        }
+
     }
     public function scopeReviewWarehouse(Builder $query)
     {

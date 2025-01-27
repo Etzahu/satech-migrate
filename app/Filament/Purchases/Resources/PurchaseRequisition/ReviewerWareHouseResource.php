@@ -6,6 +6,7 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Illuminate\Database\Eloquent\Model;
@@ -15,8 +16,8 @@ use App\Models\PurchaseRequisitionApprovalChain;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResource\Pages\ViewPR;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResource\Pages\ViewPdf;
-use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResource\Pages\ManagePRReviewWareHouses;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResource\RelationManagers;
+use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResource\Pages\ManagePRReviewWareHouses;
 
 class ReviewerWareHouseResource extends Resource
 {
@@ -49,82 +50,11 @@ class ReviewerWareHouseResource extends Resource
         return static::getModel()::reviewWarehouse()->count();
     }
 
-    public static function form(Form $form): Form
+    public static function infolist(Infolist $infolist): Infolist
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Información general')
-                    ->columns([
-                        'sm' => 2,
-                        'xl' => 2,
-                    ])
-                    ->schema([
-                        Forms\Components\Textarea::make('motive')
-                            ->label('Referencia')
-                            ->maxLength(600)
-                            ->required(),
-                        Forms\Components\DatePicker::make('date_delivery')
-                            ->label('Fecha deseable de entrega')
-                            ->minDate(now())
-                            ->default(now()->addDay(3))
-                            ->required(),
-                        Forms\Components\Textarea::make('delivery_address')
-                            ->label('Dirección de entrega')
-                            ->required()
-                            ->maxLength(500),
-                        Forms\Components\Select::make('project_id')
-                            ->label('Proyecto')
-                            ->relationship('project', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('company_id', session()->get('company_id'))->where('status', 1))
-                            ->getOptionLabelFromRecordUsing(fn(Model $record) => "({$record->code}){$record->name}")
-                            ->searchable()
-                            ->preload()
-                            ->required(),
-                    ]),
-                Forms\Components\Section::make('Flujo de aprobación')
-                    ->columns([
-                        'sm' => 1,
-                        'xl' => 2,
-                    ])
-                    ->schema([
-                        Forms\Components\Select::make('reviewer_id')
-                            ->label('Revisa')
-                            ->options(
-                                PurchaseRequisitionApprovalChain::with(['reviewer'])
-                                    ->where('requester_id', auth()->user()->id)->get()
-                                    ->pluck('reviewer.name', 'reviewer.id')
-                            )
-                            ->required(),
-                        Forms\Components\Select::make('approver_id')
-                            ->label('Aprueba')
-                            ->options(
-                                PurchaseRequisitionApprovalChain::with(['approver'])
-                                    ->where('requester_id', auth()->user()->id)->get()
-                                    ->pluck('approver.name', 'approver.id')
-                            )
-                            ->required()
-                    ]),
-                Forms\Components\Section::make('Documentación adicional')
-                    ->schema([
-                        SpatieMediaLibraryFileUpload::make('technical_data_sheets')
-                            ->label('Fichas técnicas')
-                            ->acceptedFileTypes(['application/pdf'])
-                            ->collection('technical_data_sheets')
-                            ->multiple(),
-                        SpatieMediaLibraryFileUpload::make('supports')
-                            ->label('Soportes')
-                            ->acceptedFileTypes(['application/pdf'])
-                            ->collection('supports')
-                            ->multiple(),
-                        Forms\Components\Textarea::make('observation')
-                            ->label('Observación adicionales')
-                            ->maxLength(600)
-                            ->default('Sin observaciones')
-                            ->required(),
-                    ])
-
-            ]);
+        $options = [];
+        return RequesterResource::infolist($infolist, $options);
     }
-
     public static function table(Table $table): Table
     {
         return $table
@@ -165,7 +95,8 @@ class ReviewerWareHouseResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn(PurchaseRequisition $record): string => ReviewerWareHouseResource::getUrl('view-pdf', ['record' => $record->id]))
+                        ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                        ->openUrlInNewTab(),
                 ]),
             ]);
     }
@@ -181,7 +112,6 @@ class ReviewerWareHouseResource extends Resource
         return [
             'index' => ManagePRReviewWareHouses::route('/'),
             'view' => ViewPR::route('/{record}'),
-            'view-pdf' => ViewPdf::route('/{record}/pdf'),
         ];
     }
 }

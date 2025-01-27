@@ -66,21 +66,27 @@ class ChainResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('requester.name')
                     ->label('Solicita')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('reviewer.name')
                     ->label('Revisa')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('approver.name')
                     ->label('Aprueba')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('authorizer.name')
                     ->label('Autoriza')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                ->label('Fecha de creación')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                ->label('Fecha de actualización')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

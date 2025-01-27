@@ -7,6 +7,7 @@ namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Tables\Actions\ActionGroup;
@@ -44,13 +45,10 @@ class ReviewerResource extends Resource
     }
 
 
-
-    public static function form(Form $form): Form
+    public static function infolist(Infolist $infolist): Infolist
     {
-        return $form
-            ->schema([
-                //
-            ]);
+        $options = [];
+        return RequesterResource::infolist($infolist, $options);
     }
     public static function table(Table $table): Table
     {
@@ -90,7 +88,8 @@ class ReviewerResource extends Resource
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn(PurchaseRequisition $record): string => ReviewerResource::getUrl('view-pdf', ['record' => $record->id]))
+                        ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                        ->openUrlInNewTab(),
                 ]),
             ]);
     }
@@ -100,7 +99,6 @@ class ReviewerResource extends Resource
         return [
             'index' => Pages\ManagePRReviews::route('/'),
             'view' => Pages\View::route('/{record}'),
-            'view-pdf' => Pages\ViewPdf::route('/{record}/pdf'),
         ];
     }
 }
