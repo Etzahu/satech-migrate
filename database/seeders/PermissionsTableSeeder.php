@@ -1291,6 +1291,110 @@ class PermissionsTableSeeder extends Seeder
                 'created_at' => '2025-01-21 13:37:31',
                 'updated_at' => '2025-01-21 13:37:31',
             ),
+            159 => 
+            array (
+                'id' => 160,
+                'name' => 'view_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            160 => 
+            array (
+                'id' => 161,
+                'name' => 'view_any_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            161 => 
+            array (
+                'id' => 162,
+                'name' => 'create_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            162 => 
+            array (
+                'id' => 163,
+                'name' => 'update_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            163 => 
+            array (
+                'id' => 164,
+                'name' => 'restore_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            164 => 
+            array (
+                'id' => 165,
+                'name' => 'restore_any_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            165 => 
+            array (
+                'id' => 166,
+                'name' => 'replicate_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            166 => 
+            array (
+                'id' => 167,
+                'name' => 'reorder_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            167 => 
+            array (
+                'id' => 168,
+                'name' => 'delete_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            168 => 
+            array (
+                'id' => 169,
+                'name' => 'delete_any_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            169 => 
+            array (
+                'id' => 170,
+                'name' => 'force_delete_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            170 => 
+            array (
+                'id' => 171,
+                'name' => 'force_delete_any_purchase::requisition::history',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
+            171 => 
+            array (
+                'id' => 172,
+                'name' => 'view_request::catalog',
+                'guard_name' => 'web',
+                'created_at' => '2025-01-27 17:19:04',
+                'updated_at' => '2025-01-27 17:19:04',
+            ),
         ));
         
         

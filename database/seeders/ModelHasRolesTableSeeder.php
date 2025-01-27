@@ -195,13 +195,13 @@ class ModelHasRolesTableSeeder extends Seeder
             ),
             29 => 
             array (
-                'role_id' => 9,
+                'role_id' => 10,
                 'model_type' => 'App\\Models\\User',
                 'model_id' => 152,
             ),
             30 => 
             array (
-                'role_id' => 10,
+                'role_id' => 14,
                 'model_type' => 'App\\Models\\User',
                 'model_id' => 152,
             ),

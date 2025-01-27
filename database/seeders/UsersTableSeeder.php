@@ -376,7 +376,7 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => 'hRwtcPNHjQlRqjaSXyb0uu4981jebWIpEPoGhCX398ZmNIAsdS7pGYK0IYmz',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:50',
+                'updated_at' => '2025-01-27 17:19:50',
                 'management_id' => 7,
             ),
             24 => 
@@ -1109,7 +1109,7 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'mKwpSoCS6wCTyeqRuoNGz7pQjQ6cpSNtLFu96xflQfMMwcazIzTYhFUKNtPY',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:16:18',
                 'management_id' => 9,
