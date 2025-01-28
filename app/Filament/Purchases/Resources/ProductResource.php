@@ -31,12 +31,12 @@ class ProductResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 4;
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->where('company_id', session()->get('company_id'))
-            ->orWhereNull('company_id');
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()
+    //         ->where('company_id', session()->get('company_id'))
+    //         ->orWhereNull('company_id');
+    // }
 
 
     public static function form(Form $form): Form
@@ -84,7 +84,7 @@ class ProductResource extends Resource
                             ->required(),
                         Forms\Components\Select::make('brand_id')
                             ->label('Márca')
-                            ->options(Brand::all()->pluck('name', 'id'))
+                            ->options(Brand::orderBy('name','asc')->pluck('name', 'id'))
                             ->searchable()
                             ->preload()
                             ->nullable(),
