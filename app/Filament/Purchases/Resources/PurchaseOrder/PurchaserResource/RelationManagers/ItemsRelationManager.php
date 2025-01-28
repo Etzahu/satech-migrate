@@ -45,7 +45,7 @@ class ItemsRelationManager extends RelationManager
                         ->numeric(),
                     Forms\Components\Select::make('product_id')
                         ->label('Producto/Servicio')
-                        ->options(Product::all()->pluck('name', 'id'))
+                        ->options(Product::where('status','aprobado')->pluck('name', 'id'))
                         ->searchPrompt('Busca los productos o servicios por su descripción')
                         ->searchable()
                         ->noSearchResultsMessage('No se encontró el producto/servicio.')

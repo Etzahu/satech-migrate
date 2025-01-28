@@ -28,7 +28,7 @@ class ItemsRelationManager extends RelationManager
                     ->minValue(1),
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
-                    ->options(Product::whereNotIn('id', $this->ownerRecord->items->pluck('product_id'))->pluck('name', 'id'))
+                    ->options(Product::where('status','aprobado')->whereNotIn('id', $this->ownerRecord->items->pluck('product_id'))->pluck('name', 'id'))
                     ->searchable()
                     ->live()
                     ->required(),

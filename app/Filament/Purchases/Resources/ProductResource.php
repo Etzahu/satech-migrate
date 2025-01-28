@@ -31,14 +31,6 @@ class ProductResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 4;
 
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     return parent::getEloquentQuery()
-    //         ->where('company_id', session()->get('company_id'))
-    //         ->orWhereNull('company_id');
-    // }
-
-
     public static function form(Form $form): Form
     {
         return $form
@@ -117,9 +109,6 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('id')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('code')
                     ->label('Código')
                     ->searchable(),
@@ -130,8 +119,8 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('unit.name')
                     ->label('Unidad de medida')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category.name')
-                    ->label('Categoría')
+                Tables\Columns\TextColumn::make('requester.name')
+                    ->label('Solicitante')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
