@@ -48,9 +48,18 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                        <table class="btn btn-success btn-md btn-rounded" border="0"
+                                        cellpadding="0" cellspacing="0" role="presentation">
+                                        <tbody>
+                                            <tr>
+                                                <td class="btn-content"><a href="https://app.gptsatech.com">VER</a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                         <h1
                                             style="background-color: #ffffff;font-size: 18px;font-family: Roboto, sans-serif;color: #162d4d;text-transform: uppercase;">
                                             Orden de compra</h1>
+
                                         <table class="spacer" role="presentation" border="0" cellpadding="0"
                                             cellspacing="0" style="width: 100%;height: 20px;">
                                             <tbody>
