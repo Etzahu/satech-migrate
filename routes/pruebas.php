@@ -995,8 +995,21 @@ Route::get('test', function () {
 
 Route::get('history-filter', function () {
     $rq = PurchaseRequisition::find(5);
-    dd($rq->status()->timesWas('aprobado por gerencia'));
-    return $rq->status->history();
+
+    // dd($rq->status()->timesWas('aprobado por gerencia'));
+
+    $stages = [];
+    $stages[1]=  $rq->status()->snapshotWhen('revisión');
+    $stages[2]=  $rq->status()->snapshotWhen('aprobado por revisor');
+    $stages[3]=  $rq->status()->snapshotWhen('aprobado por gerencia');
+    $stages[4]=  $rq->status()->snapshotWhen('aprobado por DG');
+
+    return $stages[1]->responsible;
+
+    // etapas de la requisicion
+
+    // return $rq->status()->snapshotsWhen('aprobado por gerencia');
+    return $rq->status()->history()->get();
 
     // $rqs = PurchaseRequisition::with('company')
     // ->whereHasStatus(function ($query) {
@@ -1007,14 +1020,8 @@ Route::get('history-filter', function () {
 
     // return $rqs;
 
-    $rq = PurchaseRequisition::first();
 
-    $usersWarehouse = User::role('revisa_almacen_requisicion_compra')->get()->pluck('id')->toArray();
-    $usersAdminPurchase = User::role('gerente_compras')->get()->pluck('id')->toArray();
-    $allowedIds = $rq->approvalChain->only(['requester_id', 'reviewer_id', 'approver_id', 'authorizer_id']);
-    $allowedIds = array_merge($allowedIds, $usersWarehouse, $usersAdminPurchase);
-    $allowedIds = array_values($allowedIds);
-    dump($allowedIds);
+
     return;
 });
 
@@ -1078,3 +1085,14 @@ Route::get('migrar-catalogo', function () {
 
     return $data;
 });
+Route::get('cadenas-email',function(){
+    $cadenas = PurchaseRequisitionApprovalChain::select('requester_id','reviewer_id','approver_id','authorizer_id')->get()->toArray();
+    $cadenas = collect($cadenas);
+    $cadenas = $cadenas->flatten()->unique();
+
+
+    $email = User::whereIn('id',$cadenas)->get()->pluck('email');
+    return ($email);
+
+});
+

@@ -408,6 +408,9 @@
         </table> --}}
     </div>
     <footer>
+        <div>
+            
+        </div>
         <img src="{{ secure_asset('images/watermark.jpg') }}" alt="watermark" style="height: 50px;">
     </footer>
 </body>

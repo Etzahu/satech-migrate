@@ -18,6 +18,7 @@ class CreateManagement extends CreateRecord
     }
     protected function afterCreate(): void
     {
+        $this->record->responsible->assignRole('aprueba_requisicion_compra');
         $this->record->responsible->assignRole('gerente_solicitante_orden_compra');
     }
 }

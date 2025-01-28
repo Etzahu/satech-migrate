@@ -7,6 +7,7 @@ use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
 use Filament\Forms\Form;
+use App\Models\Management;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Filament\Forms\Components\Actions;
@@ -92,18 +93,13 @@ class ChainResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                // Tables\Filters\SelectFilter::make('Gerencia')
+                // ->options(Management::all()->pluck('name','id')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
         ;
-    }
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

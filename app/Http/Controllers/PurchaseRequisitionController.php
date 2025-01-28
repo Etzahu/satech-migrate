@@ -20,7 +20,14 @@ class PurchaseRequisitionController extends Controller
         // dd($m1->toArray(),$m2->toArray());
         $revisions = $rq->status()->timesWas('aprobado por gerencia');
 
-        $pdf = Pdf::loadView('pdf.purchase-requisition',compact('rq','revisions'))->setPaper('a4', 'landscape');
+
+        $stages = [];
+        $stages[1]=  $rq->status()->snapshotWhen('revisión');
+        $stages[2]=  $rq->status()->snapshotWhen('aprobado por revisor');
+        $stages[3]=  $rq->status()->snapshotWhen('aprobado por gerencia');
+        $stages[4]=  $rq->status()->snapshotWhen('aprobado por DG');
+
+        $pdf = Pdf::loadView('pdf.purchase-requisition',compact('rq','revisions','stages'))->setPaper('a4', 'landscape');
         return $pdf->stream($rq->folio.'.pdf');
     }
 }
