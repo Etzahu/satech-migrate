@@ -26,10 +26,15 @@ class ListProducts extends ListRecords
             'pendiente' => Tab::make('Pendientes')
                 ->modifyQueryUsing(
                     fn(Builder $query) =>
-                    $query->where('status', 'pendiente')->orderBy('created_at', 'desc')
+                    $query->where('status', 'pendiente')
                         ->where('company_id', session()->get('company_id'))
+                        ->orderBy('created_at', 'desc')
                 )
-                ->badge(Product::query()->where('status', 'pendiente')->count())
+                ->badge(
+                    Product::query()->where('status', 'pendiente')
+                        ->where('company_id', session()->get('company_id'))
+                        ->count()
+                )
                 ->badgeColor('danger'),
             'aprobado' => Tab::make('Aprobados')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'aprobado')),
