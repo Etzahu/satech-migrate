@@ -113,14 +113,15 @@ class ProductResource extends Resource
                     ->label('Código')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Nombre'),
+                    ->label('Nombre')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus'),
                 Tables\Columns\TextColumn::make('unit.name')
-                    ->label('Unidad de medida')
-                    ->searchable(),
+                    ->label('Unidad de medida'),
                 Tables\Columns\TextColumn::make('requester.name')
                     ->label('Solicitante')
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
