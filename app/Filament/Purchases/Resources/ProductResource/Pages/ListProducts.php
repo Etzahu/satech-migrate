@@ -37,7 +37,7 @@ class ListProducts extends ListRecords
                 )
                 ->badgeColor('danger'),
             'aprobado' => Tab::make('Aprobados')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'aprobado')->orderBy('created_at','asc')),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'aprobado')->orderBy('created_at','desc')),
             'rechazado' => Tab::make('Rechazados')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'rechazado')),
             'admin' => Tab::make('Alta Admin')
