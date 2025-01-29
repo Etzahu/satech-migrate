@@ -31,6 +31,12 @@ class ProductResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-minus';
     protected static ?int $navigationSort = 4;
 
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasRole('gerente_compras')||
+        auth()->user()->hasRole('administrador_compras');
+    }
     public static function form(Form $form): Form
     {
         return $form
