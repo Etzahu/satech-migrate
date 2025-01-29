@@ -31,7 +31,7 @@ class ItemsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
-                    ->relationship(name: 'product', titleAttribute: 'name')
+                    ->options(Product::where('status','aprobado')->where('company_id', session()->get('company_id'))->pluck('name', 'id'))
                     ->disabled(),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observación')
