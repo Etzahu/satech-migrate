@@ -251,7 +251,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                         Infolists\Components\Tabs\Tab::make('Fichas técnicas')
                             ->visible(fn($record) => $record->getMedia('technical_data_sheets')->count() > 0)
                             ->schema([
-                                Infolists\Components\RepeatableEntry::make('media')
+                                Infolists\Components\RepeatableEntry::make('technical_data_sheets')
                                     ->state(function ($record) {
                                         $record->media = $record->getMedia('technical_data_sheets');
                                         return $record->media;

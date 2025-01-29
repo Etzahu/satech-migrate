@@ -22,33 +22,6 @@ class View extends ViewRecord
        protected function getHeaderActions(): array
     {
         return [
-            Action::make('Capturar respuesta')
-                ->modalHeading('Enviar respuesta')
-                ->visible(fn() => $this->record->status()->canBe('aprobado por DG') || $this->record->status()->canBe('devuelto por DG') || $this->record->status()->canBe('cancelado por DG'))
-                ->color('success')
-                ->form([
-                    Select::make('response')
-                        ->label('Respuesta')
-                        ->options([
-                            'aprobado por DG' => 'Aprobar',
-                            'devuelto por DG' => 'Devolver',
-                            'cancelado por DG' => 'Cancelar',
-                        ])
-                        ->default('aprobado por DG')
-                        ->required(),
-                    Textarea::make('observation')
-                        ->requiredUnless('response', 'aprobado por DG')
-                        ->label('Observación'),
-                ])
-                ->requiresConfirmation()
-                ->action(function (array $data) {
-                    $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
-                    Notification::make()
-                        ->title('Respuesta enviada')
-                        ->success()
-                        ->send();
-                    return redirect(HistoryResource::getUrl('index'));
-                }),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->url(route('requisition.pdf', ['id' => $this->record->id]))
