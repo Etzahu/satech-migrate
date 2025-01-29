@@ -40,6 +40,7 @@ class RequestCatalogResource  extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
+        ->where('company_id', session()->get('company_id'))
             ->where('requester_id', auth()->user()->id);
     }
     public static function form(Form $form): Form

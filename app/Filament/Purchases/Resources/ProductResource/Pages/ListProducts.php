@@ -37,11 +37,18 @@ class ListProducts extends ListRecords
                 )
                 ->badgeColor('danger'),
             'aprobado' => Tab::make('Aprobados')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'aprobado')->orderBy('created_at','desc')),
+                ->modifyQueryUsing(fn(Builder $query) => $query
+                ->where('status', 'aprobado')
+                ->where('company_id', session()->get('company_id'))
+                ->orderBy('created_at','desc')),
             'rechazado' => Tab::make('Rechazados')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'rechazado')),
+                ->modifyQueryUsing(fn(Builder $query) => $query
+                ->where('company_id', session()->get('company_id'))
+                ->where('status', 'rechazado')),
             'admin' => Tab::make('Alta Admin')
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereNull('status')),
+                ->modifyQueryUsing(fn(Builder $query) => $query
+                ->where('company_id', session()->get('company_id'))
+                ->whereNull('status')),
         ];
     }
     public function getDefaultActiveTab(): string | int | null
