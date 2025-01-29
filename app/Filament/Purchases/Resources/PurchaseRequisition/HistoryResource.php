@@ -18,7 +18,7 @@ class HistoryResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
     protected static ?string $modelLabel = 'Historial de requisición';
-    protected static ?string $pluralModelLabel = 'Historial de requisiciónes';
+    protected static ?string $pluralModelLabel = 'Historial de requisiciones';
     protected static ?string $navigationLabel = 'Historial';
     protected static ?string $slug = 'requisiciones-historial';
     protected static ?string $navigationGroup = 'Requisiciones';
