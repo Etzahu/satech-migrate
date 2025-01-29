@@ -13,7 +13,12 @@
         }
 
         @page {
+
             margin: 80px 25px;
+        }
+        body{
+            padding-top: 40px;
+            /* padding: 30px 0; */
         }
 
         header {
@@ -21,7 +26,7 @@
             top: -60px;
             left: 0px;
             right: 0px;
-            height: 50px;
+            height: 70px;
         }
 
         footer {
@@ -74,7 +79,7 @@
 <body>
     {{-- cabecera --}}
     <header>
-        <table class="w-full">
+        <table class="w-full" style="border:1px solid red;">
             <tr>
                 <td rowspan="4" align="center" valing="middle">
                     {{-- row-1-1 --}}
@@ -138,288 +143,291 @@
             </tr>
         </table>
     </header>
-    <br>
-    {{-- Datos de la requisición --}}
-    <table class="w-full general">
-        <tbody>
-            <tr>
-                <td align="right"><strong>
-                        <p>Número de requisición:</p>
-                    </strong></td>
-                <td>
-                    <p>{{ $rq->folio }}</p>
-                </td>
-                <td rowspan="2">
-                    <strong>
-                        <p>Fecha de recepción por parte de procura</p>
-                    </strong>
-                </td>
-                <td rowspan="2">
-                    <p>Sin asignar</p>
-                </td>
-            </tr>
-            <tr>
-                <td align="right"><strong>
-                        <p>Área o departamento:</p>
-                    </strong></td>
-                <td style="text-transform: uppercase">
-                    <p>{{ $rq->approvalChain->requester->management->name }}</p>
-                </td>
-            </tr>
-            <tr>
-                <td align="right"><strong>
-                        <p>Solicitante:</p>
-                    </strong></td>
-                <td style="text-transform: uppercase">
-                    <p>{{ $rq->approvalChain->requester->name }}</p>
-                </td>
-                <td rowspan="2"><strong>
-                        <p>Fecha deseable de entrega</p>
-                    </strong></td>
-                <td rowspan="2">
-                    <p>{{ $rq->date_delivery->format('d-m-Y') }}</p>
-                </td>
-            </tr>
-            <tr>
-                <td align="right"><strong>
-                        <p>Proyecto/Consumible/Activo fijo:</p>
-                    </strong></td>
-                <td>
-                    <p>{{ $rq->project->code }} {{ $rq->project->name }}</p>
-                </td>
-            </tr>
-            <tr>
-                <td align="right"><strong>
-                        <p>Domicilio de entrega:</p>
-                    </strong></td>
-                <td colspan="3">
-                    <p>{{ $rq->delivery_address }}</p>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <br>
-    {{-- Partidas --}}
-    <table class="general">
-        <thead>
-            <tr>
-                <th>
-                    <p>Item</p>
-                </th>
-                <th>
-                    <p>Producto/Servicio</p>
-                </th>
-                <th>
-                    <p>Cantidad</p>
-                </th>
-                <th>
-                    <p>UM</p>
-                </th>
-                <th>
-                    <p>Descripción detallada</p>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (filled($rq->items))
-                @foreach ($rq->items as $item)
-                    <tr>
-                        <td style="padding:3px 5px;">{{ $loop->iteration }}</td>
-                        <td style="padding:3px 5px;">{{ $item->product->name }}</td>
-                        <td style="padding:3px 5px;">{{ $item->quantity_requested }}</td>
-                        <td style="padding:3px 5px;">{{ $item->product->unit->name }}</td>
-                        <td style="padding:3px 5px;">{{ $item->observation }}</td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td colspan="5" style="padding:3px 5px;">Sin partidas</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
-    <br>
-    {{-- Observaciones --}}
-    <table class="general">
-        <thead>
-            <tr>
-                <th>
-                    <p>Observaciones</p>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (filled($rq->observations))
-                <tr>
-                    <td style="padding:3px 5px;">{{ $rq->observations }}</td>
-                </tr>
-            @else
-                <tr>
-                    <td style="padding:3px 5px;">Sin observaciones</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
-    <br>
-    {{-- fichas tecnicas --}}
-    <table class="general">
-        <thead>
-            <tr>
-                <th>
-                    <p style="text-align: left;">Fichas técnicas</p>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (filled($rq->getMedia('technical_data_sheets')))
-                @foreach ($rq->getMedia('technical_data_sheets') as $file)
-                    <tr>
-                        <td style="padding:5px 7px;">
-                            <a href="{{ $file->getUrl() }}" target="_blank" style="text-decoration: none;">
-                                {{ $file->name }} ({{ $file->extension }})
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td style="padding:3px 5px;">Sin fichas técnicas</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
-    <br>
-    {{-- soportes --}}
-    <table class="general">
-        <thead>
-            <tr>
-                <th>
-                    <p style="text-align: left;">Soportes</p>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (filled($rq->getMedia('supports')))
-                @foreach ($rq->getMedia('supports') as $file)
-                    <tr>
-                        <td style="padding:5px 7px;">
-                            <a href="{{ $file->getUrl() }}" target="_blank" style="text-decoration: none;">
-                                {{ $file->name }} ({{ $file->extension }})
-                            </a>
-                        </td>
-                    </tr>
-                @endforeach
-            @else
-                <tr>
-                    <td style="padding:3px 5px;">Sin soportes</td>
-                </tr>
-            @endif
-        </tbody>
-    </table>
-    <br>
-    {{-- Firmas --}}
+
+
     <div>
-        {{-- <table style="w-full">
+        {{-- Datos de la requisición --}}
+        <table class="w-full general">
             <tbody>
                 <tr>
+                    <td align="right"><strong>
+                            <p>Número de requisición:</p>
+                        </strong></td>
                     <td>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <td>
-                                        <p
-                                            style="text-transform: uppercase;text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                            Visto bueno de almacén</p>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div style="height: 80px;"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p
-                                            style="text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                            Usuario almacén</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <p>{{ $rq->folio }}</p>
                     </td>
-                    <td>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <td>
-                                        <p
-                                            style="text-transform: uppercase;text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                            Solicita</p>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div style="height: 80px;"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p
-                                            style="text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                            {{ $rq->approvalChain->requester->name }}</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <td rowspan="2">
+                        <strong>
+                            <p>Fecha de recepción por parte de procura</p>
+                        </strong>
                     </td>
+                    <td rowspan="2">
+                        <p>Sin asignar</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>
+                            <p>Área o departamento:</p>
+                        </strong></td>
+                    <td style="text-transform: uppercase">
+                        <p>{{ $rq->approvalChain->requester->management->name }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>
+                            <p>Solicitante:</p>
+                        </strong></td>
+                    <td style="text-transform: uppercase">
+                        <p>{{ $rq->approvalChain->requester->name }}</p>
+                    </td>
+                    <td rowspan="2"><strong>
+                            <p>Fecha deseable de entrega</p>
+                        </strong></td>
+                    <td rowspan="2">
+                        <p>{{ $rq->date_delivery->format('d-m-Y') }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>
+                            <p>Proyecto/Consumible/Activo fijo:</p>
+                        </strong></td>
                     <td>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <td>
-                                        <p
-                                            style="text-transform: uppercase;text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                            Autoriza</p>
-                                    </td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div style="height: 80px;"></div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <p
-                                            style=" text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                            {{ $rq->approvalChain->approver->name }}</p>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <p>{{ $rq->project->code }} {{ $rq->project->name }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"><strong>
+                            <p>Domicilio de entrega:</p>
+                        </strong></td>
+                    <td colspan="3">
+                        <p>{{ $rq->delivery_address }}</p>
                     </td>
                 </tr>
             </tbody>
-        </table> --}}
-    </div>
-    {{-- <div style="width: 100%;border:1px solid red;">
-            <table style="border:none;width:30px;margin: 0 auto;">
+        </table>
+        <br>
+        {{-- Partidas --}}
+        <table class="general">
+            <thead>
+                <tr>
+                    <th>
+                        <p>Item</p>
+                    </th>
+                    <th>
+                        <p>Producto/Servicio</p>
+                    </th>
+                    <th>
+                        <p>Cantidad</p>
+                    </th>
+                    <th>
+                        <p>UM</p>
+                    </th>
+                    <th>
+                        <p>Descripción detallada</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (filled($rq->items))
+                    @foreach ($rq->items as $item)
+                        <tr>
+                            <td style="padding:3px 5px;">{{ $loop->iteration }}</td>
+                            <td style="padding:3px 5px;">{{ $item->product->name }}</td>
+                            <td style="padding:3px 5px;">{{ $item->quantity_requested }}</td>
+                            <td style="padding:3px 5px;">{{ $item->product->unit->name }}</td>
+                            <td style="padding:3px 5px;">{{ $item->observation }}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="5" style="padding:3px 5px;">Sin partidas</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+        <br>
+        {{-- Observaciones --}}
+        <table class="general">
+            <thead>
+                <tr>
+                    <th>
+                        <p>Observaciones</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (filled($rq->observations))
+                    <tr>
+                        <td style="padding:3px 5px;">{{ $rq->observations }}</td>
+                    </tr>
+                @else
+                    <tr>
+                        <td style="padding:3px 5px;">Sin observaciones</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+        <br>
+        {{-- fichas tecnicas --}}
+        <table class="general">
+            <thead>
+                <tr>
+                    <th>
+                        <p style="text-align: left;">Fichas técnicas</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (filled($rq->getMedia('technical_data_sheets')))
+                    @foreach ($rq->getMedia('technical_data_sheets') as $file)
+                        <tr>
+                            <td style="padding:5px 7px;">
+                                <a href="{{ $file->getUrl() }}" target="_blank" style="text-decoration: none;">
+                                    {{ $file->name }} ({{ $file->extension }})
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td style="padding:3px 5px;">Sin fichas técnicas</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+        <br>
+        {{-- soportes --}}
+        <table class="general">
+            <thead>
+                <tr>
+                    <th>
+                        <p style="text-align: left;">Soportes</p>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (filled($rq->getMedia('supports')))
+                    @foreach ($rq->getMedia('supports') as $file)
+                        <tr>
+                            <td style="padding:5px 7px;">
+                                <a href="{{ $file->getUrl() }}" target="_blank" style="text-decoration: none;">
+                                    {{ $file->name }} ({{ $file->extension }})
+                                </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td style="padding:3px 5px;">Sin soportes</td>
+                    </tr>
+                @endif
+            </tbody>
+        </table>
+        <br>
+        {{-- Firmas --}}
+        <div>
+            {{-- <table style="w-full">
                 <tbody>
                     <tr>
-                        <td style="border:none;"><p>Solicita </td>
-                        <td style="border:none;"><p>Revisión del almacén</td>
-                        <td style="border:none;"><p>Revisa</td>
-                        <td style="border:none;"><p>Aprueba</td>
-                        <td style="border:none;"><p>Autoriza</td>
+                        <td>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            <p
+                                                style="text-transform: uppercase;text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
+                                                Visto bueno de almacén</p>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="height: 80px;"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p
+                                                style="text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
+                                                Usuario almacén</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            <p
+                                                style="text-transform: uppercase;text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
+                                                Solicita</p>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="height: 80px;"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p
+                                                style="text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
+                                                {{ $rq->approvalChain->requester->name }}</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td>
+                                            <p
+                                                style="text-transform: uppercase;text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
+                                                Autoriza</p>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div style="height: 80px;"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p
+                                                style=" text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
+                                                {{ $rq->approvalChain->approver->name }}</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
                     </tr>
                 </tbody>
-            </table>
-    </div> --}}
+            </table> --}}
+        </div>
+        {{-- <div style="width: 100%;">
+                <table style="border:none;width:600px;margin: 0 auto;">
+                    <tbody>
+                        <tr>
+                            <td style="border:none;"><p style="font-size: 11px;">Solicita</p></td>
+                            <td style="border:none;width:130px; ;"><p style="font-size: 11px;">Revisión del almacén</p></td>
+                            <td style="border:none;"><p style="font-size: 11px;">Revisa</p></td>
+                            <td style="border:none;"><p style="font-size: 11px;">Aprueba</p></td>
+                            <td style="border:none;"><p style="font-size: 11px;">Autoriza</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div> --}}
+    </div>
     <footer>
         <img src="{{ secure_asset('images/watermark.jpg') }}" alt="watermark" style="height: 50px;">
     </footer>
