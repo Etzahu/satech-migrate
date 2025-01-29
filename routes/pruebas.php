@@ -1096,3 +1096,19 @@ Route::get('cadenas-email',function(){
 
 });
 
+Route::get('update-catalog',function(){
+    $search= 'T';
+    $product = Product::where('code', 'like', 'T%')->get();
+    try{
+        DB::beginTransaction();
+        foreach($product as $product){
+            $product->company_id = 2;
+            $product->save();
+        }
+        DB::commit();
+    }catch(Exception $e){
+        DB::rollBack();
+        throw $e;
+    }
+});
+

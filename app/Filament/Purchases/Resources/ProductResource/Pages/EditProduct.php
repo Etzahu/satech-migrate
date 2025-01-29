@@ -26,44 +26,53 @@ class EditProduct extends EditRecord
         if ($this->record->status == 'pendiente') {
             return  [
                 Action::make('Capturar respuesta')
-                ->modalHeading('Enviar respuesta')
-                ->color('success')
+                    ->modalHeading('Enviar respuesta')
+                    ->color('success')
 
-                ->form([
-                    Select::make('response')
-                        ->label('Respuesta')
-                        ->options([
-                            'aprobado' => 'Aprobar',
-                            'rechazado' => 'Rechazar',
-                        ])
-                        ->default('aprobado')
-                        ->required(),
-                ])
-                ->requiresConfirmation()
-                ->action(function (array $data) {
-                    $this->form->getState();
-                    $this->record->status()->transitionTo($data['response']);
-                    $this->record->registered_user_id = auth()->user()->id;
-                    $this->record->save();
-                    Notification::make()
-                        ->title('Respuesta enviada')
-                        ->success()
-                        ->send();
-                    // return redirect(ApproverResource::getUrl('index'));
-                }),
+                    ->form([
+                        Select::make('response')
+                            ->label('Respuesta')
+                            ->options([
+                                'aprobado' => 'Aprobar',
+                                'rechazado' => 'Rechazar',
+                            ])
+                            ->default('aprobado')
+                            ->required(),
+                    ])
+                    ->requiresConfirmation()
+                    ->action(function (array $data) {
+                        $this->form->getState();
+                        $dataUpdate = $this->form->getState();
+
+                        $this->record->status()->transitionTo($data['response']);
+                        $this->record->code = $dataUpdate['code'];
+                        $this->record->category_id = $dataUpdate['category_id'];
+                        $this->record->category_family_id = $dataUpdate['category_family_id'];
+                        $this->record->brand_id = $dataUpdate['brand_id'];
+                        $this->record->name = $dataUpdate['name'];
+                        $this->record->unit_id = $dataUpdate['unit_id'];
+                        $this->record->registered_user_id = auth()->user()->id;
+                        $this->record->save();
+                        
+                        Notification::make()
+                            ->title('Respuesta enviada')
+                            ->success()
+                            ->send();
+                        // return redirect(ApproverResource::getUrl('index'));
+                    }),
             ];
-        }elseif ($this->record->status == 'aprobado') {
+        } elseif ($this->record->status == 'aprobado') {
             return [
                 $this->getSaveFormAction(),
             ];
-        }else{
+        } else {
             return [];
         }
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['registered_user_id']= auth()->user()->id;
+        $data['registered_user_id'] = auth()->user()->id;
         return $data;
     }
 

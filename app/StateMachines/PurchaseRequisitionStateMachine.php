@@ -47,20 +47,14 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'revisión por almacén' => [
                 function ($to, $model) {
                     $users = User::role('revisa_almacen_requisicion_compra')->get();
-
                     $service = new PurchaseRequisitionCreationService();
                     $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('revisar existencia', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                    // NotificationFilament::make()
-                    //     ->title('Revisar existencias de nueva requisicion')
-                    //     ->sendToDatabase($users);
                 },
             ],
             'revisión' => [
                 function ($to, $model) {
-                    // $users = $model->approvalChain->reviewer;
-                    // $recipient = $service->getUserForEmail($users?->toArray());
                     $recipient = $model->approvalChain->reviewer;
                     $service = new PurchaseRequisitionCreationService();
                     $data = $service->generateDataForEmail('revisar', $model);
@@ -82,7 +76,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $recipient = $model->approvalChain->approver;
                     $service = new PurchaseRequisitionCreationService();
                     // $recipient = $service->getUserForEmail($users?->toArray());
-                    $data = $service->generateDataForEmail('revisar', $model,true);
+                    $data = $service->generateDataForEmail('revisar', $model);
                     Mail::to($recipient)->send(new Notification($data));
                 }
             ],
@@ -119,7 +113,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $service = new PurchaseRequisitionCreationService();
 
                     $recipient = $model->approvalChain->authorizer;
-                    $data = $service->generateDataForEmail('aprobar', $model,true);
+                    $data = $service->generateDataForEmail('aprobar', $model);
                     Mail::to($recipient)->send(new Notification($data));
                 }
             ],
@@ -146,7 +140,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $recipient = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
                     // $recipient = $service->getUserForEmail($users?->toArray());
-                    $data = $service->generateDataForEmail('aprobado por dirección general', $model,true);
+                    $data = $service->generateDataForEmail('aprobado por dirección general', $model);
                     $moreUsers = $service->getUserForEmailPRFinish($model);
                     Mail::to($recipient)->cc($moreUsers)->send(new Notification($data));
                 }
@@ -175,7 +169,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $recipient = $model->responsiblePurchaseOrder->email;
                     $cc = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
-                    $data = $service->generateDataForEmail('colocar orden de compra', $model,true);
+                    $data = $service->generateDataForEmail('colocar orden de compra', $model);
                     Mail::to($recipient)
                         ->cc($cc)
                         ->send(new Notification($data));
@@ -187,7 +181,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     $recipient = $model->responsiblePurchaseOrder->email;
                     $cc = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
-                    $data = $service->generateDataForEmail('comprador reasignado-colocar orden de compra', $model,true);
+                    $data = $service->generateDataForEmail('comprador reasignado-colocar orden de compra', $model);
                     Mail::to($recipient)
                         ->cc($cc)
                         ->send(new Notification($data));
