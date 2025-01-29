@@ -353,6 +353,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                 'devuelto por revisor',
                                 'devuelto por gerencia',
                                 'devuelto por DG',
+                                'devuelto por comprador'
                             ];
                             return in_array($record->status, $states);
                         }),
