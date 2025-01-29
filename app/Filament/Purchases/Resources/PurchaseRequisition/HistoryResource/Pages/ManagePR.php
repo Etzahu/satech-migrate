@@ -78,11 +78,11 @@ class ManagePR extends ManageRecords
                         ->where('company_id', session()->get('company_id'))
                         ->whereHasStatus(function ($query) {
                             $query
-                                ->from('aprobado por gerencia');
+                                ->from('aprobado por revisor');
                         });
                 });
         }
-        if (auth()->user()->hasRole('gerente_compras') ||auth()->user()->hasRole('administrador_compras')) {
+        if (auth()->user()->hasRole('gerente_compras') ||auth()->user()->hasRole('administrador_compras') ||auth()->user()->id == 106) {
             $tabs['all'] = Tab::make('Todas')
             ->modifyQueryUsing(
                 function (Builder $query) {
