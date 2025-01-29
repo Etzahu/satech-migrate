@@ -47,6 +47,7 @@ class PurchaseRequisitionPolicy
         $usersAdminPurchase = User::role('gerente_compras')->get()->pluck('id')->toArray();
 
         $aloweIds[] = 106;
+        $allowallIds[] = $purchaseRequisition->purchaser->id;
         $allowedIds = $purchaseRequisition->approvalChain->only(['requester_id', 'reviewer_id', 'approver_id', 'authorizer_id']);
         $allowedIds = array_merge($allowedIds, $usersWarehouse, $usersAdminPurchase);
         $allowedIds = array_values($allowedIds);

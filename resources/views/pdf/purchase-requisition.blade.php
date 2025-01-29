@@ -407,10 +407,20 @@
             </tbody>
         </table> --}}
     </div>
+    {{-- <div style="width: 100%;border:1px solid red;">
+            <table style="border:none;width:30px;margin: 0 auto;">
+                <tbody>
+                    <tr>
+                        <td style="border:none;"><p>Solicita </td>
+                        <td style="border:none;"><p>Revisión del almacén</td>
+                        <td style="border:none;"><p>Revisa</td>
+                        <td style="border:none;"><p>Aprueba</td>
+                        <td style="border:none;"><p>Autoriza</td>
+                    </tr>
+                </tbody>
+            </table>
+    </div> --}}
     <footer>
-        <div>
-            
-        </div>
         <img src="{{ secure_asset('images/watermark.jpg') }}" alt="watermark" style="height: 50px;">
     </footer>
 </body>

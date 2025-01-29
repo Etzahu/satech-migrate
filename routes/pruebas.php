@@ -994,7 +994,7 @@ Route::get('test', function () {
 });
 
 Route::get('history-filter', function () {
-    $rq = PurchaseRequisition::find(5);
+    $rq = PurchaseRequisition::with(['items','approvalChain','project','items.product','items.product.unit','company'])->findOrFail(8);
 
     // dd($rq->status()->timesWas('aprobado por gerencia'));
 
@@ -1004,23 +1004,10 @@ Route::get('history-filter', function () {
     $stages[3]=  $rq->status()->snapshotWhen('aprobado por gerencia');
     $stages[4]=  $rq->status()->snapshotWhen('aprobado por DG');
 
-    return $stages[1]->responsible;
-
-    // etapas de la requisicion
-
-    // return $rq->status()->snapshotsWhen('aprobado por gerencia');
-    return $rq->status()->history()->get();
-
-    // $rqs = PurchaseRequisition::with('company')
-    // ->whereHasStatus(function ($query) {
-    //     $query
-    //         ->from('aprobado por DG');
-    // })
-    // ->get();
-
-    // return $rqs;
-
-
+    $revisions = $rq->status()->timesWas('aprobado por gerencia');
+    // return $stages;
+    $pdf = Pdf::loadView('pdf.purchase-requisition',compact('rq','revisions','stages'))->setPaper('a4', 'landscape');
+    return $pdf->stream($rq->folio.'.pdf');
 
     return;
 });

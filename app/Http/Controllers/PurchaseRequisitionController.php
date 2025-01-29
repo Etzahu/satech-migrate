@@ -27,6 +27,8 @@ class PurchaseRequisitionController extends Controller
         $stages[3]=  $rq->status()->snapshotWhen('aprobado por gerencia');
         $stages[4]=  $rq->status()->snapshotWhen('aprobado por DG');
 
+
+
         $pdf = Pdf::loadView('pdf.purchase-requisition',compact('rq','revisions','stages'))->setPaper('a4', 'landscape');
         return $pdf->stream($rq->folio.'.pdf');
     }
