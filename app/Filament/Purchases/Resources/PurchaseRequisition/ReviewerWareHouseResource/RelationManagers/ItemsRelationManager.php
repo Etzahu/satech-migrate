@@ -28,10 +28,11 @@ class ItemsRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         return $form
+            ->columns(1)
             ->schema([
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
-                    ->options(Product::where('status','aprobado')->where('company_id', session()->get('company_id'))->pluck('name', 'id'))
+                    ->options(Product::where('status', 'aprobado')->where('company_id', session()->get('company_id'))->pluck('name', 'id'))
                     ->disabled(),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observación')

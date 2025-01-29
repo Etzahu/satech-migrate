@@ -301,6 +301,12 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                 Infolists\Components\TextEntry::make('observation')
                                     ->label('Observaciones'),
                             ]),
+                        Infolists\Components\Tabs\Tab::make('Comprador asignado')
+                            ->visible(fn($record) => filled($record->purchaser))
+                            ->schema([
+                                Infolists\Components\TextEntry::make('purchaser.name')
+                                    ->label('Nombre'),
+                            ]),
                         Infolists\Components\Tabs\Tab::make('Historial')
                             ->schema([
                                 Infolists\Components\ViewEntry::make('status')

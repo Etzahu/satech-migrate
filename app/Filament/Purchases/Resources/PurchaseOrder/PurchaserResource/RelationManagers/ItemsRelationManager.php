@@ -30,6 +30,7 @@ class ItemsRelationManager extends RelationManager
     {
         if ($this->getOwnerRecord()->currency == 'USD') {
             return $form
+                ->columns(1)
                 ->schema([
                     Forms\Components\TextInput::make('quantity')
                         ->label('Cantidad')
@@ -45,7 +46,7 @@ class ItemsRelationManager extends RelationManager
                         ->numeric(),
                     Forms\Components\Select::make('product_id')
                         ->label('Producto/Servicio')
-                        ->options(Product::where('status','aprobado')->where('company_id', session()->get('company_id'))->pluck('name', 'id'))
+                        ->options(Product::where('status', 'aprobado')->where('company_id', session()->get('company_id'))->pluck('name', 'id'))
                         ->searchPrompt('Busca los productos o servicios por su descripción')
                         ->searchable()
                         ->noSearchResultsMessage('No se encontró el producto/servicio.')
@@ -57,6 +58,7 @@ class ItemsRelationManager extends RelationManager
                 ]);
         } else {
             return $form
+                ->columns(1)
                 ->schema([
                     Forms\Components\TextInput::make('quantity')
                         ->label('Cantidad')

@@ -2,12 +2,14 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
 
-use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
+use App\Models\Product;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Filament\Resources\RelationManagers\RelationManager;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -20,6 +22,7 @@ class ItemsRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         return $form
+        ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('quantity_requested')
                     ->label('Cantidad solicitada')
@@ -31,7 +34,33 @@ class ItemsRelationManager extends RelationManager
                     ->options(Product::where('status','aprobado')->where('company_id', session()->get('company_id'))->whereNotIn('id', $this->ownerRecord->items->pluck('product_id'))->pluck('name', 'id'))
                     ->searchable()
                     ->live()
-                    ->required(),
+                    ->required()
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        if(filled($get('product_id'))){
+                            $product = Product::find($get('product_id'));
+                            $set('selectedCode', $product->code);
+                            $set('selectedDesc', $product->name);
+                            $set('selectedUm', $product->unit->name);
+
+                        }else{
+                            $set('selectedCode','');
+                            $set('selectedDesc', '');
+                            $set('selectedUm', '');
+                        }
+                    }),
+                Forms\Components\Fieldset::make('Seleccionado')
+                ->columns(1)
+                ->schema([
+                    Forms\Components\TextInput::make('selectedCode')
+                    ->disabled()
+                    ->label('Código'),
+                    Forms\Components\Textarea::make('selectedDesc')
+                    ->disabled()
+                    ->label('Descripción'),
+                    Forms\Components\TextInput::make('selectedUm')
+                    ->disabled()
+                    ->label('Unidad de Medida')
+                ]),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observación')
                     ->default('Sin observaciones')
@@ -44,8 +73,12 @@ class ItemsRelationManager extends RelationManager
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('product.code')
+                    ->label('Código'),
                 Tables\Columns\TextColumn::make('product.name')
                     ->label('Producto'),
+                Tables\Columns\TextColumn::make('product.unit.name')
+                    ->label('UM'),
                 Tables\Columns\TextColumn::make('quantity_requested')
                     ->label('Cantidad solicitada')
                     ->numeric()
