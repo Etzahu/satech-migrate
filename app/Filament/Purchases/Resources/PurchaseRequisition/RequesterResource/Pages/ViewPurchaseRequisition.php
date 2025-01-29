@@ -58,6 +58,7 @@ class ViewPurchaseRequisition extends ViewRecord
                             'devuelto por revisor',
                             'devuelto por gerencia',
                             'devuelto por DG',
+                            'devuelto por comprador'
                         ];
                         return in_array($this->record->status, $states);
                     }),
