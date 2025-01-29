@@ -88,7 +88,6 @@ class HistoryResource extends Resource
                 ]),
             ]);
     }
-
     public static function getPages(): array
     {
         return [
