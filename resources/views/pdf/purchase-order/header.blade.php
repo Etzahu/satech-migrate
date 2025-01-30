@@ -98,7 +98,7 @@
                         {{ $data->company->name }}</td>
                 </tr>
                 <tr>
-                    <td valign="middle" colspan="5" style="font-weight: bold;font-size: 8px;;">ORDEN DE COMPRA</td>
+                    <td valign="middle" colspan="5" style="font-weight: bold;font-size: 8px;">ORDEN DE COMPRA</td>
                 </tr>
                 <tr>
                     <td style="font-size: 8px;;" valign="middle">TIPO DE DOCUMENTO</td>
