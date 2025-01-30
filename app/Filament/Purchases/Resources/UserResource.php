@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 use App\Filament\Purchases\Resources\UserResource\Pages;
 use App\Filament\Purchases\Resources\UserResource\RelationManagers;
 
@@ -105,6 +106,7 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Impersonate::make(),
             ])
         ;
     }

@@ -128,7 +128,8 @@
                         <td class="px-1 border border-white border-r-black"></td>
                         <td class="px-1 text-xs text-center text-black border border-black ">Descuento:</td>
                         <td class="px-1 text-xs text-center text-black border border-black ">
-                            {{ $data['total']['Descuento'] }}</td>
+                            {{ $data['total']['Descuento'] }}
+                        </td>
                     </tr>
                     <tr>
                         <td class="px-1 border border-white"></td>

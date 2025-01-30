@@ -14,7 +14,7 @@ Route::get('/login/google', [LoginController::class, 'redirectToProvider'])->nam
 Route::get('/login/google/callback', [LoginController::class, 'handleProviderCallback'])->name('login.callback');
 Route::get('home', [LoginController::class, 'home'])->name('home')->middleware('auth');
 
-if (config('app.env') === 'local') {
+if (config('app.env') === 'local' && config('app.debug' === true)) {
     @include_once('pruebas.php');
 }
 @include_once('purchase-requisition.php');
