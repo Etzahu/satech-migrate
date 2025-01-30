@@ -14,7 +14,6 @@ class PurchaseRequisitionController extends Controller
         // TODO:falta limitar para solo los que esten relacionados con esta requisicion puedan verla
         $rq = PurchaseRequisition::with(['items','approvalChain','project','items.product','items.product.unit','company'])->findOrFail($id);
         // dd($rq->toArray());
-        // return view('pdf.purchase-requisition',compact('rq'));
         // $m1= $rq->getMedia('supports');
         // $m2= $rq->getMedia('technical_data_sheets');
         // dd($m1->toArray(),$m2->toArray());
@@ -27,8 +26,7 @@ class PurchaseRequisitionController extends Controller
         $stages[3]=  $rq->status()->snapshotWhen('aprobado por gerencia');
         $stages[4]=  $rq->status()->snapshotWhen('aprobado por DG');
 
-
-
+        // return view('pdf.purchase-requisition',compact('rq','revisions','stages'));
         $pdf = Pdf::loadView('pdf.purchase-requisition',compact('rq','revisions','stages'))->setPaper('a4', 'landscape');
         return $pdf->stream($rq->folio.'.pdf');
     }

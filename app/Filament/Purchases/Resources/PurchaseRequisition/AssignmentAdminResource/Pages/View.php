@@ -5,13 +5,10 @@ namespace App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentAdminRe
 use App\Models\User;
 
 use Filament\Actions\Action;
-use Filament\Infolists\Infolist;
-use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use Filament\Infolists\Concerns\InteractsWithInfolists;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+
 use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentAdminResource;
 
 class View extends ViewRecord
@@ -44,11 +41,18 @@ class View extends ViewRecord
                 ->form([
                     Select::make('responsible')
                         ->label('Responsable')
-                        ->options((User::whereNot('id',$this->record->purchaser?->id)->role('comprador')->pluck('name', 'id')))
+                        ->options((User::whereNot('id', $this->record->purchaser?->id)->role('comprador')->pluck('name', 'id')))
                         ->required(),
                 ])
                 ->action(function (array $data): void {
                     $this->record->assign_user_id = $data['responsible'];
+                    $orders = $this->record->orders;
+                    if (filled($orders)) {
+                        foreach ($orders as $order) {
+                            $order->purchaser_user_id = $data['responsible'];
+                            $order->save();
+                        }
+                    }
                     $this->record->save();
                     $this->record->status()->transitionTo('comprador reasignado');
                     Notification::make()
@@ -63,5 +67,4 @@ class View extends ViewRecord
                 ->openUrlInNewTab()
         ];
     }
-
 }

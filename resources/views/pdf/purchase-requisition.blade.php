@@ -16,7 +16,8 @@
 
             margin: 80px 25px;
         }
-        body{
+
+        body {
             padding-top: 40px;
             /* padding: 30px 0; */
         }
@@ -414,19 +415,84 @@
                 </tbody>
             </table> --}}
         </div>
-        {{-- <div style="width: 100%;">
-                <table style="border:none;width:600px;margin: 0 auto;">
-                    <tbody>
-                        <tr>
-                            <td style="border:none;"><p style="font-size: 11px;">Solicita</p></td>
-                            <td style="border:none;width:130px; ;"><p style="font-size: 11px;">Revisión del almacén</p></td>
-                            <td style="border:none;"><p style="font-size: 11px;">Revisa</p></td>
-                            <td style="border:none;"><p style="font-size: 11px;">Aprueba</p></td>
-                            <td style="border:none;"><p style="font-size: 11px;">Autoriza</p></td>
-                        </tr>
-                    </tbody>
-                </table>
-        </div> --}}
+        <div style="width: 100%;">
+            <table style="border:none;width:900px;margin: 0 auto;">
+                <tbody>
+                    <tr>
+                        <td style="border:none;width:100px;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">Solicita</p>
+                        </td>
+                        {{-- <td style="border:none;width:100px;text-align: center;"><p style="font-size: 11px;margin:0;">Almacén</p></td> --}}
+                        <td style="border:none;width:100px;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">Revisa</p>
+                        </td>
+                        <td style="border:none;width:100px;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">Aprueba</p>
+                        </td>
+                        <td style="border:none;width:100px;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">Autoriza</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:none;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">
+                                @if (filled($stages[1]))
+                                    {{ $stages[1]->responsible->name }}
+                                    <br>
+                                    {{ $stages[1]->created_at }}
+                                @else
+                                    Sin respuesta
+                                @endif
+                            </p>
+                        </td>
+                        <td style="border:none;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">
+                                @if (filled($stages[2]))
+                                    {{ $stages[2]->responsible->name }}
+                                    <br>
+                                    {{ $stages[2]->created_at }}
+                                @else
+                                    Sin respuesta
+                                @endif
+                            </p>
+                        </td>
+                        <td style="border:none;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">
+                                @if (filled($stages[3]))
+                                    {{ $stages[3]->responsible->name }}
+                                    <br>
+                                    {{ $stages[3]->created_at }}
+                                @else
+                                    Sin respuesta
+                                @endif
+
+                            </p>
+                        </td>
+                        <td style="border:none;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">
+                                @if (filled($stages[4]))
+                                    {{ $stages[4]->responsible->name }}
+                                    <br>
+                                    {{ $stages[4]->created_at }}
+                                @else
+                                    Sin respuesta
+                                @endif
+                            </p>
+                        </td>
+                        {{-- <td style="border:none;text-align: center;">
+                                <p style="font-size: 11px;margin:0;">
+                                    @if (filled($stages[4]))
+                                        {{ $stages[4]->responsible->name }}
+                                        {{ $stages[4]->created_at }}
+                                         @else
+                                    Sin respuesta
+                                    @endif
+                                </p>
+                            </td> --}}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <footer>
         <img src="{{ secure_asset('images/watermark.jpg') }}" alt="watermark" style="height: 50px;">

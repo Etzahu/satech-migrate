@@ -53,7 +53,7 @@ class PurchaseRequisitionPolicy
         $allowedIds = array_merge($allowedIds, $usersWarehouse, $usersAdminPurchase);
         $allowedIds = array_values($allowedIds);
         $allowedIds[] = 106;
-        $allowedIds[] = $purchaseRequisition->purchaser->id;
+        $allowedIds[] = $purchaseRequisition->purchaser?->id;
 
 
         return $user->can('view_purchase::requisition::requester') && in_array($user->id, $allowedIds);
