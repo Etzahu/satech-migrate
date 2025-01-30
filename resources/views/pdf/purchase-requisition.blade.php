@@ -87,15 +87,8 @@
                     <img src="{{ secure_asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" />
                 </td>
                 <td colspan="4">
-                    @if ($rq->company->acronym == 'T')
-                        <p style="font-size:12px; padding:4px;margin:0;text-align:center;font-weight:bold;">TECH ENERGY
-                            CONTROL
+                        <p style="font-size:12px; padding:4px;margin:0;text-align:center;font-weight:bold;text-transform: uppercase;">{{ $rq->company->name }}
                         </p>
-                    @elseif ($rq->company->acronym == 'G')
-                        <p style="font-size:12px; padding:4px;margin:0;text-align:center;font-weight:bold;">GPT ING &
-                            MANF
-                        </p>
-                    @endif
                 </td>
                 <td>
                     <p style="font-size:10px; padding:1px;margin:0;">Tipo de documento</p>
