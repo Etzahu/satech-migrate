@@ -212,7 +212,7 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="px-1 text-xs text-left text-gray-700 ms-2 ">Debe ser de 24”</td>
+                            <td class="px-1 text-xs text-left text-gray-700 ms-2 ">{{ $data['condition_payment'] }}</td>
                         </tr>
                     </tbody>
                 </table>
