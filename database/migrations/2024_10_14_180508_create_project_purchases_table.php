@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('code', 255);
             $table->string('name', 255)->unique();
             $table->boolean('status');
-            $table->foreignId('company_id');
+            $table->foreignId('company_id')->constrained('companies');
             $table->timestamps();
         });
     }

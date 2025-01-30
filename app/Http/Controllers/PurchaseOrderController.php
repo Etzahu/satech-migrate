@@ -62,16 +62,17 @@ class PurchaseOrderController extends Controller
         // return $data;
         // Mail::to('ahernandezm@gptservices.com')->send(new NotificationOrder($data));
         // return view('pdf.purchase-order.header', compact('data'));
+        // return view('pdf.purchase-order.content', compact('data'));
         return pdf()
             ->view('pdf.purchase-order.content', ['data' => $data])
-            ->margins(40, 15, 15, 15)
+            ->margins(55, 15, 15, 15)
             ->headerView('pdf.purchase-order.header', ['data' => $data])
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot
                     ->noSandbox()
                     ->writeOptionsToFile();
             })
-            ->disk('public')
-            ->name("{$data->folio}.pdf");
+            // ->disk('public')
+            ->name("orden-compra-{$data->folio}.pdf");
     }
 }
