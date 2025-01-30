@@ -206,7 +206,7 @@
                     </tbody>
                 </table>
                 <table class="w-full mt-5">
-                    <thead>
+                    {{-- <thead>
                         <th class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
                             Ítems de Pago</th>
                     </thead>
@@ -214,7 +214,7 @@
                         <tr>
                             <td class="px-1 text-xs text-left text-gray-700 ms-2 ">{{ $data['condition_payment'] }}</td>
                         </tr>
-                    </tbody>
+                    </tbody> --}}
                 </table>
             </div>
             {{-- Condiciones de entrega --}}
