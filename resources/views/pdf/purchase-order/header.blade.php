@@ -121,12 +121,12 @@
 
         </div>
         <div class="text-end">
-            <p style="font-size: 8px; padding: 3px;"  class="text-lg font-bold leading-none text-red-600 ">No. de Orden de Compra: {{ $data['folio'] }}</p>
-            <p style="font-size: 8px; padding: 3px;" class="text-lg font-bold leading-none text-black ">Revisión: 0</p>
-            <p style="font-size: 8px; padding: 3px;" class="text-lg font-bold leading-none text-black ">Cotización: {{ $data['quote_folio'] }}</p>
-            <p style="font-size: 8px; padding: 3px;" class="text-xs leading-none text-black ">{{ $data['created_at'] }}</p>
-            <p style="font-size: 8px; padding: 3px;" class="text-xs leading-none text-black ">Requisición:{{ $data['requisition']['folio'] }}</p>
-            <p style="font-size: 8px; padding: 3px;" class="text-xs leading-none text-black ">Página @pageNumber de @totalPages</p>
+            <p style="font-size: 8px; padding: 3px 0 0 0;"  class="text-lg font-bold leading-none text-red-600 ">No. de Orden de Compra: {{ $data['folio'] }}</p>
+            <p style="font-size: 8px; padding: 0;" class="text-lg font-bold leading-none text-black ">Revisión: 0</p>
+            <p style="font-size: 8px; padding: 0;" class="text-lg font-bold leading-none text-black ">Cotización: {{ $data['quote_folio'] }}</p>
+            <p style="font-size: 8px; padding: 0;" class="text-xs leading-none text-black ">{{ $data['created_at'] }}</p>
+            <p style="font-size: 8px; padding: 0;" class="text-xs leading-none text-black ">Requisición:{{ $data['requisition']['folio'] }}</p>
+            <p style="font-size: 8px; padding: 0;" class="text-xs leading-none text-black ">Página @pageNumber de @totalPages</p>
         </div>
     </div>
 </header>
