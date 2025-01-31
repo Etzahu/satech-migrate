@@ -169,7 +169,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ->schema([
                                 Forms\Components\Textarea::make('observation')
                                     ->label('Observación adicionales')
-                                    ->maxLength(600)
+                                    ->maxLength(2000)
                                     ->default('Sin observaciones')
                                     ->required(),
                             ])

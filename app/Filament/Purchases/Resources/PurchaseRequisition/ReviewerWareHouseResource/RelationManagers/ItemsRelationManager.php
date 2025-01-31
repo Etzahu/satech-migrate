@@ -37,7 +37,7 @@ class ItemsRelationManager extends RelationManager
                 Forms\Components\Textarea::make('observation')
                     ->label('Observación')
                     ->readonly()
-                    ->maxLength(600),
+                    ->maxLength(2000),
                 Forms\Components\TextInput::make('quantity_requested')
                     ->label('Cantidad solicitada')
                     ->numeric()

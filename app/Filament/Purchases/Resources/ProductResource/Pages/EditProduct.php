@@ -18,7 +18,9 @@ class EditProduct extends EditRecord
 
     protected function getHeaderActions(): array
     {
-        return [];
+        return [
+            Actions\DeleteAction::make(),
+        ];
     }
 
     protected function getFormActions(): array
@@ -53,7 +55,7 @@ class EditProduct extends EditRecord
                         $this->record->unit_id = $dataUpdate['unit_id'];
                         $this->record->registered_user_id = auth()->user()->id;
                         $this->record->save();
-                        
+
                         Notification::make()
                             ->title('Respuesta enviada')
                             ->success()

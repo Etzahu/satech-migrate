@@ -80,7 +80,9 @@ class ItemsRelationManager extends RelationManager
                         ->noSearchResultsMessage('No se encontró el producto/servicio.')
                         ->columnSpan('full'),
                     Forms\Components\Textarea::make('observation')
-                        ->label('Observaciones')
+                    ->label('Observaciones')
+                    ->default('Sin observaciones')
+                    ->required()
                 ]);
         }
     }

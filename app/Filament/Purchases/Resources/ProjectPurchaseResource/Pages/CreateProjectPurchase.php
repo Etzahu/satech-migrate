@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateProjectPurchase extends CreateRecord
 {
     protected static string $resource = ProjectPurchaseResource::class;
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        $data['company_id'] = session()->get('company_id');
+        return $data;
+    }
 }

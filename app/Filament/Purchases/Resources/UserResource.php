@@ -106,7 +106,8 @@ class UserResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Impersonate::make(),
+                Impersonate::make()
+                ->visible(auth()->user()->hasRole('super_admin')),
             ])
         ;
     }

@@ -1099,3 +1099,14 @@ Route::get('update-catalog',function(){
     }
 });
 
+Route::get('filter-rq',function(){
+
+    $ordenes = PurchaseOrder::withWhereHas('requisition', function ($query) {
+        $query->whereHas('approvalChain', function ($query) {
+            $query->where('approver_id', auth()->user()->id);
+        });
+    })->get();
+
+    return $ordenes;
+});
+

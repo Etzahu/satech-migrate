@@ -579,6 +579,12 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                 Infolists\Components\Textentry::make('observations')
                                                     ->label('Observaciones'),
                                             ]),
+                                        Infolists\Components\Tabs\Tab::make('Historial')
+                                            ->schema([
+                                                Infolists\Components\ViewEntry::make('status')
+                                                    ->view('filament.infolists.entries.history'),
+                                            ]),
+
                                         Infolists\Components\Tabs\Tab::make('Resumen del total')
                                             ->columns(1)
                                             ->schema([
@@ -682,7 +688,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         }),
                                                 ]),
                                             ]),
-                                            Infolists\Components\Tabs\Tab::make('Soportes')
+                                        Infolists\Components\Tabs\Tab::make('Soportes')
                                             ->visible(fn($record) => $record->requisition->getMedia('supports')->count() > 0)
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('media')

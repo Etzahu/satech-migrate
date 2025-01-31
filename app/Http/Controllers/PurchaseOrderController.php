@@ -58,6 +58,11 @@ class PurchaseOrderController extends Controller
         $data['media'] = $media;
         $data['itemsFormatted'] = $itemsFormatted;
 
+        // $stages = [];
+        // $stages[1]=  $data->status()->snapshotWhen('revisión');
+        // $stages[2]=  $data->status()->snapshotWhen('aprobado por revisor');
+        // $stages[3]=  $data->status()->snapshotWhen('aprobado por gerencia');
+        // $stages[4]=  $data->status()->snapshotWhen('aprobado por DG');
 
         // return $data;
         // Mail::to('ahernandezm@gptservices.com')->send(new NotificationOrder($data));

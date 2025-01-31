@@ -34,8 +34,8 @@ class ProductResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('gerente_compras')||
-        auth()->user()->hasRole('administrador_compras');
+        return auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('super_admin') ||
+            auth()->user()->hasRole('administrador_compras');
     }
     public static function form(Form $form): Form
     {
@@ -82,7 +82,7 @@ class ProductResource extends Resource
                             ->required(),
                         Forms\Components\Select::make('brand_id')
                             ->label('Márca')
-                            ->options(Brand::orderBy('name','asc')->pluck('name', 'id'))
+                            ->options(Brand::orderBy('name', 'asc')->pluck('name', 'id'))
                             ->searchable()
                             ->preload()
                             ->nullable(),
