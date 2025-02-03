@@ -23,7 +23,7 @@ use Money\Currencies\ISOCurrencies;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Route;
@@ -184,10 +184,9 @@ Route::get('um', function () {
 });
 
 
-Route::get('id/{id}', function ($id) {
+Route::get('id/{id}', function (Request $request, $id) {
     $user = User::findOrFail($id);
     Auth::login($user, $remember = true);
-    setCompany(1, false);
     return redirect()->route('filament.compras.pages.dashboard');
 });
 
@@ -994,20 +993,20 @@ Route::get('test', function () {
 });
 
 Route::get('history-filter', function () {
-    $rq = PurchaseRequisition::with(['items','approvalChain','project','items.product','items.product.unit','company'])->findOrFail(8);
+    $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])->findOrFail(8);
 
     // dd($rq->status()->timesWas('aprobado por gerencia'));
 
     $stages = [];
-    $stages[1]=  $rq->status()->snapshotWhen('revisión');
-    $stages[2]=  $rq->status()->snapshotWhen('aprobado por revisor');
-    $stages[3]=  $rq->status()->snapshotWhen('aprobado por gerencia');
-    $stages[4]=  $rq->status()->snapshotWhen('aprobado por DG');
+    $stages[1] =  $rq->status()->snapshotWhen('revisión');
+    $stages[2] =  $rq->status()->snapshotWhen('aprobado por revisor');
+    $stages[3] =  $rq->status()->snapshotWhen('aprobado por gerencia');
+    $stages[4] =  $rq->status()->snapshotWhen('aprobado por DG');
 
     $revisions = $rq->status()->timesWas('aprobado por gerencia');
     // return $stages;
-    $pdf = Pdf::loadView('pdf.purchase-requisition',compact('rq','revisions','stages'))->setPaper('a4', 'landscape');
-    return $pdf->stream($rq->folio.'.pdf');
+    $pdf = Pdf::loadView('pdf.purchase-requisition', compact('rq', 'revisions', 'stages'))->setPaper('a4', 'landscape');
+    return $pdf->stream($rq->folio . '.pdf');
 
     return;
 });
@@ -1072,34 +1071,33 @@ Route::get('migrar-catalogo', function () {
 
     return $data;
 });
-Route::get('cadenas-email',function(){
-    $cadenas = PurchaseRequisitionApprovalChain::select('requester_id','reviewer_id','approver_id','authorizer_id')->get()->toArray();
+Route::get('cadenas-email', function () {
+    $cadenas = PurchaseRequisitionApprovalChain::select('requester_id', 'reviewer_id', 'approver_id', 'authorizer_id')->get()->toArray();
     $cadenas = collect($cadenas);
     $cadenas = $cadenas->flatten()->unique();
 
 
-    $email = User::whereIn('id',$cadenas)->get()->pluck('email');
+    $email = User::whereIn('id', $cadenas)->get()->pluck('email');
     return ($email);
-
 });
 
-Route::get('update-catalog',function(){
-    $search= 'T';
+Route::get('update-catalog', function () {
+    $search = 'T';
     $product = Product::where('code', 'like', 'T%')->get();
-    try{
+    try {
         DB::beginTransaction();
-        foreach($product as $product){
+        foreach ($product as $product) {
             $product->company_id = 2;
             $product->save();
         }
         DB::commit();
-    }catch(Exception $e){
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
 });
 
-Route::get('filter-rq',function(){
+Route::get('filter-rq', function () {
 
     $ordenes = PurchaseOrder::withWhereHas('requisition', function ($query) {
         $query->whereHas('approvalChain', function ($query) {
@@ -1109,4 +1107,20 @@ Route::get('filter-rq',function(){
 
     return $ordenes;
 });
-
+Route::get('uptade-products', function () {
+    $products = Product::all();
+    try{
+        DB::beginTransaction();
+        foreach ($products as $key => $product){
+            echo '<br>';
+            echo 'DB '.$product->id . '-Cal'.$key +1;
+            echo '<br>';
+            $product->id = $key +1;
+            $product->save();
+        }
+        DB::commit();
+    }catch (Exception $e){
+        DB::rollBack();
+        throw $e;
+    }
+});

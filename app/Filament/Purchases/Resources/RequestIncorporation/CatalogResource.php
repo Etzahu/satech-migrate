@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Purchases\Resources;
+namespace App\Filament\Purchases\Resources\RequestIncorporation;
 
 use Filament\Forms;
 use Filament\Tables;
@@ -18,10 +18,10 @@ use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\Support\MediaStream;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use App\Filament\Purchases\Resources\RequestCatalogResource\Pages;
+use App\Filament\Purchases\Resources\RequestIncorporation\CatalogResource\Pages;
 
 
-class RequestCatalogResource  extends Resource
+class CatalogResource  extends Resource
 {
     protected static ?string $model = Product::class;
     protected static ?string $modelLabel = 'Producto/Servicio';

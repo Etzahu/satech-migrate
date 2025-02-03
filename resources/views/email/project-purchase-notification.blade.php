@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
     xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -49,7 +48,7 @@
                                         </table>
                                         <h1
                                             style="background-color: #ffffff;font-size: 18px;font-family: Roboto, sans-serif;color: #162d4d;">
-                                            Alta de proveedor</h1>
+                                            Alta de proyecto</h1>
                                         <table class="spacer" role="presentation" border="0" cellpadding="0"
                                             cellspacing="0" style="width: 100%;height: 20px;">
                                             <tbody>
@@ -58,7 +57,36 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-
+                                        <table class="table table-borderless" border="0" cellpadding="0"
+                                            cellspacing="0">
+                                            <thead>
+                                                <tr></tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="padding:4px;font-size: 12px;font-family: 'Roboto';width: 48.906px;"
+                                                        width="48.906">Estatus</td>
+                                                    <td
+                                                        style="padding:4px;font-size: 12px;font-family: 'Roboto';text-align: left;font-weight: bold;color: var(--dark);text-transform: capitalize;">
+                                                        {{ $data['status'] }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding:4px;font-size: 12px;font-family: 'Roboto';width: 48.906px;"
+                                                        width="48.906">Compañía</td>
+                                                    <td
+                                                        style="padding:4px;font-size: 12px;font-family: 'Roboto';text-align: left;font-weight: bold;color: var(--dark);">
+                                                        {{ $data['company']['name'] }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding:4px;font-size: 12px;font-family: 'Roboto';width: 48.906px;"
+                                                        width="48.906">Solicitante</td>
+                                                    <td
+                                                        style="padding:4px;font-size: 12px;font-family: 'Roboto';text-align: left;font-weight: bold;color: var(--dark);">
+                                                        {{ $data['requester']['name'] }}</td>
+                                                </tr>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
                                         <table class="spacer" role="presentation" border="0" cellpadding="0"
                                             cellspacing="0" style="width: 100%;height: 30px;">
                                             <tbody>
@@ -72,15 +100,10 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="text-center"
-                                                        style="color: #162d4d;padding:4px;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;" width="120">
-                                                        RFC</td>
-                                                    <td class="text-center"
-                                                        style="color: #162d4d;padding:4px;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;"
-                                                        >Nombre</td>
+                                                        style="color: #162d4d;padding:4px;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;">
+                                                        Nombre</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="font-size: 12px;border: 1px solid #6c6c6c;padding:4px;font-family: Roboto, sans-serif;font-weight: bold;color: #343a40;padding:4px;">
-                                                        {{ $data['rfc'] }}</td>
                                                     <td style="font-size: 12px;border: 1px solid #6c6c6c;padding:4px;font-family: Roboto, sans-serif;font-weight: bold;color: #343a40;padding:4px;">
                                                         {{ $data['name'] }}</td>
                                                 </tr>
@@ -125,4 +148,3 @@
 </body>
 
 </html>
-

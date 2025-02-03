@@ -43,6 +43,9 @@ class ViewOrder extends ViewRecord
                         ->required(),
                     Textarea::make('observation')
                         ->requiredUnless('response', 'aprobado por gerente de compras')
+                        ->validationMessages([
+                            'required_unless' => 'El campo :attribute es obligatorio.',
+                        ])
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()

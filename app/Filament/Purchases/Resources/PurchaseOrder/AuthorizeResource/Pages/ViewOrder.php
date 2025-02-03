@@ -44,11 +44,17 @@ class ViewOrder extends ViewRecord
                         ->required(),
                     Textarea::make('observation')
                         ->requiredUnless('response', 'autorizada para proveedor')
+                        ->validationMessages([
+                            'required_unless' => 'El campo :attribute es obligatorio.',
+                        ])
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
                 ->action(function (array $data) {
                     $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
+                    if ($data['response'] == 'aprobado por DG nivel 1') {
+                        $this->record->status()->transitionTo('autorizada para proveedor');
+                    }
                     Notification::make()
                         ->title('Respuesta enviada')
                         ->success()
@@ -59,10 +65,10 @@ class ViewOrder extends ViewRecord
 
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
-    ->color('danger')
-    ->url(route('order.pdf', ['id' => $this->record->id]))
-    ->icon('heroicon-m-document')
-    ->openUrlInNewTab(),
+                    ->color('danger')
+                    ->url(route('order.pdf', ['id' => $this->record->id]))
+                    ->icon('heroicon-m-document')
+                    ->openUrlInNewTab(),
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')

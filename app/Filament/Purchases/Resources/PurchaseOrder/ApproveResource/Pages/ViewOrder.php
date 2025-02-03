@@ -29,7 +29,7 @@ class ViewOrder extends ViewRecord
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(
-                    fn() => ($this->record->status()->canBe('autorizada para proveedor') ||
+                    fn() => (
                         $this->record->status()->canBe('aprobado por DG nivel 1') ||
                         $this->record->status()->canBe('devuelto por DG nivel 1') ||
                         $this->record->status()->canBe('cancelado por DG nivel 1')) &&
@@ -47,29 +47,33 @@ class ViewOrder extends ViewRecord
                         ->required(),
                     Textarea::make('observation')
                         ->requiredUnless('response', 'aprobado por DG nivel 1')
+                        ->validationMessages([
+                            'required_unless' => 'El campo :attribute es obligatorio.',
+                        ])
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
                 ->action(function (array $data) {
-                    // validar el tipo de moneda
-                    $minAmount = 0;
-                    $maxAmount = 0;
-                    if ($this->record->currency == 'USD') {
-                        $minAmount = Money::USD(1);
-                        $maxAmount = Money::USD(1000000);
-                    }
-                    if ($this->record->currency == 'MXN') {
-                        $minAmount = Money::MXN(1);
-                        $maxAmount = Money::MXN(20000000);
-                    }
-                    $service = new OrderCalculationService($this->record->id);
-                    $total = $service->getTotal();
+                    $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
+                    if ($data['response'] == 'aprobado por DG nivel 1') {
+                        // validar el tipo de moneda
+                        $minAmount = 0;
+                        $maxAmount = 0;
+                        if ($this->record->currency == 'USD') {
+                            $minAmount = Money::USD(1);
+                            $maxAmount = Money::USD(1500000);
+                        }
+                        if ($this->record->currency == 'MXN') {
+                            $minAmount = Money::MXN(1);
+                            $maxAmount = Money::MXN(30000000);
+                        }
+                        $service = new OrderCalculationService($this->record->id);
+                        $total = $service->getTotal();
 
-                    if ($total->greaterThanOrEqual($minAmount) && $total->lessThanOrEqual($maxAmount)) {
-                        $this->record->status()->transitionTo('autorizada para proveedor');
-                    }
-                    if ($total->greaterThan($maxAmount)) {
-                        $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
+                        if ($total->greaterThanOrEqual($minAmount) && $total->lessThanOrEqual($maxAmount)) {
+                            $this->record->status()->transitionTo('autorizada para proveedor');
+                        }
+
                     }
                     Notification::make()
                         ->title('Respuesta enviada')
@@ -82,10 +86,10 @@ class ViewOrder extends ViewRecord
 
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
-                ->color('danger')
-                ->url(route('order.pdf', ['id' => $this->record->id]))
-                ->icon('heroicon-m-document')
-                ->openUrlInNewTab(),
+                    ->color('danger')
+                    ->url(route('order.pdf', ['id' => $this->record->id]))
+                    ->icon('heroicon-m-document')
+                    ->openUrlInNewTab(),
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')

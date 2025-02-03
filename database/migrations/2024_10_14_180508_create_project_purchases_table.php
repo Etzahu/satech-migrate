@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('code', 255);
             $table->string('name', 255)->unique();
-            $table->boolean('status');
+            $table->string('status');
             $table->foreignId('company_id')->constrained('companies');
+            $table->foreignId('requester_id')->nullable()->constrained('users');
+            $table->foreignId('registered_user_id')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

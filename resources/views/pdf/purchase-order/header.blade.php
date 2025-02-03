@@ -108,7 +108,7 @@
                 </tr>
                 <tr>
                     <td style="font-size: 8px; padding: 3px;" valign="middle" align="center">Formato</td>
-                    <td style="font-size: 8px; padding: 3px;" valign="middle" align="center">02</td>
+                    <td style="font-size: 8px; padding: 3px;" valign="middle" align="center">{{ $revisions }}</td>
                     <td style="font-size: 8px; padding: 3px;" valign="middle" align="center">Agosto 2022</td>
                     <td style="font-size: 8px; padding: 3px;" valign="middle" align="center">Compras</td>
                     <td style="font-size: 8px; padding: 3px;" valign="middle" align="center">FO-GPT-COM-01-F</td>

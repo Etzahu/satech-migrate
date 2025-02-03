@@ -22,7 +22,7 @@ class ItemsRelationManager extends RelationManager
     public function form(Form $form): Form
     {
         return $form
-        ->columns(1)
+            ->columns(1)
             ->schema([
                 Forms\Components\TextInput::make('quantity_requested')
                     ->label('Cantidad solicitada')
@@ -31,36 +31,35 @@ class ItemsRelationManager extends RelationManager
                     ->minValue(1),
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
-                    ->options(Product::where('status','aprobado')->where('company_id', session()->get('company_id'))->pluck('name', 'id'))
+                    ->options(Product::where('status', 'aprobado')->where('company_id', session()->get('company_id'))->pluck('name', 'id'))
                     ->searchable()
                     ->live()
                     ->required()
                     ->afterStateUpdated(function (Get $get, Set $set) {
-                        if(filled($get('product_id'))){
+                        if (filled($get('product_id'))) {
                             $product = Product::find($get('product_id'));
                             $set('selectedCode', $product->code);
                             $set('selectedDesc', $product->name);
                             $set('selectedUm', $product->unit->name);
-
-                        }else{
-                            $set('selectedCode','');
+                        } else {
+                            $set('selectedCode', '');
                             $set('selectedDesc', '');
                             $set('selectedUm', '');
                         }
                     }),
                 Forms\Components\Fieldset::make('Seleccionado')
-                ->columns(1)
-                ->schema([
-                    Forms\Components\TextInput::make('selectedCode')
-                    ->disabled()
-                    ->label('Código'),
-                    Forms\Components\Textarea::make('selectedDesc')
-                    ->disabled()
-                    ->label('Descripción'),
-                    Forms\Components\TextInput::make('selectedUm')
-                    ->disabled()
-                    ->label('Unidad de Medida')
-                ]),
+                    ->columns(1)
+                    ->schema([
+                        Forms\Components\TextInput::make('selectedCode')
+                            ->disabled()
+                            ->label('Código'),
+                        Forms\Components\Textarea::make('selectedDesc')
+                            ->disabled()
+                            ->label('Descripción'),
+                        Forms\Components\TextInput::make('selectedUm')
+                            ->disabled()
+                            ->label('Unidad de Medida')
+                    ]),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observación')
                     ->default('Sin observaciones')
@@ -106,15 +105,18 @@ class ItemsRelationManager extends RelationManager
                         $data['quantity_purchase'] = $data['quantity_requested'];
                         return $data;
                     })
-                    ->after(function (){
+                    ->after(function () {
                         $this->dispatch('refreshOwner');
                     })
                     ->createAnother(false),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->mutateFormDataUsing(function (array $data): array {
+                        $data['quantity_purchase'] = $data['quantity_requested'];
+                        return $data;
+                    }),
                 Tables\Actions\DeleteAction::make(),
             ]);
     }
-
 }

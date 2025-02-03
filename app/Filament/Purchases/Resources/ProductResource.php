@@ -37,6 +37,12 @@ class ProductResource extends Resource
         return auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('super_admin') ||
             auth()->user()->hasRole('administrador_compras');
     }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', 'pendiente')
+            ->where('company_id', session()->get('company_id'))->count();
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -144,11 +150,10 @@ class ProductResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
                     ->visible(fn($record) => $record->status == 'aprobado' || $record->status == 'pendiente'),
-            ])
-        ;
+            ]);
     }
 
     public static function getRelations(): array

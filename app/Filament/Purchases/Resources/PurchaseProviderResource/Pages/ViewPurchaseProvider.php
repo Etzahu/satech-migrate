@@ -5,6 +5,7 @@ namespace App\Filament\Purchases\Resources\PurchaseProviderResource\Pages;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Purchases\Resources\PurchaseProviderResource;
@@ -18,18 +19,26 @@ class ViewPurchaseProvider extends ViewRecord
         return [
             Actions\EditAction::make(),
             Actions\Action::make('responder')
-                ->visible(($this->record->status()->canBe('aprobado') || $this->record->status()->canBe('rechazado')) && auth()->user()->can('assing_purchase::requisition'))
+                ->visible(($this->record->status()->canBe('aprobado') || $this->record->status()->canBe('rechazado')))
+                ->requiresConfirmation()
                 ->form([
-                    Select::make('request')
+                    Select::make('response')
                         ->label('Respuesta')
                         ->options([
                             'aprobado' => 'Aprobar',
                             'rechazado' => 'Rechazar',
                         ])
+                        ->default('aprobado')
                         ->required(),
+                        Textarea::make('observation')
+                        ->requiredUnless('response', 'aprobado')
+                        ->validationMessages([
+                            'required_unless' => 'El campo :attribute es obligatorio.',
+                        ])
+                        ->label('Observación'),
                 ])
                 ->action(function (array $data): void {
-                    $this->record->status()->transitionTo($data['request']);
+                    $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
                     Notification::make()
                         ->title('Respuesta guardada')
                         ->success()

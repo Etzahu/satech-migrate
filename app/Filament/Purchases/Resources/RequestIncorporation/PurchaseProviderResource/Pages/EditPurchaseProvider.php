@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaseProviderResource\Pages;
+namespace App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource\Pages;
 
-use App\Filament\Purchases\Resources\PurchaseProviderResource;
+use App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -13,7 +13,6 @@ class EditPurchaseProvider extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            // Actions\DeleteAction::make(),
             Actions\ViewAction::make(),
         ];
     }

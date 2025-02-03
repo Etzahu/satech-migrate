@@ -58,6 +58,14 @@ class PurchaseOrderController extends Controller
         $data['media'] = $media;
         $data['itemsFormatted'] = $itemsFormatted;
 
+        $revisions = $data->status()->timesWas('autorizada para proveedor');
+        $stages = [];
+        $stages[1]=  $data->status()->snapshotWhen('revisión gerente de compras');
+        $stages[2]=  $data->status()->snapshotWhen('aprobado por gerente de compras');
+        $stages[3]=  $data->status()->snapshotWhen('aprobado por gerente solicitante');
+        $stages[4]=  $data->status()->snapshotWhen('aprobado por DG nivel 1'); //
+        $stages[5]=  $data->status()->snapshotWhen('aprobado por DG nivel 2'); //
+
         // $stages = [];
         // $stages[1]=  $data->status()->snapshotWhen('revisión');
         // $stages[2]=  $data->status()->snapshotWhen('aprobado por revisor');
@@ -69,9 +77,9 @@ class PurchaseOrderController extends Controller
         // return view('pdf.purchase-order.header', compact('data'));
         // return view('pdf.purchase-order.content', compact('data'));
         return pdf()
-            ->view('pdf.purchase-order.content', ['data' => $data])
+            ->view('pdf.purchase-order.content', ['data' => $data,'stages'=>$stages])
             ->margins(55, 15, 15, 15)
-            ->headerView('pdf.purchase-order.header', ['data' => $data])
+            ->headerView('pdf.purchase-order.header', ['data' => $data,'revisions'=>$revisions])
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot
                     ->noSandbox()

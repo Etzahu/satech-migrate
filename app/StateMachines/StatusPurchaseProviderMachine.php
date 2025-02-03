@@ -17,13 +17,15 @@ class StatusPurchaseProviderMachine extends StateMachine
     public function transitions(): array
     {
         return [
+            'borrador' => ['revisión'],
             'revisión' => ['aprobado', 'rechazado'],
+            'rechazado' => ['revisión']
         ];
     }
 
     public function defaultState(): ?string
     {
-        return 'revisión';
+        return 'borrador';
     }
     public function afterTransitionHooks(): array
     {
@@ -36,7 +38,9 @@ class StatusPurchaseProviderMachine extends StateMachine
                         'rfc' => $model->rfc,
                         'name' => $model->company_name,
                     ];
-                    Mail::to($recipient)->send(new NotificationPurchaseProvider($data));
+                    if($model->user_request_id !== $model->user_approve_id){
+                        Mail::to($recipient)->send(new NotificationPurchaseProvider($data));
+                    }
                 },
             ],
             'aprobado' => [
@@ -47,7 +51,9 @@ class StatusPurchaseProviderMachine extends StateMachine
                         'rfc' => $model->rfc,
                         'name' => $model->company_name,
                     ];
-                    Mail::to($recipient)->send(new NotificationPurchaseProvider($data));
+                    if($model->user_request_id !== $model->user_approve_id){
+                        Mail::to($recipient)->send(new NotificationPurchaseProvider($data));
+                    }
                 },
             ],
             'rechazado' => [

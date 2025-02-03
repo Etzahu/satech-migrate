@@ -124,7 +124,8 @@ class PurchaseRequisitionCreationService
         $moreUsers = [];
         $moreUsers[] = $model->approvalChain->reviewer->email;
         $moreUsers[] = $model->approvalChain->approver->email;
-        $moreUsers[] = User::role('autoriza_requisicion_compra')->first()->email;
+        $moreUsers[] = $model->approvalChain->authorizer->email;
+        $moreUsers[] = User::role('gerente_compras')->first()->email;
         $usersWareHouse = User::role('revisa_almacen_requisicion_compra')->get()->flatten();
         foreach ($usersWareHouse as $user) {
             $moreUsers[] = $user->email;

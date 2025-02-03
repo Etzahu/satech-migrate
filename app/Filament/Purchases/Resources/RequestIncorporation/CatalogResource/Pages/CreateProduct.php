@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\RequestCatalogResource\Pages;
+namespace App\Filament\Purchases\Resources\RequestIncorporation\CatalogResource\Pages;
 
 use App\Models\User;
 use Filament\Actions;
@@ -10,11 +10,11 @@ use App\Models\CategoryFamily;
 use App\Mail\CatalogNotification;
 use Illuminate\Support\Facades\Mail;
 use Filament\Resources\Pages\CreateRecord;
-use App\Filament\Purchases\Resources\RequestCatalogResource;
+use App\Filament\Purchases\Resources\RequestIncorporation\CatalogResource;
 
 class CreateProduct extends CreateRecord
 {
-    protected static string $resource = RequestCatalogResource::class;
+    protected static string $resource = CatalogResource::class;
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['name'] = Str::of($data['name'])->squish()->lower();
@@ -35,8 +35,8 @@ class CreateProduct extends CreateRecord
         foreach ($usersPurchase as $user) {
             $recipients[] = $user->email;
         }
-        foreach ($usersPurchase as $user) {
-            $usersAdmin[] = $user->email;
+        foreach ($usersAdmin as $user) {
+            $recipients[] = $user->email;
         }
         Mail::to($recipients)->send(new CatalogNotification($this->record));
     }

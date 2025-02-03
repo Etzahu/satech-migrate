@@ -191,7 +191,8 @@ class PurchaseRequisitionStateMachine extends StateMachine
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
-                    // $recipient = $service->getUserForEmail($users?->toArray());
+                    $model->assign_user_id = null;
+                    $model->save();
                     $data = $service->generateDataForEmail('devuelto por comprador', $model);
                     Mail::to($recipient)->send(new Notification($data));
                 }

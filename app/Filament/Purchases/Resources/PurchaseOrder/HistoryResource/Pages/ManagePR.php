@@ -17,7 +17,7 @@ class ManagePR extends ManageRecords
     {
         $tabs = [];
 
-        if (auth()->user()->hasRole('solicita_requisicion_compra')) {
+        if (auth()->user()->hasRole('comprador')) {
             $tabs['myRequisitions'] = Tab::make('Mis órdenes')
                 ->modifyQueryUsing(
                     function (Builder $query) {

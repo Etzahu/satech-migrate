@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaseProviderResource\Pages;
+namespace App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource\Pages;
 
-use App\Filament\Purchases\Resources\PurchaseProviderResource;
+use App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -14,13 +14,7 @@ class CreatePurchaseProvider extends CreateRecord
         $data['rfc'] = str($data['rfc'])->trim();
         $data['company_name'] = str($data['company_name'])->squish();
         $data['user_request_id'] = auth()->user()->id;
-        $data['user_approve_id'] = auth()->user()->id;
         return $data;
     }
-    protected function afterCreate(): void
-    {
-      $this->record->status()->transitionTo('revisión');
-      $this->record->status()->transitionTo('aprobado');
-    }
-
+    
 }

@@ -10,7 +10,7 @@
     </style>
 </head>
 
-<body >
+<body>
     <div class="w-full">
         <div class="flex justify-between">
             <div class="w-1/2 px-2">
@@ -314,7 +314,8 @@
                     </tr>
                     <tr>
                         <td class="w-24 p-0 text-xs text-left text-black" valing="top">Método de Pago:</td>
-                        <td class="p-0 text-xs text-left text-black " style="text-transform: capitalize;" valing="top">{{ $data['form_payment'] }}</td>
+                        <td class="p-0 text-xs text-left text-black " style="text-transform: capitalize;"
+                            valing="top">{{ $data['form_payment'] }}</td>
                     </tr>
                     <tr>
                         <td class="w-24 p-0 text-xs text-left text-black" valing="top">Tipo de Pago:</td>
@@ -322,11 +323,13 @@
                     </tr>
                     <tr>
                         <td class="w-24 p-0 text-xs text-left text-black" valing="top">Condiciones de Pago:</td>
-                        <td class="p-0 text-xs text-left text-black " valing="top">{{ $data['condition_payment'] }}</td>
+                        <td class="p-0 text-xs text-left text-black " valing="top">{{ $data['condition_payment'] }}
+                        </td>
                     </tr>
                     <tr>
                         <td class="w-24 p-0 text-xs text-left text-black" valing="top">Enviar a:</td>
-                        <td class="p-0 text-xs text-left text-black " valing="top">{{ $data['purchaser']['email'] }}</td>
+                        <td class="p-0 text-xs text-left text-black " valing="top">
+                            {{ $data['purchaser']['email'] }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -346,6 +349,74 @@
                                 <p>Enviar a:&nbsp;{{ $data->providerContact->email }}</p>
                             </div>
                         </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        {{-- aprobaciones --}}
+        <div style="width: 100%;margin-top:100px;">
+            <table style="border:none;width:900px;margin: 0 auto;">
+                <tbody>
+                    <tr>
+                        <td style="border:none;width:100px;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">Comprador</p>
+                            <p style="font-size: 11px;margin:0;">
+                                @if (filled($stages[1]))
+                                    {{ $stages[1]->responsible->name }}
+                                    <br>
+                                    {{ $stages[1]->created_at }}
+                                @else
+                                    Sin respuesta
+                                @endif
+                            </p>
+                        </td>
+                        <td style="border:none;width:100px;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">Gerente de compras</p>
+                            <p style="font-size: 11px;margin:0;">
+                                @if (filled($stages[2]))
+                                    {{ $stages[2]->responsible->name }}
+                                    <br>
+                                    {{ $stages[2]->created_at }}
+                                @else
+                                    Sin respuesta
+                                @endif
+                            </p>
+                        </td>
+                        <td style="border:none;width:100px;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">Gerente solicitante</p>
+                            <p style="font-size: 11px;margin:0;">
+                                @if (filled($stages[3]))
+                                    {{ $stages[3]->responsible->name }}
+                                    <br>
+                                    {{ $stages[3]->created_at }}
+                                @else
+                                    Sin respuesta
+                                @endif
+                            </p>
+                        </td>
+                        <td style="border:none;width:100px;text-align: center;">
+                            <p style="font-size: 11px;margin:0;">Dirección general</p>
+                            <p style="font-size: 11px;margin:0;">
+                                @if (filled($stages[4]))
+                                    {{ $stages[4]->responsible->name }}
+                                    <br>
+                                    {{ $stages[4]->created_at }}
+                                @else
+                                    Sin respuesta
+                                @endif
+                            </p>
+                        </td>
+                        @if (filled($stages[5]))
+                            <td style="border:none;width:100px;text-align: center;">
+                                <p style="font-size: 11px;margin:0;">Dirección general CA</p>
+                                <p style="font-size: 11px;margin:0;">
+                                    {{ $stages[5]->responsible->name }}
+                                    <br>
+                                    {{ $stages[5]->created_at }}
+                                </p>
+                            </td>
+                        @endif
                     </tr>
                 </tbody>
             </table>

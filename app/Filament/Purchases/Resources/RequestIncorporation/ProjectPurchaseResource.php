@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Purchases\Resources;
+namespace App\Filament\Purchases\Resources\RequestIncorporation;
 
 use Closure;
 use Filament\Forms;
@@ -9,17 +9,13 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\ProjectPurchase;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Actions;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use App\Filament\Purchases\Resources\ProjectPurchaseResource\Pages;
+use App\Filament\Purchases\Resources\RequestIncorporation\ProjectPurchaseResource\Pages;
 use Hugomyb\FilamentMediaAction\Forms\Components\Actions\MediaAction;
-use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
-use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
-use App\Filament\Purchases\Resources\ProjectPurchaseResource\RelationManagers;
+
 
 class ProjectPurchaseResource extends Resource
 {
@@ -27,24 +23,18 @@ class ProjectPurchaseResource extends Resource
     protected static ?string $modelLabel = 'Proyecto';
     protected static ?string $pluralModelLabel = 'Proyectos';
     protected static ?string $navigationLabel = 'Proyectos';
-    protected static ?string $slug = 'proyectos';
-    protected static ?string $navigationGroup = 'Administración';
+    protected static ?string $slug = 'altas/proyectos';
+    protected static ?string $navigationGroup = 'Altas';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 3;
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('administrador_compras') || auth()->user()->hasRole('super_admin');
+        return auth()->user()->hasRole('solicita_requisicion_compra');
     }
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('company_id', session()->get('company_id'));
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::where('status', 'pendiente')
-            ->where('company_id', session()->get('company_id'))->count();
+        return parent::getEloquentQuery()->where('company_id', session()->get('company_id'))->where('requester_id', auth()->user()->id);
     }
     public static function form(Form $form): Form
     {
@@ -83,6 +73,10 @@ class ProjectPurchaseResource extends Resource
                             ])
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\Toggle::make('status')
+                            ->label('Activo')
+                            ->visible(fn($operation) => $operation === 'edit' || $operation === 'view')
+                            ->required(),
                     ]),
                 Forms\Components\Section::make('Documentacion para aprobacion por DG')
                     // ->visible(fn($operation) => $operation == 'edit')
@@ -163,8 +157,10 @@ class ProjectPurchaseResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ]);
+                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\EditAction::make(),
+            ])
+        ;
     }
 
     public static function getPages(): array

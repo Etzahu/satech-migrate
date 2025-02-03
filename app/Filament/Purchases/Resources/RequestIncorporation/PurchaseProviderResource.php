@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Purchases\Resources;
+namespace App\Filament\Purchases\Resources\RequestIncorporation;
 
 use Filament\Forms;
 use Filament\Tables;
@@ -13,9 +13,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use App\Filament\Purchases\Resources\PurchaseProviderResource\Pages;
+use App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource\Pages;
 use Hugomyb\FilamentMediaAction\Forms\Components\Actions\MediaAction;
-use App\Filament\Purchases\Resources\PurchaseProviderResource\RelationManagers;
+use App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource\RelationManagers;
 
 class PurchaseProviderResource extends Resource
 {
@@ -23,19 +23,18 @@ class PurchaseProviderResource extends Resource
     protected static ?string $modelLabel = 'Proveedor';
     protected static ?string $pluralModelLabel = 'Proveedores';
     protected static ?string $navigationLabel = 'Proveedores';
-    protected static ?string $slug = 'proveedores';
+    protected static ?string $slug = 'altas/proveedores';
+    protected static ?string $navigationGroup = 'Altas';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?int $navigationSort = 11;
+    protected static ?int $navigationSort = 2;
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('super_admin');
+        return auth()->user()->hasRole('comprador');
     }
-
-    public static function getNavigationBadge(): ?string
+    public static function getEloquentQuery(): Builder
     {
-        return static::getModel()::where('status', 'revisión')->count();
+        return parent::getEloquentQuery()->where('user_request_id', auth()->user()->id);
     }
 
     public static function form(Form $form): Form
@@ -244,8 +243,8 @@ class PurchaseProviderResource extends Resource
                 Tables\Columns\TextColumn::make('company_name')
                     ->label('Razón social')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('UserRequest.name')
-                    ->label('Alta de información')
+                Tables\Columns\TextColumn::make('userRequest.name')
+                    ->label('Alta')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')

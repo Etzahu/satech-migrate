@@ -42,6 +42,9 @@ class ViewOrder extends ViewRecord
                     ->required(),
                 Textarea::make('observation')
                     ->requiredUnless('response', 'aprobado por gerente solicitante')
+                    ->validationMessages([
+                        'required_unless' => 'El campo :attribute es obligatorio.',
+                    ])
                     ->label('Observación'),
             ])
             ->requiresConfirmation()
@@ -56,7 +59,8 @@ class ViewOrder extends ViewRecord
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
                     ->color('success')
-                    ->url(fn(PurchaseOrder $record): string => ReviewResource::getUrl('view-pdf', ['record' => $record->id]))
+                    ->url(route('order.pdf', ['id' => $this->record->id]))
+                    ->openUrlInNewTab()
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')

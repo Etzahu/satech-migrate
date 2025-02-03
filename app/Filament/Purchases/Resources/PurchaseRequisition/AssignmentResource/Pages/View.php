@@ -45,6 +45,7 @@ class View extends ViewRecord
                 Action::make('Ver pdf')
                     ->color('danger')
                     ->icon('heroicon-m-document')
+                    ->url(route('requisition.pdf', ['id' => $this->record->id]))
                     ->openUrlInNewTab(),
                 Action::make('Devolver')
                     ->form([

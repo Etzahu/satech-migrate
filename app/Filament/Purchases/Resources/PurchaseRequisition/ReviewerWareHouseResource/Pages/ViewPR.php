@@ -38,6 +38,9 @@ class ViewPR extends ViewRecord
                         ->required(),
                     Textarea::make('observation')
                         ->requiredUnless('response', 'revisión')
+                        ->validationMessages([
+                            'required_unless' => 'El campo :attribute es obligatorio.',
+                        ])
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
