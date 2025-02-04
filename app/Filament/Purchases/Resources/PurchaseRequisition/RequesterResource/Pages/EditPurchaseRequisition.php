@@ -9,6 +9,7 @@ use Filament\Actions\ActionGroup;
 use Filament\Support\Enums\ActionSize;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use App\Models\PurchaseRequisitionApprovalChain;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
 
 
@@ -22,31 +23,39 @@ class EditPurchaseRequisition extends EditRecord
         return [
             ActionGroup::make([
                 Action::make('Enviar requisición')
-                ->color('success')
-                ->requiresConfirmation()
-                ->visible(
-                    $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 ||
-                        $this->record->status()->canBe('aprobado por revisor') && $this->record->items->count() > 0
-                )
-                ->action(function () {
-                    if ($this->record->confidential) {
-                        $this->record->status()->transitionTo('aprobado por revisor');
-                    } else {
-                        $this->record->status()->transitionTo('revisión por almacén');
-                    }
-                    Notification::make()
-                        ->title('Requisición enviada')
-                        ->success()
-                        ->send();
-                }),
+                    ->color('success')
+                    ->requiresConfirmation()
+                    ->visible(
+                        $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 ||
+                            $this->record->status()->canBe('aprobado por revisor') && $this->record->items->count() > 0
+                    )
+                    ->action(function () {
+                        if ($this->record->confidential) {
+                            $this->record->status()->transitionTo('aprobado por revisor');
+                        } else {
+                            $this->record->status()->transitionTo('revisión por almacén');
+                        }
+                        Notification::make()
+                            ->title('Requisición enviada')
+                            ->success()
+                            ->send();
+                    }),
                 Actions\ViewAction::make(),
                 Actions\DeleteAction::make(),
             ])
-            ->label('Opciones')
-            ->icon('heroicon-m-ellipsis-vertical')
-            ->size(ActionSize::Small)
-            ->color('primary')
-            ->button(),
+                ->label('Opciones')
+                ->icon('heroicon-m-ellipsis-vertical')
+                ->size(ActionSize::Small)
+                ->color('primary')
+                ->button(),
         ];
+    }
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        $chain = PurchaseRequisitionApprovalChain::find($data['approval_chain_id']);
+        $data['reviewer_id']= $chain->reviewer_id;
+        $data['approver_id']= $chain->approver_id;
+        return $data;
     }
 }
