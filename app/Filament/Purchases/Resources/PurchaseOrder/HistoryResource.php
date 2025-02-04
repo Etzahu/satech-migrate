@@ -27,15 +27,14 @@ class HistoryResource extends Resource
 
     public static function canAccess(): bool
     {
-        return true;
-        // return
-        //     auth()->user()->hasRole('solicita_requisicion_compra') ||
-        //     auth()->user()->hasRole('revisa_almacen_requisicion_compra') ||
-        //     auth()->user()->hasRole('revisa_requisicion_compra') ||
-        //     auth()->user()->hasRole('aprueba_requisicion_compra') ||
-        //     auth()->user()->hasRole('autoriza_requisicion_compra') ||
-        //     auth()->user()->hasRole('gerente_compras')||
-        //     auth()->user()->hasRole('administrador_compras');
+        return
+            auth()->user()->hasRole('comprador') ||
+            auth()->user()->hasRole('gerente_solicitante_orden_compra') ||
+            auth()->user()->hasRole('autoriza_nivel-1-orden_compra') ||
+            auth()->user()->hasRole('autoriza_nivel-2-orden_compra') ||
+            auth()->user()->hasRole('gerente_compras')||
+            auth()->user()->hasRole('super_admin')||
+            auth()->user()->hasRole('administrador_compras');
     }
     public static function canCreate(): bool
     {
