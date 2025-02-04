@@ -104,7 +104,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->maxLength(500),
                                 Forms\Components\Select::make('project_id')
                                     ->label('Proyecto')
-                                    ->relationship('project', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('company_id', session()->get('company_id'))->where('status', 1))
+                                    ->relationship('project', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('company_id', session()->get('company_id'))->where('status', 'activo'))
                                     ->getOptionLabelFromRecordUsing(fn(Model $record) => "({$record->code}){$record->name}")
                                     ->searchable()
                                     ->preload()
