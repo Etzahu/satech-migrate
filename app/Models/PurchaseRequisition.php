@@ -29,6 +29,7 @@ class PurchaseRequisition extends Model implements HasMedia
         'date_delivery',
         'delivery_address',
         'motive',
+        'priority',
         'type',
         'term_payment',
         'confidential',
