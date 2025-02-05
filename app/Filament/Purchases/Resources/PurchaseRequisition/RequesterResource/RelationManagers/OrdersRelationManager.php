@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource\RelationManagers;
+namespace App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
 
 use Filament\Forms;
 use Filament\Tables;
@@ -21,18 +21,7 @@ class OrdersRelationManager extends RelationManager
     protected static ?string $navigationLabel = 'Ordenes';
     protected static ?string $title = 'Orden';
 
-    public function form(Form $form): Form
-    {
 
-        $options['rq'] = true;
-        return PurchaserResource::form($form, $options);
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('company_name')
-                    ->required()
-                    ->maxLength(255),
-            ]);
-    }
     public function isReadOnly(): bool
     {
         return false;
@@ -66,7 +55,8 @@ class OrdersRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\Action::make('Ver')
                     ->icon('heroicon-s-eye')
-                    ->url(fn(PurchaseOrder $record): string => PurchaserResource::getUrl('view', ['record' => $record->id]))
+                    ->url(fn($record)=> route('order.pdf', ['id' => $record->id]))
+                    ->openUrlInNewTab()
             ]);
     }
 }

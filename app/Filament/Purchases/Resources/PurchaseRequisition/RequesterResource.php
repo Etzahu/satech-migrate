@@ -21,6 +21,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
+use Filament\Forms\Components\Component;
 
 class RequesterResource extends Resource implements HasShieldPermissions
 {
@@ -140,30 +141,22 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ]),
                         Forms\Components\Tabs\Tab::make('Fichas técnicas')
                             ->schema([
-                                Forms\Components\Repeater::make('Documentos')
-                                    ->reorderable(false)
-                                    ->reorderableWithDragAndDrop(false)
-                                    ->reorderableWithButtons()
-                                    ->schema([
-                                        SpatieMediaLibraryFileUpload::make('technical_data_sheets')
-                                            ->label('Fichas técnica')
-                                            ->acceptedFileTypes(['application/pdf'])
-                                            ->collection('technical_data_sheets'),
-                                    ]),
+                                SpatieMediaLibraryFileUpload::make('technical_data_sheets')
+                                    ->label('Fichas técnica')
+                                    ->multiple()
+                                    ->hint('Puedes adjuntar más de un documento.')
+                                    ->acceptedFileTypes(['application/pdf'])
+                                    ->collection('technical_data_sheets'),
                             ]),
 
                         Forms\Components\Tabs\Tab::make('Soportes')
                             ->schema([
-                                Forms\Components\Repeater::make('Documentos')
-                                    ->reorderable(false)
-                                    ->reorderableWithDragAndDrop(false)
-                                    ->reorderableWithButtons()
-                                    ->schema([
-                                        SpatieMediaLibraryFileUpload::make('supports')
-                                            ->label('Soporte')
-                                            ->acceptedFileTypes(['application/pdf'])
-                                            ->collection('supports'),
-                                    ]),
+                                SpatieMediaLibraryFileUpload::make('supports')
+                                    ->label('Soportes')
+                                    ->acceptedFileTypes(['application/pdf'])
+                                    ->multiple()
+                                    ->hintColor('danger')
+                                    ->collection('supports'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Observación')
                             ->schema([
@@ -306,6 +299,11 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ->schema([
                                 Infolists\Components\TextEntry::make('purchaser.name')
                                     ->label('Nombre'),
+                            ]),
+                        Infolists\Components\Tabs\Tab::make('Ordenes')
+                            ->visible(fn($record) => filled($record->orders))
+                            ->schema([
+                                \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)->lazy(false)
                             ]),
                         Infolists\Components\Tabs\Tab::make('Historial')
                             ->schema([
