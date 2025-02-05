@@ -7,3 +7,9 @@
 .fi-sidebar {
     @apply bg-white dark:bg-transparent !important;
 }
+.fi-header-heading{
+    @apply  lowercase !important;
+}
+.fi-header-heading::first-letter{
+    text-transform: uppercase !important;
+}
