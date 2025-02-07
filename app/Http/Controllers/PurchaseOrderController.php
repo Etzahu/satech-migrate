@@ -59,6 +59,7 @@ class PurchaseOrderController extends Controller
         $data['itemsFormatted'] = $itemsFormatted;
 
         $revisions = $data->status()->timesWas('autorizada para proveedor');
+    
         $stages = [];
         $stages[1]=  $data->status()->snapshotWhen('revisión gerente de compras');
         $stages[2]=  $data->status()->snapshotWhen('aprobado por gerente de compras');

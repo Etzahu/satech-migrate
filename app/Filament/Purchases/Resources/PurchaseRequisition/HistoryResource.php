@@ -40,7 +40,6 @@ class HistoryResource extends Resource
     {
         return false;
     }
-
     public static function infolist(Infolist $infolist): Infolist
     {
         $options = [];
