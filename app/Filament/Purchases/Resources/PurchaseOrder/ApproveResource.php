@@ -2,21 +2,16 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
-use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\PurchaseOrder;
-use App\Models\PurchaseProvider;
+
 
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use App\Models\PurchaseRequisition;
-use Filament\Forms\Components\Tabs;
+
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
-use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
+
 use App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
 
 
@@ -38,6 +33,14 @@ class ApproveResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->approve();
+    }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::approve()->count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
     }
     public static function infolist(Infolist $infolist): Infolist
     {

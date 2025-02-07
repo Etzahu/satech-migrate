@@ -42,6 +42,10 @@ class AuthorizerResource extends Resource
     {
         return static::getModel()::authorize()->count();
     }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
     public static function infolist(Infolist $infolist): Infolist
     {
         $options = [];

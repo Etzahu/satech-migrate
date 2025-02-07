@@ -48,6 +48,10 @@ class AssignmentResource extends Resource
     {
         return static::getModel()::myAssing()->count();
     }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
 
     public static function infolist(Infolist $infolist): Infolist
     {

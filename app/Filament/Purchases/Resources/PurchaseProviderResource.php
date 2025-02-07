@@ -37,6 +37,10 @@ class PurchaseProviderResource extends Resource
     {
         return static::getModel()::where('status', 'revisión')->count();
     }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
 
     public static function form(Form $form): Form
     {

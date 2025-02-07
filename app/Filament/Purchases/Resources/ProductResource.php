@@ -43,6 +43,10 @@ class ProductResource extends Resource
         return static::getModel()::where('status', 'pendiente')
             ->where('company_id', session()->get('company_id'))->count();
     }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
     public static function form(Form $form): Form
     {
         return $form

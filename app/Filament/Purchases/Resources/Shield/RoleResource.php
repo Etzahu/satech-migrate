@@ -188,6 +188,10 @@ class RoleResource extends Resource implements HasShieldPermissions
             ? strval(static::getEloquentQuery()->count())
             : null;
     }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
 
     public static function isScopedToTenant(): bool
     {

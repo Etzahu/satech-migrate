@@ -39,6 +39,15 @@ class AuthorizeResource extends Resource
     {
         return parent::getEloquentQuery()->authorize();
     }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::authorize()->count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
+
 
     public static function infolist(Infolist $infolist): Infolist
     {

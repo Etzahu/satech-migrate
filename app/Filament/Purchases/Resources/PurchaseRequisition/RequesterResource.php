@@ -64,6 +64,10 @@ class RequesterResource extends Resource implements HasShieldPermissions
     {
         return static::getModel()::myRequisitionsDraft()->count();
     }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
 
     public static function form(Form $form): Form
     {

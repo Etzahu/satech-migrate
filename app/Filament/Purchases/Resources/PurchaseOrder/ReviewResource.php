@@ -39,6 +39,14 @@ class ReviewResource extends Resource
     {
         return parent::getEloquentQuery()->reviewManagement();
     }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::reviewManagement()->count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
     public static function infolist(Infolist $infolist): Infolist
     {
         $options[] = 'show_relation_items';

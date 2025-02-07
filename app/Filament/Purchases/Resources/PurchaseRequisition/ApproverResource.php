@@ -44,6 +44,11 @@ class ApproverResource extends Resource
         return static::getModel()::approve()->count();
     }
 
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
+
     public static function table(Table $table): Table
     {
         return $table

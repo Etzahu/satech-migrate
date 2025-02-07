@@ -43,6 +43,10 @@ class AssignmentAdminResource extends Resource
     {
         return static::getModel()::readyAssingCount();
     }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
     public static function infolist(Infolist $infolist): Infolist
     {
         $options = [];
