@@ -37,7 +37,11 @@ class AdminResource extends Resource
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::where('status', 'revisión gerente de compras')->count();
+        if(auth()->user()->hasRole('gerente_compras')){
+            return static::getModel()::where('status', 'revisión gerente de compras')->count();
+        }else{
+            return false;
+        }
     }
     public static function getNavigationBadgeColor(): ?string
     {
