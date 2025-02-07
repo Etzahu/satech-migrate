@@ -35,6 +35,14 @@ class AdminResource extends Resource
     {
         return auth()->user()->can('view_approve-level-1_purchase::order::purchaser');
     }
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('status', 'revisión gerente de compras')->count();
+    }
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'danger';
+    }
     public static function form(Form $form, array $options = []): Form
     {
         $options['show_relation_items'] = true;
