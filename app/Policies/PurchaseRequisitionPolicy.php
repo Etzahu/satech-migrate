@@ -73,7 +73,16 @@ class PurchaseRequisitionPolicy
      */
     public function update(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        return $user->can('update_purchase::requisition::requester');
+        $states = [
+            'borrador',
+            'devuelto por revisor',
+            'devuelto por gerencia',
+            'devuelto por DG',
+            'devuelto por comprador',
+            'devuelto por gerente de compras'
+        ];
+
+        return $user->can('update_purchase::requisition::requester') &&  in_array($purchaseRequisition->status, $states);
     }
 
     /**

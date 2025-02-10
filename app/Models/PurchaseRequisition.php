@@ -100,7 +100,8 @@ class PurchaseRequisition extends Model implements HasMedia
                     'devuelto por revisor',
                     'devuelto por gerencia',
                     'devuelto por DG',
-                    'devuelto por comprador'
+                    'devuelto por comprador',
+                    'devuelto por gerente de compras'
                 ])
                 ->orderBy('id', 'desc');
 

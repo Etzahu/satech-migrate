@@ -48,6 +48,17 @@ class View extends ViewRecord
                     ->url(route('requisition.pdf', ['id' => $this->record->id]))
                     ->openUrlInNewTab(),
                 Action::make('Devolver')
+                    ->requiresConfirmation()
+                    ->visible($this->record->status()->canBe('devuelto por comprador'))
+                    ->modalHeading('Devolver la requisición')
+                    ->modalDescription(function ($record) {
+                        $quantity = $record->orders->count();
+                        if ($quantity > 0) {
+                            return "¿Estás seguro de hacer esto?. La requisición contiene ordenes, las cuales se borrarán.";
+                        } else {
+                            return "¿Estás seguro de hacer?";
+                        }
+                    })
                     ->form([
                         Textarea::make('observation')
                             ->label('Motivo')
@@ -56,6 +67,7 @@ class View extends ViewRecord
                     ->action(function (array $data) {
                         try {
                             $this->record->status()->transitionTo('devuelto por comprador', ['respuesta' => $data['observation']]);
+                            $this->record->orders()->delete();
                             Notification::make()
                                 ->title('Se devolvió la requisición')
                                 ->success()
@@ -68,8 +80,7 @@ class View extends ViewRecord
                                 ->send();
                         }
                     })
-                    ->visible(blank($this->record->orders) && $this->record->status()->canBe('devuelto por comprador'))
-                    ->requiresConfirmation()
+
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')
@@ -78,5 +89,4 @@ class View extends ViewRecord
                 ->button(),
         ];
     }
-
 }

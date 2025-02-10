@@ -6,9 +6,10 @@ use App\Models\User;
 
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
-use Filament\Resources\Pages\ViewRecord;
 
+use Filament\Resources\Pages\ViewRecord;
 use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentAdminResource;
 
 class View extends ViewRecord
@@ -18,6 +19,40 @@ class View extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('Devolver')
+            ->color('info')
+            ->requiresConfirmation()
+            ->visible($this->record->status()->canBe('devuelto por gerente de compras'))
+            ->modalHeading('Devolver la requisición')
+            ->modalDescription(function ($record) {
+                $quantity = $record->orders->count();
+                if ($quantity > 0) {
+                    return "¿Estás seguro de hacer esto?. La requisición contiene ordenes, las cuales se borrarán.";
+                } else {
+                    return "¿Estás seguro de hacer?";
+                }
+            })
+            ->form([
+                Textarea::make('observation')
+                    ->label('Motivo')
+                    ->required(),
+            ])
+            ->action(function (array $data) {
+                try {
+                    $this->record->status()->transitionTo('devuelto por gerente de compras', ['respuesta' => $data['observation']]);
+                    $this->record->orders()->delete();
+                    Notification::make()
+                        ->title('Se devolvió la requisición')
+                        ->success()
+                        ->send();
+                } catch (\Exception $e) {
+                    logger($e->getMessage());
+                    Notification::make()
+                        ->title('Ocurrió un error')
+                        ->danger()
+                        ->send();
+                }
+            }),
             Action::make('Asignar comprador')
                 ->visible($this->record->status()->canBe('comprador asignado') && blank($this->record->responsiblePurchaseOrder))
                 ->form([
