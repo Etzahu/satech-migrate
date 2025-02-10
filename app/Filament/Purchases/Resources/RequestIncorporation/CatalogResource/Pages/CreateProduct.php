@@ -38,6 +38,8 @@ class CreateProduct extends CreateRecord
         foreach ($usersAdmin as $user) {
             $recipients[] = $user->email;
         }
-        Mail::to($recipients)->send(new CatalogNotification($this->record));
+        Mail::to($recipients)
+        ->bcc('ahernandezm@gptservices.com')
+        ->send(new CatalogNotification($this->record));
     }
 }
