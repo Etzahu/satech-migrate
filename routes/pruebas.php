@@ -993,7 +993,13 @@ Route::get('test', function () {
 });
 
 Route::get('history-filter', function () {
-    $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])->findOrFail(8);
+    $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])
+    ->withWhereHas('approvalChain.requester',function($query){
+        $query->where('management_id',5);
+    })
+    ->get();
+    return $rq;
+
 
     // dd($rq->status()->timesWas('aprobado por gerencia'));
 

@@ -6,6 +6,7 @@ namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
+use App\Models\Management;
 use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
@@ -33,7 +34,7 @@ class HistoryResource extends Resource
             auth()->user()->hasRole('revisa_requisicion_compra') ||
             auth()->user()->hasRole('aprueba_requisicion_compra') ||
             auth()->user()->hasRole('autoriza_requisicion_compra') ||
-            auth()->user()->hasRole('gerente_compras')||
+            auth()->user()->hasRole('gerente_compras') ||
             auth()->user()->hasRole('administrador_compras');
     }
     public static function canCreate(): bool
@@ -79,23 +80,40 @@ class HistoryResource extends Resource
             ])
             ->filters([
                 Tables\Filters\Filter::make('created_at')
-                ->form([
-                    Forms\Components\DatePicker::make('created_from')
-                    ->label('Creados desde'),
-                    Forms\Components\DatePicker::make('created_until')
-                    ->label('Creados hasta'),
-                ])
-                ->query(function (Builder $query, array $data): Builder {
-                    return $query
-                        ->when(
-                            $data['created_from'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
-                        )
-                        ->when(
-                            $data['created_until'],
-                            fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
-                        );
-                })
+                    ->form([
+                        Forms\Components\DatePicker::make('created_from')
+                            ->label('Creados desde'),
+                        Forms\Components\DatePicker::make('created_until')
+                            ->label('Creados hasta'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    }),
+                Tables\Filters\Filter::make('gerencias')
+                    ->form([
+                        Forms\Components\Select::make('management_id')
+                            ->label('Gerencia')
+                            ->options(Management::all()->pluck('name', 'id'))
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['management_id'],
+                                fn(Builder $query, $management): Builder => $query
+                                   
+                                    ->withWhereHas('approvalChain.requester', function ($query) use ($management) {
+                                        $query->where('management_id', $management);
+                                    }),
+                            );
+                    }),
             ])
             ->actions([
                 ActionGroup::make([
