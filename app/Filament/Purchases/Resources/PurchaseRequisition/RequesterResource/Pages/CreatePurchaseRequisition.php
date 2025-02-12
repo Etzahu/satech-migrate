@@ -15,16 +15,16 @@ class CreatePurchaseRequisition extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // if (blank(auth()->user()->management)) {
-        //     Notification::make()
-        //         ->danger()
-        //         ->title('Hubo un error')
-        //         ->body('No cuenta con una gerencia asignada.')
-        //         ->persistent()
-        //         ->color('danger')
-        //         ->send();
-        //     $this->halt();
-        // }
+        if (blank(auth()->user()->management)) {
+            Notification::make()
+                ->danger()
+                ->title('Hubo un error')
+                ->body('No cuenta con una gerencia asignada.')
+                ->persistent()
+                ->color('danger')
+                ->send();
+            $this->halt();
+        }
         if (blank(auth()->user()->approvalChainsPurchaseRequisition)) {
             Notification::make()
                 ->danger()
@@ -49,6 +49,16 @@ class CreatePurchaseRequisition extends CreateRecord
     }
     protected function beforeFill()
     {
+        if (blank(auth()->user()->management)) {
+            Notification::make()
+                ->danger()
+                ->title('Hubo un error')
+                ->body('No cuenta con una gerencia asignada.')
+                ->persistent()
+                ->color('danger')
+                ->send();
+            $this->halt();
+        }
         if (blank(auth()->user()->approvalChainsPurchaseRequisition)) {
             Notification::make()
                 ->danger()

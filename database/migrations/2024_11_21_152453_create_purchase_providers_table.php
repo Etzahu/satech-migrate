@@ -24,8 +24,8 @@ return new class extends Migration
             $table->string('cp');
             $table->string('web_company')->nullable();
             $table->string('bank',50)->default('N/A');
-            $table->integer('bank_account')->default(00000000);
-            $table->integer('bank_account_number')->default(00000000);
+            $table->string('bank_account')->default(0);
+            $table->string('bank_account_number')->default(0);
             $table->string('status');
             $table->foreignId('user_request_id')->constrained('users');
             $table->foreignId('user_approve_id')->nullable()->constrained('users');
