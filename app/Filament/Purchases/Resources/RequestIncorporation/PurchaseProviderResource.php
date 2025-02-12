@@ -181,11 +181,11 @@ class PurchaseProviderResource extends Resource
                                     ]),
                                 Forms\Components\TextInput::make('bank_account')
                                     ->label('Cuenta de banco')
-                                    ->rules(['digits:30'])
+                                     ->maxLength(30)
                                     ->required(),
                                 Forms\Components\TextInput::make('bank_account_number')
                                     ->label('Clabe')
-                                    ->rules(['digits:30'])
+                                     ->maxLength(30)
                                     ->required()
                             ]),
                         Forms\Components\Tabs\Tab::make('Documentacion')
