@@ -3,7 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
 
 use Filament\Forms\Get;
-
+use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Infolists\Infolist;
 use App\Services\PRInfolistService;
@@ -19,9 +19,11 @@ class View extends ViewRecord
 {
     protected static string $resource = HistoryResource::class;
 
-       protected function getHeaderActions(): array
+    protected function getHeaderActions(): array
     {
         return [
+            Actions\EditAction::make()
+                ->visible(auth()->user()->hasRole('super_admin')),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->url(route('requisition.pdf', ['id' => $this->record->id]))
@@ -29,5 +31,4 @@ class View extends ViewRecord
                 ->openUrlInNewTab()
         ];
     }
-
 }

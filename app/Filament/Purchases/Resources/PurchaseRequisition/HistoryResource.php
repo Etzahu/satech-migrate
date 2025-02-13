@@ -41,6 +41,10 @@ class HistoryResource extends Resource
     {
         return false;
     }
+    public static function form(form $form): Form
+    {
+        return RequesterResource::form($form);
+    }
     public static function infolist(Infolist $infolist): Infolist
     {
         $options = [];
@@ -108,7 +112,7 @@ class HistoryResource extends Resource
                             ->when(
                                 $data['management_id'],
                                 fn(Builder $query, $management): Builder => $query
-                                   
+
                                     ->withWhereHas('approvalChain.requester', function ($query) use ($management) {
                                         $query->where('management_id', $management);
                                     }),
