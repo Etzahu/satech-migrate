@@ -46,7 +46,7 @@ class PurchaseRequisitionPolicy
         $usersWarehouse = User::role('revisa_almacen_requisicion_compra')->get()->pluck('id')->toArray();
         $usersAdminPurchase = User::role('gerente_compras')->get()->pluck('id')->toArray();
 
-        $allowedIds= [];
+        $allowedIds = [];
 
 
         $allowedIds = $purchaseRequisition->approvalChain->only(['requester_id', 'reviewer_id', 'approver_id', 'authorizer_id']);
@@ -82,7 +82,7 @@ class PurchaseRequisitionPolicy
             'devuelto por gerente de compras'
         ];
 
-        return $user->can('update_purchase::requisition::requester') &&  in_array($purchaseRequisition->status, $states);
+        return ($user->can('update_purchase::requisition::requester') &&  in_array($purchaseRequisition->status, $states)) || $user->hasRole('super_admin');
     }
 
     /**
