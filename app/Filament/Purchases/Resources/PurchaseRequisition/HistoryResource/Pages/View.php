@@ -22,8 +22,6 @@ class View extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make()
-                ->visible(auth()->user()->hasRole('super_admin')),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->url(route('requisition.pdf', ['id' => $this->record->id]))

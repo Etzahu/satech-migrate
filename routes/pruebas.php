@@ -994,10 +994,10 @@ Route::get('test', function () {
 
 Route::get('history-filter', function () {
     $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])
-    ->withWhereHas('approvalChain.requester',function($query){
-        $query->where('management_id',5);
-    })
-    ->get();
+        ->withWhereHas('approvalChain.requester', function ($query) {
+            $query->where('management_id', 5);
+        })
+        ->get();
     return $rq;
 
 
@@ -1117,18 +1117,32 @@ Route::get('filter-rq', function () {
 });
 Route::get('uptade-products', function () {
     $products = Product::all();
-    try{
+    try {
         DB::beginTransaction();
-        foreach ($products as $key => $product){
+        foreach ($products as $key => $product) {
             echo '<br>';
-            echo 'DB '.$product->id . '-Cal'.$key +1;
+            echo 'DB ' . $product->id . '-Cal' . $key + 1;
             echo '<br>';
-            $product->id = $key +1;
+            $product->id = $key + 1;
             $product->save();
         }
         DB::commit();
-    }catch (Exception $e){
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
+});
+
+Route::get('excel-provider', function () {
+    $collection = PurchaseProvider::with('contacts')->get();
+    $contacts = $collection->map(function ($item) {
+        return $item->contacts;
+    });
+    $contacts = $contacts->flatten();
+    $sheets = new SheetCollection([
+        'proveedores' => $collection,
+        'contactos' => $contacts
+    ]);
+    return (new FastExcel($sheets))->download('file.xlsx');
+    return fastexcel($collection, $contacts)->download('file.xlsx');
 });

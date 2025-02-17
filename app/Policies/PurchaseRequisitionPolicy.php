@@ -75,6 +75,7 @@ class PurchaseRequisitionPolicy
     {
         $states = [
             'borrador',
+            'devuelto por almacén',
             'devuelto por revisor',
             'devuelto por gerencia',
             'devuelto por DG',
