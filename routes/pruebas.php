@@ -1146,3 +1146,18 @@ Route::get('excel-provider', function () {
     return (new FastExcel($sheets))->download('file.xlsx');
     return fastexcel($collection, $contacts)->download('file.xlsx');
 });
+
+Route::get('folio', function () {
+
+    $term = Company::find(session()->get('company_id'))->acronym . '-' . auth()->user()->management->acronym . '-' . now()->year;
+    $rq = PurchaseRequisition::where('folio', 'LIKE', $term . '%')->latest('created_at')->first();
+
+    // Dividir el string por el guion
+    $partes = explode('-', $rq->folio);
+
+    // Obtener la última parte
+    $numString = end($partes);
+    // Convertir a entero
+    $numInt = ((int)$numString + 1);
+    return str($numInt)->padLeft(4, '0');
+});

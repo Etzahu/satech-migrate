@@ -13,7 +13,16 @@ class PurchaseRequisitionCreationService
 {
     public function generateFolio()
     {
-        return $this->getCompany() . '-' . $this->getManangement() . '-' . now()->year . '-' . $this->getCountRecords();
+        $term = Company::find(session()->get('company_id'))->acronym . '-' . auth()->user()->management->acronym . '-' . now()->year . '-';
+        $rq = PurchaseRequisition::where('folio', 'LIKE', $term . '%')->latest('created_at')->first();
+        // Dividir el string por el guion
+        $parts = explode('-', $rq->folio);
+
+        // Obtener la última parte
+        $numString = end($parts);
+        // Convertir a entero
+        $numInt = ((int)$numString + 1);
+        return $term . str($numInt)->padLeft(4, '0');
     }
 
     public function getCountRecords()
@@ -48,7 +57,7 @@ class PurchaseRequisitionCreationService
         return Company::find(session()->get('company_id'))->acronym;
     }
 
-    public function generateDataForEmail($subject, $model,$informative = false)
+    public function generateDataForEmail($subject, $model, $informative = false)
     {
         $subject = str($subject)->upper();
         $data = [
@@ -120,7 +129,8 @@ class PurchaseRequisitionCreationService
         }
         return $data;
     }
-    public function getUserForEmailPRFinish($model){
+    public function getUserForEmailPRFinish($model)
+    {
         $moreUsers = [];
         $moreUsers[] = $model->approvalChain->reviewer->email;
         $moreUsers[] = $model->approvalChain->approver->email;

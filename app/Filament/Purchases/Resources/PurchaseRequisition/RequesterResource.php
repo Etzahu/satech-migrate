@@ -100,7 +100,6 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->required(),
                                 Forms\Components\DatePicker::make('date_delivery')
                                     ->label('Fecha deseable de entrega')
-                                    ->minDate(now()->subDay(1))
                                     ->default(now()->addDay(3))
                                     ->required(),
                                 Forms\Components\Textarea::make('delivery_address')
@@ -148,6 +147,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                 SpatieMediaLibraryFileUpload::make('technical_data_sheets')
                                     ->label('Fichas técnica')
                                     ->multiple()
+                                    ->maxParallelUploads(1)
                                     ->hint('Puedes adjuntar más de un documento.')
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->collection('technical_data_sheets'),
@@ -158,6 +158,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                 SpatieMediaLibraryFileUpload::make('supports')
                                     ->label('Soportes')
                                     ->acceptedFileTypes(['application/pdf'])
+                                    ->maxParallelUploads(1)
                                     ->multiple()
                                     ->hintColor('danger')
                                     ->collection('supports'),
