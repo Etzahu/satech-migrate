@@ -88,7 +88,7 @@ class ManagePR extends ManageRecords
                 function (Builder $query) {
                     $query
                         ->where('company_id', session()->get('company_id'))
-                        ->orderBy('id', 'desc');
+                        ->orderBy('created_at', 'desc');
                 }
             );
         }

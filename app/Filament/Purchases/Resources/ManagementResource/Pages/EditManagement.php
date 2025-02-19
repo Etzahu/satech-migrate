@@ -19,12 +19,12 @@ class EditManagement extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
-    protected function mutateFormDataBeforeSave(array $data): array
-    {
-        $data['name'] = Str::of($data['name'])->squish()->title();
-        $data['acronym'] = Str::of($data['acronym'])->upper()->replace(' ', '');
-        return $data;
-    }
+    // protected function mutateFormDataBeforeSave(array $data): array
+    // {
+    //     $data['name'] = Str::of($data['name'])->squish()->title();
+    //     $data['acronym'] = Str::of($data['acronym'])->upper()->replace(' ', '');
+    //     return $data;
+    // }
 
     protected function beforeSave(): void
     {
