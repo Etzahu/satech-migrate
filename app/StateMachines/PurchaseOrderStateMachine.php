@@ -104,9 +104,9 @@ class PurchaseOrderStateMachine extends StateMachine
                 $data = $service->generateDataEmail($model->id, 'autorizada para proveedor');
                 $recipient = $model->purchaser->email;
 
-                // $moreUsers = $service->getUserForEmailPRFinish($model);
-                // Mail::to($recipient)->cc($moreUsers)->send(new Notification($data));
-                Mail::to($recipient)->send(new Notification($data));
+                $moreUsers = $service->getUserForEmailFinish($model);
+                Mail::to($recipient)->cc($moreUsers)->send(new Notification($data));
+                // Mail::to($recipient)->send(new Notification($data));
             }],
             'aprobado por DG nivel 1' => [function ($to, $model) {
                 $service = new OrderService();

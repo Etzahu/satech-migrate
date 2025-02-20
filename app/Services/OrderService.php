@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Money\Money;
 use Money\Currency;
+use App\Models\User;
 use App\Models\Company;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseRequisition;
@@ -100,12 +101,14 @@ class OrderService
         }
         return $recipients;
     }
-    public function getUserForEmailPRFinish($model){
+    public function getUserForEmailFinish($model){
         $moreUsers = [];
-        $moreUsers[] = $model->approvalChain->reviewer->email;
-        $moreUsers[] = $model->approvalChain->approver->email;
-        $moreUsers[] = $model->approvalChain->authorizer->email;
+        $moreUsers[] = $model->requisition->approvalChain->requester->email;
+        $moreUsers[] = $model->requisition->approvalChain->approver->email;
+        $moreUsers[] = $model->requisition->approvalChain->authorizer->email;
+
         $moreUsers[] = User::role('gerente_compras')->first()->email;
+
         $usersWareHouse = User::role('revisa_almacen_requisicion_compra')->get()->flatten();
         foreach ($usersWareHouse as $user) {
             $moreUsers[] = $user->email;
