@@ -59,7 +59,7 @@ class PurchasesPanelProvider extends PanelProvider
                 'logout' => MenuItem::make()
                     ->label('Salir')
                     ->url(fn(): string => route('logout'))
-                    ->icon('heroicon-o-cog-6-tooth'),
+                    ->icon('heroicon-o-arrow-left-start-on-rectangle'),
             ])
             ->middleware([
                 EncryptCookies::class,

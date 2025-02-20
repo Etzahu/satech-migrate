@@ -397,10 +397,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                 Infolists\Components\TextEntry::make('providerContact.cell_phone')
                                                     ->label('Teléfono'),
                                             ]),
-                                        // Infolists\Components\Tabs\Tab::make('Partidas')
-                                        //     ->schema([
-                                        //         \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
-                                        //     ]),
+
                                         Infolists\Components\Tabs\Tab::make('Soporte')
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('doc_1')
@@ -579,6 +576,29 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ->schema([
                                                 Infolists\Components\Textentry::make('observations')
                                                     ->label('Observaciones'),
+                                            ]),
+                                        Infolists\Components\Tabs\Tab::make('Partidas')
+                                            ->schema([
+                                                Infolists\Components\RepeatableEntry::make('items')
+                                                    ->label('')
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('product.name')
+                                                            ->label('Producto/Servicio'),
+                                                        Infolists\Components\TextEntry::make('product.unit.acronym')
+                                                            ->label('Unidad'),
+                                                        Infolists\Components\TextEntry::make('quantity')
+                                                            ->label('Cantidad'),
+                                                        Infolists\Components\TextEntry::make('unit_price')
+                                                            ->label('Precio unitario')
+                                                            ->money( divideBy: 100),
+                                                        Infolists\Components\TextEntry::make('sub_total')
+                                                            ->label('Subtotal')
+                                                            ->money( divideBy: 100),
+                                                        Infolists\Components\TextEntry::make('observation')
+                                                            ->label('Observación')
+                                                            ->columnSpan(2),
+                                                    ])
+                                                    ->columns(5)
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Historial')
                                             ->schema([

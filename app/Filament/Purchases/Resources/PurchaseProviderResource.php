@@ -30,7 +30,7 @@ class PurchaseProviderResource extends Resource
 
     public static function canAccess(): bool
     {
-        return auth()->user()->hasRole('gerente_compras') ||auth()->user()->hasRole('administrador_compras')||auth()->user()->hasRole('super_admin');
+        return auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('administrador_compras') || auth()->user()->hasRole('super_admin');
     }
 
     public static function getNavigationBadge(): ?string
