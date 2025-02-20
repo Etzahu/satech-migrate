@@ -1,9 +1,8 @@
-<x-filament::dropdown>
+<x-filament::dropdown placement="bottom-end">
     <x-slot name="trigger">
         <x-filament::icon-button icon="heroicon-m-building-office-2" color="gray">
         </x-filament::icon-button>
     </x-slot>
-
     <x-filament::dropdown.list>
         @foreach (App\Models\Company::all() as $company)
             @if (session()->get('company_id') == $company->id)

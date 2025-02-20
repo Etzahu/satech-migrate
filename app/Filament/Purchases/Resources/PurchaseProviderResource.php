@@ -242,6 +242,7 @@ class PurchaseProviderResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('rfc')
                     ->label('RFC')
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('company_name')
                     ->label('Razón social')

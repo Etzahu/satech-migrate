@@ -22,15 +22,16 @@ class ListPurchaseProviders extends ListRecords
     public function getTabs(): array
     {
         return [
-            'Todo' => Tab::make('Todo'),
+            'Todo' => Tab::make('Todo')
+            ->modifyQueryUsing(fn(Builder $query) => $query->orderBy('company_name','asc')),
             'revisar' => Tab::make('Revisión')
                 ->badge(PurchaseProvider::query()->where('status', 'revisión')->count())
                 ->badgeColor('danger')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'revisión')),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'revisión')->orderBy('company_name','asc')),
             'mis-proveedores' => Tab::make('Mis proveedores')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('user_request_id', auth()->user()->id)),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('user_request_id', auth()->user()->id)->orderBy('company_name','asc')),
             'rechazados' => Tab::make('Rechazados')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'rechazado')),
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'rechazado')->orderBy('company_name','asc')),
 
         ];
     }

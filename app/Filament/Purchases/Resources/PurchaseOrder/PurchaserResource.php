@@ -399,7 +399,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Partidas')->schema([
                                             \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
-                                        ])->visible(in_array('show_relation_items', $options)),
+                                        ]),
                                         Infolists\Components\Tabs\Tab::make('Soporte')
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('doc_1')

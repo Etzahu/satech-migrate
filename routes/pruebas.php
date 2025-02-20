@@ -1149,6 +1149,7 @@ Route::get('excel-provider', function () {
 
 Route::get('folio', function () {
 
+    phpinfo();
     $term = Company::find(session()->get('company_id'))->acronym . '-' . auth()->user()->management->acronym . '-' . now()->year;
     $rq = PurchaseRequisition::where('folio', 'LIKE', $term . '%')->latest('created_at')->first();
 
