@@ -15,13 +15,19 @@ class PurchaseRequisitionCreationService
     {
         $term = Company::find(session()->get('company_id'))->acronym . '-' . auth()->user()->management->acronym . '-' . now()->year . '-';
         $rq = PurchaseRequisition::where('folio', 'LIKE', $term . '%')->latest('created_at')->first();
-        // Dividir el string por el guion
-        $parts = explode('-', $rq->folio);
 
-        // Obtener la última parte
-        $numString = end($parts);
-        // Convertir a entero
-        $numInt = ((int)$numString + 1);
+        if(filled($rq)){
+            // Dividir el string por el guion
+            $parts = explode('-', $rq->folio);
+            // Obtener la última parte
+            $numString = end($parts);
+            // Convertir a entero
+            $numInt = ((int)$numString + 1);
+        }else{
+            $numInt =  1;
+        }
+
+
         return $term . str($numInt)->padLeft(4, '0');
     }
 
