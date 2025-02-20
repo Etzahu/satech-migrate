@@ -10,24 +10,26 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Management;
 use App\Models\MeasureUnit;
+use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
 use App\Models\CategoryFamily;
+use Filament\Facades\Filament;
 use App\Models\ProjectPurchase;
 use App\Models\ProviderContact;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 use App\Models\PurchaseProvider;
 use Illuminate\Support\Facades\DB;
-
 use App\Models\PurchaseRequisition;
 use Money\Currencies\ISOCurrencies;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Session;
 use Filament\Notifications\Notification;
 use App\Services\OrderCalculationService;
 use Rap2hpoutre\FastExcel\SheetCollection;
@@ -187,7 +189,8 @@ Route::get('um', function () {
 Route::get('id/{id}', function (Request $request, $id) {
     $user = User::findOrFail($id);
     Auth::login($user, $remember = true);
-    return redirect()->route('filament.compras.pages.dashboard');
+    return redirect('/');
+    // return redirect()->route('filament.compras.pages.dashboard');
 });
 
 

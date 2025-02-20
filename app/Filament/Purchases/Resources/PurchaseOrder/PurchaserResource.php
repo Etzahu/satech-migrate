@@ -397,9 +397,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                 Infolists\Components\TextEntry::make('providerContact.cell_phone')
                                                     ->label('Teléfono'),
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Partidas')->schema([
-                                            \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
-                                        ]),
+                                        // Infolists\Components\Tabs\Tab::make('Partidas')
+                                        //     ->schema([
+                                        //         \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
+                                        //     ]),
                                         Infolists\Components\Tabs\Tab::make('Soporte')
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('doc_1')
