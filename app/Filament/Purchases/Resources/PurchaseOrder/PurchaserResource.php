@@ -590,10 +590,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                             ->label('Cantidad'),
                                                         Infolists\Components\TextEntry::make('unit_price')
                                                             ->label('Precio unitario')
-                                                            ->money( divideBy: 100),
+                                                             ->formatStateUsing(fn (string $state): string => '$'.((int)$state) / 100),
                                                         Infolists\Components\TextEntry::make('sub_total')
                                                             ->label('Subtotal')
-                                                            ->money( divideBy: 100),
+                                                             ->formatStateUsing(fn (string $state): string => '$'. ((int)$state) / 100),
                                                         Infolists\Components\TextEntry::make('observation')
                                                             ->label('Observación')
                                                             ->columnSpan(2),
