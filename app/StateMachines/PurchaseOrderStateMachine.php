@@ -2,10 +2,12 @@
 
 namespace App\StateMachines;
 
+use Money\Money;
 use App\Models\User;
 use App\Services\OrderService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PurchaseOrder\Notification;
+use App\Services\OrderCalculationService;
 use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
 
 class PurchaseOrderStateMachine extends StateMachine
@@ -23,8 +25,8 @@ class PurchaseOrderStateMachine extends StateMachine
 
             'aprobado por gerente de compras' => ['aprobado por gerente solicitante', 'devuelto por gerente solicitante', 'cancelado por gerente solicitante'],
             'aprobado por gerente solicitante' => ['aprobado por DG nivel 1', 'devuelto por DG nivel 1', 'cancelado por DG nivel 1'],
-            'aprobado por DG nivel 1' =>  ['aprobado por DG nivel 2','devuelto por DG nivel 2', 'cancelado por DG nivel 2', 'autorizada para proveedor'],
-            'aprobado por DG nivel 2' =>['autorizada para proveedor'],
+            'aprobado por DG nivel 1' =>  ['aprobado por DG nivel 2', 'devuelto por DG nivel 2', 'cancelado por DG nivel 2', 'autorizada para proveedor'],
+            'aprobado por DG nivel 2' => ['autorizada para proveedor'],
 
 
             'devuelto por gerente de compras' => ['revisión gerente de compras'],
@@ -111,10 +113,23 @@ class PurchaseOrderStateMachine extends StateMachine
             'aprobado por DG nivel 1' => [function ($to, $model) {
                 $service = new OrderService();
                 $data = $service->generateDataEmail($model->id, 'revisar');
-
                 $recipients = User::role('autoriza_nivel-2-orden_compra')->get();
                 $recipients = $service->getRecipientsArray($recipients);
-                Mail::to($recipients)->send(new Notification($data));
+
+                $maxAmount = 0;
+                if ($model->currency == 'USD') {
+
+                    $maxAmount = Money::USD(1500000);
+                }
+                if ($model->currency == 'MXN') {
+
+                    $maxAmount = Money::MXN(30000000);
+                }
+                $service = new OrderCalculationService($model->id);
+                $total = $service->getTotal();
+                if ($total->greaterThan($maxAmount) ) {
+                    Mail::to($recipients)->send(new Notification($data));
+                }
             }],
             'devuelto por DG nivel 1' => [function ($to, $model) {
                 $service = new OrderService();
