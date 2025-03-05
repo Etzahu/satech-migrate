@@ -2,7 +2,7 @@
     <div>
         <div class="flex flex-col p-6 bg-gray-100 sm:py-12">
             <ul class="list-none">
-                @foreach ($getRecord()->status()->history()->orderBy('created_at', 'desc')->get() as $item)
+                @foreach ($getRecord()->status()->history()->orderBy('id', 'desc')->get() as $item)
                     <li class="rounded-lg cursor-pointer group">
                         <div class="flex flex-row">
                             <div class="flex flex-col items-center justify-around">
