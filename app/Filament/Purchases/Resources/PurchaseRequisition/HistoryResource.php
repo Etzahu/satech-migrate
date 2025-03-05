@@ -75,8 +75,9 @@ class HistoryResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
                     ->dateTime()
+                    ->sinceTooltip()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
                     ->dateTime()

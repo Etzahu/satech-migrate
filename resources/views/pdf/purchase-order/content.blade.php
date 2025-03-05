@@ -322,8 +322,8 @@
                         <td class="p-0 text-xs text-left text-black " valing="top">{{ $data['type_payment'] }}</td>
                     </tr>
                     <tr>
-                        <td class="w-24 p-0 text-xs text-left text-black" valing="top">Condiciones de Pago:</td>
-                        <td class="p-0 text-xs text-left text-black " valing="top">{{ $data['condition_payment'] }}
+                        <td class="w-24 p-0 text-xs text-left text-black" valing="top">Término de Pago:</td>
+                        <td class="p-0 text-xs text-left text-black " valing="top">{{ $data['term_payment'] }}
                         </td>
                     </tr>
                     <tr>

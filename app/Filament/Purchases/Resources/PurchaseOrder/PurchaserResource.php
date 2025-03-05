@@ -590,10 +590,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                             ->label('Cantidad'),
                                                         Infolists\Components\TextEntry::make('unit_price')
                                                             ->label('Precio unitario')
-                                                             ->formatStateUsing(fn (string $state): string => '$'.((int)$state) / 100),
+                                                            ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
                                                         Infolists\Components\TextEntry::make('sub_total')
                                                             ->label('Subtotal')
-                                                             ->formatStateUsing(fn (string $state): string => '$'. ((int)$state) / 100),
+                                                            ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
                                                         Infolists\Components\TextEntry::make('observation')
                                                             ->label('Observación')
                                                             ->columnSpan(2),
@@ -673,16 +673,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
                                             ->schema([
-                                                Infolists\Components\TextEntry::make('requisition.approvalChain.requester.name')
-                                                    ->label('Solicitante'),
-                                                Infolists\Components\TextEntry::make('requisition.approvalChain.reviewer.name')
-                                                    ->label('Revisor'),
-                                                Infolists\Components\TextEntry::make('requisition.approvalChain.approver.name')
-                                                    ->label('Aprobador'),
-                                                Infolists\Components\TextEntry::make('requisition.approvalChain.authorizer.name')
-                                                    ->label('Autoriza'),
+                                                Infolists\Components\ViewEntry::make('progress')
+                                                    ->view('filament.infolists.entries.progress-approval')
                                             ])
-                                            ->columns(4),
+                                            ->columns(1),
                                         Infolists\Components\Tabs\Tab::make('Observaciones')
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('observation')

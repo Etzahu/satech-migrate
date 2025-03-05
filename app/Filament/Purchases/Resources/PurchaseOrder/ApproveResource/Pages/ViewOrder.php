@@ -73,7 +73,6 @@ class ViewOrder extends ViewRecord
                         if ($total->greaterThanOrEqual($minAmount) && $total->lessThanOrEqual($maxAmount)) {
                             $this->record->status()->transitionTo('autorizada para proveedor');
                         }
-
                     }
                     Notification::make()
                         ->title('Respuesta enviada')

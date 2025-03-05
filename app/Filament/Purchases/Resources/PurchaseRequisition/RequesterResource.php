@@ -181,6 +181,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
             ->columns(1)
             ->schema([
                 Infolists\Components\Tabs::make('Tabs')
+                ->activeTab(1)
                     ->tabs([
                         Infolists\Components\Tabs\Tab::make('Información general')
                             ->schema([
@@ -236,16 +237,10 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ]),
                         Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
                             ->schema([
-                                Infolists\Components\TextEntry::make('approvalChain.requester.name')
-                                    ->label('Solicitante'),
-                                Infolists\Components\TextEntry::make('approvalChain.reviewer.name')
-                                    ->label('Revisor'),
-                                Infolists\Components\TextEntry::make('approvalChain.approver.name')
-                                    ->label('Aprobador'),
-                                Infolists\Components\TextEntry::make('approvalChain.authorizer.name')
-                                    ->label('Autoriza'),
+                                Infolists\Components\ViewEntry::make('progress')
+                                ->view('filament.infolists.entries.progress-approval'),
                             ])
-                            ->columns(4),
+                            ->columns(1),
                         Infolists\Components\Tabs\Tab::make('Fichas técnicas')
                             ->visible(fn($record) => $record->getMedia('technical_data_sheets')->count() > 0)
                             ->schema([

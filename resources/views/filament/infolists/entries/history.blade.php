@@ -17,13 +17,13 @@
                                 <div class="h-full border-l-2 border-gray-400"></div>
                             </div>
                             <div class="flex flex-col p-2 pr-6 ml-2 group-hover:bg-white rounded-xl">
-                                <div class="ml-4 text-xl font-medium capitalize">
+                                <div class="ml-4 text-xl font-medium capitalize-first">
                                     @if (filled($item->from))
-                                        {{ $item->from }}
+                                        {{ ucfirst(strtolower($item->from))  }}
                                     @else
                                         N/A
                                     @endif
-                                    -> {{ $item->to }}
+                                    -> {{  ucfirst(strtolower($item->to)) }}
                                 </div>
                                 <div class="mb-2 ml-4 text-xs">
                                     <p> {{ $item->created_at->format('d-m-Y H:i') }}</p>
