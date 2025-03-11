@@ -1165,3 +1165,17 @@ Route::get('folio', function () {
     $numInt = ((int)$numString + 1);
     return str($numInt)->padLeft(4, '0');
 });
+Route::get('up', function () {
+    $model =   new CreateAuditsTable();
+    $model->up();
+});
+
+Route::get('qr-generate', function () {
+    // Texto o URL que quieres codificar en el QR
+    $data = "https://forms.gle/wzUjou2GCxVUFL5z9";
+    // Generar el código QR
+    $qrCode = QrCode::format('png')->size(300)->generate($data);
+      // Devolver la imagen del QR como una respuesta de descarga
+      return response($qrCode)->header('Content-Type', 'image/png')
+      ->header('Content-Disposition', 'attachment; filename="qr-code.png"');
+});

@@ -1,20 +1,19 @@
-<x-filament::dropdown placement="bottom-end">
-    <x-slot name="trigger">
-        <x-filament::icon-button icon="heroicon-m-building-office-2" color="gray">
-        </x-filament::icon-button>
-    </x-slot>
-    <x-filament::dropdown.list>
-        @foreach (App\Models\Company::all() as $company)
-            @if (session()->get('company_id') == $company->id)
-                <x-filament::dropdown.list.item href="{{ route('company', $company->id) }}" tag="a" color="danger"
-                    disabled>
+<div class="flex flex-wrap items-center justify-center">
+    @foreach (App\Models\Company::all() as $company)
+        @if (session()->get('company_id') == $company->id)
+            <div class="p-1">
+                <x-filament::button tag="a" size="xs" color="success"
+                    href="{{ route('company', $company->id) }}" disabled outlined>
                     {{ $company->short_name }}
-                </x-filament::dropdown.list.item>
-            @else
-                <x-filament::dropdown.list.item href="{{ route('company', $company->id) }}" tag="a">
+                </x-filament::button>
+            </div>
+        @else
+            <div class="p-1">
+                <x-filament::button tag="a" size="xs" color="gray" href="{{ route('company', $company->id) }}"
+                    outlined>
                     {{ $company->short_name }}
-                </x-filament::dropdown.list.item>
-            @endif
-        @endforeach
-    </x-filament::dropdown.list>
-</x-filament::dropdown>
+                </x-filament::button>
+            </div>
+        @endif
+    @endforeach
+</div>

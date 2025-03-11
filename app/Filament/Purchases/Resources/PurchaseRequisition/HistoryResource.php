@@ -14,6 +14,8 @@ use App\Models\PurchaseRequisition;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
+
 
 class HistoryResource extends Resource
 {
@@ -131,6 +133,13 @@ class HistoryResource extends Resource
                 ]),
             ]);
     }
+    public static function getRelations(): array
+{
+    return [
+        // ...
+        AuditsRelationManager::class,
+    ];
+}
     public static function getPages(): array
     {
         return [

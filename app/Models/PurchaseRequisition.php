@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,11 +13,12 @@ use App\StateMachines\PurchaseRequisitionStateMachine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
-class PurchaseRequisition extends Model implements HasMedia
+class PurchaseRequisition extends Model implements HasMedia,Auditable
 {
     use HasStateMachines;
     use InteractsWithMedia;
     use HasFactory;
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.
@@ -35,6 +37,20 @@ class PurchaseRequisition extends Model implements HasMedia
         'confidential',
         'observation',
         'status',
+        'company_id',
+        'project_id',
+        'assign_user_id',
+        'approval_chain_id',
+    ];
+    protected $auditInclude = [
+        'date_delivery',
+        'delivery_address',
+        'motive',
+        'priority',
+        'type',
+        'term_payment',
+        'confidential',
+        'observation',
         'company_id',
         'project_id',
         'assign_user_id',

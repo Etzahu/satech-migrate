@@ -33,10 +33,6 @@ class AppServiceProvider extends ServiceProvider
             fn (): View => view('hooks.topbar-menu'),
         );
         FilamentView::registerRenderHook(
-            PanelsRenderHook::USER_MENU_BEFORE,
-            fn (): View => view('hooks.topbar-company-text'),
-        );
-        FilamentView::registerRenderHook(
             PanelsRenderHook::BODY_START,
             fn (): View => view('hooks.impersonation-banner'),
         );

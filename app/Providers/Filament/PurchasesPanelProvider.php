@@ -33,7 +33,7 @@ class PurchasesPanelProvider extends PanelProvider
         return $panel
             ->id('compras')
             ->path('compras')
-            ->databaseNotifications()
+            // ->databaseNotifications()
             ->sidebarFullyCollapsibleOnDesktop()
             // ->unsavedChangesAlerts()
             ->viteTheme('resources/css/filament/admin/theme.css')
