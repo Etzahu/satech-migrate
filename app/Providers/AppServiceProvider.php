@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Mail;
@@ -24,6 +26,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Gate::define('see-sent-emails', function (User $user,) {
+            return $user->hasRole('super_admin');
+        });
             // Mail::alwaysTo('ahernandezm@gptservices.com');
         // if ($this->app->environment('local')) {
         //     Mail::alwaysTo('ahernandezm@gptservices.com');

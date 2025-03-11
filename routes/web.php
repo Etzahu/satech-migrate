@@ -31,10 +31,6 @@ Route::post('/logout', function () {
 
 
 
-Route::name('filament.compras.')->group(function () {
-    FilamentMails::routes();
-});
-
 Route::get('compras/requisiciones/{id}/pdf',[PurchaseRequisitionController::class,'pdf'])
 ->name('requisition.pdf');
 Route::get('compras/ordenes/{id}/pdf',[PurchaseOrderController::class,'pdf'])

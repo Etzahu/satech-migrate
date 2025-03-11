@@ -6,17 +6,13 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
-use Illuminate\Http\Request;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use App\Http\Middleware\CompanySession;
-use Filament\Navigation\NavigationGroup;
 use Shanerbaner82\PanelRoles\PanelRoles;
 use Filament\Http\Middleware\Authenticate;
-use Filament\Navigation\NavigationBuilder;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
-use Vormkracht10\FilamentMails\FilamentMailsPlugin;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
@@ -25,6 +21,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Saade\FilamentLaravelLog\FilamentLaravelLogPlugin;
+
 
 class PurchasesPanelProvider extends PanelProvider
 {
@@ -60,6 +57,11 @@ class PurchasesPanelProvider extends PanelProvider
                     ->label('Salir')
                     ->url(fn(): string => route('logout'))
                     ->icon('heroicon-o-arrow-left-start-on-rectangle'),
+                MenuItem::make()
+                    ->visible(fn (): bool =>  auth()->user()->hasRole('super_admin'))
+                    ->label('Mail tracker')
+                    ->url(fn(): string => route('mailTracker_Index'))
+                    ->icon('heroicon-o-envelope'),
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -78,7 +80,6 @@ class PurchasesPanelProvider extends PanelProvider
             ])
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                FilamentMailsPlugin::make(),
                 PanelRoles::make()
                     ->restrictedRoles([
                         'super_admin',
