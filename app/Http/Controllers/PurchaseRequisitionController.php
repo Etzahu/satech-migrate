@@ -21,7 +21,7 @@ class PurchaseRequisitionController extends Controller
 
 
         $stages = [];
-        $stages[1]=  $rq->status()->snapshotWhen('revisión');
+        $stages[1]=  $rq->status()->snapshotWhen('revisión por almacén');
         $stages[2]=  $rq->status()->snapshotWhen('aprobado por revisor');
         $stages[3]=  $rq->status()->snapshotWhen('aprobado por gerencia');
         $stages[4]=  $rq->status()->snapshotWhen('aprobado por DG');
