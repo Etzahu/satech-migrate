@@ -181,7 +181,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
             ->columns(1)
             ->schema([
                 Infolists\Components\Tabs::make('Tabs')
-                ->activeTab(1)
+                    ->activeTab(1)
                     ->tabs([
                         Infolists\Components\Tabs\Tab::make('Información general')
                             ->schema([
@@ -238,7 +238,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                         Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
                             ->schema([
                                 Infolists\Components\ViewEntry::make('progress')
-                                ->view('filament.infolists.entries.progress-approval'),
+                                    ->view('filament.infolists.entries.progress-approval'),
                             ])
                             ->columns(1),
                         Infolists\Components\Tabs\Tab::make('Fichas técnicas')
@@ -334,12 +334,12 @@ class RequesterResource extends Resource implements HasShieldPermissions
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

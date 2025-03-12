@@ -92,10 +92,10 @@ class DrawingResource extends Resource
                     ->label('Responsable')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

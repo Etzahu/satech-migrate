@@ -141,12 +141,12 @@ class ProductResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime('d-m-Y')
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
-                    ->dateTime('d-m-Y')
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

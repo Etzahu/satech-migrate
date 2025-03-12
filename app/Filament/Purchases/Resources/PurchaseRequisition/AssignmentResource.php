@@ -81,12 +81,12 @@ class AssignmentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -95,9 +95,9 @@ class AssignmentResource extends Resource
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
-                    ->icon('heroicon-m-document')
-                    ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
-                    ->openUrlInNewTab(),
+                        ->icon('heroicon-m-document')
+                        ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                        ->openUrlInNewTab(),
                 ]),
             ]);
     }

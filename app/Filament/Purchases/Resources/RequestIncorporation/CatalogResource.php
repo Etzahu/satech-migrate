@@ -40,7 +40,7 @@ class CatalogResource  extends Resource
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-        ->where('company_id', session()->get('company_id'))
+            ->where('company_id', session()->get('company_id'))
             ->where('requester_id', auth()->user()->id);
     }
     public static function form(Form $form): Form
@@ -123,12 +123,12 @@ class CatalogResource  extends Resource
                     ->label('Estatus'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime('d-m-Y')
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
-                    ->dateTime('d-m-Y')
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

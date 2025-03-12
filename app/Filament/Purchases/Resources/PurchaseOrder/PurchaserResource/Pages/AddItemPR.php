@@ -65,7 +65,7 @@ class AddItemPR extends Page implements HasForms, HasTable
                     ->label('Observación'),
                 TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime('d-m-Y'),
+                    ->dateTime('d-m-Y')->sinceTooltip(),
             ])
             ->actions([])
             ->bulkActions([
@@ -103,12 +103,14 @@ class AddItemPR extends Page implements HasForms, HasTable
     {
         // Obtengo todas las ordenes relacionadas
         $orders = $this->record->requisition->orders;
+        dd($orders->toArray());
         $itemsWithOrder = [];
         foreach ($orders as $order) {
             $items = $order->items?->pluck('product_id')->all();
             // $itemsWithOrder[] = $items;
             $itemsWithOrder = array_merge($itemsWithOrder, $items);
         }
+        dd($itemsWithOrder);
 
         if (filled($itemsWithOrder)) {
             return in_array($product_id, $itemsWithOrder) ? false : true;

@@ -31,23 +31,23 @@ class CategoryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('')
-                ->schema([
-                    Forms\Components\TextInput::make('name')
-                        ->label('Nombre')
-                        ->unique(table: Category::class, ignoreRecord: true)
-                        ->required()
-                        ->maxLength(100),
-                    Forms\Components\TextInput::make('code')
-                        ->unique(table: Category::class, ignoreRecord: true)
-                        ->label('Código')
-                        ->required()
-                        ->maxLength(30),
-                ]),
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('Nombre')
+                            ->unique(table: Category::class, ignoreRecord: true)
+                            ->required()
+                            ->maxLength(100),
+                        Forms\Components\TextInput::make('code')
+                            ->unique(table: Category::class, ignoreRecord: true)
+                            ->label('Código')
+                            ->required()
+                            ->maxLength(30),
+                    ]),
                 Forms\Components\Section::make('')
-                ->visible(fn($operation)=> $operation == 'view' || $operation == 'edit')
-                ->schema([
-                    \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\FamiliesRelationManager::class)->lazy(true)
-                ])
+                    ->visible(fn($operation) => $operation == 'view' || $operation == 'edit')
+                    ->schema([
+                        \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\FamiliesRelationManager::class)->lazy(true)
+                    ])
             ]);
     }
 
@@ -62,11 +62,11 @@ class CategoryResource extends Resource
                     ->label('Código')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

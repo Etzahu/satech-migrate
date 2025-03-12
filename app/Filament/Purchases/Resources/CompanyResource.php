@@ -40,7 +40,7 @@ class CompanyResource extends Resource
                         Forms\Components\TextInput::make('acronym')
                             ->label('Acronimo')
                             ->validationAttribute('acronimo')
-                            ->unique(Company::class, 'acronym',ignoreRecord: true)
+                            ->unique(Company::class, 'acronym', ignoreRecord: true)
                             ->maxLength(3)
                             ->required(),
                     ]),
@@ -105,12 +105,12 @@ class CompanyResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

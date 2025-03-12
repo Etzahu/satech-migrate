@@ -80,13 +80,13 @@ class ChainResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                ->label('Fecha de creación')
-                    ->dateTime()
+                    ->label('Fecha de creación')
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                ->label('Fecha de actualización')
-                    ->dateTime()
+                    ->label('Fecha de actualización')
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

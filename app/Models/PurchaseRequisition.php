@@ -15,10 +15,10 @@ use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
 class PurchaseRequisition extends Model implements HasMedia,Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasStateMachines;
     use InteractsWithMedia;
     use HasFactory;
-    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.

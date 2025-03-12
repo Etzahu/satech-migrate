@@ -32,8 +32,8 @@ class HistoryResource extends Resource
             auth()->user()->hasRole('gerente_solicitante_orden_compra') ||
             auth()->user()->hasRole('autoriza_nivel-1-orden_compra') ||
             auth()->user()->hasRole('autoriza_nivel-2-orden_compra') ||
-            auth()->user()->hasRole('gerente_compras')||
-            auth()->user()->hasRole('super_admin')||
+            auth()->user()->hasRole('gerente_compras') ||
+            auth()->user()->hasRole('super_admin') ||
             auth()->user()->hasRole('administrador_compras');
     }
     public static function canCreate(): bool
@@ -65,12 +65,12 @@ class HistoryResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

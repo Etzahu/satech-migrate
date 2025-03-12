@@ -181,11 +181,11 @@ class PurchaseProviderResource extends Resource
                                     ]),
                                 Forms\Components\TextInput::make('bank_account')
                                     ->label('Cuenta de banco')
-                                     ->maxLength(30)
+                                    ->maxLength(30)
                                     ->required(),
                                 Forms\Components\TextInput::make('bank_account_number')
                                     ->label('Clabe')
-                                     ->maxLength(30)
+                                    ->maxLength(30)
                                     ->required()
                             ]),
                         Forms\Components\Tabs\Tab::make('Documentacion')
@@ -254,12 +254,12 @@ class PurchaseProviderResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

@@ -76,13 +76,13 @@ class HistoryResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -119,7 +119,7 @@ class HistoryResource extends Resource
                                     ->withWhereHas('approvalChain.requester', function ($query) use ($management) {
                                         $query->where('management_id', $management);
                                     })
-                                    ->orderBy('created_at','ASC'),
+                                    ->orderBy('created_at', 'ASC'),
                             );
                     }),
             ])
@@ -134,12 +134,12 @@ class HistoryResource extends Resource
             ]);
     }
     public static function getRelations(): array
-{
-    return [
-        // ...
-        AuditsRelationManager::class,
-    ];
-}
+    {
+        return [
+            // ...
+            AuditsRelationManager::class,
+        ];
+    }
     public static function getPages(): array
     {
         return [

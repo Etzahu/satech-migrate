@@ -73,7 +73,7 @@ class ItemsRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime('d-m-Y'),
+                    ->dateTime('d-m-Y')->sinceTooltip(),
             ])
             ->filters([
                 //

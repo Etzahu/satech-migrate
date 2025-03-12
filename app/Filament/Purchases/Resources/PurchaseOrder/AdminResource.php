@@ -37,9 +37,9 @@ class AdminResource extends Resource
     }
     public static function getNavigationBadge(): ?string
     {
-        if(auth()->user()->hasRole('gerente_compras')){
+        if (auth()->user()->hasRole('gerente_compras')) {
             return static::getModel()::where('status', 'revisión gerente de compras')->count();
-        }else{
+        } else {
             return false;
         }
     }
@@ -76,12 +76,12 @@ class AdminResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Fecha de actualización')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

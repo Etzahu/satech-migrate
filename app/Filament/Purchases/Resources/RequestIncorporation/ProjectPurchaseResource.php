@@ -146,10 +146,10 @@ class ProjectPurchaseResource extends Resource
                     ->label('Estatus'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
-                    ->dateTime('d-m-Y')
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->dateTime('d-m-Y')->sinceTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
