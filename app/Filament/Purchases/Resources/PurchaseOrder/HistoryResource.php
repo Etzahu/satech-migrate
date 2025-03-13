@@ -7,11 +7,12 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\PurchaseOrder;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use App\Models\PurchaseOrder;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
+use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
 
 class HistoryResource extends Resource
@@ -40,12 +41,24 @@ class HistoryResource extends Resource
     {
         return false;
     }
-
     public static function infolist(Infolist $infolist): Infolist
     {
         $options = [];
         return PurchaserResource::infolist($infolist, $options);
     }
+
+    public static function form(Form $form, array $options = []): Form
+    {
+        $options['show_relation_items'] = true;
+        return PurchaserResource::form($form, $options);
+    }
+    public static function getRelations(): array
+{
+    return [
+        AuditsRelationManager::class,
+    ];
+}
+
     public static function table(Table $table): Table
     {
         return $table
@@ -97,6 +110,7 @@ class HistoryResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
+                    Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
                         ->url(fn($record) => (string)route('order.pdf', ['id' => $record->id]))
@@ -109,6 +123,7 @@ class HistoryResource extends Resource
         return [
             'index' => Pages\ManagePR::route('/'),
             'view' => Pages\View::route('/{record}'),
+            'edit' => Pages\Edit::route('/{record}/edit'),
         ];
     }
 }

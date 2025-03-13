@@ -20,6 +20,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
         "njxqlus/filament-relation-manager-component": "^1.0",
+        "opcodesio/log-viewer": "^3.15",
         "orangehill/iseed": "^3.0",
         "pelmered/filament-money-field": "^1.4",
         "rap2hpoutre/fast-excel": "^5.5",

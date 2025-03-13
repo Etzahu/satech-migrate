@@ -9,6 +9,7 @@ use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use App\Http\Middleware\CompanySession;
+use Filament\Navigation\NavigationItem;
 use Shanerbaner82\PanelRoles\PanelRoles;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
@@ -16,11 +17,11 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Saade\FilamentLaravelLog\FilamentLaravelLogPlugin;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Saade\FilamentLaravelLog\FilamentLaravelLogPlugin;
 
 
 class PurchasesPanelProvider extends PanelProvider
@@ -57,11 +58,18 @@ class PurchasesPanelProvider extends PanelProvider
                     ->label('Salir')
                     ->url(fn(): string => route('logout'))
                     ->icon('heroicon-o-arrow-left-start-on-rectangle'),
-                MenuItem::make()
-                    ->visible(fn (): bool =>  auth()->user()->hasRole('super_admin'))
+            ])
+            ->navigationItems([
+                NavigationItem::make('MailTracker')
+                ->visible(fn (): bool =>  auth()->user()->hasRole('super_admin'))
                     ->label('Mail tracker')
                     ->url(fn(): string => route('mailTracker_Index'))
                     ->icon('heroicon-o-envelope'),
+                NavigationItem::make('LogViewer')
+                ->visible(fn (): bool =>  auth()->user()->hasRole('super_admin'))
+                    ->label('Log viewer')
+                    ->url(fn(): string => route('log-viewer.index'))
+                    ->icon('heroicon-o-archive-box'),
             ])
             ->middleware([
                 EncryptCookies::class,
