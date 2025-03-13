@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use App\StateMachines\PurchaseOrderStateMachine;
@@ -11,12 +12,40 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
-class PurchaseOrder extends Model implements HasMedia
+class PurchaseOrder extends Model implements HasMedia,Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasStateMachines;
     use InteractsWithMedia;
 
     protected $fillable = [
+        'folio',
+        'currency',
+        'type_payment',
+        'form_payment',
+        'term_payment',
+        'condition_payment',
+        'quote_folio',
+        'use_cfdi',
+        'shipping_method',
+        'tax_iva',
+        'discount',
+        'retention_iva',
+        'retention_isr',
+        'retention_another',
+        'initial_delivery_date',
+        'final_delivery_date',
+        'delivery_address',
+        'documentation_delivery',
+        'observations',
+        'provider_id',
+        'provider_contact_id',
+        'purchaser_user_id',
+        'company_id',
+        'requisition_id',
+        'status'
+    ];
+    protected $auditInclude = [
         'folio',
         'currency',
         'type_payment',

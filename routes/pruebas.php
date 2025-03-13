@@ -1179,3 +1179,10 @@ Route::get('qr-generate', function () {
       return response($qrCode)->header('Content-Type', 'image/png')
       ->header('Content-Disposition', 'attachment; filename="qr-code.png"');
 });
+
+
+Route::get('mana',function(){
+    $user = User::find(274);
+    $user->management_id = 2;
+    $user->save();
+});

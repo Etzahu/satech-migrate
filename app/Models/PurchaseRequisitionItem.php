@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PurchaseRequisitionItem extends Model
+class PurchaseRequisitionItem extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasFactory;
 
     protected $table = 'purchase_requisition_items';
@@ -17,6 +19,15 @@ class PurchaseRequisitionItem extends Model
      * @var array
      */
     protected $fillable = [
+        'quantity_requested',
+        'quantity_purchase',
+        'quantity_warehouse',
+        'observation',
+        'user_warehouse_id',
+        'requisition_id',
+        'product_id',
+    ];
+    protected $auditInclude = [
         'quantity_requested',
         'quantity_purchase',
         'quantity_warehouse',

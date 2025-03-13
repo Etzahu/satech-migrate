@@ -6,6 +6,7 @@ use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
 use Filament\Forms\Form;
+use App\Models\Management;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,7 +51,7 @@ class UserResource extends Resource
                                     ->maxLength(20),
                                 Forms\Components\Select::make('management_id')
                                     ->label('Gerencia')
-                                    ->relationship('management', 'name')
+                                    ->options(Management::pluck('name','id'))
                                     ->searchable()
                                     ->preload()
                                     ->required(),
