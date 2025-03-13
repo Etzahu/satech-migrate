@@ -5,6 +5,7 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
 use Filament\Forms\Get;
 
 use Filament\Actions\Action;
+use Filament\Actions\EditAction;
 use Filament\Infolists\Infolist;
 use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
@@ -27,7 +28,8 @@ class View extends ViewRecord
                 ->color('danger')
                 ->url(route('order.pdf', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
-                ->openUrlInNewTab()
+                ->openUrlInNewTab(),
+            EditAction::make()
         ];
     }
     public function infolist(Infolist $infolist): Infolist

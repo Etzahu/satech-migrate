@@ -54,6 +54,7 @@ class PurchaseRequisitionPolicy
         $allowedIds = array_values($allowedIds);
         $allowedIds[] = 106;
         $allowedIds[] = 199;
+        $allowedIds[] = 152;
         $allowedIds[] = $purchaseRequisition->purchaser?->id;
 
 

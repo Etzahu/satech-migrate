@@ -192,7 +192,8 @@
                 </div>
                 {{-- comprador asignado --}}
                 <div class="w-1/3 px-6 text-center">
-                    @if ($getRecord()->status()->snapshotWhen('comprador asignado'))
+                    {{-- @if ($getRecord()->status()->snapshotWhen('comprador asignado')) TODO:ocurre un error asi --}}
+                    @if (filled( $getRecord()->purchaser) )
                         <div class="flex items-center justify-center bg-green-400 border border-gray-200 rounded-lg">
                             <div class="flex items-center justify-center w-1/3 h-20 bg-transparent icon-step">
                                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg"

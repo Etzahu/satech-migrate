@@ -52,13 +52,12 @@ class HistoryResource extends Resource
         $options['show_relation_items'] = true;
         return PurchaserResource::form($form, $options);
     }
-    // public static function getRelations(): array
-    // {
-    //     return [
-    //         AuditsRelationManager::class,
-    //     ];
-    // }
-
+    public static function getRelations(): array
+    {
+        return [
+            AuditsRelationManager::class,
+        ];
+    }
     public static function table(Table $table): Table
     {
         return $table

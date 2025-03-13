@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Gate;
+use App\Policies\AutidPolicy;
+use OwenIt\Auditing\Models\Audit;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -26,7 +28,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+
+
         Gate::define('see-sent-emails', function (User $user,) {
+            return $user->hasRole('super_admin');
+        });
+        Gate::define('audit', function (User $user,) {
             return $user->hasRole('super_admin');
         });
             // Mail::alwaysTo('ahernandezm@gptservices.com');
