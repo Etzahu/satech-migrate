@@ -82,6 +82,10 @@ class ChainResource extends Resource
                     ->label('Autoriza')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('requisitions_count')
+                    ->label('Requisiciones relacionadas')
+                    ->counts('requisitions')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
                     ->dateTime('d-m-Y')->sinceTooltip()
