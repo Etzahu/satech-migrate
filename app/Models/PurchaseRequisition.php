@@ -7,14 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\StateMachines\PurchaseRequisitionStateMachine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\DeletedModels\Models\Concerns\KeepsDeletedModels;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
 class PurchaseRequisition extends Model implements HasMedia,Auditable
 {
+    use SoftDeletes, CascadeSoftDeletes;
     use \OwenIt\Auditing\Auditable;
     use HasStateMachines;
     use InteractsWithMedia;
@@ -56,6 +60,10 @@ class PurchaseRequisition extends Model implements HasMedia,Auditable
         'assign_user_id',
         'approval_chain_id',
     ];
+
+    protected $cascadeDeletes = ['items'];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be cast to native types.

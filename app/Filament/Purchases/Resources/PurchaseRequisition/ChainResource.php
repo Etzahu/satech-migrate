@@ -10,7 +10,10 @@ use Filament\Forms\Form;
 use App\Models\Management;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use App\Models\PurchaseRequisition;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Actions;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Actions\Action;
 use App\Models\PurchaseRequisitionApprovalChain;
@@ -90,12 +93,67 @@ class ChainResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                // Tables\Filters\SelectFilter::make('Gerencia')
-                // ->options(Management::all()->pluck('name','id')),
-            ])
+            ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('Borrar')
+                    ->color('danger')
+                    ->requiresConfirmation()
+                    ->icon('heroicon-m-trash')
+                    ->modalWidth(MaxWidth::FiveExtraLarge)
+                    ->slideOver()
+                    ->form([
+                        Forms\Components\Section::make('Requisiciones relacionadas')
+                            ->visible(fn($record) => $record->requisitions()->withTrashed()->count() > 0)
+                            ->schema([
+                                Forms\Components\TextInput::make('quantity')
+                                    ->label('Cantidad')
+                                    ->default(fn($record) => $record->requisitions()->withTrashed()->count())
+                                    ->numeric()
+                                    ->readOnly(),
+                                Forms\Components\Select::make('chain_replaced')
+                                    ->label('Cadena de reemplazo')
+                                    ->required()
+                                    ->options(function (): array {
+                                        return PurchaseRequisitionApprovalChain::all()->mapWithKeys(function ($model) {
+                                            return [$model->id => '(Revisa)' . $model->reviewer->name . ' (Aprueba)' . $model->approver->name . ' (Autoriza)' . $model->authorizer->name];
+                                        })->toArray();
+                                    })
+                            ])
+                    ])
+                    ->action(function (array $data, $record) {
+                        if ($record->requisitions()->withTrashed()->count() <= 0) {
+                            $record->delete();
+                            Notification::make()
+                                ->title('Borrado')
+                                ->success()
+                                ->send();
+                            return;
+                        }
+                        try {
+                            // $chains = PurchaseRequisition::where('approval_chain_id', $record->id)->update(['approval_chain_id'=> $data['chain_replaced']]);
+                            $chains = PurchaseRequisition::where('approval_chain_id', $record->id)->get();
+                            foreach ($chains as $chain) {
+                                $chain->approval_chain_id = $data['chain_replaced'];
+                                $chain->save();
+                            }
+                            $record->delete();
+                            Notification::make()
+                                ->title('Cadena remplazada')
+                                ->success()
+                                ->send();
+                            Notification::make()
+                                ->title('Borrado')
+                                ->success()
+                                ->send();
+                        } catch (\Exception $e) {
+                            logger()->error($e->getMessage());
+                            Notification::make()
+                                ->title('Ocurrió un error')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
             ])
         ;
     }

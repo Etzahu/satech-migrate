@@ -21,7 +21,7 @@ class View extends ViewRecord
 {
     protected static string $resource = HistoryResource::class;
 
-       protected function getHeaderActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Action::make('Ver pdf')
@@ -45,5 +45,4 @@ class View extends ViewRecord
         ];
         return static::getResource()::infolist($infolist);
     }
-
 }

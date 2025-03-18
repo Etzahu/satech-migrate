@@ -7,6 +7,7 @@ use App\Models\Company;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Actions\ActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\Select;
 use Filament\Support\Enums\ActionSize;
 use Filament\Notifications\Notification;
@@ -41,6 +42,7 @@ class ViewPurchaseRequisition extends ViewRecord
                             ->send();
                     }),
                 EditAction::make(),
+                DeleteAction::make(),
                 Action::make('Ver pdf')
                     ->color('danger')
                     ->icon('heroicon-m-document')

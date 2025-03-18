@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PurchaseRequisitionApprovalChain extends Model
 {
@@ -36,7 +37,7 @@ class PurchaseRequisitionApprovalChain extends Model
     ];
 
 
-    public function requisitions()
+    public function requisitions(): HasMany
     {
         return $this->hasMany(PurchaseRequisition::class,'approval_chain_id');
     }

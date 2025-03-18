@@ -4,7 +4,9 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
 
 use Filament\Actions;
 use App\Models\PurchaseOrder;
+use Filament\Actions\ViewAction;
 use Filament\Actions\ActionGroup;
+
 use Filament\Support\Enums\MaxWidth;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource;
@@ -14,6 +16,12 @@ class Edit extends EditRecord
 {
     protected static string $resource = HistoryResource::class;
 
+    protected function getHeaderActions(): array
+    {
+        return [
+            ViewAction::make()
+        ];
+    }
     protected function getFormActions(): array
     {
         return [

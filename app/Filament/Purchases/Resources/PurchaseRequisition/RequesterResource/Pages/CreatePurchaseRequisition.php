@@ -15,6 +15,7 @@ class CreatePurchaseRequisition extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+
         if (blank(auth()->user()->management)) {
             Notification::make()
                 ->danger()
@@ -57,7 +58,6 @@ class CreatePurchaseRequisition extends CreateRecord
                 ->persistent()
                 ->color('danger')
                 ->send();
-            $this->halt();
         }
         if (blank(auth()->user()->approvalChainsPurchaseRequisition)) {
             Notification::make()

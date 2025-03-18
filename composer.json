@@ -10,6 +10,7 @@
         "aymanalhattami/filament-slim-scrollbar": "^2.0",
         "barryvdh/laravel-dompdf": "^3.0",
         "bezhansalleh/filament-shield": "^3.2",
+        "dyrynda/laravel-cascade-soft-deletes": "^4.5",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "hugomyb/filament-media-action": "^3.1",

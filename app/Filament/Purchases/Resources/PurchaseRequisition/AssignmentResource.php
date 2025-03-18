@@ -46,7 +46,7 @@ class AssignmentResource extends Resource
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::myAssing()->count();
+        return static::getModel()::doesntHave('orders')->myAssing()->count();
     }
     public static function getNavigationBadgeColor(): ?string
     {
@@ -76,9 +76,14 @@ class AssignmentResource extends Resource
                     ->label('Fecha deseable de entrega')
                     ->date()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('orders_count')
+                    ->counts('orders')
+                    ->label('Ordenes')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
                     ->dateTime('d-m-Y')->sinceTooltip()

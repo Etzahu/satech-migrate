@@ -82,15 +82,22 @@ class LoginController extends Controller
             'company_name' => $company->name,
             'company_acronym' => $company->acronym,
         ]);
-        $intended_url = request()->session()->get('url.intended');
-        if ($redirect) {
-            Notification::make()
+        // $intended_url = request()->session()->get('url.intended');
+        // if ($redirect) {
+        //     Notification::make()
+        //         ->title('Se ha cambiado la empresa')
+        //         ->success()
+        //         ->iconColor('success')
+        //         ->icon('heroicon-m-building-office-2')
+        //         ->send();
+        //     return redirect()->to($intended_url);
+        // }
+        Notification::make()
                 ->title('Se ha cambiado la empresa')
                 ->success()
                 ->iconColor('success')
                 ->icon('heroicon-m-building-office-2')
                 ->send();
-            return redirect()->to($intended_url);
-        }
+                return redirect('/compras');
     }
 }

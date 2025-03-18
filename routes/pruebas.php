@@ -1175,14 +1175,35 @@ Route::get('qr-generate', function () {
     $data = "https://forms.gle/wzUjou2GCxVUFL5z9";
     // Generar el código QR
     $qrCode = QrCode::format('png')->size(300)->generate($data);
-      // Devolver la imagen del QR como una respuesta de descarga
-      return response($qrCode)->header('Content-Type', 'image/png')
-      ->header('Content-Disposition', 'attachment; filename="qr-code.png"');
+    // Devolver la imagen del QR como una respuesta de descarga
+    return response($qrCode)->header('Content-Type', 'image/png')
+        ->header('Content-Disposition', 'attachment; filename="qr-code.png"');
 });
 
 
-Route::get('mana',function(){
+Route::get('mana', function () {
     $user = User::find(274);
     $user->management_id = 2;
     $user->save();
+});
+
+Route::get('delete', function () {
+    try {
+        DB::beginTransaction();
+        $model = PurchaseRequisition::find(19);
+        $model->delete();
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+    }
+});
+
+Route::get('asing', function () {
+    // $models = PurchaseRequisition::withWhereHas('posts', function ($query) {
+    //     $query->where('featured', true);
+    // })->get()
+    //     ->myAssing()->get();
+    $models = PurchaseRequisition::doesntHave('orders')->myAssing()->get();
+    return $models;
 });
