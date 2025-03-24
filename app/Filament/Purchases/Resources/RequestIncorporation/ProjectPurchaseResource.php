@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\RequestIncorporation\ProjectPurchaseResource\Pages;
-use Hugomyb\FilamentMediaAction\Forms\Components\Actions\MediaAction;
 
 
 class ProjectPurchaseResource extends Resource
@@ -87,47 +86,47 @@ class ProjectPurchaseResource extends Resource
                             ->acceptedFileTypes(['application/pdf'])
                             ->collection('project_sheet')
                             ->hintActions([
-                                MediaAction::make('ver documento')
-                                    ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                    ->media(function ($state) {
-                                        $key = array_keys($state);
-                                        $media = Media::where('uuid', $key[0])->first();
-                                        $url = Storage::url($media->getPathRelativeToRoot());
-                                        return $url;
-                                    })
-                                    ->autoplay()
-                                    ->preload(false),
+                                // MediaAction::make('ver documento')
+                                //     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                //     ->media(function ($state) {
+                                //         $key = array_keys($state);
+                                //         $media = Media::where('uuid', $key[0])->first();
+                                //         $url = Storage::url($media->getPathRelativeToRoot());
+                                //         return $url;
+                                //     })
+                                //     ->autoplay()
+                                //     ->preload(false),
                             ]),
                         SpatieMediaLibraryFileUpload::make('doc_2')
                             ->label('Cotización de cliente')
                             ->acceptedFileTypes(['application/pdf'])
                             ->collection('customer_quote')->hintActions([
-                                MediaAction::make('ver documento')
-                                    ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                    ->media(function ($state) {
-                                        $key = array_keys($state);
-                                        $media = Media::where('uuid', $key[0])->first();
-                                        $url = Storage::url($media->getPathRelativeToRoot());
-                                        return $url;
-                                    })
-                                    ->autoplay()
-                                    ->preload(false),
+                                // MediaAction::make('ver documento')
+                                //     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                //     ->media(function ($state) {
+                                //         $key = array_keys($state);
+                                //         $media = Media::where('uuid', $key[0])->first();
+                                //         $url = Storage::url($media->getPathRelativeToRoot());
+                                //         return $url;
+                                //     })
+                                //     ->autoplay()
+                                //     ->preload(false),
                             ]),
                         SpatieMediaLibraryFileUpload::make('doc_3')
                             ->label('Pedido')
                             ->acceptedFileTypes(['application/pdf'])
                             ->collection('order')
                             ->hintActions([
-                                MediaAction::make('ver documento')
-                                    ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                    ->media(function ($state) {
-                                        $key = array_keys($state);
-                                        $media = Media::where('uuid', $key[0])->first();
-                                        $url = Storage::url($media->getPathRelativeToRoot());
-                                        return $url;
-                                    })
-                                    ->autoplay()
-                                    ->preload(false),
+                                // MediaAction::make('ver documento')
+                                //     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                //     ->media(function ($state) {
+                                //         $key = array_keys($state);
+                                //         $media = Media::where('uuid', $key[0])->first();
+                                //         $url = Storage::url($media->getPathRelativeToRoot());
+                                //         return $url;
+                                //     })
+                                //     ->autoplay()
+                                //     ->preload(false),
                             ]),
                     ]),
             ]);

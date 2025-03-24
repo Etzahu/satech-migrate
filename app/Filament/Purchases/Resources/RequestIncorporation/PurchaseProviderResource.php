@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource\Pages;
-use Hugomyb\FilamentMediaAction\Forms\Components\Actions\MediaAction;
 use App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource\RelationManagers;
 
 class PurchaseProviderResource extends Resource
@@ -195,31 +194,31 @@ class PurchaseProviderResource extends Resource
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->collection('bank_data_sheet')
                                     ->hintActions([
-                                        MediaAction::make('ver documento')
-                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                            ->media(function ($state) {
-                                                $key = array_keys($state);
-                                                $media = Media::where('uuid', $key[0])->first();
-                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                return $url;
-                                            })
-                                            ->autoplay()
-                                            ->preload(false),
+                                        // MediaAction::make('ver documento')
+                                        //     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                        //     ->media(function ($state) {
+                                        //         $key = array_keys($state);
+                                        //         $media = Media::where('uuid', $key[0])->first();
+                                        //         $url = Storage::url($media->getPathRelativeToRoot());
+                                        //         return $url;
+                                        //     })
+                                        //     ->autoplay()
+                                        //     ->preload(false),
                                     ]),
                                 SpatieMediaLibraryFileUpload::make('doc_2')
                                     ->label('Constancia de situación fiscal')
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->collection('cfdi')->hintActions([
-                                        MediaAction::make('ver documento')
-                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                            ->media(function ($state) {
-                                                $key = array_keys($state);
-                                                $media = Media::where('uuid', $key[0])->first();
-                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                return $url;
-                                            })
-                                            ->autoplay()
-                                            ->preload(false),
+                                        // MediaAction::make('ver documento')
+                                        //     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                                        //     ->media(function ($state) {
+                                        //         $key = array_keys($state);
+                                        //         $media = Media::where('uuid', $key[0])->first();
+                                        //         $url = Storage::url($media->getPathRelativeToRoot());
+                                        //         return $url;
+                                        //     })
+                                        //     ->autoplay()
+                                        //     ->preload(false),
                                     ]),
                             ]),
                         Forms\Components\Tabs\Tab::make('Contactos')

@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\ProjectPurchaseResource\Pages;
-use Hugomyb\FilamentMediaAction\Forms\Components\Actions\MediaAction;
 use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
 use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
 use App\Filament\Purchases\Resources\ProjectPurchaseResource\RelationManagers;
@@ -88,58 +87,58 @@ class ProjectPurchaseResource extends Resource
                             ->required()
                             ->maxLength(255),
                     ]),
-                Forms\Components\Section::make('Documentacion para aprobacion por DG')
-                    // ->visible(fn($operation) => $operation == 'edit')
-                    ->schema([
+                // Forms\Components\Section::make('Documentacion para aprobacion por DG')
+                //     // ->visible(fn($operation) => $operation == 'edit')
+                //     ->schema([
 
-                        SpatieMediaLibraryFileUpload::make('doc_1')
-                            ->label('Ficha de proyecto')
-                            ->acceptedFileTypes(['application/pdf'])
-                            ->collection('project_sheet')
-                            ->hintActions([
-                                MediaAction::make('ver documento')
-                                    ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                    ->media(function ($state) {
-                                        $key = array_keys($state);
-                                        $media = Media::where('uuid', $key[0])->first();
-                                        $url = Storage::url($media->getPathRelativeToRoot());
-                                        return $url;
-                                    })
-                                    ->autoplay()
-                                    ->preload(false),
-                            ]),
-                        SpatieMediaLibraryFileUpload::make('doc_2')
-                            ->label('Cotización de cliente')
-                            ->acceptedFileTypes(['application/pdf'])
-                            ->collection('customer_quote')->hintActions([
-                                MediaAction::make('ver documento')
-                                    ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                    ->media(function ($state) {
-                                        $key = array_keys($state);
-                                        $media = Media::where('uuid', $key[0])->first();
-                                        $url = Storage::url($media->getPathRelativeToRoot());
-                                        return $url;
-                                    })
-                                    ->autoplay()
-                                    ->preload(false),
-                            ]),
-                        SpatieMediaLibraryFileUpload::make('doc_3')
-                            ->label('Pedido')
-                            ->acceptedFileTypes(['application/pdf'])
-                            ->collection('order')
-                            ->hintActions([
-                                MediaAction::make('ver documento')
-                                    ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                    ->media(function ($state) {
-                                        $key = array_keys($state);
-                                        $media = Media::where('uuid', $key[0])->first();
-                                        $url = Storage::url($media->getPathRelativeToRoot());
-                                        return $url;
-                                    })
-                                    ->autoplay()
-                                    ->preload(false),
-                            ]),
-                    ]),
+                //         SpatieMediaLibraryFileUpload::make('doc_1')
+                //             ->label('Ficha de proyecto')
+                //             ->acceptedFileTypes(['application/pdf'])
+                //             ->collection('project_sheet')
+                //             ->hintActions([
+                //                 MediaAction::make('ver documento')
+                //                     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                //                     ->media(function ($state) {
+                //                         $key = array_keys($state);
+                //                         $media = Media::where('uuid', $key[0])->first();
+                //                         $url = Storage::url($media->getPathRelativeToRoot());
+                //                         return $url;
+                //                     })
+                //                     ->autoplay()
+                //                     ->preload(false),
+                //             ]),
+                //         SpatieMediaLibraryFileUpload::make('doc_2')
+                //             ->label('Cotización de cliente')
+                //             ->acceptedFileTypes(['application/pdf'])
+                //             ->collection('customer_quote')->hintActions([
+                //                 MediaAction::make('ver documento')
+                //                     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                //                     ->media(function ($state) {
+                //                         $key = array_keys($state);
+                //                         $media = Media::where('uuid', $key[0])->first();
+                //                         $url = Storage::url($media->getPathRelativeToRoot());
+                //                         return $url;
+                //                     })
+                //                     ->autoplay()
+                //                     ->preload(false),
+                //             ]),
+                //         SpatieMediaLibraryFileUpload::make('doc_3')
+                //             ->label('Pedido')
+                //             ->acceptedFileTypes(['application/pdf'])
+                //             ->collection('order')
+                //             ->hintActions([
+                //                 MediaAction::make('ver documento')
+                //                     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
+                //                     ->media(function ($state) {
+                //                         $key = array_keys($state);
+                //                         $media = Media::where('uuid', $key[0])->first();
+                //                         $url = Storage::url($media->getPathRelativeToRoot());
+                //                         return $url;
+                //                     })
+                //                     ->autoplay()
+                //                     ->preload(false),
+                //             ]),
+                //     ]),
             ]);
     }
 
