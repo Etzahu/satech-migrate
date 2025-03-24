@@ -12,6 +12,8 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Filament\Forms\Components\Component;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\Support\MediaStream;
@@ -21,7 +23,7 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
-use Filament\Forms\Components\Component;
+use Hugomyb\FilamentMediaAction\Infolists\Components\Actions\MediaAction as MediaActionInfolist;
 
 class RequesterResource extends Resource implements HasShieldPermissions
 {
@@ -252,7 +254,12 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->label('')
                                     ->schema([
                                         Infolists\Components\TextEntry::make('name')
-                                            ->label('Nombre del archivo'),
+                                            ->label('Nombre del archivo')
+                                            ->hintActions([
+                                                Infolists\Components\Actions\Action::make('Ver documento')
+                                                ->url(fn ($record): string => route('media.show', ['id' => $record->id]))
+                                                ->openUrlInNewTab()
+                                            ]),
                                     ]),
                                 Infolists\Components\Actions::make([
                                     Infolists\Components\Actions\Action::make('Descargar fichas')

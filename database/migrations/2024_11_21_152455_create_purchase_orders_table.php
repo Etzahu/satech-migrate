@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('discount')->default(0);
             $table->string('form_payment', 100);
             $table->string('term_payment', 100);
-            $table->string('condition_payment', 100);
+            $table->json('condition_payment');
             $table->string('quote_folio', 100);
             $table->string('use_cfdi', 100);
 

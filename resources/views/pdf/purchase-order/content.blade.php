@@ -207,15 +207,20 @@
                     </tbody>
                 </table>
                 <table class="w-full mt-5">
-                    {{-- <thead>
-                        <th class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
-                            Ítems de Pago</th>
+                    <thead>
+                        <th colspan="2" class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
+                            Condiciones de pago</th>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td class="px-1 text-xs text-left text-black ms-2 ">{{ $data['condition_payment'] }}</td>
-                        </tr>
-                    </tbody> --}}
+                        @if (filled($data['condition_payment']))
+                            @foreach ($data['condition_payment'] as $item)
+                                <tr>
+                                    <td class="px-1 text-xs text-left text-black ms-2 "> {{ $item['concept'] }} </td>
+                                    <td class="px-1 text-xs text-left text-black ms-2 "> {{ $item['value'] }} </td>
+                                </tr>
+                            @endforeach
+                        @endif
+                    </tbody>
                 </table>
             </div>
             {{-- Condiciones de entrega --}}
@@ -320,11 +325,6 @@
                     <tr>
                         <td class="w-24 p-0 text-xs text-left text-black" valing="top">Tipo de Pago:</td>
                         <td class="p-0 text-xs text-left text-black " valing="top">{{ $data['type_payment'] }}</td>
-                    </tr>
-                    <tr>
-                        <td class="w-24 p-0 text-xs text-left text-black" valing="top">Término de Pago:</td>
-                        <td class="p-0 text-xs text-left text-black " valing="top">{{ $data['term_payment'] }}
-                        </td>
                     </tr>
                     <tr>
                         <td class="w-24 p-0 text-xs text-left text-black" valing="top">Enviar a:</td>

@@ -4,17 +4,20 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
 use Filament\Forms;
 use Filament\Tables;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Infolists;
-use Filament\Infolists\Infolist;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\PurchaseOrder;
 use App\Models\ProviderContact;
 use App\Models\PurchaseProvider;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Forms\Components\Tabs;
 use Illuminate\Support\Facades\Storage;
+use Filament\Notifications\Notification;
 use Filament\Support\Enums\IconPosition;
 use App\Services\OrderCalculationService;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,10 +28,9 @@ use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
-use Hugomyb\FilamentMediaAction\Forms\Components\Actions\MediaAction;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseResource\PurchaserResource\RelationManagers;
-use Hugomyb\FilamentMediaAction\Infolists\Components\Actions\MediaAction as MediaActionInfolist;
+
 
 class PurchaserResource extends Resource  implements HasShieldPermissions
 {
@@ -97,21 +99,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                         'transferencia' => 'Transferencia'
                                     ])
                                     ->required(),
-                                Forms\Components\Select::make('term_payment')
-                                    ->label('Término de pago')
-                                    ->options([
-                                        'contado' => 'Contado',
-                                        '15 días' => '15 días',
-                                        '30 días' => '30 días',
-                                        '45 días' => '45 días',
-                                        '60 días' => '60 días',
-                                    ])
-                                    ->required(),
-                                Forms\Components\TextInput::make('condition_payment')
-                                    ->label('Condiciones de pago')
-                                    ->required()
-                                    ->columnSpan('full')
-                                    ->maxLength(100),
                                 Forms\Components\TextInput::make('quote_folio')
                                     ->label('Folio de cotización')
                                     ->required()
@@ -152,10 +139,47 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->required()
                                     ->columnSpan('full'),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Partidas')->schema([
+                        Tabs\Tab::make('Partidas')->schema([
                             \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
-                        ])
-                            ->visible(in_array('show_relation_items', $options)),
+                        ])->visible(in_array('show_relation_items', $options)),
+                        Tabs\Tab::make('Codiciones de pago')
+                            ->schema([
+                                Forms\Components\Repeater::make('condition_payment')
+                                    ->label('Condiciones de pago')
+                                    ->columns(2)
+                                    ->columnSpan('full')
+                                    ->hint('La suma de los conceptos debe ser 100%')
+                                    ->hintColor('danger')
+                                    ->schema([
+                                        Forms\Components\TextInput::make('concept')
+                                            ->label('Concepto')
+                                            ->required(),
+                                        Forms\Components\TextInput::make('value')
+                                            ->label('Valor')
+                                            ->numeric()
+                                            ->integer()
+                                            ->minValue(1)
+                                            ->maxValue(100)
+                                            ->live(onBlur: true)
+                                            ->suffixIcon('heroicon-o-percent-badge')
+                                            ->suffixIconColor('warning')
+                                            ->required(),
+                                    ])
+                                    ->afterStateUpdated(function (Get $get, Set $set) {
+                                        $collection = $get('condition_payment');
+                                        $sum = 0;
+                                        foreach ($collection as $item) {
+                                            $sum += (int)$item['value'];
+                                        }
+                                        $set('total', $sum);
+                                    }),
+                                Forms\Components\TextInput::make('total')
+                                    ->label('Total')
+                                    ->readOnly()
+                                    ->suffixIcon('heroicon-o-percent-badge')
+                                    ->suffixIconColor('warning')
+                                    ->default(0),
+                            ]),
                         Tabs\Tab::make('Proveedor')
                             ->schema([
                                 Forms\Components\Select::make('provider_id')
@@ -184,71 +208,21 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                         Tabs\Tab::make('Soporte')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('doc_1')
-                                    ->label('Justificación')
+                                    // ->label('Justificación')
+                                    ->label('Tabla comparativa o adjudicación directa en su lugar')
                                     ->required()
                                     ->acceptedFileTypes(['application/pdf'])
-                                    ->collection('justification')
-                                    ->hintActions([
-                                        MediaAction::make('ver documento')
-                                            // ->visible(fn($operation, $state) =>dd($operation, $state))
-                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                            ->media(function ($state) {
-                                                $key = array_keys($state);
-                                                $media = Media::where('uuid', $key[0])->first();
-                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                return $url;
-                                            })
-                                            ->autoplay()
-                                            ->preload(false),
-                                    ]),
+                                    ->collection('justification'),
                                 SpatieMediaLibraryFileUpload::make('doc_4')
                                     ->label('Cotización')
                                     ->required()
                                     ->acceptedFileTypes(['application/pdf'])
-                                    ->collection('quote')
-                                    ->hintActions([
-                                        MediaAction::make('ver documento')
-                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                            ->media(function ($state) {
-                                                $key = array_keys($state);
-                                                $media = Media::where('uuid', $key[0])->first();
-                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                return $url;
-                                            })
-                                            ->autoplay()
-                                            ->preload(false),
-                                    ]),
-                                SpatieMediaLibraryFileUpload::make('doc_2')
-                                    ->label('Adjudicación directa')
-                                    ->acceptedFileTypes(['application/pdf'])
-                                    ->collection('direct_award')->hintActions([
-                                        MediaAction::make('ver documento')
-                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                            ->media(function ($state) {
-                                                $key = array_keys($state);
-                                                $media = Media::where('uuid', $key[0])->first();
-                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                return $url;
-                                            })
-                                            ->autoplay()
-                                            ->preload(false),
-                                    ]),
+                                    ->collection('quote'),
+
                                 SpatieMediaLibraryFileUpload::make('doc_3')
                                     ->label('Certificaciones')
                                     ->acceptedFileTypes(['application/pdf'])
-                                    ->collection('certifications')
-                                    ->hintActions([
-                                        MediaAction::make('ver documento')
-                                            ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                                            ->media(function ($state) {
-                                                $key = array_keys($state);
-                                                $media = Media::where('uuid', $key[0])->first();
-                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                return $url;
-                                            })
-                                            ->autoplay()
-                                            ->preload(false),
-                                    ]),
+                                    ->collection('certifications'),
                             ]),
                         Tabs\Tab::make('Retenciones')
                             ->columns(3)
@@ -330,6 +304,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                             ->schema([
                                 Forms\Components\Textarea::make('observations')
                                     ->label('Observaciones')
+                                    ->default('Sin observaciones')
                                     ->required()
                                     ->columnSpanFull(),
                             ]),
@@ -364,10 +339,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->label('Tipo de pago'),
                                                 Infolists\Components\TextEntry::make('form_payment')
                                                     ->label('Forma de pago'),
-                                                Infolists\Components\TextEntry::make('term_payment')
-                                                    ->label('Término de pago'),
-                                                Infolists\Components\TextEntry::make('condition_payment')
-                                                    ->label('Condiciones de pago'),
                                                 Infolists\Components\TextEntry::make('quote_folio')
                                                     ->label('Folio de cotización'),
                                                 Infolists\Components\TextEntry::make('use_cfdi')
@@ -386,6 +357,41 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->label('Fecha de creación')
                                                     ->date(),
                                             ]),
+                                        Infolists\Components\Tabs\Tab::make('Partidas')
+                                            ->schema([
+                                                Infolists\Components\RepeatableEntry::make('items')
+                                                    ->label('')
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('product.name')
+                                                            ->label('Producto/Servicio'),
+                                                        Infolists\Components\TextEntry::make('product.unit.acronym')
+                                                            ->label('Unidad'),
+                                                        Infolists\Components\TextEntry::make('quantity')
+                                                            ->label('Cantidad'),
+                                                        Infolists\Components\TextEntry::make('unit_price')
+                                                            ->label('Precio unitario')
+                                                            ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
+                                                        Infolists\Components\TextEntry::make('sub_total')
+                                                            ->label('Subtotal')
+                                                            ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
+                                                        Infolists\Components\TextEntry::make('observation')
+                                                            ->label('Observación')
+                                                            ->columnSpan(2),
+                                                    ])
+                                                    ->columns(5)
+                                            ]),
+                                        Infolists\Components\Tabs\Tab::make('Codiciones de pago')
+                                            ->schema([
+                                                Infolists\Components\RepeatableEntry::make('condition_payment')
+                                                    ->label('')
+                                                    ->columns(2)
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('concept')
+                                                            ->label('Concepto'),
+                                                        Infolists\Components\TextEntry::make('value')
+                                                            ->label('Valor')
+                                                    ])
+                                            ]),
                                         Infolists\Components\Tabs\Tab::make('Proveedor')
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('provider.company_name')
@@ -401,25 +407,23 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                         Infolists\Components\Tabs\Tab::make('Soporte')
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('doc_1')
-                                                    ->label('Justificación')
+                                                    // ->label('Justificación')
+                                                    ->label('Tabla comparativa o adjudicación directa en su lugar')
                                                     ->state(function ($record) {
                                                         $media = Media::where('model_id', $record->id)
                                                             ->where('collection_name', 'justification')
                                                             ->first();
-                                                        // dd($media);
                                                         return $media->name;
                                                     })
                                                     ->hintActions([
-                                                        MediaActionInfolist::make('ver documento')
-                                                            ->media(function ($record) {
+                                                        Infolists\Components\Actions\Action::make('Ver documento')
+                                                            ->url(function ($record) {
                                                                 $media = Media::where('model_id', $record->id)
                                                                     ->where('collection_name', 'justification')
                                                                     ->first();
-                                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                                return $url;
+                                                                return  route('media.show', ['id' => $media->id]);
                                                             })
-                                                            ->autoplay()
-                                                            ->preload(false),
+                                                            ->openUrlInNewTab(),
                                                         Action::make('Descargar')
                                                             ->action(function ($record) {
                                                                 $media = Media::where('model_id', $record->id)
@@ -437,16 +441,14 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         return $media->name;
                                                     })
                                                     ->hintActions([
-                                                        MediaActionInfolist::make('ver documento')
-                                                            ->media(function ($record) {
+                                                        Infolists\Components\Actions\Action::make('Ver documento')
+                                                            ->url(function ($record) {
                                                                 $media = Media::where('model_id', $record->id)
                                                                     ->where('collection_name', 'quote')
                                                                     ->first();
-                                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                                return $url;
+                                                                return  route('media.show', ['id' => $media->id]);
                                                             })
-                                                            ->autoplay()
-                                                            ->preload(false),
+                                                            ->openUrlInNewTab(),
                                                         Action::make('Descargar')
                                                             ->action(function ($record) {
                                                                 $media = Media::where('model_id', $record->id)
@@ -456,39 +458,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                             }),
                                                     ]),
                                                 // documentacion opcional
-                                                Infolists\Components\TextEntry::make('doc_2')
-                                                    ->label('Adjudicación directa')
-                                                    ->visible(function ($record) {
-                                                        $media = Media::where('model_id', $record->id)
-                                                            ->where('collection_name', 'direct_award')
-                                                            ->first();
-                                                        return filled($media);
-                                                    })
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->id)
-                                                            ->where('collection_name', 'direct_award')
-                                                            ->first();
-                                                        return $media->name;
-                                                    })
-                                                    ->hintActions([
-                                                        MediaActionInfolist::make('ver documento')
-                                                            ->media(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'direct_award')
-                                                                    ->first();
-                                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                                return $url;
-                                                            })
-                                                            ->autoplay()
-                                                            ->preload(false),
-                                                        Action::make('Descargar')
-                                                            ->action(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'direct_award')
-                                                                    ->first();
-                                                                return response()->download($media->getPath(), $media->file_name);
-                                                            }),
-                                                    ]),
                                                 Infolists\Components\TextEntry::make('doc_3')
                                                     ->label('Certificaciones')
                                                     ->visible(function ($record) {
@@ -504,16 +473,14 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         return $media->name;
                                                     })
                                                     ->hintActions([
-                                                        MediaActionInfolist::make('ver documento')
-                                                            ->media(function ($record) {
+                                                        Infolists\Components\Actions\Action::make('Ver documento')
+                                                            ->url(function ($record) {
                                                                 $media = Media::where('model_id', $record->id)
                                                                     ->where('collection_name', 'certifications')
                                                                     ->first();
-                                                                $url = Storage::url($media->getPathRelativeToRoot());
-                                                                return $url;
+                                                                return  route('media.show', ['id' => $media->id]);
                                                             })
-                                                            ->autoplay()
-                                                            ->preload(false),
+                                                            ->openUrlInNewTab(),
                                                         Action::make('Descargar')
                                                             ->action(function ($record) {
                                                                 $media = Media::where('model_id', $record->id)
@@ -576,29 +543,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ->schema([
                                                 Infolists\Components\Textentry::make('observations')
                                                     ->label('Observaciones'),
-                                            ]),
-                                        Infolists\Components\Tabs\Tab::make('Partidas')
-                                            ->schema([
-                                                Infolists\Components\RepeatableEntry::make('items')
-                                                    ->label('')
-                                                    ->schema([
-                                                        Infolists\Components\TextEntry::make('product.name')
-                                                            ->label('Producto/Servicio'),
-                                                        Infolists\Components\TextEntry::make('product.unit.acronym')
-                                                            ->label('Unidad'),
-                                                        Infolists\Components\TextEntry::make('quantity')
-                                                            ->label('Cantidad'),
-                                                        Infolists\Components\TextEntry::make('unit_price')
-                                                            ->label('Precio unitario')
-                                                            ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
-                                                        Infolists\Components\TextEntry::make('sub_total')
-                                                            ->label('Subtotal')
-                                                            ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
-                                                        Infolists\Components\TextEntry::make('observation')
-                                                            ->label('Observación')
-                                                            ->columnSpan(2),
-                                                    ])
-                                                    ->columns(5)
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Historial')
                                             ->schema([

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\StateMachines\PurchaseOrderStateMachine;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,13 +18,14 @@ class PurchaseOrder extends Model implements HasMedia,Auditable
     use \OwenIt\Auditing\Auditable;
     use HasStateMachines;
     use InteractsWithMedia;
+    use SoftDeletes;
 
     protected $fillable = [
         'folio',
         'currency',
         'type_payment',
         'form_payment',
-        'term_payment',
+        // 'term_payment',
         'condition_payment',
         'quote_folio',
         'use_cfdi',
@@ -50,7 +52,7 @@ class PurchaseOrder extends Model implements HasMedia,Auditable
         'currency',
         'type_payment',
         'form_payment',
-        'term_payment',
+        // 'term_payment' se unifico term payment y condition_payment,
         'condition_payment',
         'quote_folio',
         'use_cfdi',
@@ -75,13 +77,34 @@ class PurchaseOrder extends Model implements HasMedia,Auditable
     public $stateMachines = [
         'status' => PurchaseOrderStateMachine::class
     ];
-    protected function casts(): array
+
+    protected $casts = [
+        'documentation_delivery' => 'array',
+        'condition_payment' => 'array',
+
+    ];
+
+    public static function boot()
     {
-        return [
-            'documentation_delivery' => 'array'
-        ];
+        parent::boot();
+
+        static::creating(function ($ticket) {
+            $ticket->folio = session()->get('company_acronym') . now()->format('y') . '-' . self::generateTicketNumber();
+        });
     }
 
+    // Generar el número consecutivo del ticket
+    private static function generateTicketNumber()
+    {
+        $lastTicket = self::withTrashed()->orderBy('created_at', 'desc')->first();
+
+        if ($lastTicket) {
+            $lastNumber = explode('-', $lastTicket->folio)[1];
+            return str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+        } else {
+            return '001';
+        }
+    }
 
     public function requisition(): BelongsTo
     {

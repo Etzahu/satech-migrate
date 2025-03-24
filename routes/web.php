@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MediaController;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\PurchaseOrderController;
 use Vormkracht10\FilamentMails\Facades\FilamentMails;
@@ -21,6 +22,10 @@ if (config('app.env')=== 'local' && config('app.debug') === true) {
 
 Route::get('empresa/{id}', [LoginController::class, 'setCompany'])
     ->name('company')
+    ->middleware('auth');
+
+Route::get('media/{id}', [MediaController::class, 'show'])
+    ->name('media.show')
     ->middleware('auth');
 
 Route::post('/logout', function () {

@@ -13,7 +13,6 @@
         "dyrynda/laravel-cascade-soft-deletes": "^4.5",
         "filament/filament": "^3.2",
         "filament/spatie-laravel-media-library-plugin": "^3.2",
-        "hugomyb/filament-media-action": "^3.1",
         "jdavidbakr/mail-tracker": "^7.18",
         "joaopaulolndev/filament-pdf-viewer": "^1.0",
         "laravel/framework": "^11.9",

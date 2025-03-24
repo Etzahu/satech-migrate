@@ -64,6 +64,10 @@ class HistoryResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('folio')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('purchaser.name')
+                    ->label('Comprador')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('provider.company_name')
                     ->label('Proveedor')
                     ->numeric()

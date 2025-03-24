@@ -16,11 +16,13 @@ class OrderService
 {
     public function generateFolio($rq_id)
     {
-        return $this->getCompany() . '-' . $this->getManagement($rq_id)  . now()->format('y') . '-' . $this->getCountRecords();
+        return $this->getCompany()->acronym . now()->format('y') . '-' . $this->getCountRecords();
     }
     public function getCountRecords()
     {
-        $count = PurchaseOrder::whereYear('created_at', now()->year)
+        $count = PurchaseOrder::withTrashed()
+            ->whereYear('created_at', now()->year)
+            ->where('company_id', $this->getCompany()->id)
             ->count() + 1;
 
         return str($count)->padLeft(3, '0');
@@ -28,7 +30,7 @@ class OrderService
 
     public function getCompany()
     {
-        return Company::find(session()->get('company_id'))->acronym;
+        return Company::find(session()->get('company_id'));
     }
     public function getManagement($rq_id)
     {
@@ -39,20 +41,21 @@ class OrderService
     public function generatePdf($model)
     {
         return pdf()
-        ->view('pdf.purchase-order.content')
-        ->margins(40, 15, 15, 15)
-        ->headerView('pdf.purchase-order.header')
-        ->withBrowsershot(function (Browsershot $browsershot) {
-            $browsershot
-                ->noSandbox()
-                ->writeOptionsToFile();
-        })
-        ->disk('public')
-        ->save('orden-compra.pdf')
-        ->name('orden-compra.pdf');
+            ->view('pdf.purchase-order.content')
+            ->margins(40, 15, 15, 15)
+            ->headerView('pdf.purchase-order.header')
+            ->withBrowsershot(function (Browsershot $browsershot) {
+                $browsershot
+                    ->noSandbox()
+                    ->writeOptionsToFile();
+            })
+            ->disk('public')
+            ->save('orden-compra.pdf')
+            ->name('orden-compra.pdf');
         // Storage::disk('public')->put('orden-compra.pdf', $pdf->output());
     }
-    public function generateDataEmail($id,$subject){
+    public function generateDataEmail($id, $subject)
+    {
         $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->find($id);
         // return $data;
         $service = new OrderCalculationService($data->id);
@@ -88,20 +91,22 @@ class OrderService
         $data['media'] = $media;
         $data['itemsFormatted'] = $itemsFormatted;
         $subject = str($subject)->upper();
-        $data['subject']="{$subject} ORDEN DE COMPRA {$data['folio']}";
+        $data['subject'] = "{$subject} ORDEN DE COMPRA {$data['folio']}";
         return $data;
     }
 
-    public function getRecipientsArray($data){
+    public function getRecipientsArray($data)
+    {
         $recipients = [];
-        if($data->count()> 0){
-            foreach($data as $item){
+        if ($data->count() > 0) {
+            foreach ($data as $item) {
                 $recipients[] = $item->email;
             }
         }
         return $recipients;
     }
-    public function getUserForEmailFinish($model){
+    public function getUserForEmailFinish($model)
+    {
         $moreUsers = [];
         $moreUsers[] = $model->requisition->approvalChain->requester->email;
         $moreUsers[] = $model->requisition->approvalChain->approver->email;

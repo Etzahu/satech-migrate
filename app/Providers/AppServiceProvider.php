@@ -29,11 +29,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('viewLogViewer', function (?User $user) {
+        
             return $user->hasRole('super_admin');
         });
+
         Gate::define('see-sent-emails', function (User $user,) {
+
             return $user->hasRole('super_admin');
         });
+
         Gate::define('audit', function (User $user,) {
             return $user->hasRole('super_admin');
         });

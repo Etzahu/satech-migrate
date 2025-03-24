@@ -1207,3 +1207,30 @@ Route::get('asing', function () {
     $models = PurchaseRequisition::doesntHave('orders')->myAssing()->get();
     return $models;
 });
+
+Route::get('change-folio', function () {
+
+    // dd(session()->all());
+
+    $models = PurchaseOrder::withTrashed()
+        ->where('company_id', 2)
+        ->get();
+    // return $models;
+    try {
+        DB::beginTransaction();
+        foreach ($models as $index => $model) {
+            $model->folio = 'T' . now()->format('y') . '-' . str($index + 1)->padLeft(3, '0');
+            $model->save();
+        }
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+    }
+    $models = PurchaseOrder::where('company_id', 2)->get()->pluck('folio');
+    return $models;
+});
+
+Route::get('change-disk', function () {
+    DB::table('media')->where('disk', 'public')->update(['disk' => 'local']);
+});
