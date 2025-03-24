@@ -257,8 +257,8 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                             ->label('Nombre del archivo')
                                             ->hintActions([
                                                 Infolists\Components\Actions\Action::make('Ver documento')
-                                                ->url(fn ($record): string => route('media.show', ['id' => $record->id]))
-                                                ->openUrlInNewTab()
+                                                    ->url(fn($record): string => route('media.show', ['id' => $record->id]))
+                                                    ->openUrlInNewTab()
                                             ]),
                                     ]),
                                 Infolists\Components\Actions::make([
@@ -283,7 +283,12 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->label('')
                                     ->schema([
                                         Infolists\Components\TextEntry::make('name')
-                                            ->label('Nombre del archivo'),
+                                            ->label('Nombre del archivo')
+                                            ->hintActions([
+                                                Infolists\Components\Actions\Action::make('Ver documento')
+                                                    ->url(fn($record): string => route('media.show', ['id' => $record->id]))
+                                                    ->openUrlInNewTab()
+                                            ]),
                                     ]),
                                 Infolists\Components\Actions::make([
                                     Infolists\Components\Actions\Action::make('Descargar soportes')
