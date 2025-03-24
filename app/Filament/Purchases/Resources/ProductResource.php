@@ -108,7 +108,7 @@ class ProductResource extends Resource
                         Forms\Components\Textarea::make('name')
                             ->label('Nombre del producto/servicio')
                             ->required()
-                            ->maxLength(255)
+                            ->maxLength(600)
                             ->columnSpanFull(),
                         Forms\Components\Select::make('unit_id')
                             ->label('Unidad de medida')
