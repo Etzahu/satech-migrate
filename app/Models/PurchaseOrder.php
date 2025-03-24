@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
-class PurchaseOrder extends Model implements HasMedia,Auditable
+class PurchaseOrder extends Model implements HasMedia, Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasStateMachines;
@@ -89,20 +89,32 @@ class PurchaseOrder extends Model implements HasMedia,Auditable
         parent::boot();
 
         static::creating(function ($ticket) {
-            $ticket->folio = session()->get('company_acronym') . now()->format('y') . '-' . self::generateTicketNumber();
+            $ticket->folio = session()->get('company_acronym') . self::generateFolioNumber() . '/' . now()->format('y');
         });
     }
-
-    // Generar el número consecutivo del ticket
-    private static function generateTicketNumber()
+    // private static function generateFolioNumber()
+    // {
+    //     $lastModel = self::withTrashed()
+    //         ->where('company_id', session()->get('company_id'))
+    //         ->orderBy('created_at', 'desc')->first();
+    //     if ($lastModel) {
+    //         $lastNumber = explode('/', $lastModel->folio)[0];
+    //         $lastNumber = (int) str_replace(['T', 'G'], '', $lastNumber);
+    //         return str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
+    //     } else {
+    //         return '01';
+    //     }
+    // }
+    private static function generateFolioNumber()
     {
-        $lastTicket = self::withTrashed()->orderBy('created_at', 'desc')->first();
-
-        if ($lastTicket) {
-            $lastNumber = explode('-', $lastTicket->folio)[1];
-            return str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+        $count = self::withTrashed()
+            ->where('company_id', session()->get('company_id'))
+            ->whereYear('created_at',now()->year)
+            ->count();
+        if (filled($count)) {
+            return str_pad($count + 1, 2, '0', STR_PAD_LEFT);
         } else {
-            return '001';
+            return '01';
         }
     }
 

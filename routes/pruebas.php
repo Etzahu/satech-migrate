@@ -1210,16 +1210,45 @@ Route::get('asing', function () {
 
 Route::get('change-folio', function () {
 
-    // dd(session()->all());
+    // if (blank(session()->get('company_id'))) {
+    //     return 'session blank';
+    // }
+    // $model = PurchaseOrder::withTrashed()
+    // ->where('company_id', session()->get('company_id'))
+    // ->whereYear('created_at',now()->year)
+    // ->count();
+    // return $model;
+    // dump(session()->get('company_id'));
+    // $lastModel = PurchaseOrder::withTrashed()
+    //     ->where('company_id', session()->get('company_id'))
+    //     ->orderBy('created_at', 'desc')->first();
+    // // dd($lastModel);
 
-    $models = PurchaseOrder::withTrashed()
+    // if ($lastModel) {
+    //     $lastNumber = explode('/', $lastModel->folio)[0];
+    //     $lastNumber = (int) str_replace(['T', 'G'], '', $lastNumber);
+
+    //     return str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
+    // } else {
+    //     return '01';
+    // }
+    // dd($model);
+    // // dd(session()->all());
+    $modelsG = PurchaseOrder::withTrashed()
+        ->where('company_id', 1)
+        ->get();
+    $modelsT = PurchaseOrder::withTrashed()
         ->where('company_id', 2)
         ->get();
-    // return $models;
+    // return $models->pluck('folio');
     try {
         DB::beginTransaction();
-        foreach ($models as $index => $model) {
-            $model->folio = 'T' . now()->format('y') . '-' . str($index + 1)->padLeft(3, '0');
+        foreach ($modelsG as $index => $model) {
+            $model->folio = 'G' . str($index + 1)->padLeft(2, '0')  . '/' . now()->format('y');
+            $model->save();
+        }
+        foreach ($modelsT as $index => $model) {
+            $model->folio = 'T' . str($index + 1)->padLeft(2, '0')  . '/' . now()->format('y');
             $model->save();
         }
         DB::commit();
@@ -1227,8 +1256,8 @@ Route::get('change-folio', function () {
         DB::rollBack();
         throw $e;
     }
-    $models = PurchaseOrder::where('company_id', 2)->get()->pluck('folio');
-    return $models;
+    // $models = PurchaseOrder::all();
+    // return $models->groupBy('company_id');
 });
 
 Route::get('change-disk', function () {
