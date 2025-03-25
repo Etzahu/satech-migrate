@@ -19,7 +19,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
     public function transitions(): array
     {
         return [
-            '*'=>['comprador reasignado'],
+            '*'=>['comprador reasignado','cerrada'],
             'borrador' => ['revisión por almacén', 'revisión', 'aprobado por revisor'],
 
             'devuelto por revisor' => ['revisión por almacén', 'revisión'],
@@ -208,6 +208,17 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     Mail::to($recipient)->send(new Notification($data));
                 }
             ],
+            'cerrada' => [
+                function($to,$model){
+                    $recipient = $model->approvalChain->requester;
+                    $moreUsers[] = User::role('gerente_compras')->first()->email;
+                    $service = new PurchaseRequisitionCreationService();
+                    $data = $service->generateDataForEmail('cerrada', $model);
+                    Mail::to($recipient)
+                        ->cc($moreUsers)
+                        ->send(new Notification($data));
+                }
+            ]
         ];
     }
 }

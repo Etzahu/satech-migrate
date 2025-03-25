@@ -56,7 +56,7 @@ class View extends ViewRecord
                         if ($quantity > 0) {
                             return "¿Estás seguro de hacer esto?. La requisición contiene ordenes, las cuales se borrarán.";
                         } else {
-                            return "¿Estás seguro de hacer?";
+                            return "¿Estás seguro de hacer esto?";
                         }
                     })
                     ->form([
@@ -79,7 +79,31 @@ class View extends ViewRecord
                                 ->danger()
                                 ->send();
                         }
-                    })
+                    }),
+                Action::make('Cerrar')
+                    ->requiresConfirmation()
+                    ->visible($this->record->status !== 'cerrada')
+                    ->modalHeading('Cerrar la requisición')
+                    ->form([
+                        Textarea::make('observation')
+                            ->label('Motivo o comentarios')
+                            ->required(),
+                    ])
+                    ->action(function (array $data) {
+                        try {
+                            $this->record->status()->transitionTo('cerrada', ['respuesta' => $data['observation']]);
+                            Notification::make()
+                                ->title('Se cerro la requisición')
+                                ->success()
+                                ->send();
+                        } catch (\Exception $e) {
+                            logger($e->getMessage());
+                            Notification::make()
+                                ->title('Ocurrió un error')
+                                ->danger()
+                                ->send();
+                        }
+                    }),
 
             ])
                 ->label('Opciones')

@@ -7,13 +7,13 @@
             </x-filament::button>
         </div>
     </form>
-    @if (count($relationManagers = $this->getRelationManagers()))
+    {{-- @if (count($relationManagers = $this->getRelationManagers()))
         <x-filament-panels::resources.relation-managers
             :active-manager="$this->activeRelationManager"
             :managers="$relationManagers"
             :owner-record="$record"
             :page-class="static::class"
         />
-    @endif
+    @endif --}}
     <x-filament-actions::modals />
 </x-filament-panels::page>

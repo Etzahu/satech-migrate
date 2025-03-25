@@ -135,13 +135,13 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->hidden($options['rq'] ?? false)
                                     ->searchable()
                                     ->preload()
-                                    ->options(PurchaseRequisition::myAssing()->pluck('folio', 'id'))
+                                    ->options(PurchaseRequisition::myAssing()->whereNot('status', 'cerrada')->pluck('folio', 'id'))
                                     ->required()
                                     ->columnSpan('full'),
                             ]),
-                        Tabs\Tab::make('Partidas')->schema([
-                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
-                        ])->visible(in_array('show_relation_items', $options)),
+                        // Tabs\Tab::make('Partidas')->schema([
+                        //     \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
+                        // ])->visible(in_array('show_relation_items', $options)),
                         Tabs\Tab::make('Codiciones de pago')
                             ->schema([
                                 Forms\Components\Repeater::make('condition_payment')

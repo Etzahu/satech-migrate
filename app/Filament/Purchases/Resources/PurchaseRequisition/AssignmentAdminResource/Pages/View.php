@@ -20,41 +20,41 @@ class View extends ViewRecord
     {
         return [
             Action::make('Devolver')
-            ->color('info')
-            ->requiresConfirmation()
-            ->visible($this->record->status()->canBe('devuelto por gerente de compras'))
-            ->modalHeading('Devolver la requisición')
-            ->modalDescription(function ($record) {
-                $quantity = $record->orders->count();
-                if ($quantity > 0) {
-                    return "¿Estás seguro de hacer esto?. La requisición contiene ordenes, las cuales se borrarán.";
-                } else {
-                    return "¿Estás seguro de hacer?";
-                }
-            })
-            ->form([
-                Textarea::make('observation')
-                    ->label('Motivo')
-                    ->required(),
-            ])
-            ->action(function (array $data) {
-                try {
-                    $this->record->status()->transitionTo('devuelto por gerente de compras', ['respuesta' => $data['observation']]);
-                    $this->record->orders()->delete();
-                    Notification::make()
-                        ->title('Se devolvió la requisición')
-                        ->success()
-                        ->send();
-                } catch (\Exception $e) {
-                    logger($e->getMessage());
-                    Notification::make()
-                        ->title('Ocurrió un error')
-                        ->danger()
-                        ->send();
-                }
-            }),
+                ->color('info')
+                ->requiresConfirmation()
+                ->visible($this->record->status()->canBe('devuelto por gerente de compras') && $this->record->status !== 'cerrada')
+                ->modalHeading('Devolver la requisición')
+                ->modalDescription(function ($record) {
+                    $quantity = $record->orders->count();
+                    if ($quantity > 0) {
+                        return "¿Estás seguro de hacer esto?. La requisición contiene ordenes, las cuales se borrarán.";
+                    } else {
+                        return "¿Estás seguro de hacer?";
+                    }
+                })
+                ->form([
+                    Textarea::make('observation')
+                        ->label('Motivo')
+                        ->required(),
+                ])
+                ->action(function (array $data) {
+                    try {
+                        $this->record->status()->transitionTo('devuelto por gerente de compras', ['respuesta' => $data['observation']]);
+                        $this->record->orders()->delete();
+                        Notification::make()
+                            ->title('Se devolvió la requisición')
+                            ->success()
+                            ->send();
+                    } catch (\Exception $e) {
+                        logger($e->getMessage());
+                        Notification::make()
+                            ->title('Ocurrió un error')
+                            ->danger()
+                            ->send();
+                    }
+                }),
             Action::make('Asignar comprador')
-                ->visible($this->record->status()->canBe('comprador asignado') && blank($this->record->responsiblePurchaseOrder))
+                ->visible($this->record->status()->canBe('comprador asignado') && blank($this->record->responsiblePurchaseOrder) && $this->record->status !== 'cerrada')
                 ->form([
                     Select::make('responsible')
                         ->label('Responsable')
@@ -72,7 +72,7 @@ class View extends ViewRecord
                         ->send();
                 }),
             Action::make('Reasignar comprador')
-                ->visible((filled($this->record->responsiblePurchaseOrder)))
+                ->visible(filled($this->record->responsiblePurchaseOrder) && $this->record->status !== 'cerrada')
                 ->form([
                     Select::make('responsible')
                         ->label('Responsable')

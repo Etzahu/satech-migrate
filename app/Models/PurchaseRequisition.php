@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\DeletedModels\Models\Concerns\KeepsDeletedModels;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
 
-class PurchaseRequisition extends Model implements HasMedia,Auditable
+class PurchaseRequisition extends Model implements HasMedia, Auditable
 {
     use SoftDeletes, CascadeSoftDeletes;
     use \OwenIt\Auditing\Auditable;
@@ -115,20 +115,19 @@ class PurchaseRequisition extends Model implements HasMedia,Auditable
     // SCOPES
     public function scopeMyRequisitionsDraft(Builder $query)
     {
-            return $query
-                ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
-                ->where('company_id', session()->get('company_id'))
-                ->whereIn('status', [
-                    'borrador',
-                    'devuelto por almacén',
-                    'devuelto por revisor',
-                    'devuelto por gerencia',
-                    'devuelto por DG',
-                    'devuelto por comprador',
-                    'devuelto por gerente de compras'
-                ])
-                ->orderBy('id', 'desc');
-
+        return $query
+            ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
+            ->where('company_id', session()->get('company_id'))
+            ->whereIn('status', [
+                'borrador',
+                'devuelto por almacén',
+                'devuelto por revisor',
+                'devuelto por gerencia',
+                'devuelto por DG',
+                'devuelto por comprador',
+                'devuelto por gerente de compras'
+            ])
+            ->orderBy('id', 'desc');
     }
     public function scopeReviewWarehouse(Builder $query)
     {
@@ -160,9 +159,11 @@ class PurchaseRequisition extends Model implements HasMedia,Auditable
     public function scopeReadyAssing(Builder $query)
     {
         return $query
-            ->has('responsiblePurchaseOrder')
-            ->OrWhere('status', 'aprobado por DG')
             ->where('company_id', session()->get('company_id'))
+            ->where(function ($query) {
+                $query->where('status', 'aprobado por DG')
+                    ->orWhereNotNull('assign_user_id'); // Si "comprador" no es NULL (está lleno)
+            })
             ->orderBy('id', 'desc');
     }
     public function scopeReadyAssingCount(Builder $query)

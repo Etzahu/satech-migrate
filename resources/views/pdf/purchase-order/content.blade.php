@@ -198,9 +198,9 @@
                         @foreach ($data['media'] as $item)
                             <tr>
                                 <td class="px-1 text-xs text-left text-black ms-2 ">
-                                    <a href="{{ $item->getUrl() }}" target="_blank" class="underline">
-                                        {{ $item->name }} ({{ $item->extension }})
-                                    </a>
+                                    {{ $item->name }} ({{ $item->extension }})
+                                    {{-- <a href="{{ $item->getUrl() }}" target="_blank" class="underline">
+                                    </a> --}}
                                 </td>
                             </tr>
                         @endforeach

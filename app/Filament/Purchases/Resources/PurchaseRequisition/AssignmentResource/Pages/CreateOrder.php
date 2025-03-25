@@ -30,7 +30,6 @@ class CreateOrder extends Page implements HasForms
         $this->data['currency'] = 'MXN';
         $this->data['type_payment'] = '';
         $this->data['form_payment'] = '';
-        $this->data['term_payment'] = '';
         $this->data['condition_payment'] = '';
         $this->data['quote_folio'] = '';
         $this->data['use_cfdi'] = '';
@@ -40,9 +39,10 @@ class CreateOrder extends Page implements HasForms
         $this->data['retention_iva'] = 0;
         $this->data['retention_isr'] = 0;
         $this->data['retention_another'] = 0;
+        $this->data['discount'] = 0;
         $this->data['initial_delivery_date'] = '';
         $this->data['final_delivery_date'] = '';
-        $this->data['observations'] = '';
+        $this->data['observations'] = 'Sin observaciones';
 
         $this->data['folio'] = 'N/A';
         $this->data['purchaser_user_id'] = auth()->user()->id;
@@ -73,8 +73,6 @@ class CreateOrder extends Page implements HasForms
         // TODO:falta la logica para guardar las imagenes
         $this->form->getState();
         $order = PurchaseOrder::create($this->data);
-        $service = new OrderService();
-        $order->folio = $service->generateFolio($order->requisition_id);
         $order->save();
         Notification::make()
             ->title('Orden de compra creada')

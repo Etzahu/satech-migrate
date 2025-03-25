@@ -1263,3 +1263,9 @@ Route::get('change-folio', function () {
 Route::get('change-disk', function () {
     DB::table('media')->where('disk', 'public')->update(['disk' => 'local']);
 });
+
+Route::get('encuestas',function(){
+    $correos = fastexcel()->import('correos.xlsx')->pluck('CORREO')->toArray();
+    $avance = fastexcel()->import('avance.xlsx')->flatten()->toArray();
+    return array_diff($correos,$avance);
+});
