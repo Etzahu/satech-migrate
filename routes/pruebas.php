@@ -1265,6 +1265,7 @@ Route::get('change-disk', function () {
 });
 
 Route::get('encuestas',function(){
+    dd(User::find(106)->email);
     $correos = fastexcel()->import('correos.xlsx')->pluck('CORREO')->toArray();
     $avance = fastexcel()->import('avance.xlsx')->flatten()->toArray();
     return array_diff($correos,$avance);

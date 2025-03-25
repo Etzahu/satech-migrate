@@ -111,10 +111,10 @@ class OrderService
         $moreUsers[] = $model->requisition->approvalChain->requester->email;
         $moreUsers[] = $model->requisition->approvalChain->approver->email;
         $moreUsers[] = $model->requisition->approvalChain->authorizer->email;
-
+        $moreUsers[] = User::find(106)->email;
         $moreUsers[] = User::role('gerente_compras')->first()->email;
-
         $usersWareHouse = User::role('revisa_almacen_requisicion_compra')->get()->flatten();
+        
         foreach ($usersWareHouse as $user) {
             $moreUsers[] = $user->email;
         }
