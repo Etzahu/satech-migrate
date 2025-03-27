@@ -1003,7 +1003,7 @@ Route::get('history-filter', function () {
     //     ->get();
     // return $rq;
 
-    $rq = PurchaseRequisition::find(120);
+    $rq = PurchaseRequisition::find(46);
 
     // return $rq->status()->history()->get();
     // dd($rq->status()->timesWas('aprobado por gerencia'));
