@@ -92,6 +92,18 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             $ticket->folio = session()->get('company_acronym') . self::generateFolioNumber() . '/' . now()->format('y');
         });
     }
+    private static function generateFolioNumber()
+    {
+        $count = self::withTrashed()
+            ->where('company_id', session()->get('company_id'))
+            ->whereYear('created_at',now()->year)
+            ->count();
+        if (filled($count)) {
+            return str_pad($count + 1, 2, '0', STR_PAD_LEFT);
+        } else {
+            return '01';
+        }
+    }
     // private static function generateFolioNumber()
     // {
     //     $lastModel = self::withTrashed()
@@ -105,18 +117,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
     //         return '01';
     //     }
     // }
-    private static function generateFolioNumber()
-    {
-        $count = self::withTrashed()
-            ->where('company_id', session()->get('company_id'))
-            ->whereYear('created_at',now()->year)
-            ->count();
-        if (filled($count)) {
-            return str_pad($count + 1, 2, '0', STR_PAD_LEFT);
-        } else {
-            return '01';
-        }
-    }
+
 
     public function requisition(): BelongsTo
     {

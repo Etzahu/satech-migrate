@@ -15,7 +15,6 @@ class CreatePurchaseRequisition extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-
         if (blank(auth()->user()->management)) {
             Notification::make()
                 ->danger()

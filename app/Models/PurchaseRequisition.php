@@ -82,6 +82,8 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
     public $stateMachines = [
         'status' => PurchaseRequisitionStateMachine::class,
     ];
+
+   
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_id');

@@ -1257,7 +1257,7 @@ Route::get('change-folio', function () {
         throw $e;
     }
     // $models = PurchaseOrder::all();
-    // return $models->groupBy('company_id');
+    // return $models->groupBy('company_id')
 });
 
 Route::get('change-disk', function () {
@@ -1265,8 +1265,13 @@ Route::get('change-disk', function () {
 });
 
 Route::get('encuestas',function(){
-    dd(User::find(106)->email);
+    // dd(User::find(106)->email);
     $correos = fastexcel()->import('correos.xlsx')->pluck('CORREO')->toArray();
     $avance = fastexcel()->import('avance.xlsx')->flatten()->toArray();
-    return array_diff($correos,$avance);
+    $diff = array_diff($correos,$avance);
+    $correos = fastexcel()->import('correos.xlsx');
+    return $correos->whereIn('CORREO',$diff)->pluck('NOMBRE COMPLETO');
 });
+
+
+

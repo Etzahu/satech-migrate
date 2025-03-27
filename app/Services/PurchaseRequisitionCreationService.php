@@ -14,16 +14,17 @@ class PurchaseRequisitionCreationService
     public function generateFolio()
     {
         $term = Company::find(session()->get('company_id'))->acronym . '-' . auth()->user()->management->acronym . '-' . now()->year . '-';
-        $rq = PurchaseRequisition::where('folio', 'LIKE', $term . '%')->latest('created_at')->first();
+        $rq = PurchaseRequisition::withTrashed()
+            ->where('folio', 'LIKE', $term . '%')->latest('created_at')->first();
 
-        if(filled($rq)){
+        if (filled($rq)) {
             // Dividir el string por el guion
             $parts = explode('-', $rq->folio);
             // Obtener la última parte
             $numString = end($parts);
             // Convertir a entero
             $numInt = ((int)$numString + 1);
-        }else{
+        } else {
             $numInt =  1;
         }
 
@@ -33,7 +34,9 @@ class PurchaseRequisitionCreationService
 
     public function getCountRecords()
     {
-        $count = PurchaseRequisition::whereYear('created_at', now()->year)
+        $count = PurchaseRequisition::withTrashed()
+            ->where('company_id', session()->get('company_id'))
+            ->whereYear('created_at', now()->year)
             ->withWhereHas(
                 'approvalChain.requester',
                 function ($query) {
