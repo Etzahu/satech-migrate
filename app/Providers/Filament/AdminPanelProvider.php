@@ -12,7 +12,9 @@ use Shanerbaner82\PanelRoles\PanelRoles;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Vormkracht10\FilamentMails\FilamentMailsPlugin;
 use Illuminate\Routing\Middleware\SubstituteBindings;
+use Vormkracht10\FilamentMails\Facades\FilamentMails;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -58,8 +60,10 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->routes(fn () => FilamentMails::routes())
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
+                FilamentMailsPlugin::make(),
                 PanelRoles::make()
                 ->restrictedRoles(['super_admin']),
             ]);

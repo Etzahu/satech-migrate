@@ -996,24 +996,25 @@ Route::get('test', function () {
 });
 
 Route::get('history-filter', function () {
-    $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])
-        ->withWhereHas('approvalChain.requester', function ($query) {
-            $query->where('management_id', 5);
-        })
-        ->get();
-    return $rq;
+    // $rq = PurchaseRequisition::with(['items', 'approvalChain', 'project', 'items.product', 'items.product.unit', 'company'])
+    //     ->withWhereHas('approvalChain.requester', function ($query) {
+    //         $query->where('management_id', 5);
+    //     })
+    //     ->get();
+    // return $rq;
 
+    $rq = PurchaseRequisition::find(120);
 
+    // return $rq->status()->history()->get();
     // dd($rq->status()->timesWas('aprobado por gerencia'));
-
     $stages = [];
     $stages[1] =  $rq->status()->snapshotWhen('revisión');
-    $stages[2] =  $rq->status()->snapshotWhen('aprobado por revisor');
-    $stages[3] =  $rq->status()->snapshotWhen('aprobado por gerencia');
-    $stages[4] =  $rq->status()->snapshotWhen('aprobado por DG');
-
+    $stages[2] =  $rq->status()->snapshotsWhen('revisión');
+    // $stages[2] =  $rq->status()->snapshotWhen('aprobado por revisor');
+    // $stages[3] =  $rq->status()->snapshotWhen('aprobado por gerencia');
+    // $stages[4] =  $rq->status()->snapshotWhen('aprobado por DG');
+    return $stages;
     $revisions = $rq->status()->timesWas('aprobado por gerencia');
-    // return $stages;
     $pdf = Pdf::loadView('pdf.purchase-requisition', compact('rq', 'revisions', 'stages'))->setPaper('a4', 'landscape');
     return $pdf->stream($rq->folio . '.pdf');
 
