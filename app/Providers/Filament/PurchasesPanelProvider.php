@@ -59,18 +59,6 @@ class PurchasesPanelProvider extends PanelProvider
                     ->url(fn(): string => route('logout'))
                     ->icon('heroicon-o-arrow-left-start-on-rectangle'),
             ])
-            ->navigationItems([
-                NavigationItem::make('MailTracker')
-                ->visible(fn (): bool =>  auth()->user()->hasRole('super_admin'))
-                    ->label('Mail tracker')
-                    ->url(fn(): string => route('mailTracker_Index'))
-                    ->icon('heroicon-o-envelope'),
-                NavigationItem::make('LogViewer')
-                ->visible(fn (): bool =>  auth()->user()->hasRole('super_admin'))
-                    ->label('Log viewer')
-                    ->url(fn(): string => route('log-viewer.index'))
-                    ->icon('heroicon-o-archive-box'),
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

@@ -8,6 +8,7 @@ use Filament\Widgets;
 use Filament\PanelProvider;
 use Hexters\HexaLite\HexaLite;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationItem;
 use Shanerbaner82\PanelRoles\PanelRoles;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
@@ -45,6 +46,18 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
+            ])
+            ->navigationItems([
+                NavigationItem::make('MailTracker')
+                ->visible(fn (): bool =>  auth()->user()->hasRole('super_admin'))
+                    ->label('Mail tracker')
+                    ->url(fn(): string => route('mailTracker_Index'))
+                    ->icon('heroicon-o-envelope'),
+                NavigationItem::make('LogViewer')
+                ->visible(fn (): bool =>  auth()->user()->hasRole('super_admin'))
+                    ->label('Log viewer')
+                    ->url(fn(): string => route('log-viewer.index'))
+                    ->icon('heroicon-o-archive-box'),
             ])
             ->middleware([
                 EncryptCookies::class,
