@@ -1268,11 +1268,15 @@ Route::get('change-disk', function () {
 Route::get('encuestas',function(){
     // dd(User::find(106)->email);
     $correos = fastexcel()->import('correos.xlsx')->pluck('CORREO')->toArray();
+    // dd($correos);
     $avance = fastexcel()->import('avance.xlsx')->flatten()->toArray();
+    // dd($avance);
     $diff = array_diff($correos,$avance);
+    // dd($diff);
     $correos = fastexcel()->import('correos.xlsx');
-    return $correos->whereIn('CORREO',$diff)->pluck('NOMBRE COMPLETO');
+    return $correos->whereIn('CORREO',$diff)->pluck('CORREO');
 });
+
 
 
 

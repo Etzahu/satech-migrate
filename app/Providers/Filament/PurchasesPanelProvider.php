@@ -20,6 +20,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Saade\FilamentLaravelLog\FilamentLaravelLogPlugin;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Hugomyb\FilamentErrorMailer\FilamentErrorMailerPlugin;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 
@@ -75,6 +76,7 @@ class PurchasesPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->plugins([
+                FilamentErrorMailerPlugin::make(),
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 PanelRoles::make()
                     ->restrictedRoles([
