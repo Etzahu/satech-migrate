@@ -1274,9 +1274,5 @@ Route::get('encuestas',function(){
     $diff = array_diff($correos,$avance);
     // dd($diff);
     $correos = fastexcel()->import('correos.xlsx');
-    return $correos->whereIn('CORREO',$diff)->pluck('CORREO');
+    return $correos->whereIn('CORREO',$diff)->pluck('NOMBRE COMPLETO');
 });
-
-
-
-

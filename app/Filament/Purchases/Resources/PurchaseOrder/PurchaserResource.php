@@ -139,9 +139,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->required()
                                     ->columnSpan('full'),
                             ]),
-                        // Tabs\Tab::make('Partidas')->schema([
-                        //     \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
-                        // ])->visible(in_array('show_relation_items', $options)),
+                        Tabs\Tab::make('Partidas')->schema([
+                            // Es para que el administrador pueda editar las partidas cuando la orden este liberada
+                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
+                        ])->visible(in_array('show_relation_items', $options)),
                         Tabs\Tab::make('Codiciones de pago')
                             ->schema([
                                 Forms\Components\Repeater::make('condition_payment')
