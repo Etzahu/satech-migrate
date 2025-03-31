@@ -23,44 +23,45 @@ class ViewOrder extends ViewRecord
     {
         return [
             Actions\Action::make('Capturar respuesta')
-            ->modalHeading('Enviar respuesta')
-            ->color('success')
-            ->visible(fn() =>
-            $this->record->status()->canBe('aprobado por gerente solicitante')||
-            $this->record->status()->canBe('devuelto por gerente solicitante')||
-            $this->record->status()->canBe('cancelado por gerente solicitante')
-            )
-            ->form([
-                Select::make('response')
-                    ->label('Respuesta')
-                    ->options([
-                        'aprobado por gerente solicitante' => 'Aprobar',
-                        'devuelto por gerente solicitante' => 'Devolver',
-                        'cancelado por gerente solicitante' => 'Cancelar',
-                    ])
-                    ->default('aprobado por gerente solicitante')
-                    ->required(),
-                Textarea::make('observation')
-                    ->requiredUnless('response', 'aprobado por gerente solicitante')
-                    ->validationMessages([
-                        'required_unless' => 'El campo :attribute es obligatorio.',
-                    ])
-                    ->label('Observación'),
-            ])
-            ->requiresConfirmation()
-            ->action(function (array $data) {
-                $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
-                Notification::make()
-                    ->title('Respuesta enviada')
-                    ->success()
-                    ->send();
-                return redirect(ReviewResource::getUrl('index'));
-            }),
+                ->modalHeading('Enviar respuesta')
+                ->color('success')
+                ->visible(
+                    fn() =>
+                    $this->record->status()->canBe('aprobado por gerente solicitante') ||
+                        $this->record->status()->canBe('devuelto por gerente solicitante') ||
+                        $this->record->status()->canBe('cancelado por gerente solicitante')
+                )
+                ->form([
+                    Select::make('response')
+                        ->label('Respuesta')
+                        ->options([
+                            'aprobado por gerente solicitante' => 'Aprobar',
+                            'devuelto por gerente solicitante' => 'Devolver',
+                            'cancelado por gerente solicitante' => 'Cancelar',
+                        ])
+                        ->default('aprobado por gerente solicitante')
+                        ->required(),
+                    Textarea::make('observation')
+                        ->requiredUnless('response', 'aprobado por gerente solicitante')
+                        ->validationMessages([
+                            'required_unless' => 'El campo :attribute es obligatorio.',
+                        ])
+                        ->label('Observación'),
+                ])
+                ->requiresConfirmation()
+                ->action(function (array $data) {
+                    $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
+                    Notification::make()
+                        ->title('Respuesta enviada')
+                        ->success()
+                        ->send();
+                    return redirect(ReviewResource::getUrl('index'));
+                }),
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
                     ->color('success')
                     ->url(route('order.pdf', ['id' => $this->record->id]))
-                    ->openUrlInNewTab()
+                    ->openUrlInNewTab(),
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')

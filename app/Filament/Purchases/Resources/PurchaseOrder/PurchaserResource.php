@@ -719,7 +719,8 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
-
+                Tables\Actions\DeleteAction::make()
+                    ->visible(fn($record) => $record->status == 'borrador'),
             ]);
     }
     public static function getRelations(): array

@@ -33,7 +33,7 @@ class ViewOrder extends ViewRecord
                         return $item === 0;
                     });
                     if ($hasZeroQuantity) {
-                       return false;
+                        return false;
                     }
                     return $this->record->status()->canBe('revisión gerente de compras') && $this->record->items()->count() > 0;
                 })
@@ -49,11 +49,13 @@ class ViewOrder extends ViewRecord
 
             ActionGroup::make([
                 Actions\EditAction::make(),
+                Actions\DeleteAction::make()
+                    ->visible(fn($record) => $record->status == 'borrador'),
                 Actions\Action::make('Ver pdf')
-                ->color('danger')
-                ->url(route('order.pdf', ['id' => $this->record->id]))
-                ->icon('heroicon-m-document')
-                ->openUrlInNewTab(),
+                    ->color('danger')
+                    ->url(route('order.pdf', ['id' => $this->record->id]))
+                    ->icon('heroicon-m-document')
+                    ->openUrlInNewTab(),
                 Actions\Action::make('Agregar partidas de la requisición')
                     ->visible(function () {
                         // dd($this->record);
