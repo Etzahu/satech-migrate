@@ -39,7 +39,7 @@ class CreateProduct extends CreateRecord
             $recipients[] = $user->email;
         }
         Mail::to($recipients)
-        ->bcc('ahernandezm@gptservices.com')
+        // ->bcc('ahernandezm@gptservices.com')
         ->send(new CatalogNotification($this->record));
     }
 }
