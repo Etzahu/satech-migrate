@@ -75,6 +75,7 @@ class HistoryResource extends Resource
                 Tables\Columns\TextColumn::make('requisition.folio')
                     ->label('Requisición')
                     ->numeric()
+                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
