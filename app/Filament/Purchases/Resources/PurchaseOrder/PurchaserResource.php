@@ -336,6 +336,8 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->color('success'),
                                                 Infolists\Components\TextEntry::make('currency')
                                                     ->label('Moneda'),
+                                                Infolists\Components\TextEntry::make('requisition.project.name')
+                                                    ->label('Proyecto de la requisición'),
                                                 Infolists\Components\TextEntry::make('type_payment')
                                                     ->label('Tipo de pago'),
                                                 Infolists\Components\TextEntry::make('form_payment')

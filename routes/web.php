@@ -34,8 +34,6 @@ Route::post('/logout', function () {
     return redirect()->to('/');
 })->name('logout');
 
-
-
 Route::get('compras/requisiciones/{id}/pdf',[PurchaseRequisitionController::class,'pdf'])
 ->name('requisition.pdf');
 Route::get('compras/ordenes/{id}/pdf',[PurchaseOrderController::class,'pdf'])

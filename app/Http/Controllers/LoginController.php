@@ -58,7 +58,6 @@ class LoginController extends Controller
         }
     }
 
-
     public function logout()
     {
         Filament::auth()->logout();
@@ -93,11 +92,15 @@ class LoginController extends Controller
         //     return redirect()->to($intended_url);
         // }
         Notification::make()
-                ->title('Se ha cambiado la empresa')
-                ->success()
-                ->iconColor('success')
-                ->icon('heroicon-m-building-office-2')
-                ->send();
-                return redirect('/compras');
+            ->title('Se ha cambiado la empresa')
+            ->success()
+            ->iconColor('success')
+            ->icon('heroicon-m-building-office-2')
+            ->send();
+        return redirect('/compras');
+    }
+
+    public function home(){
+        return view('home');
     }
 }

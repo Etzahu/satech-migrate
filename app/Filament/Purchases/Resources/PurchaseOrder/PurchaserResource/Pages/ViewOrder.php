@@ -47,36 +47,38 @@ class ViewOrder extends ViewRecord
                     return redirect(PurchaserResource::getUrl('index'));
                 }),
 
-            ActionGroup::make([
-                Actions\EditAction::make(),
-                Actions\DeleteAction::make()
-                    ->visible(fn($record) => $record->status == 'borrador'),
-                Actions\Action::make('Ver pdf')
-                    ->color('danger')
-                    ->url(route('order.pdf', ['id' => $this->record->id]))
-                    ->icon('heroicon-m-document')
-                    ->openUrlInNewTab(),
-                Actions\Action::make('Agregar partidas de la requisición')
-                    ->visible(function () {
-                        // dd($this->record);
-                        $orders = $this->record->requisition->orders;
-                        $itemsRequisition = $this->record->requisition->items->pluck('product_id');
-                        $itemsWithOrder = [];
-                        foreach ($orders as $order) {
-                            $items = $order->items?->pluck('product_id')->all();
-                            $itemsWithOrder = array_merge($itemsWithOrder, $items);
-                        }
-                        return count($itemsRequisition) == count($itemsWithOrder) ? false : true;
-                    })
-                    ->color('success')
-                    ->url(fn(PurchaseOrder $record): string => PurchaserResource::getUrl('add-item', ['record' => $record->id])),
-                // Action para cambiar de status
-            ])
-                ->label('Opciones')
-                ->icon('heroicon-m-ellipsis-vertical')
-                ->color('primary')
-                ->dropdownWidth(MaxWidth::Large)
-                ->button()
+            Actions\EditAction::make(),
+            Actions\DeleteAction::make()
+                ->visible(fn($record) => $record->status == 'borrador'),
+            Actions\Action::make('Reabrir para edición')
+                ->visible(fn($record) => $record->status == 'autorizada para proveedor')
+                ->requiresConfirmation()
+                ->action(function () {
+                    $this->record->status()->transitionTo('reabierta para edición');
+                }),
+            Actions\Action::make('Ver pdf')
+                ->color('danger')
+                ->url(route('order.pdf', ['id' => $this->record->id]))
+                ->icon('heroicon-m-document')
+                ->openUrlInNewTab(),
+            Actions\Action::make('Agregar partidas de la requisición')
+                ->visible(function () {
+                    if ($this->record->status !== 'borrador' || $this->record->status !== 'reabierta para edición') {
+                        return false;
+                    }
+                    // dd($this->record);
+                    $orders = $this->record->requisition->orders;
+                    $itemsRequisition = $this->record->requisition->items->pluck('product_id');
+                    $itemsWithOrder = [];
+                    foreach ($orders as $order) {
+                        $items = $order->items?->pluck('product_id')->all();
+                        $itemsWithOrder = array_merge($itemsWithOrder, $items);
+                    }
+                    return count($itemsRequisition) == count($itemsWithOrder) ? false : true;
+                })
+                ->color('success')
+                ->url(fn(PurchaseOrder $record): string => PurchaserResource::getUrl('add-item', ['record' => $record->id])),
+
         ];
     }
     /*

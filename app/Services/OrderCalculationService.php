@@ -36,13 +36,15 @@ class OrderCalculationService
         foreach ($items as $item) {
             $subtotal = $subtotal->add(new Money($item->sub_total, new Currency($this->order->currency)));
         }
-        $total =  $subtotal->subtract($this->getDiscountProvider());
+        // $total =  $subtotal->subtract($this->getDiscountProvider());
+        $total =  $subtotal;
         return $formatter ? $this->moneyFormatter($total) : $total;
     }
     public function subtotalDiscount($formatter = false)
     {
         $subtotal = $this->getSubtotalItems();
         $total = $subtotal->subtract($this->getDiscountProvider());
+       
         return $formatter ? $this->moneyFormatter($total) : $total;
     }
     public function getTaxIva($formatter = false)
@@ -76,5 +78,5 @@ class OrderCalculationService
         return $formatter ? $this->moneyFormatter($total) :$total;
     }
 
-    
+
 }

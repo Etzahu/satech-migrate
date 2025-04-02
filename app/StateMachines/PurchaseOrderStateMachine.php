@@ -27,12 +27,14 @@ class PurchaseOrderStateMachine extends StateMachine
             'aprobado por gerente solicitante' => ['aprobado por DG nivel 1', 'devuelto por DG nivel 1', 'cancelado por DG nivel 1'],
             'aprobado por DG nivel 1' =>  ['aprobado por DG nivel 2', 'devuelto por DG nivel 2', 'cancelado por DG nivel 2', 'autorizada para proveedor'],
             'aprobado por DG nivel 2' => ['autorizada para proveedor'],
-
-
+            'autorizada para proveedor' => ['reabierta para edición'],
+            
             'devuelto por gerente de compras' => ['revisión gerente de compras'],
             'devuelto por gerente solicitante' => ['revisión gerente de compras'],
             'devuelto por DG nivel 1' => ['revisión gerente de compras'],
             'devuelto por DG nivel 2' => ['revisión gerente de compras'],
+            'reabierta para edición' => ['revisión gerente de compras'],
+
         ];
     }
     public function defaultState(): ?string

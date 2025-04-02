@@ -35,8 +35,8 @@ class AddItemPR extends Page implements HasForms, HasTable
     public function mount(int | string $record)
     {
         $this->record = $this->resolveRecord($record);
-        if ($this->record->status !== 'borrador') {
-            return redirect(PurchaserResource::getUrl('index'));
+        if ($this->record->status !== 'borrador' || $this->record->status !== 'reabierta para edición') {
+            return redirect(PurchaserResource::getUrl('edit',['record' => $this->record]));
         }
     }
 

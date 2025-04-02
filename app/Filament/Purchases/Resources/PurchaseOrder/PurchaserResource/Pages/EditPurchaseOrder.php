@@ -18,19 +18,11 @@ class EditPurchaseOrder extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            ActionGroup::make([
-                Actions\ViewAction::make(),
-                // Actions\DeleteAction::make(),
-                Actions\Action::make('Agregar partidas de la requisición')
-                    ->color('success')
-                    ->url(fn(PurchaseOrder $record): string => PurchaserResource::getUrl('add-item', ['record' => $record->id]))
-                // Array of actions
-            ])
-                ->label('Opciones')
-                ->icon('heroicon-m-ellipsis-vertical')
-                ->color('primary')
-                ->dropdownWidth(MaxWidth::Large)
-                ->button()
+            Actions\ViewAction::make(),
+            Actions\Action::make('Agregar partidas de la requisición')
+                ->color('info')
+                ->url(fn(PurchaseOrder $record): string => PurchaserResource::getUrl('add-item', ['record' => $record->id]))
+
         ];
     }
     protected function getFormActions(): array

@@ -22,9 +22,12 @@ class ListPurchaseOrders extends ListRecords
     public function getTabs(): array
     {
         return [
-            'todas' => Tab::make(),
-            'borrador' => Tab::make()
+            'draft' => Tab::make('Borradores')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'borrador')),
+            'reopened' => Tab::make('Reabiertas')
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'reabierta para edición')),
+            'released' => Tab::make('Liberadas')
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'autorizada para proveedor')),
         ];
     }
 }
