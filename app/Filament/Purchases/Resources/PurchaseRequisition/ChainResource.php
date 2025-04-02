@@ -100,7 +100,10 @@ class ChainResource extends Resource
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make()
+                ->visible(fn($record) => $record->requisitions()->withTrashed()->count() == 0),
                 Tables\Actions\Action::make('Borrar')
+                ->visible(fn($record) => $record->requisitions()->withTrashed()->count() > 0)
                     ->color('danger')
                     ->requiresConfirmation()
                     ->icon('heroicon-m-trash')
@@ -108,7 +111,6 @@ class ChainResource extends Resource
                     ->slideOver()
                     ->form([
                         Forms\Components\Section::make('Requisiciones relacionadas')
-                            ->visible(fn($record) => $record->requisitions()->withTrashed()->count() > 0)
                             ->schema([
                                 Forms\Components\TextInput::make('quantity')
                                     ->label('Cantidad')
