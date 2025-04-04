@@ -23,7 +23,14 @@ class ListPurchaseOrders extends ListRecords
     {
         return [
             'draft' => Tab::make('Borradores')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'borrador')),
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereIn('status', [
+                    'borrador',
+                    'devuelto por gerente de compras',
+                    'devuelto por gerente solicitante',
+                    'devuelto por DG nivel 1',
+                    'devuelto por DG nivel 2',
+                    'reabierta para edición'
+                ])),
             'reopened' => Tab::make('Reabiertas')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'reabierta para edición')),
             'released' => Tab::make('Liberadas')

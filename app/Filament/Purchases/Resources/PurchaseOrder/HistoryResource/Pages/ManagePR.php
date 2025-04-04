@@ -82,4 +82,6 @@ class ManagePR extends ManageRecords
         }
         return $tabs;
     }
+
+   
 }

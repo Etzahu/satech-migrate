@@ -41,6 +41,12 @@ class HistoryResource extends Resource
     {
         return false;
     }
+    public static function canEdit($record = null): bool
+    {
+        return
+            auth()->user()->hasRole('super_admin') ||
+            auth()->user()->hasRole('administrador_compras');
+    }
     public static function infolist(Infolist $infolist): Infolist
     {
         $options = [];

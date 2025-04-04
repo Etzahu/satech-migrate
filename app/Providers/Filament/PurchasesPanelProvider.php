@@ -8,6 +8,9 @@ use Filament\Widgets;
 use Filament\PanelProvider;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
+use Filament\View\PanelsRenderHook;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Blade;
 use App\Http\Middleware\CompanySession;
 use Filament\Navigation\NavigationItem;
 use Shanerbaner82\PanelRoles\PanelRoles;
@@ -39,6 +42,7 @@ class PurchasesPanelProvider extends PanelProvider
             ->spaUrlExceptions([
                 '*/empresa/*',
             ])
+            ->homeUrl("/home")
             ->globalSearch(false)
             ->colors([
                 'primary' => Color::Amber,
@@ -60,6 +64,14 @@ class PurchasesPanelProvider extends PanelProvider
                     ->url(fn(): string => route('logout'))
                     ->icon('heroicon-o-arrow-left-start-on-rectangle'),
             ])
+            ->renderHook(
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn (): View => view('hooks.topbar-menu'),
+            )
+            ->renderHook(
+                PanelsRenderHook::BODY_START,
+                fn (): View => view('hooks.impersonation-banner'),
+            )
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

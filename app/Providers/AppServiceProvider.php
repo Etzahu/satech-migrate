@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('viewLogViewer', function (?User $user) {
-        
+
             return $user->hasRole('super_admin');
         });
 
@@ -45,13 +45,13 @@ class AppServiceProvider extends ServiceProvider
         // if ($this->app->environment('local')) {
         //     Mail::alwaysTo('ahernandezm@gptservices.com');
         // }
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::USER_MENU_BEFORE  ,
-            fn (): View => view('hooks.topbar-menu'),
-        );
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::BODY_START,
-            fn (): View => view('hooks.impersonation-banner'),
-        );
+        // FilamentView::registerRenderHook(
+        //     PanelsRenderHook::USER_MENU_BEFORE  ,
+        //     fn (): View => view('hooks.topbar-menu'),
+        // );
+        // FilamentView::registerRenderHook(
+        //     PanelsRenderHook::BODY_START,
+        //     fn (): View => view('hooks.impersonation-banner'),
+        // );
     }
 }
