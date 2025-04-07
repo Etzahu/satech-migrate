@@ -183,9 +183,16 @@
                             <td class="px-1 text-xs text-left text-black ">{{ $item['observation'] }}</td>
                         </tr>
                     @endforeach
+                    <tr>
+                        <td colspan="2" class="px-1 text-xs text-justify text-black"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="px-1 text-xs text-justify text-black">{{ $data['observations'] }}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
+
         {{--  --}}
         <div class="grid grid-cols-2" style="margin-top: 60px;">
             <div class="pr-3">

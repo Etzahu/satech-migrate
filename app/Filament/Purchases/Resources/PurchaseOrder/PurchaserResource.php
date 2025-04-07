@@ -307,6 +307,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->label('Observaciones')
                                     ->default('Sin observaciones')
                                     ->required()
+                                    ->autosize()
                                     ->columnSpanFull(),
                             ]),
                     ])

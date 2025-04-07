@@ -53,6 +53,7 @@ class ItemsRelationManager extends RelationManager
                         ->columnSpan('full'),
                     Forms\Components\Textarea::make('observation')
                         ->label('Observaciones')
+                        ->autosize()
                         ->default('Sin observaciones')
                         ->required()
                 ]);
@@ -82,6 +83,7 @@ class ItemsRelationManager extends RelationManager
                     Forms\Components\Textarea::make('observation')
                     ->label('Observaciones')
                     ->default('Sin observaciones')
+                    ->autosize()
                     ->required()
                 ]);
         }
