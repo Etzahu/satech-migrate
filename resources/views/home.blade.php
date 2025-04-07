@@ -3,12 +3,13 @@
 
 <head>
     <meta charset="UTF-8" />
+    <title>HOME</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body>
-    <nav class="bg-gray-200">
+    {{-- <nav class="bg-gray-200">
         <div class="px-2 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="relative flex items-center justify-between h-16">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -76,7 +77,7 @@
                     class="block px-3 py-2 text-base font-medium text-gray-900 rounded-md hover:bg-gray-700 hover:text-white">Calendar</a>
             </div>
         </div>
-    </nav>
+    </nav> --}}
 
 </body>
 

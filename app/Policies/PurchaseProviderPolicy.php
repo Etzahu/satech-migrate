@@ -39,7 +39,11 @@ class PurchaseProviderPolicy
      */
     public function update(User $user, PurchaseProvider $purchaseProvider): bool
     {
-        return $user->can('update_purchase::provider');
+        $states = [
+            'borrador',
+            'aprobado'
+        ];
+        return $user->can('update_purchase::provider')  &&  in_array($purchaseProvider->status, $states);
     }
 
     /**
