@@ -159,7 +159,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('supports')
                                     ->label('Soportes')
-                                    ->acceptedFileTypes(['application/pdf'])
+                                    // ->acceptedFileTypes(['application/pdf'])
                                     ->maxParallelUploads(1)
                                     ->multiple()
                                     ->hintColor('danger')

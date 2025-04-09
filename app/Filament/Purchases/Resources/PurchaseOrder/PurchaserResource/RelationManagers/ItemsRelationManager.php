@@ -120,7 +120,6 @@ class ItemsRelationManager extends RelationManager
                             $data['sub_total'] = $data['quantity'] * $data['unit_price'];
                             return $data;
                         }),
-
                 ])
                 ->actions([
                     Tables\Actions\EditAction::make()
@@ -128,9 +127,14 @@ class ItemsRelationManager extends RelationManager
                         ->mutateFormDataUsing(function (array $data): array {
                             $data['sub_total'] = $data['quantity'] * $data['unit_price'];
                             return $data;
-                        })->mutateRecordDataUsing(function (array $data): array {
-                            // dd($data);
-                            return $data;
+                        })
+                        // ->mutateRecordDataUsing(function (array $data): array {
+                        //     // dd($data);
+                        //     return $data;
+                        // })
+                        ->beforeFormFilled(function ($record) {
+                            // dd($record);
+                            // Runs before the form fields are populated from the database.
                         }),
                     Tables\Actions\DeleteAction::make(),
                 ]);
