@@ -35,7 +35,6 @@ class View extends ViewRecord
 
     protected function getHeaderActions(): array
     {
-
         return [
             ActionGroup::make([
                 //TODO: tiene un error intenta llamar al relation manager

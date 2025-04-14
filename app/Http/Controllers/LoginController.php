@@ -100,7 +100,12 @@ class LoginController extends Controller
         return redirect('/compras');
     }
 
-    public function home(){
-        return view('home');
+    public function home()
+    {
+        $items = [
+            ['title' => 'TI Tickets', 'link' => 'https://it.satechenergy.com/'],
+        ];
+        return view('home')
+            ->with('items', $items);
     }
 }

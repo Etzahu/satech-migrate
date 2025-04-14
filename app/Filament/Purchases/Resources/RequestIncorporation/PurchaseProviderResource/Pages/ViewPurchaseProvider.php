@@ -16,7 +16,8 @@ class ViewPurchaseProvider extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
+            Actions\EditAction::make()
+                ->visible($this->record->status == 'aprobado'),
             Actions\Action::make('Solicitar alta')
                 ->visible($this->record->status()->canBe('revisión'))
                 ->requiresConfirmation()

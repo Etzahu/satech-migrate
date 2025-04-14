@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 "resources/css/order-pdf.css",
                 "resources/css/app.css",
+                "resources/css/home.css",
                 "resources/js/app.js",
                 "resources/css/filament/admin/theme.css",
             ],

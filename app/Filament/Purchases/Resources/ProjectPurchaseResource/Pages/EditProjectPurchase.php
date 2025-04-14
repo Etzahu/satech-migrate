@@ -17,7 +17,6 @@ class EditProjectPurchase extends EditRecord
     {
         return [
             Actions\ViewAction::make(),
-            // Actions\DeleteAction::make(),
         ];
     }
     protected function getFormActions(): array

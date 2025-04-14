@@ -19,17 +19,16 @@ class ListPurchaseProviders extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
-    // public function getTabs(): array
-    // {
-    //     return [
-    //         'Todo' => Tab::make('Todo')
-    //             ->badge(PurchaseProvider::count()),
-    //         'mis-proveedores' => Tab::make('Mis proveedores')
-    //             ->badge(PurchaseProvider::query()->where('user_request_id', auth()->user()->id)->count())
-    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('user_request_id', auth()->user()->id)),
-    //         'rechazados' => Tab::make('Rechazados')
-    //             ->badge(PurchaseProvider::query()->where('status', 'rechazado')->count())
-    //             ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'rechazado')),
-    //     ];
-    // }
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make('Todo')
+                ->badge(PurchaseProvider::count())
+                ->modifyQueryUsing(fn(Builder $query) => $query->orderBy('created_at','desc')),
+            'mis-proveedores' => Tab::make('Mis proveedores')
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('user_request_id', auth()->user()->id)),
+            'rechazados' => Tab::make('Rechazados')
+                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'rechazado')),
+        ];
+    }
 }
