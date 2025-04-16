@@ -34,8 +34,8 @@
                                 <td class="container-content"
                                     style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
                                     <center>
-                                        <!--[if mso]><img class="img-fluid" src="{{ asset('images/watermark.jpg') }}" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-                                            class="img-fluid" src="{{ asset('images/watermark.jpg') }}"
+                                        <!--[if mso]><img class="img-fluid" src="{{ asset('images/logo-app.png') }}" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+                                            class="img-fluid" src="{{ asset('images/logo-app.png') }}"
                                             style="width: 174px;"><!--<![endif]-->
                                         <table class="spacer" role="presentation" border="0" cellpadding="0"
                                             cellspacing="0" style="width: 100%;height: 20px;">
@@ -45,11 +45,15 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <table class="btn btn-success btn-md btn-rounded" border="0"
-                                        cellpadding="0" cellspacing="0" role="presentation" style="text-align: center;width: 200px; background-color:#cc2647;border-radius: 6px;">
-                                        <tbody>
-                                            <tr>
-                                                <td class="btn-content" style=" padding: 10px 20px; border: none;cursor: pointer;vertical-align: middle;font-weight: 800;"><a href="https://app.gptsatech.com" style="color: #fff;text-decoration: none;">VER</a></td>
+                                        <table class="btn btn-success btn-md btn-rounded" border="0" cellpadding="0"
+                                            cellspacing="0" role="presentation"
+                                            style="text-align: center;width: 200px; background-color:#cc2647;border-radius: 6px;">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="btn-content"
+                                                        style=" padding: 10px 20px; border: none;cursor: pointer;vertical-align: middle;font-weight: 800;">
+                                                        <a href="https://app.gptsatech.com"
+                                                            style="color: #fff;text-decoration: none;">VER</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -84,23 +88,27 @@
                                                         {{ $data['folio'] }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding:4px;">Proveedor</td>
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding:4px;">
+                                                        Proveedor</td>
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';padding:4px;text-align: left;font-weight: bold;color: #343a40;">
                                                         {{ $data['provider']['company_name'] }}</td>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding:4px;">Requisición
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding:4px;">
+                                                        Requisición
                                                     </td>
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';padding:4px;font-weight: bold;color: #343a40;">
                                                         {{ $data['requisition']['folio'] }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding:4px;">Comprador</td>
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding:4px;">
+                                                        Comprador</td>
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';padding:4px;text-align: left;font-weight: bold;color: #343a40;">
                                                         {{ $data['purchaser']['name'] }}
                                                     </td>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding:4px;">Moneda</td>
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding:4px;">
+                                                        Moneda</td>
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';padding:4px;text-align: left;font-weight: bold;color: #343a40;">
                                                         {{ $data['currency'] }}
@@ -115,7 +123,8 @@
 
                                         @if ($data['itemsFormatted'])
                                             <table class="table table-bordered" border="0" cellpadding="0"
-                                                cellspacing="0" style="border-radius: 6px;border-collapse: collapse;width: 100%;">
+                                                cellspacing="0"
+                                                style="border-radius: 6px;border-collapse: collapse;width: 100%;">
                                                 <thead>
                                                     <tr>
                                                         <th colspan="7"
@@ -175,7 +184,8 @@
                                                 </tbody>
                                             </table>
                                             <table class="table table-bordered" border="0" cellpadding="0"
-                                                cellspacing="0" style="border-radius: 6px;border-collapse: collapse;width: 100%;">
+                                                cellspacing="0"
+                                                style="border-radius: 6px;border-collapse: collapse;width: 100%;">
                                                 <thead>
                                                     <tr>
                                                         <th colspan="2"
@@ -197,7 +207,8 @@
                                             </table>
                                         @endif
                                         <table class="table table-bordered" border="0" cellpadding="0"
-                                            cellspacing="0" style="border-radius: 6px;width: 100%;border: 1px solid #6c6c6c;padding:4px;border-collapse: collapse;">
+                                            cellspacing="0"
+                                            style="border-radius: 6px;width: 100%;border: 1px solid #6c6c6c;padding:4px;border-collapse: collapse;">
                                             <thead>
                                                 <tr>
                                                     <th colspan="2"

@@ -13,7 +13,6 @@
         }
 
         @page {
-
             margin: 80px 25px;
         }
 
@@ -27,7 +26,7 @@
             top: -60px;
             left: 0px;
             right: 0px;
-            height: 70px;
+            height: 50px;
         }
 
         footer {
@@ -35,7 +34,7 @@
             bottom: -60px;
             left: 0px;
             right: 0px;
-            height: 50px;
+            height: 60px;
         }
 
         h4 {
@@ -87,8 +86,10 @@
                     <img src="{{ secure_asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" />
                 </td>
                 <td colspan="4">
-                        <p style="font-size:12px; padding:4px;margin:0;text-align:center;font-weight:bold;text-transform: uppercase;">{{ $rq->company->name }}
-                        </p>
+                    <p
+                        style="font-size:12px; padding:4px;margin:0;text-align:center;font-weight:bold;text-transform: uppercase;">
+                        {{ $rq->company->name }}
+                    </p>
                 </td>
                 <td>
                     <p style="font-size:10px; padding:1px;margin:0;">Tipo de documento</p>
@@ -137,8 +138,7 @@
             </tr>
         </table>
     </header>
-
-
+    {{-- Content --}}
     <div>
         {{-- Datos de la requisición --}}
         <table class="w-full general">
@@ -487,8 +487,10 @@
             </table>
         </div>
     </div>
+
+    {{-- footer --}}
     <footer>
-        <img src="{{ secure_asset('images/watermark.jpg') }}" alt="watermark" style="height: 50px;">
+        <img src="{{ secure_asset('images/logo-app.png') }}" alt="watermark" style="height: 100%;">
     </footer>
 </body>
 

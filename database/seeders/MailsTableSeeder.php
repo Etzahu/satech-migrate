@@ -14,13 +14,13 @@ class MailsTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('mails')->delete();
-        
-        \DB::table('mails')->insert(array (
-            0 => 
-            array (
+
+        \DB::table('mails')->insert(array(
+            0 =>
+            array(
                 'id' => 1,
                 'uuid' => '54acd1ae-e2ba-478e-81fc-957261677421',
                 'mailer' => 'smtp',
@@ -73,8 +73,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -289,8 +289,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 01:28:33',
                 'updated_at' => '2025-01-25 01:28:33',
             ),
-            1 => 
-            array (
+            1 =>
+            array(
                 'id' => 2,
                 'uuid' => '8a0ea593-06be-4794-b446-11937e011e14',
                 'mailer' => 'smtp',
@@ -343,8 +343,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -550,8 +550,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 01:29:31',
                 'updated_at' => '2025-01-25 01:29:31',
             ),
-            2 => 
-            array (
+            2 =>
+            array(
                 'id' => 3,
                 'uuid' => '4b464fc2-3732-4bc0-bc93-ab9a34eba5df',
                 'mailer' => 'smtp',
@@ -604,8 +604,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -811,8 +811,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 01:29:53',
                 'updated_at' => '2025-01-25 01:29:54',
             ),
-            3 => 
-            array (
+            3 =>
+            array(
                 'id' => 4,
                 'uuid' => 'd82b0777-059d-495a-93d3-b19b1d481041',
                 'mailer' => 'smtp',
@@ -865,8 +865,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -1072,8 +1072,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 01:30:22',
                 'updated_at' => '2025-01-25 01:30:22',
             ),
-            4 => 
-            array (
+            4 =>
+            array(
                 'id' => 5,
                 'uuid' => '20b5cab8-81df-4af0-a15f-bbf6e5fc7252',
                 'mailer' => 'smtp',
@@ -1126,8 +1126,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -1333,8 +1333,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 01:34:26',
                 'updated_at' => '2025-01-25 01:34:26',
             ),
-            5 => 
-            array (
+            5 =>
+            array(
                 'id' => 6,
                 'uuid' => 'c90f20f0-a31c-4572-baae-e1aaca7af71e',
                 'mailer' => 'smtp',
@@ -1387,8 +1387,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -1603,8 +1603,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 02:45:08',
                 'updated_at' => '2025-01-25 02:45:08',
             ),
-            6 => 
-            array (
+            6 =>
+            array(
                 'id' => 7,
                 'uuid' => '44881efd-4d48-4d25-a1d9-d474e139f605',
                 'mailer' => 'smtp',
@@ -1657,8 +1657,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -1873,8 +1873,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 02:45:21',
                 'updated_at' => '2025-01-25 02:45:21',
             ),
-            7 => 
-            array (
+            7 =>
+            array(
                 'id' => 8,
                 'uuid' => '6456390c-479f-4ee7-a4cc-ca0f6a9d3057',
                 'mailer' => 'smtp',
@@ -1927,8 +1927,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -2143,8 +2143,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 02:45:30',
                 'updated_at' => '2025-01-25 02:45:30',
             ),
-            8 => 
-            array (
+            8 =>
+            array(
                 'id' => 9,
                 'uuid' => 'c92c23a4-0087-44fa-94a5-950cc25b416b',
                 'mailer' => 'smtp',
@@ -2197,8 +2197,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -2413,8 +2413,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 02:45:41',
                 'updated_at' => '2025-01-25 02:45:42',
             ),
-            9 => 
-            array (
+            9 =>
+            array(
                 'id' => 10,
                 'uuid' => 'e50caf66-017b-482c-a495-07deca6f9ce5',
                 'mailer' => 'smtp',
@@ -2467,8 +2467,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -2683,8 +2683,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 02:46:02',
                 'updated_at' => '2025-01-25 02:46:02',
             ),
-            10 => 
-            array (
+            10 =>
+            array(
                 'id' => 11,
                 'uuid' => '7e6ca316-10f8-479b-a2d1-cacefc4122c7',
                 'mailer' => 'smtp',
@@ -2737,8 +2737,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -2953,8 +2953,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 02:46:12',
                 'updated_at' => '2025-01-25 02:46:12',
             ),
-            11 => 
-            array (
+            11 =>
+            array(
                 'id' => 12,
                 'uuid' => 'fc692264-8e00-461e-91dd-3bb3d72dbd0c',
                 'mailer' => 'smtp',
@@ -3007,8 +3007,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -3223,8 +3223,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 02:59:42',
                 'updated_at' => '2025-01-25 02:59:42',
             ),
-            12 => 
-            array (
+            12 =>
+            array(
                 'id' => 13,
                 'uuid' => '52ee439b-9276-485c-a7fb-76846a14e3bc',
                 'mailer' => 'smtp',
@@ -3277,8 +3277,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -3493,8 +3493,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 03:00:03',
                 'updated_at' => '2025-01-25 03:00:04',
             ),
-            13 => 
-            array (
+            13 =>
+            array(
                 'id' => 14,
                 'uuid' => '125a9f52-c3ec-4463-884b-efc8fc3254bd',
                 'mailer' => 'smtp',
@@ -3547,8 +3547,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -3763,8 +3763,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:29:00',
                 'updated_at' => '2025-01-25 04:29:00',
             ),
-            14 => 
-            array (
+            14 =>
+            array(
                 'id' => 15,
                 'uuid' => 'f7f358fc-7e93-4440-b809-7f24884987d2',
                 'mailer' => 'smtp',
@@ -3817,8 +3817,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -4033,8 +4033,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:29:09',
                 'updated_at' => '2025-01-25 04:29:10',
             ),
-            15 => 
-            array (
+            15 =>
+            array(
                 'id' => 16,
                 'uuid' => '01be7fa7-53c4-4768-9e27-150ffd0f9c7d',
                 'mailer' => 'smtp',
@@ -4087,8 +4087,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -4294,8 +4294,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:29:27',
                 'updated_at' => '2025-01-25 04:29:27',
             ),
-            16 => 
-            array (
+            16 =>
+            array(
                 'id' => 17,
                 'uuid' => '7fbc7466-99f9-4348-a2a6-8489500f3277',
                 'mailer' => 'smtp',
@@ -4348,8 +4348,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -4555,8 +4555,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:29:46',
                 'updated_at' => '2025-01-25 04:29:46',
             ),
-            17 => 
-            array (
+            17 =>
+            array(
                 'id' => 18,
                 'uuid' => 'e6738aa6-3078-48ed-8b8c-7ac15e5bb627',
                 'mailer' => 'smtp',
@@ -4609,8 +4609,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -4825,8 +4825,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:31:16',
                 'updated_at' => '2025-01-25 04:31:16',
             ),
-            18 => 
-            array (
+            18 =>
+            array(
                 'id' => 19,
                 'uuid' => '6dd0aff5-dcf7-47c4-9274-094d966e4ebe',
                 'mailer' => 'smtp',
@@ -4879,8 +4879,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -5095,8 +5095,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:31:55',
                 'updated_at' => '2025-01-25 04:31:55',
             ),
-            19 => 
-            array (
+            19 =>
+            array(
                 'id' => 20,
                 'uuid' => '2049d90e-4111-4b8d-93dc-8975c284f125',
                 'mailer' => 'smtp',
@@ -5149,8 +5149,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -5365,8 +5365,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:32:07',
                 'updated_at' => '2025-01-25 04:32:07',
             ),
-            20 => 
-            array (
+            20 =>
+            array(
                 'id' => 21,
                 'uuid' => '729dfdc6-3a05-40dc-81da-e64baee50d69',
                 'mailer' => 'smtp',
@@ -5419,8 +5419,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -5626,8 +5626,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:32:26',
                 'updated_at' => '2025-01-25 04:32:26',
             ),
-            21 => 
-            array (
+            21 =>
+            array(
                 'id' => 22,
                 'uuid' => '6547ab48-ddd8-4900-bf2c-b0886d790105',
                 'mailer' => 'smtp',
@@ -5680,8 +5680,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -5887,8 +5887,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:32:44',
                 'updated_at' => '2025-01-25 04:32:44',
             ),
-            22 => 
-            array (
+            22 =>
+            array(
                 'id' => 23,
                 'uuid' => 'ad6c7a16-bad5-4b97-958f-97790855a11f',
                 'mailer' => 'smtp',
@@ -5941,8 +5941,8 @@ role="presentation">
 <td class="container-content"
 style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: var(--gray-light);">
 <center>
-<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-class="img-fluid" src="https://satech-migrate.org/images/watermark.jpg"
+<!--[if mso]><img class="img-fluid" src="https://satech-migrate.org/images/logo-app.png" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+class="img-fluid" src="https://satech-migrate.org/images/logo-app.png"
 style="width: 174px;"><!--<![endif]-->
 <table class="spacer" role="presentation" border="0" cellpadding="0"
 cellspacing="0" style="width: 100%;height: 20px;">
@@ -6148,8 +6148,8 @@ style="width: 100%;height: 30px;">
                 'created_at' => '2025-01-25 04:34:04',
                 'updated_at' => '2025-01-25 04:34:04',
             ),
-            23 => 
-            array (
+            23 =>
+            array(
                 'id' => 24,
                 'uuid' => '67b53bd1-ce9b-45cd-bc0b-ff5e301aea10',
                 'mailer' => 'smtp',
@@ -7149,7 +7149,5 @@ style="width: 100%;height: 30px;">
                 'updated_at' => '2025-01-26 05:06:53',
             ),
         ));
-        
-        
     }
 }

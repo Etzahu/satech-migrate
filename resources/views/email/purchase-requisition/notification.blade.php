@@ -22,7 +22,8 @@
         <tbody>
             <tr><!--[if mso]>
  <td></td> <![endif]-->
-                <td class="body-content" style="color: #343a40;font-family: Roboto, sans-serif; -webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%">
+                <td class="body-content"
+                    style="color: #343a40;font-family: Roboto, sans-serif; -webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%">
                     <table class="spacer" role="presentation" border="0" cellpadding="0" cellspacing="0"
                         style="width: 100%;height: 30px;">
                         <tbody>
@@ -38,10 +39,10 @@
                                 <td class="container-content"
                                     style="border-radius: 10px;background-color: #ffffff;padding-top: 30px;padding-right: 30px;padding-bottom: 30px;padding-left: 30px;border-width: 1px;border-color: #dee2e6;">
                                     <center>
-                                        <!--[if mso]><img class="img-fluid" src="{{ asset('images/watermark.jpg') }}" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
-                                            class="img-fluid" src="{{ asset('images/watermark.jpg') }}"
+                                        <!--[if mso]><img class="img-fluid" src="{{ asset('images/logo-app.png') }}" style="width: 174px;" width="174"><![endif]--><!--[if !mso]><!--><img
+                                            class="img-fluid" src="{{ asset('images/logo-app.png') }}"
                                             style="width: 174px;max-width: 100% !important;display: block; height: auto;"><!--<![endif]-->
-                                            <table class="spacer" role="presentation" border="0" cellpadding="0"
+                                        <table class="spacer" role="presentation" border="0" cellpadding="0"
                                             cellspacing="0" style="width: 100%;height: 20px;">
                                             <tbody>
                                                 <tr>
@@ -50,15 +51,19 @@
                                             </tbody>
                                         </table>
 
-                                        @if(!$data['informative'])
-                                        <table class="btn btn-success btn-md btn-rounded" border="0"
-                                        cellpadding="0" cellspacing="0" role="presentation" style="text-align: center;width: 200px; background-color:#cc2647;border-radius: 6px;">
-                                        <tbody>
-                                            <tr>
-                                                <td class="btn-content" style=" padding: 10px 20px; border: none;cursor: pointer;vertical-align: middle;font-weight: 800;"><a href="https://app.gptsatech.com" style="color: #fff;text-decoration: none;">VER</a></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        @if (!$data['informative'])
+                                            <table class="btn btn-success btn-md btn-rounded" border="0"
+                                                cellpadding="0" cellspacing="0" role="presentation"
+                                                style="text-align: center;width: 200px; background-color:#cc2647;border-radius: 6px;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="btn-content"
+                                                            style=" padding: 10px 20px; border: none;cursor: pointer;vertical-align: middle;font-weight: 800;">
+                                                            <a href="https://app.gptsatech.com"
+                                                                style="color: #fff;text-decoration: none;">VER</a></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         @endif
                                         <h1
                                             style="background-color: #ffffff;font-size: 18px;font-family: Roboto, sans-serif;color: #162d4d;text-transform: uppercase;">
@@ -71,8 +76,9 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        <table class="table table-borderless" style=" width: 100%;margin-bottom: 16px;border-collapse: collapse;" border="0" cellpadding="0"
-                                            cellspacing="0">
+                                        <table class="table table-borderless"
+                                            style=" width: 100%;margin-bottom: 16px;border-collapse: collapse;"
+                                            border="0" cellpadding="0" cellspacing="0">
                                             <thead>
                                                 <tr></tr>
                                             </thead>
@@ -90,35 +96,41 @@
                                                         {{ $data['folio'] }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">Gerencia</td>
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">
+                                                        Gerencia</td>
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';padding: 4px;text-align: left;font-weight: bold;color: #343a40;">
                                                         {{ $data['management'] }}</td>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">Fecha solicitada
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">
+                                                        Fecha solicitada
                                                     </td>
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';padding: 4px;font-weight: bold;color: #343a40;">
                                                         {{ $data['created_at'] }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">Proyecto</td>
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">
+                                                        Proyecto</td>
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';padding: 4px;font-weight: bold;color: #343a40;">
                                                         {{ $data['project'] }}</td>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">Fecha requerida
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">
+                                                        Fecha requerida
                                                     </td>
                                                     <td
                                                         style="font-size: 12px;font-family: 'Roboto';padding: 4px;font-weight: bold;color: #343a40;">
                                                         {{ $data['date_delivery'] }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">Solicitante</td>
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">
+                                                        Solicitante</td>
                                                     <td colspan="3"
                                                         style="font-size: 12px;font-family: 'Roboto';padding: 4px;text-align: left;font-weight: bold;color: #343a40;">
                                                         {{ $data['requester'] }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">Lugar de entrega
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding: 4px;">
+                                                        Lugar de entrega
                                                     </td>
                                                     <td colspan="3"
                                                         style="font-size: 12px;font-family: 'Roboto';padding: 4px;font-weight: bold;color: #343a40;">
@@ -133,7 +145,8 @@
 
                                         @if ($data['items'])
                                             <table class="table table-bordered" border="0" cellpadding="0"
-                                                cellspacing="0" style="border-radius: 6px;border: 1px solid #6c6c6c;width: 100%;border-collapse: collapse;">
+                                                cellspacing="0"
+                                                style="border-radius: 6px;border: 1px solid #6c6c6c;width: 100%;border-collapse: collapse;">
                                                 <thead>
                                                     <tr>
                                                         <th colspan="4"
@@ -175,7 +188,8 @@
                                                 </tbody>
                                             </table>
                                             <table class="table table-bordered" border="0" cellpadding="0"
-                                                cellspacing="0" style="border-radius: 6px;width: 100%;border-collapse: collapse;">
+                                                cellspacing="0"
+                                                style="border-radius: 6px;width: 100%;border-collapse: collapse;">
                                                 <thead>
                                                     <tr>
                                                         <th colspan="4"
@@ -207,7 +221,8 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td style="font-family: Roboto, sans-serif;color: #343a40;border: 1px solid #6c6c6c;padding:4px;">
+                                                    <td
+                                                        style="font-family: Roboto, sans-serif;color: #343a40;border: 1px solid #6c6c6c;padding:4px;">
                                                         <p class="text-justify" style="font-size: 12px;">
                                                             {{ $data['observation'] }}</p>
                                                     </td>
