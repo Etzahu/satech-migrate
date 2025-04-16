@@ -276,9 +276,7 @@
                     @foreach ($rq->getMedia('technical_data_sheets') as $file)
                         <tr>
                             <td style="padding:5px 7px;">
-                                <a href="{{ $file->getUrl() }}" target="_blank" style="text-decoration: none;">
-                                    {{ $file->name }} ({{ $file->extension }})
-                                </a>
+                                {{ $file->name }} ({{ $file->extension }})
                             </td>
                         </tr>
                     @endforeach
@@ -304,9 +302,7 @@
                     @foreach ($rq->getMedia('supports') as $file)
                         <tr>
                             <td style="padding:5px 7px;">
-                                <a href="{{ $file->getUrl() }}" target="_blank" style="text-decoration: none;">
-                                    {{ $file->name }} ({{ $file->extension }})
-                                </a>
+                                {{ $file->name }} ({{ $file->extension }})
                             </td>
                         </tr>
                     @endforeach
@@ -319,95 +315,6 @@
         </table>
         <br>
         {{-- Firmas --}}
-        <div>
-            {{-- <table style="w-full">
-                <tbody>
-                    <tr>
-                        <td>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <td>
-                                            <p
-                                                style="text-transform: uppercase;text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                                Visto bueno de almacén</p>
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div style="height: 80px;"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p
-                                                style="text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                                Usuario almacén</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <td>
-                                            <p
-                                                style="text-transform: uppercase;text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                                Solicita</p>
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div style="height: 80px;"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p
-                                                style="text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                                {{ $rq->approvalChain->requester->name }}</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td>
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <td>
-                                            <p
-                                                style="text-transform: uppercase;text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                                Autoriza</p>
-                                        </td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div style="height: 80px;"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <p
-                                                style=" text-align: center;margin: 0;padding: 5px; font-weight: bold;font-size: 12px;">
-                                                {{ $rq->approvalChain->approver->name }}</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tbody>
-            </table> --}}
-        </div>
         <div style="width: 100%;">
             <table style="border:none;width:900px;margin: 0 auto;">
                 <tbody>
