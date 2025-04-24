@@ -55,6 +55,7 @@ class PurchaseOrderPolicy
      */
     public function update(User $user, PurchaseOrder $purchaseOrder): bool
     {
+        dd('ok');
         $states = [
             'borrador',
             'devuelto por gerente de compras',
@@ -63,7 +64,9 @@ class PurchaseOrderPolicy
             'devuelto por DG nivel 2',
             'reabierta para edición'
         ];
-        return ($user->can('update_purchase::order::purchaser') &&  in_array($purchaseOrder->status, $states)) || ($user->hasRole('super_admin') || $user->hasRole('administrador_compras')); //administrador_compras
+        dd($user->hasRole('gerente_compras'));
+        return ($user->can('update_purchase::order::purchaser') &&  in_array($purchaseOrder->status, $states)) || ($user->hasRole('super_admin') || $user->hasRole('administrador_compras') ||
+        $user->hasRole('gerente_compras')); //administrador_compras
     }
 
     /**
