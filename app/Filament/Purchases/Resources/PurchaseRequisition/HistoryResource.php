@@ -37,6 +37,7 @@ class HistoryResource extends Resource
             auth()->user()->hasRole('aprueba_requisicion_compra') ||
             auth()->user()->hasRole('autoriza_requisicion_compra') ||
             auth()->user()->hasRole('gerente_compras') ||
+            auth()->user()->hasRole('visor_requisiciones') ||
             auth()->user()->hasRole('administrador_compras');
     }
     public static function canCreate(): bool
