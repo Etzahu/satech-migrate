@@ -168,29 +168,52 @@
                 </tfoot>
             </table>
         </div>
-        {{-- observaciones --}}
+        {{-- documentos de entrega --}}
         <div class="mt-3">
             <table class="w-full">
                 <thead>
                     <th colspan="2"
-                        class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
-                        Observaciones al proveedor</th>
+                        class="px-1 text-sm font-bold text-left text-white bg-red-600 border border-red-600 border-b-red-600">
+                        Documentación para entrega</th>
                 </thead>
                 <tbody>
-                    @foreach ($data['itemsFormatted'] as $item)
-                        <tr>
-                            <td class="w-16 px-1 text-xs text-left text-black">Partida {{ $loop->iteration }}:</td>
-                            <td class="px-1 text-xs text-left text-black ">{{ $item['observation'] }}</td>
-                        </tr>
-                    @endforeach
-                    <tr>
-                        <td colspan="2" class="px-1 text-xs text-justify text-black"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" class="px-1 text-xs text-justify text-black">{{ $data['observations'] }}</td>
-                    </tr>
+                    @if (filled($data['documentation_delivery']))
+                        @foreach ($data['documentation_delivery'] as $item)
+                            <tr>
+                                <td class="px-1 text-xs text-left text-black ms-2 ">{{ $item['name'] }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
+            {{-- observaciones --}}
+            <div class="mt-3">
+                <table class="w-full">
+                    <thead>
+                        <th colspan="2"
+                            class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
+                            Observaciones al proveedor</th>
+                    </thead>
+                    <tbody>
+                        @foreach ($data['itemsFormatted'] as $item)
+                            <tr>
+                                <td class="w-16 px-1 text-xs text-left text-black">Partida {{ $loop->iteration }}:</td>
+                                <td class="px-1 text-xs text-left text-black ">{{ $item['observation'] }}</td>
+                            </tr>
+                        @endforeach
+                        <tr>
+                            <td colspan="2" class="px-1 text-xs text-justify text-black"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="px-1 text-xs text-justify text-black">
+                                {{ $data['observations'] }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
 
         {{--  --}}
@@ -215,7 +238,8 @@
                 </table>
                 <table class="w-full mt-5">
                     <thead>
-                        <th colspan="2" class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
+                        <th colspan="2"
+                            class="px-1 text-sm font-bold text-left text-black border border-white border-b-black">
                             Condiciones de pago</th>
                     </thead>
                     <tbody>
@@ -249,8 +273,8 @@
                         </tr> --}}
                     </tbody>
                 </table>
-                <div class="grid w-full grid-cols-2">
-                    <table class="border-r border-black ">
+                <div class="grid w-full grid-cols-1">
+                    <table>
                         <thead>
                             <th class="px-1 text-xs text-center text-black underline border-white decoration-solid">
                                 Dirección de entrega</th>
@@ -263,22 +287,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    <table class="pl-3">
-                        <thead>
-                            <th class="px-1 text-xs text-center text-black underline border-white decoration-solid">
-                                Documentación para entrega</th>
-                        </thead>
-                        <tbody>
-                            @if (filled($data['documentation_delivery']))
-                                @foreach ($data['documentation_delivery'] as $item)
-                                    <tr>
-                                        <td class="px-1 text-xs text-left text-black ms-2 ">{{ $item['name'] }}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
+
                 </div>
             </div>
         </div>
