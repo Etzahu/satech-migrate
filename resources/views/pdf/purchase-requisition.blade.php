@@ -83,7 +83,8 @@
             <tr>
                 <td rowspan="4" align="center" valing="middle">
                     {{-- row-1-1 --}}
-                    <img src="{{ secure_asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" />
+                     {{-- <img src="{{ secure_asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" /> --}}
+                    <img src="{{ public_path('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" />
                 </td>
                 <td colspan="4">
                     <p
@@ -100,9 +101,9 @@
                 <td rowspan="4" align="center" valing="middle">
                     {{-- row-1-8 --}}
                     @if ($rq->company->acronym == 'T')
-                        <img src="{{ secure_asset('images/logo/companies/T.png') }}" alt="logo" width="150px" />
+                        <img src="{{ public_path('images/logo/companies/T.png') }}" alt="logo" width="150px" />
                     @elseif ($rq->company->acronym == 'G')
-                        <img src="{{ secure_asset('images/logo/companies/G.jpg') }}" alt="logo" width="150px" />
+                        <img src="{{ public_path('images/logo/companies/G.jpg') }}" alt="logo" width="150px" />
                     @endif
                 </td>
             </tr>
@@ -397,7 +398,7 @@
 
     {{-- footer --}}
     <footer>
-        <img src="{{ secure_asset('images/logo-app.png') }}" alt="watermark" style="height: 100%;">
+        <img src="{{ public_path('images/logo-app.png') }}" alt="watermark" style="height: 100%;">
     </footer>
 </body>
 

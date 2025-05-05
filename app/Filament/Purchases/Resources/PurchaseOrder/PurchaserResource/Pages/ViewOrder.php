@@ -21,6 +21,7 @@ class ViewOrder extends ViewRecord
     protected static string $resource = PurchaserResource::class;
     protected function getHeaderActions(): array
     {
+
         return [
             Actions\Action::make('Solicitar')
                 ->modalHeading('Enviar respuesta')

@@ -307,7 +307,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->label('Observaciones')
                                     ->default('Sin observaciones')
                                     ->required()
-                                     ->autosize()
+                                    ->autosize()
                                     ->columnSpanFull(),
                             ]),
                     ])
@@ -365,24 +365,35 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('items')
                                                     ->label('')
+                                                    ->contained(false)
                                                     ->schema([
-                                                        Infolists\Components\TextEntry::make('product.name')
-                                                            ->label('Producto/Servicio'),
-                                                        Infolists\Components\TextEntry::make('product.unit.acronym')
-                                                            ->label('Unidad'),
-                                                        Infolists\Components\TextEntry::make('quantity')
-                                                            ->label('Cantidad'),
-                                                        Infolists\Components\TextEntry::make('unit_price')
-                                                            ->label('Precio unitario')
-                                                            ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
-                                                        Infolists\Components\TextEntry::make('sub_total')
-                                                            ->label('Subtotal')
-                                                            ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
-                                                        Infolists\Components\TextEntry::make('observation')
-                                                            ->label('Observación')
-                                                            ->columnSpan(2),
+                                                        Infolists\Components\Fieldset::make('')
+                                                            ->extraAttributes(function ($state, $record){
+                                                                if($record->unit_price == 0){
+                                                                    return ['class'=> 'border-2 border-red-600 bg-red-100'];
+                                                                }else{
+                                                                    return ['class'=> 'border-2 border-green-600 bg-green-100'];
+                                                                }
+                                                            })
+                                                            ->schema([
+                                                                Infolists\Components\TextEntry::make('product.name')
+                                                                    ->label('Producto/Servicio'),
+                                                                Infolists\Components\TextEntry::make('product.unit.acronym')
+                                                                    ->label('Unidad'),
+                                                                Infolists\Components\TextEntry::make('quantity')
+                                                                    ->label('Cantidad'),
+                                                                Infolists\Components\TextEntry::make('unit_price')
+                                                                    ->label('Precio unitario')
+                                                                    ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
+                                                                Infolists\Components\TextEntry::make('sub_total')
+                                                                    ->label('Subtotal')
+                                                                    ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
+                                                                Infolists\Components\TextEntry::make('observation')
+                                                                    ->label('Observación')
+                                                                    ->columnSpan(5),
+                                                            ])
                                                     ])
-                                                    ->columns(5)
+                                                    ->columns(1)
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Codiciones de pago')
                                             ->schema([
@@ -563,7 +574,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ]),
                                     ])
                                     ->contained(false)
-                                    ->activeTab(1)
+                                    ->activeTab(2)
                             ]),
                         Infolists\Components\Tabs\Tab::make('Requisición')
                             ->schema([
