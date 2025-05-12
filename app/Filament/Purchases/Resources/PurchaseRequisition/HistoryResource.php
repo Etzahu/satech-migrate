@@ -129,6 +129,10 @@ class HistoryResource extends Resource
             ])
             ->headerActions([
                 Tables\Actions\Action::make('Generar reporte')
+                    ->visible(auth()->user()->hasRole('comprador') ||
+                        auth()->user()->hasRole('gerente_compras') ||
+                        auth()->user()->hasRole('super_admin') ||
+                        auth()->user()->hasRole('administrador_compras'))
                     ->form(
                         [
                             Forms\Components\CheckboxList::make('columns')
