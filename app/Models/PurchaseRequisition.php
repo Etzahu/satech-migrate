@@ -83,7 +83,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         'status' => PurchaseRequisitionStateMachine::class,
     ];
 
-   
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_id');
@@ -184,3 +184,4 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             ->orderBy('id', 'desc');
     }
 }
+

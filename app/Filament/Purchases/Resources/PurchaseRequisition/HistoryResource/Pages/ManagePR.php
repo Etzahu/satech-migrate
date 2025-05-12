@@ -7,11 +7,13 @@ use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Resources\Components\Tab;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Actions\Action;
 
 class ManagePR extends ManageRecords
 {
     protected static string $resource = HistoryResource::class;
 
+   
     public function getTabs(): array
     {
         $tabs = [];
@@ -84,7 +86,7 @@ class ManagePR extends ManageRecords
         }
         if (
             auth()->user()->hasRole('gerente_compras') ||
-            auth()->user()->hasRole('gerente_compras') ||
+            auth()->user()->hasRole('comprador') ||
             auth()->user()->hasRole('visor_requisiciones') ||
             auth()->user()->id == 106 ||
             auth()->user()->hasRole('super_admin')
@@ -101,3 +103,6 @@ class ManagePR extends ManageRecords
         return $tabs;
     }
 }
+
+
+// comprador

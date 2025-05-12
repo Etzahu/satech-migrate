@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
 
+use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
@@ -10,6 +11,7 @@ use Filament\Tables\Table;
 use App\Models\PurchaseOrder;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
@@ -119,6 +121,79 @@ class HistoryResource extends Resource
                             );
                     })
             ])
+            ->headerActions([
+                Tables\Actions\Action::make('Generar reporte')
+                    ->form(
+                        [
+                            Forms\Components\CheckboxList::make('columns')
+                                ->label('Datos de la requisición')
+                                ->bulkToggleable()
+                                ->columns(4)
+                                ->required()
+                                ->options([
+                                    'folio' => 'Folio',
+                                    'motivo' => 'Motivo',
+                                    'prioridad' => 'Prioridad',
+                                    'tipo' => 'Tipo',
+                                    'observaciones' => 'Observaciones',
+                                    'fecha de entrega' => 'Fecha de entrega',
+                                    'dirección de entrega' => 'Dirección de entrega',
+                                    'estatus' => 'Estatus',
+                                    'empresa' => 'Empresa',
+                                    'proyecto' => 'Proyecto',
+                                    'solicitante' => 'Solicitante',
+                                    'comprador' => 'Comprador',
+                                    'fecha de creacion' => 'Fecha de creación',
+                                ]),
+                            Forms\Components\DatePicker::make('created_start')
+                                ->label('Creados desde')
+                                ->beforeOrEqual('created_end')
+                                ->required(),
+                            Forms\Components\DatePicker::make('created_end')
+                                ->label('Creados hasta')
+                                ->afterOrEqual('created_start')
+                                ->required(),
+                        ]
+                    )
+                    ->action(function (array $data) {
+                        // dd($data);
+                        $startDate = Carbon::createFromFormat('Y-m-d', $data['created_start'])->startOfDay();
+                        $endDate = Carbon::createFromFormat('Y-m-d', $data['created_end'])->endOfDay();
+                        $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'items','purchaser'])
+                            ->whereBetween('created_at', [$startDate, $endDate])
+                            ->get();
+                        if (blank($models)) {
+                            return   Notification::make()
+                                ->title('No se encontraron registros')
+                                ->danger()
+                                ->send();
+                        }
+                        $result = [];
+                        foreach ($models as $model) {
+                            $result[] = [
+                                'folio' => $model->folio,
+                                'prioridad' => $model->priority,
+                                'motivo' => $model->motive,
+                                'tipo' => $model->type,
+                                'observaciones' => $model->observation,
+                                'fecha de entrega' => $model->date_delivery->format('d-m-Y'),
+                                'dirección de entrega' => $model->delivery_address,
+                                'estatus' => $model->status,
+                                'empresa' => $model->company->name,
+                                'proyecto' => $model->project->name,
+                                'solicitante' => $model->approvalChain->requester->name,
+                                'comprador' => $model->purchaser?->name,
+                                'fecha de creacion' => $model->created_at->format('d-m-Y'),
+                            ];
+                        }
+                        $result = collect($result);
+                        $result = $result->map(function ($item) use ($data) {
+                            return collect($item)->only($data['columns'])->toArray();
+                        });
+
+                        return  fastexcel($result)->download("requisiciones de comprad {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
+                    }),
+            ])
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
@@ -139,3 +214,31 @@ class HistoryResource extends Resource
         ];
     }
 }
+
+/*
+'folio',
+'currency',
+'type_payment',
+'form_payment',
+'condition_payment',
+'quote_folio',
+'use_cfdi',
+'shipping_method',
+'tax_iva',
+'discount',
+'retention_iva',
+'retention_isr',
+'retention_another',
+'initial_delivery_date',
+'final_delivery_date',
+'delivery_address',
+'documentation_delivery',
+'observations',
+'provider_id',
+'provider_contact_id',
+'purchaser_user_id',
+'company_id',
+'requisition_id',
+'status'
+
+        */

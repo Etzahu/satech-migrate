@@ -45,12 +45,13 @@ class PurchaseRequisitionPolicy
     {
         $usersWarehouse = User::role('revisa_almacen_requisicion_compra')->get()->pluck('id')->toArray();
         $usersAdminPurchase = User::role('gerente_compras')->get()->pluck('id')->toArray();
+        $usersPurchasers = User::role('comprador')->get()->pluck('id')->toArray();
 
         $allowedIds = [];
 
 
         $allowedIds = $purchaseRequisition->approvalChain->only(['requester_id', 'reviewer_id', 'approver_id', 'authorizer_id']);
-        $allowedIds = array_merge($allowedIds, $usersWarehouse, $usersAdminPurchase);
+        $allowedIds = array_merge($allowedIds, $usersWarehouse, $usersAdminPurchase,$usersPurchasers);
         $allowedIds = array_values($allowedIds);
         $allowedIds[] = 106;
         $allowedIds[] = 199;
