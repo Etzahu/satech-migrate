@@ -13,6 +13,7 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
+use App\Services\OrderCalculationService;
 use Illuminate\Database\Eloquent\Builder;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
@@ -131,20 +132,38 @@ class HistoryResource extends Resource
                                 ->columns(4)
                                 ->required()
                                 ->options([
-                                    'folio' => 'Folio',
-                                    'motivo' => 'Motivo',
-                                    'prioridad' => 'Prioridad',
-                                    'tipo' => 'Tipo',
-                                    'observaciones' => 'Observaciones',
-                                    'fecha de entrega' => 'Fecha de entrega',
-                                    'dirección de entrega' => 'Dirección de entrega',
-                                    'estatus' => 'Estatus',
-                                    'empresa' => 'Empresa',
-                                    'proyecto' => 'Proyecto',
-                                    'solicitante' => 'Solicitante',
-                                    'comprador' => 'Comprador',
                                     'fecha de creacion' => 'Fecha de creación',
-                                ]),
+                                    'comprador' => 'Comprador',
+                                    'folio' => 'Folio',
+                                    'proveedor' => 'Proveedor',
+                                    'subtotal' => 'Subtotal',
+                                    'total' => 'Total',
+                                    'moneda' => 'Moneda',
+                                    'tipo de pago' => 'Tipo de pago',
+                                    'forma de pago' => 'Forma de pago',
+                                    'condiciones de pago' => 'Condiciones de pago',
+                                    'folio de cotización' => 'Folio de cotización',
+                                    'uso de CFDI' => 'Uso de CFDI',
+                                    'método de envío' => 'Método de envío',
+                                    'iva' => 'IVA',
+                                    'descuento por proveedor' => 'Descuento por proveedor',
+                                    'retención de IVA' => 'Retención de IVA',
+                                    'retención de ISR' => 'Retención de ISR',
+                                    'fecha de entrega inicial' => 'Fecha de entrega inicial',
+                                    'fecha de entrega final' => 'Fecha de entrega final',
+                                    'dirección de entrega' => 'Dirección de entrega',
+                                    'documentación de entrega' => 'Documentación de entrega',
+                                    'observaciones' => 'Observaciones',
+                                    'contacto de proveedor' => 'Contacto de proveedor',
+                                    'empresa' => 'Empresa',
+                                    'requisición' => 'Requisición',
+                                    'estatus' => 'Estatus',
+                                ])
+                                ->afterStateHydrated(function ($component, $state) {
+                                    if (! filled($state)) {
+                                        $component->state(['fecha de creacion', 'comprador', 'folio', 'proveedor', 'subtotal', 'total', 'moneda']);
+                                    }
+                                }),
                             Forms\Components\DatePicker::make('created_start')
                                 ->label('Creados desde')
                                 ->beforeOrEqual('created_end')
@@ -159,7 +178,8 @@ class HistoryResource extends Resource
                         // dd($data);
                         $startDate = Carbon::createFromFormat('Y-m-d', $data['created_start'])->startOfDay();
                         $endDate = Carbon::createFromFormat('Y-m-d', $data['created_end'])->endOfDay();
-                        $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'items','purchaser'])
+                        $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'items', 'purchaser'])
+                            ->where('company_id', session()->get('company_id'))
                             ->whereBetween('created_at', [$startDate, $endDate])
                             ->get();
                         if (blank($models)) {
@@ -170,20 +190,36 @@ class HistoryResource extends Resource
                         }
                         $result = [];
                         foreach ($models as $model) {
+                            $service = new OrderCalculationService($model->id);
                             $result[] = [
-                                'folio' => $model->folio,
-                                'prioridad' => $model->priority,
-                                'motivo' => $model->motive,
-                                'tipo' => $model->type,
-                                'observaciones' => $model->observation,
-                                'fecha de entrega' => $model->date_delivery->format('d-m-Y'),
-                                'dirección de entrega' => $model->delivery_address,
-                                'estatus' => $model->status,
-                                'empresa' => $model->company->name,
-                                'proyecto' => $model->project->name,
-                                'solicitante' => $model->approvalChain->requester->name,
-                                'comprador' => $model->purchaser?->name,
                                 'fecha de creacion' => $model->created_at->format('d-m-Y'),
+                                'comprador' => $model->purchaser->name,
+                                'folio' => $model->folio,
+                                'proveedor' => $model->provider->company_name,
+                                'subtotal' => $service->getSubtotalItems(true),
+                                'total' =>  $service->getTotal(true),
+                                'moneda' => $model->currency,
+                                'tipo de pago' => $model->type_payment,
+                                'forma de pago' => $model->form_payment,
+                                'condiciones de pago' => static::formatConditionPayment($model),
+                                'forma de pago' => $model->form_payment,
+                                'folio de cotización' => $model->quote_folio,
+                                'uso de CFDI' => $model->use_cfdi,
+                                'método de envío' => $model->shipping_method,
+                                'descuento por proveedor' => $model->discount,
+                                'descuento' =>  $service->getDiscountProvider(true),
+                                'iva' =>  $service->getTaxIva(true),
+                                'retención de IVA' =>  $service->getRetentionIva(true),
+                                'retención de ISR' =>  $service->getRetentionIsr(true),
+                                'fecha de entrega inicial' => $model->initial_delivery_date,
+                                'fecha de entrega final' => $model->final_delivery_date,
+                                'dirección de entrega' => $model->delivery_address,
+                                'documentación de entrega' => static::documentation($model),
+                                'observaciones' => $model->observations,
+                                'contacto de proveedor' => $model->providerContact->cell_phone,
+                                'empresa' => $model->company->name,
+                                'requisición' => $model->requisition->folio,
+                                'estatus' => $model->status,
                             ];
                         }
                         $result = collect($result);
@@ -191,7 +227,7 @@ class HistoryResource extends Resource
                             return collect($item)->only($data['columns'])->toArray();
                         });
 
-                        return  fastexcel($result)->download("requisiciones de comprad {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
+                        return  fastexcel($result)->download("ordenes de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
                     }),
             ])
             ->actions([
@@ -213,32 +249,23 @@ class HistoryResource extends Resource
             'edit' => Pages\Edit::route('/{record}/edit'),
         ];
     }
+    public static function formatConditionPayment($model)
+    {
+        if (blank($model->condition_payment)) {
+            return 'N/A';
+        }
+        if (is_array($model->condition_payment)) {
+            $value = implode(',', array_column($model->condition_payment, 'concept'));
+            return $value;
+        } else {
+            return $model->condition_payment;
+        }
+    }
+    public static function documentation($model)
+    {
+        if (blank($model->documentation_delivery)) {
+            return 'N/A';
+        }
+        return  implode(',', array_column($model->documentation_delivery, 'name'));
+    }
 }
-
-/*
-'folio',
-'currency',
-'type_payment',
-'form_payment',
-'condition_payment',
-'quote_folio',
-'use_cfdi',
-'shipping_method',
-'tax_iva',
-'discount',
-'retention_iva',
-'retention_isr',
-'retention_another',
-'initial_delivery_date',
-'final_delivery_date',
-'delivery_address',
-'documentation_delivery',
-'observations',
-'provider_id',
-'provider_contact_id',
-'purchaser_user_id',
-'company_id',
-'requisition_id',
-'status'
-
-        */

@@ -574,7 +574,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ]),
                                     ])
                                     ->contained(false)
-                                    ->activeTab(2)
+                                    ->activeTab(1)
                             ]),
                         Infolists\Components\Tabs\Tab::make('Requisición')
                             ->schema([

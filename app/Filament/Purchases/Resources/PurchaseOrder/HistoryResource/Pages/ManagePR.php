@@ -16,7 +16,6 @@ class ManagePR extends ManageRecords
     public function getTabs(): array
     {
         $tabs = [];
-
         if (auth()->user()->hasRole('comprador')) {
             $tabs['myRequisitions'] = Tab::make('Mis órdenes')
                 ->modifyQueryUsing(
@@ -70,7 +69,7 @@ class ManagePR extends ManageRecords
                         })->orderBy('id', 'desc');
                 });
         }
-        if (auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('administrador_compras') || auth()->user()->id == 106 || auth()->user()->hasRole('super_admin')) {
+        if (auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('administrador_compras') || auth()->user()->id == 106 || auth()->user()->hasRole('super_admin')|| auth()->user()->hasRole('comprador')) {
             $tabs['all'] = Tab::make('Todas')
                 ->modifyQueryUsing(
                     function (Builder $query) {
@@ -83,5 +82,5 @@ class ManagePR extends ManageRecords
         return $tabs;
     }
 
-   
+
 }

@@ -1265,14 +1265,56 @@ Route::get('change-disk', function () {
     DB::table('media')->where('disk', 'public')->update(['disk' => 'local']);
 });
 
-Route::get('encuestas',function(){
+Route::get('encuestas', function () {
     // dd(User::find(106)->email);
     $correos = fastexcel()->import('correos.xlsx')->pluck('CORREO')->toArray();
     // dd($correos);
     $avance = fastexcel()->import('avance.xlsx')->flatten()->toArray();
     // dd($avance);
-    $diff = array_diff($correos,$avance);
+    $diff = array_diff($correos, $avance);
     // dd($diff);
     $correos = fastexcel()->import('correos.xlsx');
-    return $correos->whereIn('CORREO',$diff)->pluck('NOMBRE COMPLETO');
+    return $correos->whereIn('CORREO', $diff)->pluck('NOMBRE COMPLETO');
 });
+Route::get('excel-orders', function () {
+    $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'items', 'purchaser'])->get();
+    $result = [];
+    foreach ($models as $model) {
+        $service = new OrderCalculationService($model->id);
+        $result[] = [
+            'folio' => $model->folio,
+            'moneda' => $model->currency,
+            'tipo de pago' => $model->type_payment,
+            'forma de pago' => $model->form_payment,
+            'condiciones de pago' => formatConditionPayment($model),
+            'forma de pago' => $model->form_payment,
+            'folio de cotización' => $model->quote_folio,
+            'uso de CFDI' => $model->use_cfdi,
+            'método de envío' => $model->shipping_method,
+            'descuento por proveedor' => $model->discount,
+            'subtotal' => $service->getSubtotalItems(true),
+            'descuento' =>  $service->getDiscountProvider(true),
+            'iva' =>  $service->getTaxIva(true),
+            'retención de IVA' =>  $service->getRetentionIva(true),
+            'retención de ISR' =>  $service->getRetentionIsr(true),
+            'total' =>  $service->getTotal(true),
+            'fecha de entrega inicial' => $model->initial_delivery_date,
+            'fecha de entrega final' => $model->final_delivery_date,
+            'dirección de entrega' => $model->delivery_address,
+            'documentación de entrega' => documentation($model),
+            'observaciones' => $model->observations,
+            'proveedor' => $model->provider->company_name,
+            'contacto de proveedor' => $model->providerContact->cell_phone,
+            'comprador' => $model->purchaser->name,
+            'empresa' => $model->company->name,
+            'requisición' => $model->requisition->folio,
+            'estatus' => $model->status,
+            'fecha de creacion' => $model->created_at->format('d-m-Y'),
+        ];
+        unset($model);
+    }
+    dd($result);
+    return $result;
+    $result = collect($result);
+});
+

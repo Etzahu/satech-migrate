@@ -166,6 +166,7 @@ class HistoryResource extends Resource
                         $startDate = Carbon::createFromFormat('Y-m-d', $data['created_start'])->startOfDay();
                         $endDate = Carbon::createFromFormat('Y-m-d', $data['created_end'])->endOfDay();
                         $models = PurchaseRequisition::with(['company', 'project', 'approvalChain', 'purchaser'])
+                            ->where('company_id', session()->get('company_id'))
                             ->whereBetween('created_at', [$startDate, $endDate])
                             ->get();
                         if (blank($models)) {
@@ -197,7 +198,7 @@ class HistoryResource extends Resource
                             return collect($item)->only($data['columns'])->toArray();
                         });
 
-                        return  fastexcel($result)->download("requisiciones de comprad {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
+                        return  fastexcel($result)->download("requisiciones de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
                     }),
             ])
             ->actions([
