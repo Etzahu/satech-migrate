@@ -368,11 +368,15 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->contained(false)
                                                     ->schema([
                                                         Infolists\Components\Fieldset::make('')
-                                                            ->extraAttributes(function ($state, $record){
-                                                                if($record->unit_price == 0){
-                                                                    return ['class'=> 'border-2 border-red-600 bg-red-100'];
+                                                            ->extraAttributes(function ($state, $record) {
+                                                                if (auth()->user()->hasRole('comprador')) {
+                                                                    if ($record->unit_price == 0) {
+                                                                        return ['class' => 'border-2 border-red-600 bg-red-100 dark:bg-red-800  dark:border-red-800'];
+                                                                    } else {
+                                                                        return ['class' => 'border-2 border-green-600 bg-green-100 dark:bg-green-800  dark:border-green-800'];
+                                                                    }
                                                                 }else{
-                                                                    return ['class'=> 'border-2 border-green-600 bg-green-100'];
+                                                                    return [];
                                                                 }
                                                             })
                                                             ->schema([
