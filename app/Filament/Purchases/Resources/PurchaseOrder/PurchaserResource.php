@@ -368,6 +368,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->contained(false)
                                                     ->schema([
                                                         Infolists\Components\Fieldset::make('')
+
                                                             ->extraAttributes(function ($state, $record) {
                                                                 if (auth()->user()->hasRole('comprador')) {
                                                                     if ($record->unit_price == 0) {
@@ -375,7 +376,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                     } else {
                                                                         return ['class' => 'border-2 border-green-600 bg-green-100 dark:bg-green-800  dark:border-green-800'];
                                                                     }
-                                                                }else{
+                                                                } else {
                                                                     return [];
                                                                 }
                                                             })
@@ -394,10 +395,16 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                     ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
                                                                 Infolists\Components\TextEntry::make('observation')
                                                                     ->label('Observación')
-                                                                    ->columnSpan(5),
+                                                                    ->columnSpanFull(),
+                                                            ])
+                                                            ->columns([
+                                                                'xs' => 1,
+                                                                'sm' => 2,
+                                                                'xl' => 4,
+                                                                '2xl' => 6,
                                                             ])
                                                     ])
-                                                    ->columns(1)
+                                                    ->grid(1)
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Codiciones de pago')
                                             ->schema([
