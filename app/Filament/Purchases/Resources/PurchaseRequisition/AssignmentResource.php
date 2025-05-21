@@ -46,7 +46,7 @@ class AssignmentResource extends Resource
     }
     public static function getNavigationBadge(): ?string
     {
-        return static::getModel()::doesntHave('orders')->myAssing()->count();
+        return static::getModel()::doesntHave('orders')->myAssing()->whereNot('status', 'cerrada')->count();
     }
     public static function getNavigationBadgeColor(): ?string
     {

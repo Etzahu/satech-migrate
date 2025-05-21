@@ -24,14 +24,17 @@ class ManageAssignmentResource extends ManageRecords
     {
         return [
             'without' => Tab::make('Sin órdenes')
-                ->badge(PurchaseRequisition::doesntHave('orders')->myAssing()->count())
+                ->badge(PurchaseRequisition::doesntHave('orders')
+                    ->myAssing()
+                    ->whereNot('status', 'cerrada')
+                    ->count())
                 ->badgeColor('danger')
-                // ->modifyQueryUsing(fn(Builder $query) => $query
-                //     ->whereNot('status', 'cerrada')
-                //     ->doesntHave('orders')->orderBy('created_at', 'ASC')),
-                ->modifyQueryUsing(fn(Builder $query) => $query
-                    ->doesntHave('orders')
-                    ->myAssing()),
+                ->modifyQueryUsing(
+                    fn(Builder $query) => $query
+                        ->doesntHave('orders')
+                        ->myAssing()
+                        ->whereNot('status', 'cerrada')
+                ),
             'with' => Tab::make('Pendientes')
                 ->modifyQueryUsing(fn(Builder $query) => $query
                     ->whereNot('status', 'cerrada')
