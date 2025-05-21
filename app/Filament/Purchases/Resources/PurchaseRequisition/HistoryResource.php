@@ -47,10 +47,10 @@ class HistoryResource extends Resource
     {
         return false;
     }
-    // public static function form(form $form): Form
-    // {
-    //     return RequesterResource::form($form);
-    // }
+    public static function form(form $form): Form
+    {
+        return RequesterResource::form($form);
+    }
     public static function infolist(Infolist $infolist): Infolist
     {
         $options = [];
@@ -74,6 +74,7 @@ class HistoryResource extends Resource
                 Tables\Columns\TextColumn::make('date_delivery')
                     ->label('Fecha deseable de entrega')
                     ->date()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
@@ -208,6 +209,7 @@ class HistoryResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
+                    // Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
                         ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
@@ -226,6 +228,7 @@ class HistoryResource extends Resource
         return [
             'index' => Pages\ManagePR::route('/'),
             'view' => Pages\View::route('/{record}'),
+            'edit' => Pages\Edit::route('/{record}/edit'),
         ];
     }
 }

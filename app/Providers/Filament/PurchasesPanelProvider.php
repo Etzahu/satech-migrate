@@ -10,6 +10,7 @@ use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
+use Filament\Support\Enums\MaxWidth;
 use Illuminate\Support\Facades\Blade;
 use App\Http\Middleware\CompanySession;
 use Filament\Navigation\NavigationItem;
@@ -36,6 +37,7 @@ class PurchasesPanelProvider extends PanelProvider
             ->id('compras')
             ->path('compras')
             // ->databaseNotifications()
+            ->maxContentWidth(MaxWidth::Full)
             ->sidebarFullyCollapsibleOnDesktop()
             // ->unsavedChangesAlerts()
             ->viteTheme('resources/css/filament/admin/theme.css')

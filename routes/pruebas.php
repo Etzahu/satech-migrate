@@ -1322,4 +1322,8 @@ Route::get('filter-orders',function(){
     $orders = PurchaseRequisition::readyAssing()->get();
     return $orders->count();
 });
+Route::get('postgres',function(){
+  $models = DB::connection('pgsql')->table('orden')->get();
+  return $models;
+});
 
