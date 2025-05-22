@@ -46,11 +46,14 @@ class StatusPurchaseProviderMachine extends StateMachine
             'aprobado' => [
                 function ($from, $model) {
                     $recipient = $model->UserRequest->email;
+                    $status = $model->status()->latest();
                     $data = [
                         'subject' => 'Proveedor aprobado',
                         'rfc' => $model->rfc,
                         'name' => $model->company_name,
+                        'observations'=> filled($status) ? $status->getCustomProperty('respuesta') : ''
                     ];
+
                     if($model->user_request_id !== $model->user_approve_id){
                         Mail::to($recipient)->send(new NotificationPurchaseProvider($data));
                     }

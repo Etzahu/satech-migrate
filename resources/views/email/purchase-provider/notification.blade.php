@@ -86,6 +86,38 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+
+                                        <table class="spacer" role="presentation" border="0" cellpadding="0"
+                                            cellspacing="0" style="width: 100%;height: 30px;">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="100%" height="30"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        @if(filled($data['observations'] ))
+                                         <table class="table table-bordered" border="0" cellpadding="0"
+                                            cellspacing="0"
+                                            style="border-radius: 6px;width: 100%;border: 1px solid #6c6c6c;padding:4px;border-collapse: collapse;">
+                                            <thead>
+                                                <tr>
+                                                    <th colspan="2"
+                                                        style="color: #162d4d;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;">
+                                                        OBSERVACIONES O NOTAS</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="font-family: Roboto, sans-serif;color: #5b6c82;">
+                                                        <p class="text-justify" style="font-size: 12px;padding-left:5px;">
+                                                            {{ $data['observations'] }}</p>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        @endif
+
+
                                         <table class="spacer" role="presentation" border="0" cellpadding="0"
                                             cellspacing="0" style="width: 100%;height: 30px;">
                                             <tbody>
