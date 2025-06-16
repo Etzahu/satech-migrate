@@ -173,6 +173,8 @@ class PRInfolistService
 
     public function approvalProgress($id)
     {
+
+        // probar con canBe
         // $models = PurchaseRequisition::all();
         // foreach($models as $model){
         //     echo '<br>';
@@ -190,6 +192,8 @@ class PRInfolistService
         //435 cero revisiones
         //120 una revision
         $model = PurchaseRequisition::find($id);
+
+        // dd($model->status()->history()->get()->toArray());
         $progress = [
             'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => $model->category == 'servicio' ? 'revisión' : 'revisión por almacén'],
             'warehouse' => ['title' => 'Almacén', 'name' => '', 'statusTo' => 'revisión'],
@@ -231,7 +235,7 @@ class PRInfolistService
             $value = $snapshots->get($revisions - 1);
             if (filled($value)) {
                 if ($key == 'warehouse') {
-        
+
                     $item['name'] = $value->responsible->name;
                 }
                 $item['date'] = $value->created_at->format('d-m-Y');

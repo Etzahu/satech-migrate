@@ -1326,25 +1326,36 @@ Route::get('filter-orders', function () {
     return $orders->count();
 });
 Route::get('order-resumen', function () {
-    // $repetidos = DB::table('products')
-    //     ->select('name', DB::raw('COUNT(*) as total'))
-    //     ->groupBy('name')
-    //     ->having('total', '>', 1)
-    //     ->orderBy('total', 'desc')
-    //     // ->whereNull('company_id')
-    //     ->get();
-    $repetidos = DB::table('products')
-        ->select('id', 'name')
-        ->get()
-        ->duplicates('name');
-    return $repetidos;
-    $model = PurchaseRequisition::with('items.product.category')->find(75);
-    dd($model?->toArray());
 
+    $requisitions = PurchaseRequisition::with(['items.product'])->get();
 
+    foreach ($requisitions as $rq) {
+        $items = $rq->items->pluck('product_id');
+        if ($items->count() > 0) {
+            // dump($items->toArray());
+            $duplicados = $items->duplicates();
+            if($duplicados->count() > 0){
+                dump($rq->id);
+            }
+        }
+    }
 
-    //   $service = new PRInfolistService();
-    //  return $service->approvalProgress(466);
+    return;
+    $models = PurchaseOrder::with('requisition.items.product')->get();
+    // dd($models->count());
+
+    foreach ($models as $model) {
+        if ($model->items->count() > 0) {
+            echo '<pre>';
+            print_r($model->requisition->id);
+            echo  '</pre>';
+            $itemsRq = $model->requisition->items->pluck('product_id', 'id');
+            $itemsOrder = $model->items;
+            echo '<pre>';
+            print_r($itemsRq?->toArray());
+            echo  '</pre>';
+        }
+    }
 });
 
 Route::get('reorder-products', function () {
