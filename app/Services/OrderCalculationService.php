@@ -14,7 +14,7 @@ class OrderCalculationService
 {
     public $order;
 
-    public $localeOptions = ['MXN'=> 'es_MX', 'USD'=> 'en_US',];
+    public $localeOptions = ['MXN' => 'es_MX', 'USD' => 'en_US',];
     public $locale;
     public function __construct($id)
     {
@@ -27,6 +27,8 @@ class OrderCalculationService
         $currencies = new ISOCurrencies();
         $numberFormatter = new \NumberFormatter($this->locale, \NumberFormatter::CURRENCY);
         $moneyFormatter = new IntlMoneyFormatter($numberFormatter, $currencies);
+        $numberFormatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, 4); // Mínimo 4 decimales
+        $numberFormatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 4); // Máximo 4 decimales
         return $moneyFormatter->format($value);
     }
     public function getSubtotalItems($formatter = false)
@@ -40,13 +42,15 @@ class OrderCalculationService
         $total =  $subtotal;
         return $formatter ? $this->moneyFormatter($total) : $total;
     }
+
     public function subtotalDiscount($formatter = false)
     {
         $subtotal = $this->getSubtotalItems();
         $total = $subtotal->subtract($this->getDiscountProvider());
-       
+
         return $formatter ? $this->moneyFormatter($total) : $total;
     }
+
     public function getTaxIva($formatter = false)
     {
         $subtotal = $this->subtotalDiscount();
@@ -54,29 +58,33 @@ class OrderCalculationService
         return $formatter ? $this->moneyFormatter($result) : $result;
     }
 
-
-    public function getRetentionIva($formatter = false) {
+    public function getRetentionIva($formatter = false)
+    {
         $subtotal =  $subtotal = $this->subtotalDiscount();
         $result = $subtotal->multiply((string) ($this->order->retention_iva / 100));
         return $formatter ? $this->moneyFormatter($result) : $result;
     }
-    public function getRetentionIsr($formatter = false) {
+
+    public function getRetentionIsr($formatter = false)
+    {
         $subtotal =  $subtotal = $this->subtotalDiscount();
         $result = $subtotal->multiply((string) ($this->order->retention_isr / 100));
 
-        return $formatter ? $this->moneyFormatter($result) :$result;
+        return $formatter ? $this->moneyFormatter($result) : $result;
     }
+
     public function getDiscountProvider($formatter = false)
     {
         $result = new Money($this->order->discount, new Currency($this->order->currency));
-        return $formatter ? $this->moneyFormatter($result) :$result;
+        return $formatter ? $this->moneyFormatter($result) : $result;
     }
-    public function getTotal($formatter = false){
+    public function getTotal($formatter = false)
+    {
         $subtotal =  $subtotal = $this->subtotalDiscount();
         $total = $subtotal->add($this->getTaxIva());
-        $total = $total->subtract($this->getRetentionIva(),$this->getRetentionIsr());
-        return $formatter ? $this->moneyFormatter($total) :$total;
+        $total = $total->subtract($this->getRetentionIva(), $this->getRetentionIsr());
+        // $test = $formatter ? $this->moneyFormatter($total) : $total;
+        // dd($test);
+        return $formatter ? $this->moneyFormatter($total) : $total;
     }
-
-
 }

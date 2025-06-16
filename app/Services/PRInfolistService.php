@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\PurchaseRequisition;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\Actions;
 use Filament\Infolists\Components\IconEntry;
@@ -168,5 +169,76 @@ class PRInfolistService
                 // ]),
 
             ]);
+    }
+
+    public function approvalProgress($id)
+    {
+        // $models = PurchaseRequisition::all();
+        // foreach($models as $model){
+        //     echo '<br>';
+        //     echo 'ID:'. $model->id;
+        //     echo '<br>';
+        //     echo 'Status:'.$model->status;
+        //     echo '<br>';
+        //     echo 'Revisiones:'.$model->status()->timesWas('aprobado por DG');
+        //     echo '<br>';
+
+        // }
+        // return;
+
+        //140 tres revisiones
+        //435 cero revisiones
+        //120 una revision
+        $model = PurchaseRequisition::find($id);
+        $progress = [
+            'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => $model->category == 'servicio' ? 'revisión' : 'revisión por almacén'],
+            'warehouse' => ['title' => 'Almacén', 'name' => '', 'statusTo' => 'revisión'],
+            'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
+            'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
+            'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
+            'purchaser' => ['title' => 'Comprador', 'name' => $model->purchaser?->name, 'statusTo' => 'comprador asignado']
+        ];
+
+        $revisions = $model->status()->timesWas('aprobado por DG');
+
+        $progress = collect($progress);
+        $progress = $progress->map(function ($item, $key) use ($revisions, $model) {
+            if ($revisions == 0) {
+                $snapshot = $model->status()->snapshotWhen($item['statusTo']);
+                if (filled($snapshot)) {
+                    if ($key == 'warehouse') {
+                        $item['name'] = $snapshot->responsible->name;
+                    }
+                    $item['date'] = $snapshot->created_at->format('d-m-Y');
+                }
+                return $item;
+            }
+
+            $snapshots = $model->status()->snapshotsWhen($item['statusTo']);
+            // dump($snapshots?->toArray());
+
+            if ($item['statusTo'] == 'comprador asignado') {
+                if (blank($item['name'])) {
+                    return $item;
+                }
+                $snapshots = $model->status()->snapshotsWhen(['comprador asignado', 'comprador reasignado'])->last();
+                if (filled($snapshots)) {
+                    $item['date'] = $snapshots->created_at->format('d-m-Y');
+                    return $item;
+                }
+            }
+
+            $value = $snapshots->get($revisions - 1);
+            if (filled($value)) {
+                if ($key == 'warehouse') {
+        
+                    $item['name'] = $value->responsible->name;
+                }
+                $item['date'] = $value->created_at->format('d-m-Y');
+            }
+            // dump($item);
+            return $item;
+        });
+        return $progress->toArray();
     }
 }

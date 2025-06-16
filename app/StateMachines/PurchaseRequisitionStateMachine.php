@@ -19,21 +19,21 @@ class PurchaseRequisitionStateMachine extends StateMachine
     public function transitions(): array
     {
         return [
-            '*'=>['comprador reasignado','cerrada'],
+            '*' => ['comprador reasignado', 'cerrada'],
             'borrador' => ['revisión por almacén', 'revisión', 'aprobado por revisor'],
 
             'devuelto por revisor' => ['revisión por almacén', 'revisión'],
             'devuelto por gerencia' => ['revisión por almacén', 'revisión'],
             'devuelto por DG' => ['revisión por almacén', 'revisión'],
-            'devuelto por almacén' => ['revisión por almacén'],
-            'devuelto por comprador'=> ['revisión por almacén'],
-            'devuelto por gerente de compras' => ['revisión por almacén'],
+            'devuelto por almacén' => ['revisión por almacén','revisión'],
+            'devuelto por comprador' => ['revisión por almacén','revisión'],
+            'devuelto por gerente de compras' => ['revisión por almacén','revisión'],
 
             'revisión por almacén' => ['revisión', 'devuelto por almacén'],
             'revisión' => ['aprobado por revisor', 'devuelto por revisor', 'cancelado por revisor'],
             'aprobado por revisor' => ['aprobado por gerencia', 'devuelto por gerencia', 'cancelado por gerencia'],
             'aprobado por gerencia' => ['aprobado por DG', 'devuelto por DG', 'cancelado por DG'],
-            'aprobado por DG' => ['comprador asignado','devuelto por gerente de compras'],
+            'aprobado por DG' => ['comprador asignado', 'devuelto por gerente de compras'],
             'comprador asignado' => ['devuelto por comprador'],
         ];
     }
@@ -209,7 +209,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
                 }
             ],
             'cerrada' => [
-                function($to,$model){
+                function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
                     $moreUsers[] = User::role('gerente_compras')->first()->email;
                     $service = new PurchaseRequisitionCreationService();

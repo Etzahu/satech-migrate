@@ -22,11 +22,12 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
 use Spatie\MediaLibrary\Support\MediaStream;
 use Filament\Infolists\Components\RepeatableEntry;
-use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource;
 use Filament\Infolists\Concerns\InteractsWithInfolists;
 use Filament\Infolists\Components\Actions as ActionsInfo;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Infolists\Components\Actions\Action as ActionInfo;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
+use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource;
 use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource\RelationManagers;
 
 class View extends ViewRecord
@@ -37,10 +38,11 @@ class View extends ViewRecord
     {
         return [
             ActionGroup::make([
-                //TODO: tiene un error intenta llamar al relation manager
-                // Action::make('Crear orden de compra')
-                //     ->visible(blank($this->record->status_order))
-                //     ->url(fn(PurchaseRequisition $record): string => AssignmentResource::getUrl('orders.create', ['record' => $record->id])),
+                Action::make('Crear orden')
+                    ->color('success')
+                    ->icon('heroicon-m-plus')
+                    ->url(PurchaserResource::getUrl('create',['requisition' => $this->record]))
+                    ->visible($this->record->status !== 'cerrada'),
                 Action::make('Ver pdf')
                     ->color('danger')
                     ->icon('heroicon-m-document')

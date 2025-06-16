@@ -26,13 +26,13 @@ class ViewPurchaseRequisition extends ViewRecord
                 Action::make('Enviar requisición')
                     ->color('success')
                     ->requiresConfirmation()
+
                     ->visible(
-                        $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 ||
-                            $this->record->status()->canBe('aprobado por revisor') && $this->record->items->count() > 0
+                        $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 && filled($this->record->category)
                     )
                     ->action(function () {
-                        if ($this->record->confidential) {
-                            $this->record->status()->transitionTo('aprobado por revisor');
+                        if ($this->record->category == 'servicio') {
+                            $this->record->status()->transitionTo('revisión');
                         } else {
                             $this->record->status()->transitionTo('revisión por almacén');
                         }
@@ -48,32 +48,32 @@ class ViewPurchaseRequisition extends ViewRecord
                     ->icon('heroicon-m-document')
                     ->url(route('requisition.pdf', ['id' => $this->record->id]))
                     ->openUrlInNewTab(),
-                Action::make('Cambiar de empresa')
-                    ->requiresConfirmation()
-                    ->visible($this->record->status == 'borrador')
-                    ->form([
-                        Select::make('company_id')
-                            ->label('Empresa')
-                            ->options(Company::query()->whereNot('id', $this->record->company_id)->pluck('name', 'id'))
-                            ->required(),
-                    ])
-                    ->action(function (array $data, $record) {
-                        try {
-                            $record->company_id = $data['company_id'];
-                            $record->save();
-                            Notification::make()
-                                ->title('Se ha cambiado de empresa')
-                                ->success()
-                                ->send();
-                            return redirect(RequesterResource::getUrl('index'));
-                        } catch (\Exception $e) {
-                            logger($e->getMessage());
-                            Notification::make()
-                                ->title('Ocurrió un error')
-                                ->danger()
-                                ->send();
-                        }
-                    })
+                // Action::make('Cambiar de empresa')
+                //     ->requiresConfirmation()
+                //     ->visible($this->record->status == 'borrador')
+                //     ->form([
+                //         Select::make('company_id')
+                //             ->label('Empresa')
+                //             ->options(Company::query()->whereNot('id', $this->record->company_id)->pluck('name', 'id'))
+                //             ->required(),
+                //     ])
+                //     ->action(function (array $data, $record) {
+                //         try {
+                //             $record->company_id = $data['company_id'];
+                //             $record->save();
+                //             Notification::make()
+                //                 ->title('Se ha cambiado de empresa')
+                //                 ->success()
+                //                 ->send();
+                //             return redirect(RequesterResource::getUrl('index'));
+                //         } catch (\Exception $e) {
+                //             logger($e->getMessage());
+                //             Notification::make()
+                //                 ->title('Ocurrió un error')
+                //                 ->danger()
+                //                 ->send();
+                //         }
+                //     })
 
             ])
                 ->label('Opciones')
@@ -83,5 +83,4 @@ class ViewPurchaseRequisition extends ViewRecord
                 ->button(),
         ];
     }
-
 }

@@ -15,10 +15,13 @@ class Management extends Model
      *
      * @var array
      */
+
+     protected $table = 'management';
     protected $fillable = [
         'name',
         'depto',
         'acronym',
+        'restriction_requisition',
         'responsible_id',
     ];
 
@@ -31,6 +34,11 @@ class Management extends Model
         'id' => 'integer',
         'responsible_id' => 'integer',
     ];
+
+    public function projects()
+    {
+        return $this->belongsToMany(ProjectPurchase::class, 'management_project_restrictions');
+    }
 
     public function responsible(): BelongsTo
     {

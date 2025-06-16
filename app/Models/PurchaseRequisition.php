@@ -34,6 +34,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         'folio',
         'date_delivery',
         'delivery_address',
+        'category',
         'motive',
         'priority',
         'type',

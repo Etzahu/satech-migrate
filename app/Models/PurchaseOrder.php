@@ -143,7 +143,6 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
     {
         return $this->belongsTo(User::class, 'purchaser_user_id');
     }
-
     public function scopeMyRequisitions(Builder $query)
     {
         if (auth()->user()) {

@@ -114,10 +114,15 @@
                                                         {{ $data['currency'] }}
                                                     </td>
                                                 </tr>
-                                                <tr>
 
+                                                  <tr>
+                                                    <td style="font-size: 12px;font-family: 'Roboto';padding:4px;width: 48.906px;"
+                                                        width="48.906">Proyecto</td>
+                                                    <td
+                                                        style="font-size: 12px;font-family: 'Roboto';padding:4px;text-align: left;font-weight: bold;color: #343a40;">
+                                                        {{ $data['requisition']['project']['name'] }}</td>
                                                 </tr>
-                                                <tr></tr>
+
                                             </tbody>
                                         </table>
 

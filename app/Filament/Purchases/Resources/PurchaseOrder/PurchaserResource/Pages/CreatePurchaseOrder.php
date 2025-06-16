@@ -12,6 +12,14 @@ use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
 class CreatePurchaseOrder extends CreateRecord
 {
     protected static string $resource = PurchaserResource::class;
+
+
+     public function mount($requisition = null): void
+    {
+        parent::mount();
+        
+        $this->data['requisition_id'] = $requisition;
+    }
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $sum = 0;

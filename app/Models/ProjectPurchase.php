@@ -17,11 +17,13 @@ class ProjectPurchase extends Model implements HasMedia
     use InteractsWithMedia;
     use HasStateMachines;
 
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+    protected $table = 'project_purchases';
     protected $fillable = [
         'name',
         'code',
@@ -56,5 +58,9 @@ class ProjectPurchase extends Model implements HasMedia
     public function requester(): BelongsTo
     {
         return $this->belongsTo(User::class, 'requester_id');
+    }
+    public function managements()
+    {
+        return $this->belongsToMany(Management::class, 'management_project_restrictions');
     }
 }

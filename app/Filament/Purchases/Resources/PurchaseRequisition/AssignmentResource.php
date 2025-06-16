@@ -34,6 +34,7 @@ class AssignmentResource extends Resource
     {
         return auth()->user()->hasRole('comprador');
     }
+    
     public static function canCreate(): bool
     {
         return false;
@@ -44,6 +45,7 @@ class AssignmentResource extends Resource
         return parent::getEloquentQuery()
             ->myAssing();
     }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::doesntHave('orders')->myAssing()->whereNot('status', 'cerrada')->count();
@@ -112,7 +114,6 @@ class AssignmentResource extends Resource
         return [
             'index' => Pages\ManageAssignmentResource::route('/'),
             'view' => Pages\View::route('/{record}'),
-            'orders.create' => Pages\CreateOrder::route('{record}/orden/crear'),
         ];
     }
 }

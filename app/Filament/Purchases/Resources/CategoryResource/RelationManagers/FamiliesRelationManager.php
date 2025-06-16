@@ -36,7 +36,7 @@ class FamiliesRelationManager extends RelationManager
                         'Stock' => 'Stock',
                         'Servicios generales' => 'Servicios generales',
                     ])
-                    ->required()
+                    ->required(),
             ]);
     }
 

@@ -4,19 +4,28 @@ namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
 
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
+use Filament\Forms\Set;
 use Filament\Infolists;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\ProjectPurchase;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Illuminate\Support\HtmlString;
 use App\Models\PurchaseRequisition;
+use App\Services\PRInfolistService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\Component;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\Support\MediaStream;
+use App\Infolists\Components\PRProgressApproval;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -80,6 +89,68 @@ class RequesterResource extends Resource implements HasShieldPermissions
                     ->tabs([
                         Forms\Components\Tabs\Tab::make('Información general')
                             ->schema([
+                                Forms\Components\Select::make('category')
+                                    ->label('Categoría de requisición')
+                                    ->helperText(new HtmlString("<span class='text-blue-600 '>Seleccione si la requisición es para productos (proveeduría) o un servicio. Esto determinará las partidas que puede cargar.</span>"))
+                                    // ->helperText('')
+                                    ->options([
+                                        'servicio' => 'Servicio',
+                                        'proveeduria' => 'Proveeduría',
+                                    ])
+                                    ->disabled(fn($operation) => $operation == 'edit')
+                                    ->hintAction(
+                                        Forms\Components\Actions\Action::make('Cambiar categoría')
+                                            ->icon('heroicon-m-arrow-path')
+                                            ->visible(fn($operation) => $operation == 'edit')
+                                            ->requiresConfirmation()
+                                            ->form([
+                                                Forms\Components\Select::make('selected')
+                                                    ->label('Categoría de requisición')
+                                                    ->options(function ($record) {
+                                                        if (filled($record->category)) {
+                                                            if ($record->category == 'servicio') {
+                                                                return ['proveeduria' => 'Proveeduría'];
+                                                            }
+                                                            if ($record->category == 'proveeduria') {
+                                                                return ['servicio' => 'Servicio'];
+                                                            }
+                                                        }
+                                                        if (blank($record->category)) {
+                                                            return [
+                                                                'servicio' => 'Servicio',
+                                                                'proveeduria' => 'Proveeduría',
+                                                            ];
+                                                        }
+                                                        return [];
+                                                    })
+                                                    ->required(),
+                                            ])
+                                            ->modalDescription('Al cambiar la categoría de Servicio a Proveeduría o viceversa , todas las partidas actuales serán eliminadas.')
+                                            ->color('danger')
+                                            ->action(function (Set $set, $record, $livewire, $data) {
+                                                try {
+                                                    $record->category = $data['selected'];
+                                                    $set('category', $data['selected']);
+                                                    $record->save();
+                                                    if ($data['select'] == 'servicio') {
+                                                        $record->items()->delete();
+                                                    }
+                                                    Notification::make()
+                                                        ->title('Se aplicó el cambio')
+                                                        ->success()
+                                                        ->send();
+                                                    return redirect(request()->header('Referer'));
+                                                } catch (\Exception $e) {
+                                                    logger()->error($e->getMessage());
+                                                    Notification::make()
+                                                        ->title('Ocurrió un error')
+                                                        ->danger()
+                                                        ->send();
+                                                }
+                                            })
+
+                                    )
+                                    ->required(),
                                 Forms\Components\Textarea::make('motive')
                                     ->label('Referencia')
                                     ->maxLength(600)
@@ -110,16 +181,32 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->maxLength(500),
                                 Forms\Components\Select::make('project_id')
                                     ->label('Proyecto')
-                                    ->relationship('project', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('company_id', session()->get('company_id'))->where('status', 'activo'))
+                                    ->options(function () {
+                                        $management = auth()->user()->management;
+                                        if (filled($management->restriction_requisition)) {
+                                            $projects = auth()->user()->management->projects->pluck('id');
+                                            if ($management->restriction_requisition == 'excluir') {
+                                                return ProjectPurchase::where('company_id', session()->get('company_id'))
+                                                    ->whereNotIn('id', $projects)
+                                                    ->where('status', 'activo')
+                                                    ->pluck('name', 'id');
+                                            }
+                                            if ($management->restriction_requisition == 'limitar') {
+                                                return ProjectPurchase::where('company_id', session()->get('company_id'))
+                                                    ->whereIn('id', $projects)
+                                                    ->where('status', 'activo')
+                                                    ->pluck('name', 'id');
+                                            }
+                                        }
+                                        return ProjectPurchase::where('company_id', session()->get('company_id'))
+                                            ->where('status', 'activo')
+                                            ->pluck('name', 'id');
+                                    })
+                                    // ->relationship('project', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('company_id', session()->get('company_id'))->where('status', 'activo'))
                                     ->getOptionLabelFromRecordUsing(fn(Model $record) => "({$record->code}){$record->name}")
                                     ->searchable()
                                     ->preload()
                                     ->required(),
-                                Forms\Components\Toggle::make("confidential")
-                                    ->label("Confidencial")
-                                    ->visible(false)
-                                    ->default(false)
-                                    ->live()
                             ]),
                         Forms\Components\Tabs\Tab::make('Flujo de aprobación')
                             ->columns([
@@ -134,7 +221,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                             ->where('requester_id', auth()->user()->id)->get()
                                             ->pluck('reviewer.name', 'reviewer.id')
                                     )
-                                    ->requiredIf('confidential', false),
+                                    ->required(),
                                 Forms\Components\Select::make('approver_id')
                                     ->label('Aprueba')
                                     ->options(
@@ -142,7 +229,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                             ->where('requester_id', auth()->user()->id)->get()
                                             ->pluck('approver.name', 'approver.id')
                                     )
-                                    ->requiredIf('confidential', false)
+                                    ->required()
                             ]),
                         Forms\Components\Tabs\Tab::make('Fichas técnicas')
                             ->schema([
@@ -199,6 +286,10 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->label('Prioridad')
                                     ->badge()
                                     ->color('success'),
+                                Infolists\Components\TextEntry::make('category')
+                                    ->label('Categoría de requisición')
+                                    ->badge()
+                                    ->color('success'),
                                 Infolists\Components\TextEntry::make('approvalChain.requester.name')
                                     ->label('Solicitante'),
                                 Infolists\Components\TextEntry::make('motive')
@@ -212,10 +303,6 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->label('Proyecto'),
                                 Infolists\Components\TextEntry::make('delivery_address')
                                     ->label('Dirección de entrega'),
-                                Infolists\Components\IconEntry::make('confidential')
-                                    ->label('Confidencial')
-                                    ->visible(false)
-                                    ->boolean(),
                             ])
                             ->columns(3),
                         Infolists\Components\Tabs\Tab::make('Partidas')
@@ -239,8 +326,21 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ]),
                         Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
                             ->schema([
+                                // PRProgressApproval::make('progress')
+                                //     ->state(function ($record) {
+                                //         return $record->status()->history()->get();
+                                //     })
+
+                                // Infolists\Components\TextEntry::make('progress')
+                                //     ->formatStateUsing(fn(string $state): View => view(
+                                //         'filament.infolists.entries.progress-approval',
+                                //         ['state' => $state],
+                                //     ))
                                 Infolists\Components\ViewEntry::make('progress')
-                                    ->view('filament.infolists.entries.progress-approval'),
+                                    ->view('filament.infolists.entries.progress-approval', function ($record) {
+                                        $service = new PRInfolistService();
+                                        return ['state' => $service->approvalProgress($record->id)];
+                                    })
                             ])
                             ->columns(1),
                         Infolists\Components\Tabs\Tab::make('Fichas técnicas')

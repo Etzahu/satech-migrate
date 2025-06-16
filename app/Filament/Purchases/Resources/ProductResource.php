@@ -67,6 +67,13 @@ class ProductResource extends Resource
                                 $set('category_family_id', null);
                             })
                             ->required(),
+                        Forms\Components\Select::make('type_purchase')
+                            ->label('Tipo de compra')
+                            ->options([
+                                'servicio' => 'Servicio',
+                                'proveeduria' => 'Proveeduría',
+                            ])
+                            ->required(),
                         Forms\Components\Select::make('category_family_id')
                             ->label('Familia')
                             ->options(

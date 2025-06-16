@@ -10,6 +10,7 @@ use Filament\Forms\Set;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\RelationManagers\RelationManager;
+use Livewire\Attributes\On;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -19,6 +20,7 @@ class ItemsRelationManager extends RelationManager
     protected static ?string $navigationLabel = 'Partidas';
     protected static ?string $title = 'Partida';
 
+      #[On('refreshRelationManagerItemsPurchaseRequisition')]
     public function form(Form $form): Form
     {
         return $form
@@ -31,7 +33,13 @@ class ItemsRelationManager extends RelationManager
                     ->minValue(1),
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
-                    ->options(Product::where('status', 'aprobado')->where('company_id', session()->get('company_id'))->pluck('name', 'id'))
+                    ->options(function () {
+                        $type = $this->getOwnerRecord()->category;
+                        return  Product::where('type_purchase', $type)
+                            ->where('status', 'aprobado')
+                            ->where('company_id', session()->get('company_id'))
+                            ->pluck('name', 'id');
+                    })
                     ->searchable()
                     ->live()
                     ->required()
@@ -91,7 +99,8 @@ class ItemsRelationManager extends RelationManager
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('observation')
-                    ->label('Observación'),
+                    ->label('Observación')
+                    ->words(5),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
                     ->dateTime('d-m-Y')->sinceTooltip(),

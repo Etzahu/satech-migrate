@@ -17,10 +17,11 @@ use Filament\Facades\Filament;
 use App\Models\ProjectPurchase;
 use App\Models\ProviderContact;
 use Barryvdh\DomPDF\Facade\Pdf;
-
 use App\Models\PurchaseProvider;
+
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
+use App\Services\PRInfolistService;
 use Money\Currencies\ISOCurrencies;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
@@ -1108,16 +1109,16 @@ Route::get('update-catalog', function () {
 });
 
 Route::get('filter-rq', function () {
-    phpinfo();
-    $image = new Imagick();
-    return;
-    $ordenes = PurchaseOrder::withWhereHas('requisition', function ($query) {
-        $query->whereHas('approvalChain', function ($query) {
-            $query->where('approver_id', auth()->user()->id);
-        });
-    })->get();
+    // phpinfo();
+    // $image = new Imagick();
+    // return;
+    // $ordenes = PurchaseOrder::withWhereHas('requisition', function ($query) {
+    //     $query->whereHas('approvalChain', function ($query) {
+    //         $query->where('approver_id', auth()->user()->id);
+    //     });
+    // })->get();
 
-    return $ordenes;
+    // return $ordenes;
 });
 Route::get('uptade-products', function () {
     $products = Product::all();
@@ -1318,12 +1319,48 @@ Route::get('excel-orders', function () {
     // $result = collect($result);
 });
 
-Route::get('filter-orders',function(){
+Route::get('filter-orders', function () {
+    $models = PurchaseRequisition::select('id', 'status')->get()->pluck('status', 'id')->unique();
+    return $models;
     $orders = PurchaseRequisition::readyAssing()->get();
     return $orders->count();
 });
-Route::get('postgres',function(){
-  $models = DB::connection('pgsql')->table('orden')->get();
-  return $models;
+Route::get('order-resumen', function () {
+    // $repetidos = DB::table('products')
+    //     ->select('name', DB::raw('COUNT(*) as total'))
+    //     ->groupBy('name')
+    //     ->having('total', '>', 1)
+    //     ->orderBy('total', 'desc')
+    //     // ->whereNull('company_id')
+    //     ->get();
+    $repetidos = DB::table('products')
+        ->select('id', 'name')
+        ->get()
+        ->duplicates('name');
+    return $repetidos;
+    $model = PurchaseRequisition::with('items.product.category')->find(75);
+    dd($model?->toArray());
+
+
+
+    //   $service = new PRInfolistService();
+    //  return $service->approvalProgress(466);
 });
 
+Route::get('reorder-products', function () {
+    $products = Product::all();
+
+    try {
+        DB::beginTransaction();
+        $index = 1;
+        foreach ($products as $item) {
+            $item->id = $index;
+            $item->save();
+            $index++;
+        }
+        DB::commit();
+    } catch (\Exception $e) {
+        throw $e;
+        DB::rollBack();
+    }
+});

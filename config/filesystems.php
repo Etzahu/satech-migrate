@@ -44,6 +44,14 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'pdf_temp' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/pdf_temp'),
+            'url' => env('APP_URL').'/pdf_temp',
+            'visibility' => 'private',
+            'throw' => false,
+            'report' => false,
+        ],
         'temp-email-pdf' => [
             'driver' => 'local',
             'root' => storage_path('app/temp-email-pdf'),

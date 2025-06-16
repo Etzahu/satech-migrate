@@ -85,7 +85,7 @@ class AddItemPR extends Page implements HasForms, HasTable
                                 PurchaseOrderItem::create([
                                     'quantity' => $item->quantity_purchase,
                                     'unit_price' => 0,
-                                    'observation' => '',
+                                    'observation' => '.',
                                     'purchase_order_id' => $this->record->id,
                                     'product_id' => $item->product_id,
                                 ]);

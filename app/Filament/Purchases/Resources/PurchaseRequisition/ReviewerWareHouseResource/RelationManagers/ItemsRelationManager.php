@@ -32,7 +32,19 @@ class ItemsRelationManager extends RelationManager
             ->schema([
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
-                    ->options(Product::where('status', 'aprobado')->where('company_id', session()->get('company_id'))->pluck('name', 'id'))
+                    ->options(function () {
+                        $type = $this->getOwnerRecord()->requisition->category;
+                        if (filled($type)) {
+                            return  Product::where('type_purchase', $type)
+                                ->where('status', 'aprobado')
+                                ->where('company_id', session()->get('company_id'))
+                                ->pluck('name', 'id');
+                        } else {
+                            return  Product::where('status', 'aprobado')
+                                ->where('company_id', session()->get('company_id'))
+                                ->pluck('name', 'id');
+                        }
+                    })
                     ->disabled(),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observación')

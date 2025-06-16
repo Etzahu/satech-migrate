@@ -6,6 +6,7 @@ use App\Models\User;
 use Filament\Actions;
 use App\Models\Management;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Model;
 use Filament\Resources\Pages\EditRecord;
 use App\Filament\Purchases\Resources\ManagementResource;
 
@@ -34,5 +35,35 @@ class EditManagement extends EditRecord
             $user = User::find($this->data['responsible_id']);
             $user->assignRole('gerente_solicitante_orden_compra');
         }
+    }
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        if ($record->restriction_requisition !== $data['restriction_requisition']) {
+            $record->projects()->detach();
+        }
+        $record->update($data);
+        return $record;
+    }
+
+    protected function afterSave(): void
+    {
+        $this->dispatch('refreshRelationManagerItemsProjects');
+    }
+
+    public function hasCombinedRelationManagerTabsWithContent(): bool
+    {
+        return true;
+    }
+
+    public function getRelationManagers(): array
+    {
+        // Ocultar todos los Relation Managers si el registro no está publicado
+        if (blank($this->record->restriction_requisition)) {
+            return [];
+        }
+
+        // Devolver los Relation Managers normalmente
+        return parent::getRelationManagers();
     }
 }

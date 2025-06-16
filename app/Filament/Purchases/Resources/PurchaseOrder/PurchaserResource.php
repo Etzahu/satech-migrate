@@ -30,6 +30,7 @@ use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseResource\PurchaserResource\RelationManagers;
+use App\Infolists\Components\PRProgressApproval;
 
 
 class PurchaserResource extends Resource  implements HasShieldPermissions
@@ -176,7 +177,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     }),
                                 Forms\Components\TextInput::make('total')
                                     ->label('Total')
-                                    ->readOnly()
+                                    ->disabled()
                                     ->suffixIcon('heroicon-o-percent-badge')
                                     ->suffixIconColor('warning')
                                     ->default(0),
@@ -607,6 +608,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->label('Prioridad')
                                                     ->badge()
                                                     ->color('success'),
+                                                Infolists\Components\TextEntry::make('requisition.category')
+                                                    ->label('Categoría de requisición')
+                                                    ->badge()
+                                                    ->color('success'),
                                                 Infolists\Components\TextEntry::make('requisition.approvalChain.requester.name')
                                                     ->label('Solicitante'),
                                                 Infolists\Components\TextEntry::make('requisition.motive')
@@ -643,8 +648,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
                                             ->schema([
-                                                Infolists\Components\ViewEntry::make('progress')
-                                                    ->view('filament.infolists.entries.progress-approval')
+                                                PRProgressApproval::make('progress')
                                             ])
                                             ->columns(1),
                                         Infolists\Components\Tabs\Tab::make('Observaciones')
@@ -759,7 +763,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
     {
         return [
             'index' => Pages\ListPurchaseOrders::route('/'),
-            'create' => Pages\CreatePurchaseOrder::route('/create'),
+            'create' => Pages\CreatePurchaseOrder::route('/create/{requisition?}'),
             'edit' => Pages\EditPurchaseOrder::route('/{record}/edit'),
             'view' => Pages\ViewOrder::route('/{record}/ver'),
             'add-item' => Pages\addItemPR::route('/{record}/agregar/partidas')

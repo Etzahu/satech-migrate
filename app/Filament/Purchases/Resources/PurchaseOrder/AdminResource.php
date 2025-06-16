@@ -35,10 +35,18 @@ class AdminResource extends Resource
     {
         return auth()->user()->can('view_approve-level-1_purchase::order::purchaser');
     }
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
+    }
     public static function getNavigationBadge(): ?string
     {
         if (auth()->user()->hasRole('gerente_compras')) {
-            return static::getModel()::where('status', 'revisión gerente de compras')->count();
+            return static::getModel()::where('status', 'revisión gerente de compras')
+                ->where('company_id', session()->get('company_id'))
+                ->count();
         } else {
             return false;
         }

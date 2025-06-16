@@ -92,6 +92,10 @@ class HistoryResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Estatus')
+                    ->options(PurchaseRequisition::select('id', 'status')->orderBy('status', 'asc')->get()->pluck('status', 'status')->unique())
+                    ->attribute('status'),
                 Tables\Filters\Filter::make('created_at')
                     ->form([
                         Forms\Components\DatePicker::make('created_from')

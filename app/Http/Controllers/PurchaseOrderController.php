@@ -14,7 +14,7 @@ use function Spatie\LaravelPdf\Support\pdf;
 class PurchaseOrderController extends Controller
 {
 
-    public function pdf($id)
+    public function pdf($id, $save = false)
     {
         $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail($id);
         // return $data;
@@ -23,10 +23,10 @@ class PurchaseOrderController extends Controller
         $media[] = $data->getMedia('quote')->first();
         $media[] = $data->getMedia('justification')->first();
         // opcionales
-        if(filled($data->getMedia('direct_award')->first())){
+        if (filled($data->getMedia('direct_award')->first())) {
             $media[] = $data->getMedia('direct_award')->first();
         }
-        if(filled($data->getMedia('certifications')->first())){
+        if (filled($data->getMedia('certifications')->first())) {
             $media[] = $data->getMedia('certifications')->first();
         }
 
@@ -53,7 +53,6 @@ class PurchaseOrderController extends Controller
             'Total' =>  $service->getTotal(true),
         ];
 
-
         $data['total'] = $total;
         $data['media'] = $media;
         $data['itemsFormatted'] = $itemsFormatted;
@@ -61,26 +60,16 @@ class PurchaseOrderController extends Controller
         $revisions = $data->status()->timesWas('autorizada para proveedor');
 
         $stages = [];
-        $stages[1]=  $data->status()->snapshotWhen('revisión gerente de compras');
-        $stages[2]=  $data->status()->snapshotWhen('aprobado por gerente de compras');
-        $stages[3]=  $data->status()->snapshotWhen('aprobado por gerente solicitante');
-        $stages[4]=  $data->status()->snapshotWhen('aprobado por DG nivel 1'); //
-        $stages[5]=  $data->status()->snapshotWhen('aprobado por DG nivel 2'); //
+        $stages[1] =  $data->status()->snapshotWhen('revisión gerente de compras');
+        $stages[2] =  $data->status()->snapshotWhen('aprobado por gerente de compras');
+        $stages[3] =  $data->status()->snapshotWhen('aprobado por gerente solicitante');
+        $stages[4] =  $data->status()->snapshotWhen('aprobado por DG nivel 1'); //
+        $stages[5] =  $data->status()->snapshotWhen('aprobado por DG nivel 2'); //
 
-        // $stages = [];
-        // $stages[1]=  $data->status()->snapshotWhen('revisión');
-        // $stages[2]=  $data->status()->snapshotWhen('aprobado por revisor');
-        // $stages[3]=  $data->status()->snapshotWhen('aprobado por gerencia');
-        // $stages[4]=  $data->status()->snapshotWhen('aprobado por DG');
-
-        // return $data;
-        // Mail::to('ahernandezm@gptservices.com')->send(new NotificationOrder($data));
-        // return view('pdf.purchase-order.header', compact('data'));
-        // return view('pdf.purchase-order.content', compact('data'));
-        return pdf()
-            ->view('pdf.purchase-order.content', ['data' => $data,'stages'=>$stages])
+        $pdf = pdf()
+            ->view('pdf.purchase-order.content', ['data' => $data, 'stages' => $stages])
             ->margins(55, 15, 15, 15)
-            ->headerView('pdf.purchase-order.header', ['data' => $data,'revisions'=>$revisions])
+            ->headerView('pdf.purchase-order.header', ['data' => $data, 'revisions' => $revisions])
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot
                     ->noSandbox()
@@ -88,5 +77,67 @@ class PurchaseOrderController extends Controller
             })
             // ->disk('public')
             ->name("orden-compra-{$data->folio}.pdf");
+
+        if ($save) {
+            return $pdf
+                ->disk('pdf_temp')
+                ->save("orden_compra_{$id}.pdf");
+        }
+
+        return $pdf;
+    }
+
+    public function download($id)
+    {
+        $model =  PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail($id);
+        $service =   storage_path("app/private/docs_purchase_order/servicio.pdf");
+        $supplier =   storage_path("app/private/docs_purchase_order/proveeduria.pdf");
+
+        $files = [
+            storage_path("app/public/pdf_temp/orden_compra_{$id}.pdf"),
+        ];
+
+        // if (blank($model->requisition->category)) {
+        //     return redirect()->back();
+        // }
+
+        if ($model->requisition->category == 'servicio') {
+            $files[] = $supplier;
+            $files[] = $service;
+        }
+
+        if ($model->requisition->category == 'proveeduria') {
+            $files[] = $supplier;
+        }
+
+        try {
+            $this->pdf($id, true);
+        } catch (\Exception $e) {
+            logger()->error($e);
+        }
+
+        $output = storage_path('app/public/pdf_temp/merged.pdf');
+
+        $cmd = '';
+        // Construir el comando de Ghostscript
+        if (config('app.env') == 'production') {
+            $cmd = 'gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=' . escapeshellarg($output) . ' ';
+        } else {
+            $cmd = '"C:\Program Files\gs\gs9.22\bin\gs.exe" -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=' . escapeshellarg($output) . ' ';
+        }
+        foreach ($files as $file) {
+            $cmd .= escapeshellarg($file) . ' ';
+        }
+        // Ejecutar el comando
+        // $result = exec($cmd);
+        $result = shell_exec($cmd . ' 2>&1'); // Captura errores
+        logger()->error($result);
+
+        if (file_exists($output)) {
+            $filename = str()->of("Orden de compra {$model->folio}")->replace('/', '-');
+            return response()->download($output, "{$filename}.pdf")->deleteFileAfterSend(true);
+        } else {
+            return response()->json(['error' => 'No se pudo combinar los PDFs'], 500);
+        }
     }
 }

@@ -19,7 +19,7 @@ class CategoryFamily extends Model
         'name',
         'code',
         'type',
-        'category_id',
+        'category_id'
     ];
 
     /**

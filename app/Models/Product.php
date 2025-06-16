@@ -27,6 +27,7 @@ class Product extends Model implements HasMedia
         'name',
         'code',
         'status',
+        'type_purchase',
         'company_id',
         'brand_id',
         'unit_id',
@@ -69,6 +70,10 @@ class Product extends Model implements HasMedia
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
+    }
+    public function categoryFamily(): BelongsTo
+    {
+        return $this->belongsTo(CategoryFamily::class, 'category_family_id');
     }
     public function company(): BelongsTo
     {

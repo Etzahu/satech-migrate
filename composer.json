@@ -19,10 +19,11 @@
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5",
+        "moneyphp/money": "^4.7",
         "njxqlus/filament-relation-manager-component": "^1.0",
         "opcodesio/log-viewer": "^3.15",
         "orangehill/iseed": "^3.0",
-        "pelmered/filament-money-field": "^1.4",
+        "pelmered/filament-money-field": "^1.5",
         "rap2hpoutre/fast-excel": "^5.5",
         "shanerbaner82/panel-roles": "*",
         "simplesoftwareio/simple-qrcode": "^4.2",
@@ -84,6 +85,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "beta",
     "prefer-stable": true
 }

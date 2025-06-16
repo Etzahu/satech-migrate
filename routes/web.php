@@ -35,6 +35,12 @@ Route::post('/logout', function () {
 })->name('logout');
 
 Route::get('compras/requisiciones/{id}/pdf',[PurchaseRequisitionController::class,'pdf'])
-->name('requisition.pdf');
+->name('requisition.pdf')
+->middleware('auth');
+
 Route::get('compras/ordenes/{id}/pdf',[PurchaseOrderController::class,'pdf'])
-->name('order.pdf');
+->name('order.pdf')
+->middleware('auth');
+Route::get('compras/ordenes/{id}/pdf/download',[PurchaseOrderController::class,'download'])
+->name('order.pdf.download')
+->middleware('auth');

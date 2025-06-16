@@ -21,8 +21,13 @@ class ViewOrder extends ViewRecord
     protected static string $resource = PurchaserResource::class;
     protected function getHeaderActions(): array
     {
-
         return [
+            Actions\Action::make('Descargar orden')
+                ->color('info')
+                ->visible(fn($record) => $record->status == 'autorizada para proveedor')
+                ->url(route('order.pdf.download', ['id' => $this->record->id]))
+                ->icon('heroicon-m-arrow-down-tray')
+                ->openUrlInNewTab(),
             Actions\Action::make('Solicitar')
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
@@ -82,9 +87,6 @@ class ViewOrder extends ViewRecord
 
         ];
     }
-    /*
-
-    */
     public function infolist(Infolist $infolist): Infolist
     {
         $service = new OrderCalculationService($this->record->id);
