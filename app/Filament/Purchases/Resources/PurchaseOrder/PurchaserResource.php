@@ -646,11 +646,11 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ])
                                                     ->columns(5)
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
-                                            ->schema([
-                                                PRProgressApproval::make('progress')
-                                            ])
-                                            ->columns(1),
+                                        // Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
+                                        //     ->schema([
+                                        //         PRProgressApproval::make('progress')
+                                        //     ])
+                                        //     ->columns(1),
                                         Infolists\Components\Tabs\Tab::make('Observaciones')
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('observation')

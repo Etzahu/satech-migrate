@@ -335,25 +335,15 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ])
                                     ->columns(5)
                             ]),
-                        Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
-                            ->schema([
-                                // PRProgressApproval::make('progress')
-                                //     ->state(function ($record) {
-                                //         return $record->status()->history()->get();
-                                //     })
-
-                                // Infolists\Components\TextEntry::make('progress')
-                                //     ->formatStateUsing(fn(string $state): View => view(
-                                //         'filament.infolists.entries.progress-approval',
-                                //         ['state' => $state],
-                                //     ))
-                                Infolists\Components\ViewEntry::make('progress')
-                                    ->view('filament.infolists.entries.progress-approval', function ($record) {
-                                        $service = new PRInfolistService();
-                                        return ['state' => $service->approvalProgress($record->id)];
-                                    })
-                            ])
-                            ->columns(1),
+                        // Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
+                        //     ->schema([
+                        //         Infolists\Components\ViewEntry::make('progress')
+                        //             ->view('filament.infolists.entries.progress-approval', function ($record) {
+                        //                 $service = new PRInfolistService();
+                        //                 return ['state' => $service->approvalProgress($record->id)];
+                        //             })
+                        //     ])
+                        //     ->columns(1),
                         Infolists\Components\Tabs\Tab::make('Fichas técnicas')
                             ->visible(fn($record) => $record->getMedia('technical_data_sheets')->count() > 0)
                             ->schema([

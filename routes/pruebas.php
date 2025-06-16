@@ -1327,31 +1327,49 @@ Route::get('filter-orders', function () {
 });
 Route::get('order-resumen', function () {
 
-    // $requisitions = PurchaseRequisition::with(['items.product'])->get();
+    $requisitions = PurchaseRequisition::with(['items.product'])->get();
+    foreach ($requisitions as $rq) {
+        $items = $rq->items->pluck('product_id');
+        if ($items->count() > 0) {
+            // dump($items->toArray());
+            $duplicados = $items->duplicates();
+            if ($duplicados->count() > 0) {
+                echo '<br>';
+                echo $rq->id;
+                echo '<br>';
+                echo '<pre>';
+                print_r($duplicados?->toArray());
+                echo '</pre>';
+            }
+        }
+    }
+    return;
+    $models = PurchaseOrder::has('items')->with(['requisition.items.product', 'items'])
+        ->get();
 
-    // foreach ($requisitions as $rq) {
-    //     $items = $rq->items->pluck('product_id');
-    //     if ($items->count() > 0) {
-    //         // dump($items->toArray());
-    //         $duplicados = $items->duplicates();
-    //         if($duplicados->count() > 0){
-    //             dump($rq->id);
-    //         }
-    //     }
-    // }
-    // return;
-    $models = PurchaseOrder::has('items')->with('requisition.items.product')->get();
-    dd($models->count());
+    // dd($models->count());
 
     foreach ($models as $model) {
-        echo '<pre>';
-        print_r($model->requisition->id);
-        echo  '</pre>';
         $itemsRq = $model->requisition->items->pluck('product_id', 'id');
         $itemsOrder = $model->items;
-        echo '<pre>';
-        print_r($itemsRq?->toArray());
-        echo  '</pre>';
+        // dump($itemsRq->toArray(), $itemsOrder?->pluck('product_id')->toArray());
+        try {
+            DB::beginTransaction();
+            foreach ($itemsOrder as $itemOrder) {
+                $idItem = ($itemsRq->search($itemOrder->product_id));
+                // echo '<br>';
+                // echo $idItem == 0 ? 'Cero:'.$idItem : $idItem;
+                // echo '<br>';
+                if ($idItem != 0) {
+                    $itemOrder->pr_item_id_reference = $idItem;
+                    $itemOrder->save();
+                }
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
     }
 });
 

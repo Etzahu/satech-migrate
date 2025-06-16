@@ -27,6 +27,7 @@ class PurchaseOrderItem extends Model implements Auditable
         'sub_total',
         'observation',
         'purchase_order_id',
+        'pr_item_id_reference',
         'product_id',
     ];
     protected $auditInclude = [

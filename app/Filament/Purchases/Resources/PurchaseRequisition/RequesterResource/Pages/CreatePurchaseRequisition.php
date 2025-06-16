@@ -38,12 +38,11 @@ class CreatePurchaseRequisition extends CreateRecord
 
         $service = new PurchaseRequisitionCreationService();
         $data['folio'] = $service->generateFolio();
-        $data['confidential'] = false;
-        if (!$data['confidential']) {
-            $data['approval_chain_id'] = $service->getApprovalChain($data['reviewer_id'], $data['approver_id']);
-        } else {
-            $data['approval_chain_id'] = $service->getApprovalChainConfidential();
-        }
+        $data['approval_chain_id'] = $service->getApprovalChain($data['reviewer_id'], $data['approver_id']);
+        // if (!$data['confidential']) {
+        // } else {
+        //     $data['approval_chain_id'] = $service->getApprovalChainConfidential();
+        // }
         $data['company_id'] = session()->get('company_id');
         return $data;
     }
