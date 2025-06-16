@@ -1327,34 +1327,31 @@ Route::get('filter-orders', function () {
 });
 Route::get('order-resumen', function () {
 
-    $requisitions = PurchaseRequisition::with(['items.product'])->get();
+    // $requisitions = PurchaseRequisition::with(['items.product'])->get();
 
-    foreach ($requisitions as $rq) {
-        $items = $rq->items->pluck('product_id');
-        if ($items->count() > 0) {
-            // dump($items->toArray());
-            $duplicados = $items->duplicates();
-            if($duplicados->count() > 0){
-                dump($rq->id);
-            }
-        }
-    }
-
-    return;
-    $models = PurchaseOrder::with('requisition.items.product')->get();
-    // dd($models->count());
+    // foreach ($requisitions as $rq) {
+    //     $items = $rq->items->pluck('product_id');
+    //     if ($items->count() > 0) {
+    //         // dump($items->toArray());
+    //         $duplicados = $items->duplicates();
+    //         if($duplicados->count() > 0){
+    //             dump($rq->id);
+    //         }
+    //     }
+    // }
+    // return;
+    $models = PurchaseOrder::has('items')->with('requisition.items.product')->get();
+    dd($models->count());
 
     foreach ($models as $model) {
-        if ($model->items->count() > 0) {
-            echo '<pre>';
-            print_r($model->requisition->id);
-            echo  '</pre>';
-            $itemsRq = $model->requisition->items->pluck('product_id', 'id');
-            $itemsOrder = $model->items;
-            echo '<pre>';
-            print_r($itemsRq?->toArray());
-            echo  '</pre>';
-        }
+        echo '<pre>';
+        print_r($model->requisition->id);
+        echo  '</pre>';
+        $itemsRq = $model->requisition->items->pluck('product_id', 'id');
+        $itemsOrder = $model->items;
+        echo '<pre>';
+        print_r($itemsRq?->toArray());
+        echo  '</pre>';
     }
 });
 
