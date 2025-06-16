@@ -132,8 +132,19 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                     $record->category = $data['selected'];
                                                     $set('category', $data['selected']);
                                                     $record->save();
-                                                    if ($data['select'] == 'servicio') {
-                                                        $record->items()->delete();
+                                                    if ($data['selected'] == 'servicio') {
+                                                        $record->items()
+                                                            ->whereHas('product', function ($query) {
+                                                                $query->where('type_purchase', 'proveeduria');
+                                                            })
+                                                            ->forceDelete();
+                                                    }
+                                                    if ($data['selected'] == 'proveeduria') {
+                                                        $record->items()
+                                                            ->whereHas('product', function ($query) {
+                                                                $query->where('type_purchase', 'servicio');
+                                                            })
+                                                            ->forceDelete();
                                                     }
                                                     Notification::make()
                                                         ->title('Se aplicó el cambio')

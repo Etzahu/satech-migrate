@@ -1348,8 +1348,22 @@ Route::get('order-resumen', function () {
 });
 
 Route::get('reorder-products', function () {
-    $products = Product::all();
+    $model = PurchaseRequisition::find(4);
 
+    dump($model->items);
+    $model->items()
+        ->whereHas('product', function ($query) {
+            $query->where('type_purchase', 'servicio');
+        })
+        ->forceDelete();
+    dump($model->items);
+
+
+
+
+
+    return;
+    $products = Product::all();
     try {
         DB::beginTransaction();
         $index = 1;
