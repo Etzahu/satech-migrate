@@ -144,7 +144,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                             // Es para que el administrador pueda editar las partidas cuando la orden este liberada
                             \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
                         ])->visible(in_array('show_relation_items', $options)),
-                        Tabs\Tab::make('Codiciones de pago')
+                        Tabs\Tab::make('Condiciones de pago')
                             ->schema([
                                 Forms\Components\Repeater::make('condition_payment')
                                     ->label('Condiciones de pago')
@@ -407,7 +407,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ])
                                                     ->grid(1)
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Codiciones de pago')
+                                        Infolists\Components\Tabs\Tab::make('Condiciones de pago')
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('condition_payment')
                                                     ->label('')
