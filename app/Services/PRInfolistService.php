@@ -195,16 +195,29 @@ class PRInfolistService
 
         $progress = [];
         // dd($model->status()->history()->get()->toArray());
-        if ($model->category == 'servicio') {
-            $progress = [
-                'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => 'revisión'],
-                'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
-                'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
-                'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
-                'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado']
-            ];
+
+        if (session()->get('company_id') == 2) { //ID 1:GPT IM
+            if ($model->category == 'servicio') {
+                $progress = [
+                    'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => 'revisión'],
+                    'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
+                    'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
+                    'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado']
+                ];
+            }
+            if ($model->category == 'proveeduria') {
+                $progress = [
+                    'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => 'revisión por almacén'],
+                    'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'statusTo' => 'revisión'],
+                    'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
+                    'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
+                    'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado']
+                ];
+            }
         }
-        if ($model->category == 'proveeduria') {
+        if (session()->get('company_id') == 1) { //ID 1:GPT IM
             $progress = [
                 'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => 'revisión por almacén'],
                 'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'statusTo' => 'revisión'],

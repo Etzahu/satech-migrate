@@ -1,10 +1,11 @@
 <div>
     <div class="flex">
-        @foreach ($state as $step)
+        @foreach ($getState() as $step)
             {{-- step --}}
             <div class="w-1/3 px-6 text-center">
-                @if (filled($step['name'])&& isset($step['date']))
-                    <div class="flex flex-col items-center justify-center bg-green-400 border border-gray-200 rounded-lg">
+                @if (filled($step['name']) && isset($step['date']))
+                    <div
+                        class="flex flex-col items-center justify-center bg-green-400 border border-gray-200 rounded-lg">
                         <div class="flex items-center justify-center w-full py-4 bg-transparent h-1/3 icon-step">
                             <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
                                 clip-rule="evenodd">
@@ -24,17 +25,18 @@
                         </div>
                     </div>
                 @else
-                    <div class="flex flex-col items-center justify-center bg-gray-400 border border-gray-200 rounded-lg">
+                    <div
+                        class="flex flex-col items-center justify-center bg-gray-400 border border-gray-200 rounded-lg">
                         <div class="flex items-center justify-center w-full py-4 bg-transparent h-1/3 icon-step">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    width="24" height="24" stroke-width="2" data-darkreader-inline-stroke=""
-                                    style="--darkreader-inline-stroke: currentColor;">
-                                    <path d="M20.986 12.502a9 9 0 1 0 -5.973 7.98"></path>
-                                    <path d="M12 7v5l3 3"></path>
-                                    <path d="M19 16v3"></path>
-                                    <path d="M19 22v.01"></path>
-                                </svg>
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24"
+                                height="24" stroke-width="2" data-darkreader-inline-stroke=""
+                                style="--darkreader-inline-stroke: currentColor;">
+                                <path d="M20.986 12.502a9 9 0 1 0 -5.973 7.98"></path>
+                                <path d="M12 7v5l3 3"></path>
+                                <path d="M19 16v3"></path>
+                                <path d="M19 22v.01"></path>
+                            </svg>
                         </div>
                         <div
                             class="flex flex-col items-center justify-center w-full h-24 px-1 bg-gray-300 rounded-b-lg body-step">

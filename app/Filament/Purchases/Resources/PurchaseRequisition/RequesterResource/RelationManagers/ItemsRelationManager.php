@@ -20,7 +20,7 @@ class ItemsRelationManager extends RelationManager
     protected static ?string $navigationLabel = 'Partidas';
     protected static ?string $title = 'Partida';
 
-      #[On('refreshRelationManagerItemsPurchaseRequisition')]
+    #[On('refreshRelationManagerItemsPurchaseRequisition')]
     public function form(Form $form): Form
     {
         return $form
@@ -35,10 +35,19 @@ class ItemsRelationManager extends RelationManager
                     ->label('Producto')
                     ->options(function () {
                         $type = $this->getOwnerRecord()->category;
-                        return  Product::where('type_purchase', $type)
-                            ->where('status', 'aprobado')
+                        $products = Product::where('status', 'aprobado')
                             ->where('company_id', session()->get('company_id'))
                             ->pluck('name', 'id');
+
+                        if (session()->get('company_id') == 1) { //ID 1:GPT IM
+                            return  $products;
+                        }
+
+                        if (filled($type)) {
+                            return $products->where('type_purchase', $type);
+                        } else {
+                            return  $products;
+                        }
                     })
                     ->searchable()
                     ->live()

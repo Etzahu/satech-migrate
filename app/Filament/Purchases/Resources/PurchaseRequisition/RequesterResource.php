@@ -133,18 +133,22 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                     $set('category', $data['selected']);
                                                     $record->save();
                                                     if ($data['selected'] == 'servicio') {
-                                                        $record->items()
-                                                            ->whereHas('product', function ($query) {
-                                                                $query->where('type_purchase', 'proveeduria');
-                                                            })
-                                                            ->forceDelete();
+                                                        if( session()->get('company_id') == 2 ){ //ID 2:TECHENERGY
+                                                            $record->items()
+                                                                ->whereHas('product', function ($query) {
+                                                                    $query->where('type_purchase', 'proveeduria');
+                                                                })
+                                                                ->forceDelete();
+                                                        }
                                                     }
                                                     if ($data['selected'] == 'proveeduria') {
-                                                        $record->items()
-                                                            ->whereHas('product', function ($query) {
-                                                                $query->where('type_purchase', 'servicio');
-                                                            })
-                                                            ->forceDelete();
+                                                           if( session()->get('company_id') == 2 ){ //ID 2:TECHENERGY
+                                                            $record->items()
+                                                                ->whereHas('product', function ($query) {
+                                                                    $query->where('type_purchase', 'servicio');
+                                                                })
+                                                                ->forceDelete();
+                                                           }
                                                     }
                                                     Notification::make()
                                                         ->title('Se aplicó el cambio')
@@ -335,15 +339,21 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ])
                                     ->columns(5)
                             ]),
-                        Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
-                            ->schema([
-                                Infolists\Components\ViewEntry::make('progress')
-                                    ->view('filament.infolists.entries.progress-approval', function ($record) {
-                                        $service = new PRInfolistService();
-                                        return ['state' => $service->approvalProgress($record->id)];
-                                    })
-                            ])
-                            ->columns(1),
+                        // Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
+                        //     ->schema([
+                        //         Infolists\Components\ViewEntry::make('progress')
+                        //             ->view('filament.infolists.entries.progress-approval')
+                        //             ->state(function ($record) {
+                        //                 // function ($record) {
+                        //                 // $service = new PRInfolistService();
+                        //                 // return ['state' => $service->approvalProgress($record->id)];
+                        //                 // }
+                        //                 $service = new PRInfolistService();
+                        //                 return $service->approvalProgress($record->id);
+
+                        //             })
+                        //     ])
+                        //     ->columns(1),
                         Infolists\Components\Tabs\Tab::make('Fichas técnicas')
                             ->visible(fn($record) => $record->getMedia('technical_data_sheets')->count() > 0)
                             ->schema([
