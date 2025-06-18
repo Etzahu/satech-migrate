@@ -33,19 +33,22 @@ class ItemsRelationManager extends RelationManager
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
                     ->options(function () {
-                        $type = $this->getOwnerRecord()->category;
-                        $products = Product::where('status', 'aprobado')
-                            ->where('company_id', session()->get('company_id'))
-                            ->pluck('name', 'id');
-
+                      $type = $this->getOwnerRecord()->category;
                         if (session()->get('company_id') == 1) { //ID 1:GPT IM
-                            return  $products;
+                            return Product::where('status', 'aprobado')
+                                ->where('company_id', session()->get('company_id'))
+                                ->pluck('name', 'id');
                         }
 
                         if (filled($type)) {
-                            return $products->where('type_purchase', $type);
+                            return Product::where('status', 'aprobado')
+                                ->where('company_id', session()->get('company_id'))
+                                ->where('type_purchase', $type)
+                                ->pluck('name', 'id');
                         } else {
-                            return  $products;
+                              return Product::where('status', 'aprobado')
+                                ->where('company_id', session()->get('company_id'))
+                                ->pluck('name', 'id');
                         }
                     })
                     ->disabled(),

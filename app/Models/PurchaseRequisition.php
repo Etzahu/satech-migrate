@@ -161,6 +161,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
 
     public function getProgressAttribute()
     {
+        $progress = [];
         /**
            'revisión por almacén',
             'revisión',
@@ -182,6 +183,17 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
                 ];
             }
             if ($this->category == 'proveeduria') {
+                $progress = [
+                    'requester' => ['title' => 'Solicita', 'name' => $this->approvalChain->requester->name, 'date' => $data['revisión por almacén']],
+                    'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'date' => $data['revisión']],
+                    'reviewer' => ['title' => 'Revisa', 'name' => $this->approvalChain->reviewer->name, 'date' => $data['aprobado por revisor']],
+                    'approver' => ['title' => 'Aprueba', 'name' => $this->approvalChain->approver->name, 'date' => $data['aprobado por gerencia']],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer->name, 'date' => $data['aprobado por DG']],
+                    'purchaser' => ['title' => 'Comprador', 'name' => (filled($this->purchaser) ? $this->purchaser->name : 'Sin asignar'), 'date' => $data['comprador asignado']],
+                ];
+            }
+
+            if (blank($this->category) ) {
                 $progress = [
                     'requester' => ['title' => 'Solicita', 'name' => $this->approvalChain->requester->name, 'date' => $data['revisión por almacén']],
                     'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'date' => $data['revisión']],
