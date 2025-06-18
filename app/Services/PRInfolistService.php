@@ -193,19 +193,38 @@ class PRInfolistService
         //120 una revision
         $model = PurchaseRequisition::find($id);
 
+        $progress = [];
         // dd($model->status()->history()->get()->toArray());
-        $progress = [
-            'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => $model->category == 'servicio' ? 'revisión' : 'revisión por almacén'],
-            'warehouse' => ['title' => 'Almacén', 'name' => '', 'statusTo' => 'revisión'],
-            'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
-            'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
-            'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
-            'purchaser' => ['title' => 'Comprador', 'name' => $model->purchaser?->name, 'statusTo' => 'comprador asignado']
-        ];
-
+        if ($model->category == 'servicio') {
+            $progress = [
+                'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => 'revisión'],
+                'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
+                'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
+                'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
+                'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado']
+            ];
+        }
+        if ($model->category == 'proveeduria') {
+            $progress = [
+                'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => 'revisión por almacén'],
+                'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'statusTo' => 'revisión'],
+                'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
+                'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
+                'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
+                'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado']
+            ];
+        }
+        $progress = collect($progress);
         $revisions = $model->status()->timesWas('aprobado por DG');
 
-        $progress = collect($progress);
+        if (str($model->status)->contains('devuelto')) {
+            $progress = $progress->map(function ($item, $key) use ($revisions, $model) {
+                unset($item['date']);
+                return $item;
+            });
+            return $progress->toArray();
+        }
+
         $progress = $progress->map(function ($item, $key) use ($revisions, $model) {
             if ($revisions == 0) {
                 $snapshot = $model->status()->snapshotWhen($item['statusTo']);

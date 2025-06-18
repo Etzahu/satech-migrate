@@ -1,11 +1,11 @@
-<div>
+<x-filament-panels::page>
     <div class="grid grid-cols-2 gap-1">
         <div>
             <table class="w-full border border-collapse border-gray-400 table-fixed">
                 <thead>
                     <tr>
                         <th colspan="3">
-                        ORDEN
+                            ORDEN
                         </th>
                     </tr>
                     <tr>
@@ -15,7 +15,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($getRecord()->items as $item)
+                    @foreach ($currentOrder->items as $item)
                         <tr>
                             <td class="border border-gray-400">{{ $item->id }}</td>
                             <td class="border border-gray-400">{{ $item->product_id }}</td>
@@ -30,7 +30,7 @@
                 <thead>
                     <tr>
                         <th colspan="2">
-                        REQUISICION
+                            REQUISICION
                         </th>
                     </tr>
                     <tr>
@@ -39,7 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($getRecord()->requisition->items as $itemPR)
+                    @foreach ($currentOrder->requisition->items as $itemPR)
                         <tr>
                             <td class="border border-gray-400">{{ $itemPR->id }}</td>
                             <td class="border border-gray-400">{{ $itemPR->product_id }}</td>
@@ -51,10 +51,10 @@
         </div>
     </div>
     <div>
-    <form wire:submit="create">
-        {{ $this->form }}
-    </form>
+        <form wire:submit="create">
+            {{ $this->form }}
+        </form>
 
-    <x-filament-actions::modals />
-</div>
-</div>
+        <x-filament-actions::modals />
+    </div>
+</x-filament-panels::page>

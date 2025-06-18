@@ -61,6 +61,13 @@ class CatalogResource  extends Resource
                             ->preload()
                             ->searchable()
                             ->required(),
+                          Forms\Components\Select::make('type_purchase')
+                            ->label('Seleccione el tipo de elemento a registrar')
+                            ->options([
+                                'servicio' => 'Servicio',
+                                'proveeduria' => 'Producto',
+                            ])
+                            ->required(),
                     ]),
                 Forms\Components\Section::make('Documentación')
                     ->schema([

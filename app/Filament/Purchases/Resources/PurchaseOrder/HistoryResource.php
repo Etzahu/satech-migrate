@@ -133,7 +133,7 @@ class HistoryResource extends Resource
                     ->form(
                         [
                             Forms\Components\CheckboxList::make('columns')
-                                ->label('Datos de la requisición')
+                                ->label('Datos de la orden')
                                 ->bulkToggleable()
                                 ->columns(4)
                                 ->required()
@@ -145,6 +145,7 @@ class HistoryResource extends Resource
                                     'subtotal' => 'Subtotal',
                                     'total' => 'Total',
                                     'moneda' => 'Moneda',
+                                    'proyecto' => 'Proyecto',
                                     'tipo de pago' => 'Tipo de pago',
                                     'forma de pago' => 'Forma de pago',
                                     'condiciones de pago' => 'Condiciones de pago',
@@ -167,7 +168,7 @@ class HistoryResource extends Resource
                                 ])
                                 ->afterStateHydrated(function ($component, $state) {
                                     if (! filled($state)) {
-                                        $component->state(['fecha de creacion', 'comprador', 'folio', 'proveedor', 'subtotal', 'total', 'moneda']);
+                                        $component->state(['fecha de creacion', 'comprador', 'folio', 'proveedor', 'subtotal', 'total', 'moneda','proyecto']);
                                     }
                                 }),
                             Forms\Components\DatePicker::make('created_start')
@@ -205,6 +206,7 @@ class HistoryResource extends Resource
                                 'subtotal' => $service->getSubtotalItems(true),
                                 'total' =>  $service->getTotal(true),
                                 'moneda' => $model->currency,
+                                'proyecto' => "({$model->requisition->project->code}){$model->requisition->project->name}",
                                 'tipo de pago' => $model->type_payment,
                                 'forma de pago' => $model->form_payment,
                                 'condiciones de pago' => static::formatConditionPayment($model),

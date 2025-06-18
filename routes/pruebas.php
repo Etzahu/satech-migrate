@@ -1327,25 +1327,27 @@ Route::get('filter-orders', function () {
 });
 Route::get('order-resumen', function () {
 
-    $requisitions = PurchaseRequisition::with(['items.product'])->get();
-    foreach ($requisitions as $rq) {
-        $items = $rq->items->pluck('product_id');
-        if ($items->count() > 0) {
-            // dump($items->toArray());
-            $duplicados = $items->duplicates();
-            if ($duplicados->count() > 0) {
-                echo '<br>';
-                echo $rq->id;
-                echo '<br>';
-                echo '<pre>';
-                print_r($duplicados?->toArray());
-                echo '</pre>';
-            }
-        }
-    }
-    return;
-    $models = PurchaseOrder::has('items')->with(['requisition.items.product', 'items'])
-        ->get();
+    // $requisitions = PurchaseRequisition::with(['items.product'])->get();
+    // foreach ($requisitions as $rq) {
+    //     $items = $rq->items->pluck('product_id');
+    //     if ($items->count() > 0) {
+    //         // dump($items->toArray());
+    //         $duplicados = $items->duplicates();
+    //         if ($duplicados->count() > 0) {
+    //             echo '<br>';
+    //             echo $rq->id;
+    //             echo '<br>';
+    //             echo '<pre>';
+    //             print_r($duplicados?->toArray());
+    //             echo '</pre>';
+    //         }
+    //     }
+    // }
+    // return;
+    $models = PurchaseOrder::has('items','=',1)
+            ->with(['requisition.items.product', 'items'])
+            ->where('company_id', 1)
+            ->get();
 
     // dd($models->count());
 
@@ -1403,4 +1405,22 @@ Route::get('reorder-products', function () {
         throw $e;
         DB::rollBack();
     }
+});
+
+
+Route::get('history-service',function(){
+    $rq = PurchaseRequisition::find(535);
+
+    $history = $rq->status()->history()
+    ->from('aprobado por gerencia')
+    ->to('aprobado por DG')
+    ->get();
+
+
+     $revisions = $rq->status()->timesWas('aprobado por DG');
+     dd($revisions);
+
+
+
+    return $history;
 });

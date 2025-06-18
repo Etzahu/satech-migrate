@@ -91,7 +91,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ->schema([
                                 Forms\Components\Select::make('category')
                                     ->label('Categoría de requisición')
-                                    ->helperText(new HtmlString("<span class='text-blue-600 '>Seleccione si la requisición es para productos (proveeduría) o un servicio. Esto determinará las partidas que puede cargar.</span>"))
+                                    ->helperText(new HtmlString("<span class='text-blue-600'>Seleccione si la requisición es para solicitar <strong>productos</strong> o <strong>servicios</strong>. Esto determinará el tipo de partidas que puede cargar.</span>"))
                                     // ->helperText('')
                                     ->options([
                                         'servicio' => 'Servicio',
@@ -335,15 +335,15 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ])
                                     ->columns(5)
                             ]),
-                        // Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
-                        //     ->schema([
-                        //         Infolists\Components\ViewEntry::make('progress')
-                        //             ->view('filament.infolists.entries.progress-approval', function ($record) {
-                        //                 $service = new PRInfolistService();
-                        //                 return ['state' => $service->approvalProgress($record->id)];
-                        //             })
-                        //     ])
-                        //     ->columns(1),
+                        Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
+                            ->schema([
+                                Infolists\Components\ViewEntry::make('progress')
+                                    ->view('filament.infolists.entries.progress-approval', function ($record) {
+                                        $service = new PRInfolistService();
+                                        return ['state' => $service->approvalProgress($record->id)];
+                                    })
+                            ])
+                            ->columns(1),
                         Infolists\Components\Tabs\Tab::make('Fichas técnicas')
                             ->visible(fn($record) => $record->getMedia('technical_data_sheets')->count() > 0)
                             ->schema([
