@@ -1410,17 +1410,15 @@ Route::get('reorder-products', function () {
 
 Route::get('history-service',function(){
     $rq = PurchaseRequisition::find(535);
-
-    $history = $rq->status()->history()
-    ->from('aprobado por gerencia')
-    ->to('aprobado por DG')
-    ->get();
-
-
-     $revisions = $rq->status()->timesWas('aprobado por DG');
-     dd($revisions);
+    return $rq->progress;
+    // $history = $rq->status()->history()
+    // ->from('aprobado por gerencia')
+    // ->to('aprobado por DG')
+    // ->get();
 
 
+    //  $revisions = $rq->status()->timesWas('aprobado por DG');
+    // //  dd($revisions);
+    // return $history;
 
-    return $history;
 });

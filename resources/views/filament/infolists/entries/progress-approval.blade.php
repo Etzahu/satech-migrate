@@ -1,11 +1,11 @@
 <div>
     <div class="flex">
-        @foreach ($getState() as $step)
+        @foreach ($getRecord()->progress as $step)
             {{-- step --}}
             <div class="w-1/3 px-6 text-center">
                 @if (filled($step['name']) && isset($step['date']))
                     <div
-                        class="flex flex-col items-center justify-center bg-green-400 border border-gray-200 rounded-lg">
+                        class="flex flex-col items-center justify-center truncate bg-green-400 border border-gray-200 rounded-lg">
                         <div class="flex items-center justify-center w-full py-4 bg-transparent h-1/3 icon-step">
                             <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
                                 clip-rule="evenodd">
@@ -26,7 +26,7 @@
                     </div>
                 @else
                     <div
-                        class="flex flex-col items-center justify-center bg-gray-400 border border-gray-200 rounded-lg">
+                        class="flex flex-col items-center justify-center truncate bg-gray-400 border border-gray-200 rounded-lg">
                         <div class="flex items-center justify-center w-full py-4 bg-transparent h-1/3 icon-step">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24"

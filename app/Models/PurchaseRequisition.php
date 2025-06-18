@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Spatie\MediaLibrary\HasMedia;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Builder;
@@ -83,7 +84,127 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
     public $stateMachines = [
         'status' => PurchaseRequisitionStateMachine::class,
     ];
+    public static $estadosProgreso = [
+        'borrador' => 0,
+        'revisión por almacén' => 20,
+        'revisión' => 40,
+        'aprobado por revisor' => 60,
+        'aprobado por gerencia' => 80,
+        'aprobado por DG' => 90,
+        'comprador asignado' => 95,
+        'comprador reasignado' => 95,
+        'cerrada' => 100,
+        'cancelado por revisor' => 0,
+        'cancelado por gerencia' => 0,
+        'cancelado por DG' => 0,
+        'devuelto por revisor' => 40,
+        'devuelto por gerencia' => 40,
+        'devuelto por DG' => 40,
+        'devuelto por almacén' => 20,
+        'devuelto por comprador' => 40,
+        'devuelto por gerente de compras' => 40,
+    ];
+    public function getProgresoAttribute()
+    {
+        return self::$estadosProgreso[$this->status] ?? 0;
+    }
 
+    public function getRevisionDates()
+    {
+        $revisiones = [
+            'revisión por almacén',
+            'revisión',
+            'aprobado por revisor',
+            'aprobado por gerencia',
+            'aprobado por DG',
+            'comprador asignado',
+            'comprador reasignado'
+        ];
+
+        if (session()->get('company_id') == 2) {
+            if ($this->category == 'servicio') {
+                unset($revisiones['revisión por almacén']);
+            }
+        }
+
+        // Encontrar la última devolución que reinicia el ciclo
+        $ultimaDevolucion = $this->status()->history()
+            ->where('field', 'status')
+            ->whereIn('to', [
+                'devuelto por comprador',
+                'devuelto por gerente de compras',
+                'devuelto por DG',
+                'devuelto por gerencia',
+                'devuelto por revisor',
+                'devuelto por almacén'
+            ])
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $fechas = [];
+        foreach ($revisiones as $revision) {
+            $query = $this->status()->history()
+                ->where('field', 'status')
+                ->where('to', $revision)
+                ->orderBy('created_at', 'desc'); // Última entrada a la revisión
+
+            // Si hay una devolución, filtrar por registros posteriores a ella
+            if ($ultimaDevolucion) {
+                $query->where('created_at', '>', $ultimaDevolucion->created_at);
+            }
+
+            $registro = $query->first();
+            $fechas[$revision] = $registro ? $registro->created_at : null;
+        }
+        return $fechas;
+    }
+
+    public function getProgressAttribute()
+    {
+        /**
+           'revisión por almacén',
+            'revisión',
+            'aprobado por revisor',
+            'aprobado por gerencia',
+            'aprobado por DG',
+            'comprador asignado',
+            'comprador reasignado'
+         */
+        $data = $this->getRevisionDates();
+        if (session()->get('company_id') == 2) { //ID 1:GPT IM
+            if ($this->category == 'servicio') {
+                $progress = [
+                    'requester' => ['title' => 'Solicita', 'name' => $this->approvalChain->requester->name, 'date' => $data['revisión']],
+                    'reviewer' => ['title' => 'Revisa', 'name' => $this->approvalChain->reviewer->name, 'date' => $data['aprobado por revisor']],
+                    'approver' => ['title' => 'Aprueba', 'name' => $this->approvalChain->approver->name, 'date' => $data['aprobado por gerencia']],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer->name, 'date' => $data['aprobado por DG']],
+                    'purchaser' => ['title' => 'Comprador', 'name' => (filled($this->purchaser) ? $this->purchaser->name : 'Sin asignar'), 'date' => $data['comprador asignado']],
+                ];
+            }
+            if ($this->category == 'proveeduria') {
+                $progress = [
+                    'requester' => ['title' => 'Solicita', 'name' => $this->approvalChain->requester->name, 'date' => $data['revisión por almacén']],
+                    'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'date' => $data['revisión']],
+                    'reviewer' => ['title' => 'Revisa', 'name' => $this->approvalChain->reviewer->name, 'date' => $data['aprobado por revisor']],
+                    'approver' => ['title' => 'Aprueba', 'name' => $this->approvalChain->approver->name, 'date' => $data['aprobado por gerencia']],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer->name, 'date' => $data['aprobado por DG']],
+                    'purchaser' => ['title' => 'Comprador', 'name' => (filled($this->purchaser) ? $this->purchaser->name : 'Sin asignar'), 'date' => $data['comprador asignado']],
+                ];
+            }
+        }
+        if (session()->get('company_id') == 1) { //ID 1:GPT IM
+            $progress = [
+                'requester' => ['title' => 'Solicita', 'name' => $this->approvalChain->requester->name, 'date' => $data['revisión por almacén']],
+                'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'date' => $data['revisión']],
+                'reviewer' => ['title' => 'Revisa', 'name' => $this->approvalChain->reviewer->name, 'date' => $data['aprobado por revisor']],
+                'approver' => ['title' => 'Aprueba', 'name' => $this->approvalChain->approver->name, 'date' => $data['aprobado por gerencia']],
+                'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer->name, 'date' => $data['aprobado por DG']],
+                'purchaser' => ['title' => 'Comprador', 'name' => (filled($this->purchaser) ? $this->purchaser->name : 'Sin asignar'), 'date' => $data['comprador asignado']],
+            ];
+        }
+
+        return $progress;
+    }
 
     public function company(): BelongsTo
     {
@@ -185,4 +306,3 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             ->orderBy('id', 'desc');
     }
 }
-
