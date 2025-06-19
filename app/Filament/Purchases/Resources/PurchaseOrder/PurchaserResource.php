@@ -2,7 +2,9 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
+use Money\Money;
 use Filament\Forms;
+use Money\Currency;
 use Filament\Tables;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -16,12 +18,15 @@ use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use App\Models\PurchaseRequisition;
 use Filament\Forms\Components\Tabs;
+use Money\Currencies\ISOCurrencies;
 use Illuminate\Support\Facades\Storage;
+use Money\Formatter\IntlMoneyFormatter;
 use Filament\Notifications\Notification;
 use Filament\Support\Enums\IconPosition;
 use App\Services\OrderCalculationService;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\Support\MediaStream;
+use App\Infolists\Components\PRProgressApproval;
 use Filament\Infolists\Components\Actions\Action;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
@@ -30,7 +35,6 @@ use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseResource\PurchaserResource\RelationManagers;
-use App\Infolists\Components\PRProgressApproval;
 
 
 class PurchaserResource extends Resource  implements HasShieldPermissions
@@ -388,12 +392,22 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                     ->label('Unidad'),
                                                                 Infolists\Components\TextEntry::make('quantity')
                                                                     ->label('Cantidad'),
+                                                                // Infolists\Components\TextEntry::make('unit_price')
+                                                                //     ->label('Precio unitario')
+                                                                //     ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
                                                                 Infolists\Components\TextEntry::make('unit_price')
-                                                                    ->label('Precio unitario')
-                                                                    ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
+                                                                    ->formatStateUsing(function ($state, $record) {
+                                                                       $currency = $record->purchase->currency;
+                                                                        $state =   new Money($state, new Currency($currency));
+                                                                        return moneyFormatter($state, $currency) . $currency;
+                                                                    }),
                                                                 Infolists\Components\TextEntry::make('sub_total')
                                                                     ->label('Subtotal')
-                                                                    ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
+                                                                    ->formatStateUsing(function ($state, $record) {
+                                                                        $currency = $record->purchase->currency;
+                                                                        $state =   new Money($state, new Currency($currency));
+                                                                        return moneyFormatter($state, $currency) . $currency;
+                                                                    }),
                                                                 Infolists\Components\TextEntry::make('observation')
                                                                     ->label('Observación')
                                                                     ->columnSpanFull(),

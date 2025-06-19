@@ -20,6 +20,7 @@ class OrderCalculationService
     {
         $this->order = PurchaseOrder::with(['items'])->find($id);
         $this->locale = $this->localeOptions[$this->order->currency];
+
     }
     public function moneyFormatter($value)
     {

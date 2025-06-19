@@ -71,6 +71,10 @@ class HistoryResource extends Resource
                 Tables\Columns\TextColumn::make('project.name')
                     ->label('Proyecto')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('motive')
+                    ->label('Referencia')
+                    ->words(5)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('date_delivery')
                     ->label('Fecha deseable de entrega')
                     ->date()

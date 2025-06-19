@@ -35,44 +35,42 @@ class ItemsRelationManager extends RelationManager
             $component = [
                 MoneyInput::make('unit_price')
                     ->label('Precio unitario')
-                    ->currency('MXN')
-                    ->locale('es_MX')
                     ->required()
+                    ->decimals(4)
                     ->minValue(0)
-                    ->afterStateHydrated(function ($component,  $state) {
-                        if (is_null($state)) {
-                            return null;
-                        }
-                        if (! is_numeric($state)) {
-                            return $state;
-                        }
-                        if ($state == 0) {
-                            return 0;
-                        }
-                        $component->state($state / 100);
-                    })
+                    // ->afterStateHydrated(function ($component,  $state) {
+                    //     if (is_null($state)) {
+                    //         return null;
+                    //     }
+                    //     if (! is_numeric($state)) {
+                    //         return $state;
+                    //     }
+                    //     if ($state == 0) {
+                    //         return 0;
+                    //     }
+                    //     $component->state($state / 100);
+                    // })
                     ->numeric()
             ];
         }
         if ($this->getOwnerRecord()->currency == 'USD') {
             $component =  [MoneyInput::make('unit_price')
                 ->label('Precio unitario')
-                ->currency('USD')
-                ->locale('en_US')
                 ->required()
+                ->decimals(4)
                 ->minValue(0)
-                ->afterStateHydrated(function ($component,  $state) {
-                    if (is_null($state)) {
-                        return null;
-                    }
-                    if (! is_numeric($state)) {
-                        return $state;
-                    }
-                    if ($state == 0) {
-                        return 0;
-                    }
-                    $component->state($state / 100);
-                })
+                // ->afterStateHydrated(function ($component,  $state) {
+                //     if (is_null($state)) {
+                //         return null;
+                //     }
+                //     if (! is_numeric($state)) {
+                //         return $state;
+                //     }
+                //     if ($state == 0) {
+                //         return 0;
+                //     }
+                //     $component->state($state / 100);
+                // })
                 ->numeric()];
         }
 
@@ -86,22 +84,22 @@ class ItemsRelationManager extends RelationManager
                 ->label('Producto/Servicio')
                 ->options(function () {
                     $type = $this->getOwnerRecord()->requisition->category;
-                        if (session()->get('company_id') == 1) { //ID 1:GPT IM
-                            return Product::where('status', 'aprobado')
-                                ->where('company_id', session()->get('company_id'))
-                                ->pluck('name', 'id');
-                        }
+                    if (session()->get('company_id') == 1) { //ID 1:GPT IM
+                        return Product::where('status', 'aprobado')
+                            ->where('company_id', session()->get('company_id'))
+                            ->pluck('name', 'id');
+                    }
 
-                        if (filled($type)) {
-                            return Product::where('status', 'aprobado')
-                                ->where('company_id', session()->get('company_id'))
-                                ->where('type_purchase', $type)
-                                ->pluck('name', 'id');
-                        } else {
-                              return Product::where('status', 'aprobado')
-                                ->where('company_id', session()->get('company_id'))
-                                ->pluck('name', 'id');
-                        }
+                    if (filled($type)) {
+                        return Product::where('status', 'aprobado')
+                            ->where('company_id', session()->get('company_id'))
+                            ->where('type_purchase', $type)
+                            ->pluck('name', 'id');
+                    } else {
+                        return Product::where('status', 'aprobado')
+                            ->where('company_id', session()->get('company_id'))
+                            ->pluck('name', 'id');
+                    }
                 })
                 ->searchPrompt('Busca los productos o servicios por su descripción')
                 ->searchable()
@@ -145,12 +143,8 @@ class ItemsRelationManager extends RelationManager
         if ($this->getOwnerRecord()->currency == 'USD') {
             $column = [
                 MoneyColumn::make('unit_price')
-                    ->currency('USD')
-                    ->locale('en_US')
                     ->label('Precio unitario'),
                 MoneyColumn::make('sub_total')
-                    ->currency('USD')
-                    ->locale('en_US')
                     ->label('Importe')
                     ->summarize(Sum::make()->label('Subtotal')->money('USD', divideBy: 100, locale: 'en_US'))
             ];
@@ -159,18 +153,13 @@ class ItemsRelationManager extends RelationManager
         if ($this->getOwnerRecord()->currency == 'MXN') {
             $column = [
                 MoneyColumn::make('unit_price')
-                    ->currency('MXN')
-                    ->locale('es_MX')
                     ->label('Precio unitario'),
                 MoneyColumn::make('sub_total')
-                    ->currency('MXN')
-                    ->locale('es_MX')
                     ->label('Importe')
                     ->summarize(Sum::make()->label('Subtotal')->money('USD', divideBy: 100, locale: 'en_USD')),
             ];
         }
         $columns = array_merge($columns, $column);
-
 
         return $table
             ->recordTitleAttribute('product.name')

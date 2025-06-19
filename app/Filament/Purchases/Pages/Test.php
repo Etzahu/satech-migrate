@@ -31,11 +31,11 @@ class Test extends Page implements HasForms
     {
         //  parent::mount();
         // Load all orders
-        $this->orders = PurchaseOrder::has('items','=',1)
+        $this->orders = PurchaseOrder::has('items','>',1)
             ->with(['requisition.items.product', 'items'])
             ->where('company_id', 1)
             ->get();
-        dd($this->orders?->toArray());
+
         // Establecer la primera orden como la actual
         $this->currentOrder = $this->orders->first();
         // dd($this->currentOrder->toArray());

@@ -33,6 +33,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
 use Filament\Notifications\Notification;
 use App\Services\OrderCalculationService;
+use Money\Formatter\DecimalMoneyFormatter;
 use Rap2hpoutre\FastExcel\SheetCollection;
 use function Spatie\LaravelPdf\Support\pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -1344,10 +1345,10 @@ Route::get('order-resumen', function () {
     //     }
     // }
     // return;
-    $models = PurchaseOrder::has('items','=',1)
-            ->with(['requisition.items.product', 'items'])
-            ->where('company_id', 1)
-            ->get();
+    $models = PurchaseOrder::has('items', '=', 1)
+        ->with(['requisition.items.product', 'items'])
+        ->where('company_id', 1)
+        ->get();
 
     // dd($models->count());
 
@@ -1408,17 +1409,32 @@ Route::get('reorder-products', function () {
 });
 
 
-Route::get('history-service',function(){
-    $rq = PurchaseRequisition::find(535);
-    return $rq->progress;
-    // $history = $rq->status()->history()
-    // ->from('aprobado por gerencia')
-    // ->to('aprobado por DG')
-    // ->get();
+Route::get('history-service', function () {
+
+    $currencies = new ISOCurrencies();
+    foreach ($currencies as $currency) {
+        echo '<br>';
+         dump($currency); // prints an available currency code within the repository
+        echo '<br>';
+    }
 
 
-    //  $revisions = $rq->status()->timesWas('aprobado por DG');
-    // //  dd($revisions);
-    // return $history;
 
+    // Inputs del usuario
+    $input1 = '10.0044';
+    $input2 = '10.0044';
+
+    // Convertir inputs a objetos Money (en milésimas para BHD)
+    $money1 = Money::CLF((int) (floatval($input1) * 10000)); // 0.0044 * 1000 = 4.4 -> 4 milésimas
+    $money2 = Money::CLF((int) (floatval($input2) * 10000)); // 0.0044 * 1000 = 4.4 -> 4 milésimas
+
+    // Sumar los valores
+    $result = $money1->add($money2);
+
+    // Formatear el resultado
+    $currencies = new ISOCurrencies();
+    $formatter = new DecimalMoneyFormatter($currencies);
+    $formattedResult = $formatter->format($result);
+
+    echo $formattedResult;
 });
