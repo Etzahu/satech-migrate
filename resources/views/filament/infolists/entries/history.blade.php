@@ -1,6 +1,6 @@
 <div>
     <div>
-        <div class="flex flex-col p-6 bg-gray-100 sm:py-12">
+        <div class="flex flex-col p-6 bg-gray-100 sm:py-12 dark:bg-gray-800">
             <ul class="list-none">
                 @foreach ($getRecord()->status()->history()->orderBy('id', 'desc')->get() as $item)
                     <li class="rounded-lg cursor-pointer group">
@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="h-full border-l-2 border-gray-400"></div>
                             </div>
-                            <div class="flex flex-col p-2 pr-6 ml-2 group-hover:bg-white rounded-xl">
+                            <div class="flex flex-col p-2 pr-6 ml-2 group-hover:bg-white rounded-xl dark:group-hover:bg-gray-600">
                                 <div class="ml-4 text-xl font-medium capitalize-first">
                                     @if (filled($item->from))
                                         {{ ucfirst(strtolower($item->from))  }}
@@ -42,5 +42,4 @@
             </ul>
         </div>
     </div>
-
 </div>

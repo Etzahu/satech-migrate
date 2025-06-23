@@ -4,6 +4,7 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
 
 use Money\Money;
 use Filament\Actions;
+use Brick\Math\BigDecimal;
 use App\Models\PurchaseOrder;
 use Filament\Infolists\Infolist;
 use Filament\Actions\ActionGroup;
@@ -60,17 +61,19 @@ class ViewOrder extends ViewRecord
                         $minAmount = 0;
                         $maxAmount = 0;
                         if ($this->record->currency == 'USD') {
-                            $minAmount = Money::USD(1);
-                            $maxAmount = Money::USD(1500000);
+                            // $minAmount = Money::USD(1);
+                            // $maxAmount = Money::USD(1500000);
+                            $minAmount = 1; //$1;
+                            $maxAmount = 15000; //$15,000
                         }
                         if ($this->record->currency == 'MXN') {
-                            $minAmount = Money::MXN(1);
-                            $maxAmount = Money::MXN(30000000);
+                            $minAmount = 1; //$1;
+                            $maxAmount = 300000; //$300,000;
                         }
                         $service = new OrderCalculationService($this->record->id);
                         $total = $service->getTotal();
 
-                        if ($total->greaterThanOrEqual($minAmount) && $total->lessThanOrEqual($maxAmount)) {
+                        if ($total->isGreaterThanOrEqualTo($minAmount) && $total->isLessThanOrEqualTo($maxAmount)) {
                             $this->record->status()->transitionTo('autorizada para proveedor');
                         }
                     }

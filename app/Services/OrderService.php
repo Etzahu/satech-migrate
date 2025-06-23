@@ -66,8 +66,10 @@ class OrderService
         $media[] = $data->getMedia('quote')->first();
 
         $itemsFormatted = $items->map(function ($item) use ($data, $service) {
-            $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
-            $subTotal =  new Money($item->sub_total, new Currency($data->currency));
+            // $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
+            // $subTotal =  new Money($item->sub_total, new Currency($data->currency));
+            $unitPrice = $item->unit_price;
+            $subTotal =  $item->sub_total;
             return [
                 'code' => $item->product->code,
                 'name' => $item->product->name,

@@ -4,6 +4,7 @@ namespace App\StateMachines;
 
 use Money\Money;
 use App\Models\User;
+use Brick\Math\BigDecimal;
 use App\Services\OrderService;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PurchaseOrder\Notification;
@@ -28,7 +29,7 @@ class PurchaseOrderStateMachine extends StateMachine
             'aprobado por DG nivel 1' =>  ['aprobado por DG nivel 2', 'devuelto por DG nivel 2', 'cancelado por DG nivel 2', 'autorizada para proveedor'],
             'aprobado por DG nivel 2' => ['autorizada para proveedor'],
             'autorizada para proveedor' => ['reabierta para edición'],
-            
+
             'devuelto por gerente de compras' => ['revisión gerente de compras'],
             'devuelto por gerente solicitante' => ['revisión gerente de compras'],
             'devuelto por DG nivel 1' => ['revisión gerente de compras'],
@@ -117,19 +118,18 @@ class PurchaseOrderStateMachine extends StateMachine
                 $data = $service->generateDataEmail($model->id, 'revisar');
                 $recipients = User::role('autoriza_nivel-2-orden_compra')->get();
                 $recipients = $service->getRecipientsArray($recipients);
-
                 $maxAmount = 0;
                 if ($model->currency == 'USD') {
-
-                    $maxAmount = Money::USD(1500000);
+                    // $maxAmount = Money::USD(1500000);
+                    $maxAmount =    15000; //$15,000
                 }
                 if ($model->currency == 'MXN') {
-
-                    $maxAmount = Money::MXN(30000000);
+                    // $maxAmount = Money::MXN(30000000);
+                    $maxAmount =    300000; //300,000
                 }
                 $service = new OrderCalculationService($model->id);
                 $total = $service->getTotal();
-                if ($total->greaterThan($maxAmount) ) {
+                if ($total->isGreaterThan($maxAmount)) {
                     Mail::to($recipients)->send(new Notification($data));
                 }
             }],

@@ -132,7 +132,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                     $set('category', $data['selected']);
                                                     $record->save();
                                                     if ($data['selected'] == 'servicio') {
-                                                        if( session()->get('company_id') == 2 ){ //ID 2:TECHENERGY
+                                                        if (session()->get('company_id') == 2) { //ID 2:TECHENERGY
                                                             $record->items()
                                                                 ->whereHas('product', function ($query) {
                                                                     $query->where('type_purchase', 'proveeduria');
@@ -141,13 +141,13 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                         }
                                                     }
                                                     if ($data['selected'] == 'proveeduria') {
-                                                           if( session()->get('company_id') == 2 ){ //ID 2:TECHENERGY
+                                                        if (session()->get('company_id') == 2) { //ID 2:TECHENERGY
                                                             $record->items()
                                                                 ->whereHas('product', function ($query) {
                                                                     $query->where('type_purchase', 'servicio');
                                                                 })
                                                                 ->forceDelete();
-                                                           }
+                                                        }
                                                     }
                                                     Notification::make()
                                                         ->title('Se aplicó el cambio')
@@ -197,27 +197,36 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->label('Proyecto')
                                     ->options(function () {
                                         $management = auth()->user()->management;
+                                        $result = [];
                                         if (filled($management->restriction_requisition)) {
                                             $projects = auth()->user()->management->projects->pluck('id');
                                             if ($management->restriction_requisition == 'excluir') {
-                                                return ProjectPurchase::where('company_id', session()->get('company_id'))
+                                                $result = ProjectPurchase::where('company_id', session()->get('company_id'))
                                                     ->whereNotIn('id', $projects)
                                                     ->where('status', 'activo')
-                                                    ->pluck('name', 'id');
+                                                    ->orderBy('created_at', 'desc')
+                                                    ->get();
                                             }
                                             if ($management->restriction_requisition == 'limitar') {
-                                                return ProjectPurchase::where('company_id', session()->get('company_id'))
+                                                $result = ProjectPurchase::where('company_id', session()->get('company_id'))
                                                     ->whereIn('id', $projects)
                                                     ->where('status', 'activo')
-                                                    ->pluck('name', 'id');
+                                                    ->orderBy('created_at', 'desc')
+                                                    ->get();
                                             }
+                                        } else {
+                                            $result = ProjectPurchase::where('company_id', session()->get('company_id'))
+                                                ->where('status', 'activo')
+                                                ->orderBy('created_at', 'desc')
+                                                ->get();
                                         }
-                                        return ProjectPurchase::where('company_id', session()->get('company_id'))
-                                            ->where('status', 'activo')
-                                            ->pluck('name', 'id');
+                                        $result = collect($result);
+                                        $result =$result->mapWithKeys(function ($item) {
+                                            return [$item->id => "($item->code)" . $item->name];
+                                        })->toArray();
+                                        return $result;
                                     })
-                                    // ->relationship('project', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('company_id', session()->get('company_id'))->where('status', 'activo'))
-                                    ->getOptionLabelFromRecordUsing(fn(Model $record) => "({$record->code}){$record->name}")
+                                    //    { ->getOptionLabelFromRecordUsing(fn(Model $record) => "({$record->code}){$record->name}")}
                                     ->searchable()
                                     ->preload()
                                     ->required(),
@@ -342,15 +351,6 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ->schema([
                                 Infolists\Components\ViewEntry::make('progress')
                                     ->view('filament.infolists.entries.progress-approval')
-                                    // ->state(function ($record) {
-                                    //     // function ($record) {
-                                    //     // $service = new PRInfolistService();
-                                    //     // return ['state' => $service->approvalProgress($record->id)];
-                                    //     // }
-                                    //     $service = new PRInfolistService();
-                                    //     return $service->approvalProgress($record->id);
-
-                                    // })
                             ])
                             ->columns(1),
                         Infolists\Components\Tabs\Tab::make('Fichas técnicas')
