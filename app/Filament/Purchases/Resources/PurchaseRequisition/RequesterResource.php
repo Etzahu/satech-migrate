@@ -91,8 +91,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             ->schema([
                                 Forms\Components\Select::make('category')
                                     ->label('Categoría de requisición')
-                                    ->helperText(new HtmlString("<span class='text-blue-600'>Seleccione si la requisición es para solicitar <strong>productos</strong> o <strong>servicios</strong>. Esto determinará el tipo de partidas que puede cargar.</span>"))
-                                    // ->helperText('')
+                                    ->helperText(new HtmlString("<p class='p-1 text-white bg-red-500 rounded-md'>Seleccione si la requisición es para solicitar <strong>productos</strong> o <strong>servicios</strong>. Esto determinará el tipo de partidas que puede cargar.</p>"))
                                     ->options([
                                         'servicio' => 'Servicio',
                                         'proveeduria' => 'Proveeduría',

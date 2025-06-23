@@ -31,16 +31,18 @@ class PurchaseOrderController extends Controller
         }
 
         $itemsFormatted = $items->map(function ($item) use ($data, $service) {
-            $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
-            $subTotal =  new Money($item->sub_total, new Currency($data->currency));
+            // $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
+            // $subTotal =  new Money($item->sub_total, new Currency($data->currency));
+            $unitPrice =  $item->unit_price;
+            $subTotal = $item->sub_total;
             return [
                 'code' => $item->product->code,
                 'name' => $item->product->name,
                 'brand' => $item->product->brand?->name,
                 'unit' => $item->product->unit->acronym,
                 "quantity" => $item->quantity,
-                "unit_price" => $service->moneyFormatter($unitPrice),
-                "sub_total" => $service->moneyFormatter($subTotal),
+                "unit_price" => $service->brickFormatter($unitPrice),
+                "sub_total" => $service->brickFormatter($subTotal),
                 "observation" => $item->observation,
             ];
         });

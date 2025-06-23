@@ -3,10 +3,9 @@
 namespace App\Models;
 
 
+use App\Casts\MoneyCast;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
-use Pelmered\FilamentMoneyField\Casts\MoneyCast;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -48,6 +47,9 @@ class PurchaseOrderItem extends Model implements Auditable
         'id' => 'integer',
         'purchase_order_id' => 'integer',
         'product_id' => 'integer',
+        // 'unit_price' => MoneyCast::class,
+        // 'sub_total' => MoneyCast::class,
+
     ];
 
     public function purchase(): BelongsTo

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
+use Closure;
 use Money\Money;
 use Filament\Forms;
 use Money\Currency;
@@ -10,15 +11,18 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Infolists;
 use Filament\Forms\Form;
+use Brick\Math\BigDecimal;
 use Filament\Tables\Table;
 use App\Models\PurchaseOrder;
 use App\Models\ProviderContact;
 use App\Models\PurchaseProvider;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Illuminate\Support\HtmlString;
 use App\Models\PurchaseRequisition;
 use Filament\Forms\Components\Tabs;
 use Money\Currencies\ISOCurrencies;
+use App\Forms\Components\MoneyInput;
 use Illuminate\Support\Facades\Storage;
 use Money\Formatter\IntlMoneyFormatter;
 use Filament\Notifications\Notification;
@@ -27,12 +31,11 @@ use App\Services\OrderCalculationService;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\Support\MediaStream;
 use App\Infolists\Components\PRProgressApproval;
+// use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
 use Filament\Infolists\Components\Actions\Action;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
-use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseResource\PurchaserResource\RelationManagers;
 
@@ -263,24 +266,18 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                             ->columns(3)
                             ->schema([
                                 MoneyInput::make('discount')
-                                    ->visible(fn(Forms\Get $get) => $get('currency') == 'MXN')
-                                    ->label('Descuento')
-                                    ->currency('MXN')
-                                    ->locale('es_MX')
+                                    ->label('Precio unitario')
+                                    ->helperText(new HtmlString("<p class='p-1 text-white bg-red-500 rounded-md'>La cantidad debe ser un número sin espacios ni comillas y con exactamente 4 decimales (ej: 0.0000).</p>"))
                                     ->required()
-                                    ->default(0)
-                                    ->minValue(0)
-                                    ->live()
-                                    ->numeric(),
-                                MoneyInput::make('discount')
-                                    ->visible(fn(Forms\Get $get) => $get('currency') == 'USD')
-                                    ->label('Descuento')
-                                    ->currency('USD')
-                                    ->locale('en_US')
-                                    ->required()
-                                    ->minValue(0)
-                                    ->live()
-                                    ->numeric(),
+                                    ->rules([
+                                        fn(): Closure => function (string $attribute, $value, Closure $fail) {
+                                            if (preg_match('/^\d+\.\d{4}$/', $value)) {
+                                                return true;
+                                            } else {
+                                                $fail('El :attribute no es válido.');
+                                            }
+                                        },
+                                    ]),
                             ]),
                         Tabs\Tab::make('Entrega')
                             ->columns(1)
@@ -373,7 +370,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->contained(false)
                                                     ->schema([
                                                         Infolists\Components\Fieldset::make('')
-
                                                             ->extraAttributes(function ($state, $record) {
                                                                 if (auth()->user()->hasRole('comprador')) {
                                                                     if ($record->unit_price == 0) {
@@ -392,21 +388,23 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                     ->label('Unidad'),
                                                                 Infolists\Components\TextEntry::make('quantity')
                                                                     ->label('Cantidad'),
-                                                                // Infolists\Components\TextEntry::make('unit_price')
-                                                                //     ->label('Precio unitario')
-                                                                //     ->formatStateUsing(fn(string $state): string => '$' . ((int)$state) / 100),
                                                                 Infolists\Components\TextEntry::make('unit_price')
-                                                                    ->formatStateUsing(function ($state, $record) {
-                                                                       $currency = $record->purchase->currency;
-                                                                        $state =   new Money($state, new Currency($currency));
-                                                                        return moneyFormatter($state, $currency) . $currency;
+                                                                ->label('Precio unitario')
+                                                                    ->formatStateUsing(function ($state) {
+                                                                        if (blank($state)) {
+                                                                            return '0.0000';
+                                                                        }
+                                                                        $state = BigDecimal::of($state)->dividedBy(10000, 4);
+                                                                        return (string) $state;
                                                                     }),
                                                                 Infolists\Components\TextEntry::make('sub_total')
                                                                     ->label('Subtotal')
-                                                                    ->formatStateUsing(function ($state, $record) {
-                                                                        $currency = $record->purchase->currency;
-                                                                        $state =   new Money($state, new Currency($currency));
-                                                                        return moneyFormatter($state, $currency) . $currency;
+                                                                    ->formatStateUsing(function ($state) {
+                                                                        if (blank($state)) {
+                                                                            return '0.0000';
+                                                                        }
+                                                                        $state = BigDecimal::of($state)->dividedBy(10000, 4);
+                                                                        return (string) $state;
                                                                     }),
                                                                 Infolists\Components\TextEntry::make('observation')
                                                                     ->label('Observación')
@@ -556,10 +554,15 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                         Infolists\Components\Tabs\Tab::make('Descuento del proveedor')
                                             ->columns(3)
                                             ->schema([
-                                                MoneyEntry::make('discount')
+                                                Infolists\Components\TextEntry::make('discount')
                                                     ->label('Descuento')
-                                                    ->currency('MXN')
-                                                    ->locale('es_MX'),
+                                                    ->formatStateUsing(function ($state) {
+                                                        if (blank($state)) {
+                                                            return '0.0000';
+                                                        }
+                                                        $state = BigDecimal::of($state)->dividedBy(10000, 4);
+                                                        return (string) $state;
+                                                    })
                                             ]),
                                         Infolists\Components\Tabs\Tab::make('Entrega')
                                             ->columns(1)

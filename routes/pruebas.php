@@ -9,16 +9,20 @@ use App\Models\Company;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Management;
+use Brick\Math\BigDecimal;
 use App\Models\MeasureUnit;
+use Brick\Math\RoundingMode;
 use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
 use App\Models\CategoryFamily;
 use Filament\Facades\Filament;
 use App\Models\ProjectPurchase;
 use App\Models\ProviderContact;
+
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\PurchaseProvider;
-
+use Brick\Money\Money as BMoney;
+use App\Models\PurchaseOrderItem;
 use Illuminate\Support\Facades\DB;
 use App\Models\PurchaseRequisition;
 use App\Services\PRInfolistService;
@@ -29,12 +33,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Illuminate\Support\Facades\Route;
+use Brick\Money\Context\CustomContext;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
 use Filament\Notifications\Notification;
 use App\Services\OrderCalculationService;
 use Money\Formatter\DecimalMoneyFormatter;
 use Rap2hpoutre\FastExcel\SheetCollection;
+
 use function Spatie\LaravelPdf\Support\pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\PurchaseRequisitionApprovalChain;
@@ -1408,33 +1414,72 @@ Route::get('reorder-products', function () {
     }
 });
 
-
 Route::get('history-service', function () {
+    function validarCantidad($input) {
+    // Verifica que el input sea numérico y tenga exactamente 4 decimales
+    if (preg_match('/^\d+\.\d{4}$/', $input)) {
+        return true;
+    }
+    return false;
+}
 
-    $currencies = new ISOCurrencies();
-    foreach ($currencies as $currency) {
+// Ejemplos de uso
+$cantidades = [
+    "1,123.4567",  // Válido
+    "12.3456",   // Válido
+    "1.2345",    // Válido
+    "123.456",   // Inválido (solo 3 decimales)
+    "123.45678", // Inválido (5 decimales)
+    "123.45ab",  // Inválido (contiene letras)
+    "123.4567 ", // Inválido (contiene espacio)
+    "abc",       // Inválido (no numérico)
+    "123.456.7",  // Inválido (dos puntos)
+    '345678.1200'
+
+];
+
+foreach ($cantidades as $cantidad) {
+    if (validarCantidad($cantidad)) {
         echo '<br>';
-         dump($currency); // prints an available currency code within the repository
+        echo "Cantidad válida: $cantidad\n";
+        echo '<br>';
+    } else {
+        echo '<br>';
+        echo "Cantidad inválida: $cantidad\n";
         echo '<br>';
     }
+}
+    return;
+    // $items = PurchaseOrderItem::all();
 
+    // try {
+    //     DB::beginTransaction();
+    //     foreach ($items as $item) {
+    //         $item->unit_price =( $item->unit_price /100) * 10000;
+    //         $item->sub_total = ($item->sub_total / 100) * 10000;
+    //         $item->save();
+    //     }
+    //     DB::commit();
+    // } catch (\Exception $e) {
+    //     DB::rollBack();
+    //     throw $e;
+    //     logger()->error($e->getMessage());
+    // }
 
+    // return;
+    // $item = new PurchaseOrderItem();
 
-    // Inputs del usuario
-    $input1 = '10.0044';
-    $input2 = '10.0044';
+    // $item->unit_price = '123.4567';
 
-    // Convertir inputs a objetos Money (en milésimas para BHD)
-    $money1 = Money::CLF((int) (floatval($input1) * 10000)); // 0.0044 * 1000 = 4.4 -> 4 milésimas
-    $money2 = Money::CLF((int) (floatval($input2) * 10000)); // 0.0044 * 1000 = 4.4 -> 4 milésimas
+    // dd($item->unit_price);
+    // return;
 
-    // Sumar los valores
-    $result = $money1->add($money2);
+    // $value = BigDecimal::of('123.4567')->toScale(4);
+    // $storedInteger = $value->multipliedBy(10000)->toInt(); // 1234567
 
-    // Formatear el resultado
-    $currencies = new ISOCurrencies();
-    $formatter = new DecimalMoneyFormatter($currencies);
-    $formattedResult = $formatter->format($result);
+    // dump($storedInteger);
 
-    echo $formattedResult;
+    // Recuperación
+    $decimalValue = BigDecimal::of('33038000')->dividedBy(10000, 4)->toBigDecimal();
+    echo ($decimalValue);
 });
