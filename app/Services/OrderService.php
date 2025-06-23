@@ -74,8 +74,8 @@ class OrderService
                 'brand' => $item->product->brand?->name,
                 'unit' => $item->product->unit->acronym,
                 "quantity" => $item->quantity,
-                "unit_price" => $service->moneyFormatter($unitPrice),
-                "sub_total" => $service->moneyFormatter($subTotal),
+                "unit_price" => $service->brickFormatter($unitPrice),
+                "sub_total" => $service->brickFormatter($subTotal),
                 "observation" => $item->observation,
             ];
         });
@@ -114,7 +114,7 @@ class OrderService
         $moreUsers[] = User::find(106)->email;
         $moreUsers[] = User::role('gerente_compras')->first()->email;
         $usersWareHouse = User::role('revisa_almacen_requisicion_compra')->get()->flatten();
-        
+
         foreach ($usersWareHouse as $user) {
             $moreUsers[] = $user->email;
         }

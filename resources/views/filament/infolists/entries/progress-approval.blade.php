@@ -5,7 +5,7 @@
             <div class="w-1/3 px-6 text-center">
                 @if (filled($step['name']) && isset($step['date']))
                     <div
-                        class="flex flex-col items-center justify-center truncate bg-green-400 border border-gray-200 rounded-lg">
+                        class="flex flex-col items-center justify-center truncate bg-green-400 border border-gray-200 rounded-lg dark:bg-green-700">
                         <div class="flex items-center justify-center w-full py-4 bg-transparent h-1/3 icon-step">
                             <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
                                 clip-rule="evenodd">
@@ -14,7 +14,7 @@
                             </svg>
                         </div>
                         <div
-                            class="flex flex-col items-center justify-center w-full h-24 px-1 bg-green-300 rounded-b-lg body-step">
+                            class="flex flex-col items-center justify-center w-full h-24 px-1 bg-green-300 rounded-b-lg dark:bg-green-600 body-step">
                             <h2 class="text-sm font-bold"> {{ $step['title'] }}</h2>
                             <p class="text-xs text-gray-600">
                                 {{ $step['name'] }}
