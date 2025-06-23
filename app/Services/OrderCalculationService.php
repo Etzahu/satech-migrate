@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
-use Money\Money;
 use Money\Currency;
+use Brick\Money\Money;
 use App\Models\Company;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
@@ -94,10 +94,15 @@ class OrderCalculationService
     // }
     public function brickFormatter($value)
     {
-        $value = BigDecimal::of($value)->dividedBy(10000, 4);
-        // Redondear hacia arriba a 2 decimales
-        $value = $value->toScale(2, RoundingMode::CEILING);
-        return $value;
+        if (!$value instanceof BigDecimal) {
+            $value = BigDecimal::of($value)->dividedBy(10000, 4);
+            // Redondear hacia arriba a 2 decimales
+            $value = $value->toScale(2, RoundingMode::CEILING);
+        }
+
+        $amount = BrickMoney::of($value->__toString(), 'MXN');
+        return $amount->formatTo('es_MX'); // Salida: $100.57
+        // return $value;
     }
     public function getSubtotalItems($formatter = false)
     {
@@ -109,6 +114,9 @@ class OrderCalculationService
         $subtotal = BigDecimal::of($subtotal)->dividedBy(10000, 4, RoundingMode::UP);
         // Redondear hacia arriba a 2 decimales
         $subtotal = $subtotal->toScale(2, RoundingMode::CEILING);
+        if ($formatter) {
+            return $this->brickFormatter($subtotal);
+        }
         return $subtotal;
     }
 
@@ -118,6 +126,9 @@ class OrderCalculationService
 
         $total = $subtotal->minus($this->getDiscountProvider());
 
+        if ($formatter) {
+            return $this->brickFormatter($total);
+        }
         return $total;
     }
 
@@ -126,6 +137,9 @@ class OrderCalculationService
         $total = BigDecimal::of($this->order->discount)->dividedBy(10000, 4, RoundingMode::UP);
         // Redondear hacia arriba a 2 decimales
         $total = $total->toScale(2, RoundingMode::CEILING);
+        if ($formatter) {
+            return $this->brickFormatter($total);
+        }
         return $total;
     }
 
@@ -136,6 +150,9 @@ class OrderCalculationService
         $result = $subtotal->multipliedBy($iva);
         $result = $result->toScale(2, RoundingMode::CEILING);
 
+        if ($formatter) {
+            return $this->brickFormatter($result);
+        }
         return  $result;
     }
 
@@ -145,6 +162,9 @@ class OrderCalculationService
         $tax = $this->order->retention_iva / 100;
         $result = $subtotal->multipliedBy($tax);
         $result = $result->toScale(2, RoundingMode::CEILING);
+        if ($formatter) {
+            return $this->brickFormatter($result);
+        }
         return  $result;
     }
 
@@ -154,6 +174,10 @@ class OrderCalculationService
         $tax = $this->order->retention_isr / 100;
         $result = $subtotal->multipliedBy($tax);
         $result = $result->toScale(2, RoundingMode::CEILING);
+        if ($formatter) {
+            return $this->brickFormatter($result);
+        }
+        return $result;
     }
 
     public function getTotal($formatter = false)
@@ -161,6 +185,9 @@ class OrderCalculationService
         $subtotal =   $this->subtotalDiscount();
         $total = $subtotal->plus($this->getTaxIva());
         $total = $total->minus($this->getRetentionIva(), $this->getRetentionIsr());
+        if ($formatter) {
+            return $this->brickFormatter($total);
+        }
         return  $total;
     }
 }
