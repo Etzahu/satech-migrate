@@ -1393,10 +1393,6 @@ Route::get('reorder-products', function () {
         ->forceDelete();
     dump($model->items);
 
-
-
-
-
     return;
     $products = Product::all();
     try {
@@ -1415,57 +1411,42 @@ Route::get('reorder-products', function () {
 });
 
 Route::get('history-service', function () {
-    function validarCantidad($input) {
+    // function validarCantidad($input)
+    // {
     // Verifica que el input sea numérico y tenga exactamente 4 decimales
-    if (preg_match('/^\d+\.\d{4}$/', $input)) {
-        return true;
-    }
-    return false;
-}
-
-// Ejemplos de uso
-$cantidades = [
-    "1,123.4567",  // Válido
-    "12.3456",   // Válido
-    "1.2345",    // Válido
-    "123.456",   // Inválido (solo 3 decimales)
-    "123.45678", // Inválido (5 decimales)
-    "123.45ab",  // Inválido (contiene letras)
-    "123.4567 ", // Inválido (contiene espacio)
-    "abc",       // Inválido (no numérico)
-    "123.456.7",  // Inválido (dos puntos)
-    '345678.1200'
-
-];
-
-foreach ($cantidades as $cantidad) {
-    if (validarCantidad($cantidad)) {
-        echo '<br>';
-        echo "Cantidad válida: $cantidad\n";
-        echo '<br>';
-    } else {
-        echo '<br>';
-        echo "Cantidad inválida: $cantidad\n";
-        echo '<br>';
-    }
-}
-    return;
-    // $items = PurchaseOrderItem::all();
-
-    // try {
-    //     DB::beginTransaction();
-    //     foreach ($items as $item) {
-    //         $item->unit_price =( $item->unit_price /100) * 10000;
-    //         $item->sub_total = ($item->sub_total / 100) * 10000;
-    //         $item->save();
+    //     if (preg_match('/^\d+\.\d{4}$/', $input)) {
+    //         return true;
     //     }
-    //     DB::commit();
-    // } catch (\Exception $e) {
-    //     DB::rollBack();
-    //     throw $e;
-    //     logger()->error($e->getMessage());
+    //     return false;
     // }
 
+    // // Ejemplos de uso
+    // $cantidades = [
+    //     "1,123.4567",  // Válido
+    //     "12.3456",   // Válido
+    //     "1.2345",    // Válido
+    //     "123.456",   // Inválido (solo 3 decimales)
+    //     "123.45678", // Inválido (5 decimales)
+    //     "123.45ab",  // Inválido (contiene letras)
+    //     "123.4567 ", // Inválido (contiene espacio)
+    //     "abc",       // Inválido (no numérico)
+    //     "123.456.7",  // Inválido (dos puntos)
+    //     '345678.1200'
+
+    // ];
+
+    // foreach ($cantidades as $cantidad) {
+    //     if (validarCantidad($cantidad)) {
+    //         echo '<br>';
+    //         echo "Cantidad válida: $cantidad\n";
+    //         echo '<br>';
+    //     } else {
+    //         echo '<br>';
+    //         echo "Cantidad inválida: $cantidad\n";
+    //         echo '<br>';
+    //     }
+    // }
+    // return;
     // return;
     // $item = new PurchaseOrderItem();
 
@@ -1479,7 +1460,36 @@ foreach ($cantidades as $cantidad) {
 
     // dump($storedInteger);
 
-    // Recuperación
-    $decimalValue = BigDecimal::of('33038000')->dividedBy(10000, 4)->toBigDecimal();
-    echo ($decimalValue);
+    // // Recuperación
+    // $decimalValue = BigDecimal::of('33038000')->dividedBy(10000, 4)->toBigDecimal();
+    // echo ($decimalValue);
+
+    $items = PurchaseOrderItem::all();
+    try {
+        DB::beginTransaction();
+        foreach ($items as $item) {
+            $item->unit_price = ($item->unit_price / 100) * 10000;
+            $item->sub_total = ($item->sub_total / 100) * 10000;
+            $item->save();
+        }
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+        logger()->error($e->getMessage());
+    }
+
+    $orders = PurchaseOrder::all();
+    try {
+        DB::beginTransaction();
+        foreach ($orders as $order) {
+            $order->discount = ($order->discount / 100) * 10000;
+            $order->save();
+        }
+        DB::commit();
+    } catch (\Exception $e) {
+        DB::rollBack();
+        throw $e;
+        logger()->error($e->getMessage());
+    }
 });
