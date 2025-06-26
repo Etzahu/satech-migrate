@@ -38,6 +38,7 @@ class HistoryResource extends Resource
             auth()->user()->hasRole('comprador') ||
             auth()->user()->hasRole('gerente_compras') ||
             auth()->user()->hasRole('super_admin') ||
+            auth()->user()->hasRole('visor_ordenes') ||
             auth()->user()->hasRole('administrador_compras');
     }
     public static function canCreate(): bool
