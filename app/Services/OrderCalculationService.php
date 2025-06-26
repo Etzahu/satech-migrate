@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Money\Currency;
-use Brick\Money\Money;
 use App\Models\Company;
 use Brick\Math\BigDecimal;
 use Brick\Math\RoundingMode;
@@ -189,5 +188,30 @@ class OrderCalculationService
             return $this->brickFormatter($total);
         }
         return  $total;
+    }
+
+    public function isOrderTotalBetweenLimits()
+    {
+        $minAmount = 0;
+        $maxAmount = 0;
+        if ($this->order->currency == 'USD') {
+            // $minAmount = Money::USD(1);
+            // $maxAmount = Money::USD(1500000);
+            $minAmount = 1; //$1;
+            $maxAmount = 15000; //$15,000
+        }
+        if ($this->order->currency == 'MXN') {
+            $minAmount = 1; //$1;
+            $maxAmount = 300000; //$300,000;
+        }
+
+        $total = $this->getTotal();
+
+        logger($this->getTotal());
+
+        if ($total->isGreaterThanOrEqualTo($minAmount) && $total->isLessThanOrEqualTo($maxAmount)) {
+            return true;
+        }
+        return false;
     }
 }

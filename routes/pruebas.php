@@ -1411,6 +1411,10 @@ Route::get('reorder-products', function () {
 });
 
 Route::get('history-service', function () {
+
+    $model = PurchaseOrder::find(402);
+    return $model->progress;
+    return;
     // function validarCantidad($input)
     // {
     // Verifica que el input sea numérico y tenga exactamente 4 decimales

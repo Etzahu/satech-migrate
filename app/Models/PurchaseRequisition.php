@@ -123,7 +123,8 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
 
         if (session()->get('company_id') == 2) {
             if ($this->category == 'servicio') {
-                unset($revisiones['revisión por almacén']);
+                // unset($revisiones['revisión por almacén']);
+                unset($revisiones[0]);
             }
         }
 
@@ -154,7 +155,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             }
 
             $registro = $query->first();
-            $fechas[$revision] = $registro ? $registro->created_at : null;
+            $fechas[$revision] = $registro ? $registro->created_at->format('d-m-Y') : null;
         }
         return $fechas;
     }

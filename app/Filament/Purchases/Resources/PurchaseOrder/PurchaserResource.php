@@ -389,7 +389,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                 Infolists\Components\TextEntry::make('quantity')
                                                                     ->label('Cantidad'),
                                                                 Infolists\Components\TextEntry::make('unit_price')
-                                                                ->label('Precio unitario')
+                                                                    ->label('Precio unitario')
                                                                     ->formatStateUsing(function ($state) {
                                                                         if (blank($state)) {
                                                                             return '0.0000';
@@ -419,6 +419,13 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ])
                                                     ->grid(1)
                                             ]),
+                                        Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
+                                            ->visible(fn($record) => $record->status !== 'borrador')
+                                            ->schema([
+                                                Infolists\Components\ViewEntry::make('progress')
+                                                    ->view('filament.infolists.entries.progress-approval')
+                                            ])
+                                            ->columns(1),
                                         Infolists\Components\Tabs\Tab::make('Condiciones de pago')
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('condition_payment')
@@ -663,11 +670,12 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ])
                                                     ->columns(5)
                                             ]),
-                                        // Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
-                                        //     ->schema([
-                                        //         PRProgressApproval::make('progress')
-                                        //     ])
-                                        //     ->columns(1),
+                                        Infolists\Components\Tabs\Tab::make('Comprador asignado')
+                                            ->visible(fn($record) => filled($record->requisition->purchaser))
+                                            ->schema([
+                                                Infolists\Components\TextEntry::make('purchaser.name')
+                                                    ->label('Nombre'),
+                                            ]),
                                         Infolists\Components\Tabs\Tab::make('Observaciones')
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('observation')
@@ -723,7 +731,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
 
 
                                     ])
-                                // fin infolist
 
                             ]),
                     ])
