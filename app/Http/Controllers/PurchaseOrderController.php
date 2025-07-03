@@ -118,6 +118,7 @@ class PurchaseOrderController extends Controller
             logger()->error($e);
         }
 
+
         $output = storage_path('app/public/pdf_temp/merged.pdf');
 
         $cmd = '';

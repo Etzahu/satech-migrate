@@ -24,6 +24,12 @@ class View extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('Descargar orden')
+                ->color('info')
+                ->visible(fn($record) => $record->status == 'autorizada para proveedor')
+                ->url(route('order.pdf.download', ['id' => $this->record->id]))
+                ->icon('heroicon-m-arrow-down-tray')
+                ->openUrlInNewTab(),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->url(route('order.pdf', ['id' => $this->record->id]))

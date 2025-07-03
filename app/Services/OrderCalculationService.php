@@ -158,12 +158,15 @@ class OrderCalculationService
     public function getRetentionIva($formatter = false)
     {
         $subtotal =  $subtotal = $this->subtotalDiscount();
+
         $tax = $this->order->retention_iva / 100;
+
         $result = $subtotal->multipliedBy($tax);
         $result = $result->toScale(2, RoundingMode::CEILING);
         if ($formatter) {
             return $this->brickFormatter($result);
         }
+
         return  $result;
     }
 
@@ -171,8 +174,10 @@ class OrderCalculationService
     {
         $subtotal =  $subtotal = $this->subtotalDiscount();
         $tax = $this->order->retention_isr / 100;
+
         $result = $subtotal->multipliedBy($tax);
         $result = $result->toScale(2, RoundingMode::CEILING);
+        // dd($tax,$result, $this->brickFormatter($result));
         if ($formatter) {
             return $this->brickFormatter($result);
         }
@@ -183,10 +188,14 @@ class OrderCalculationService
     {
         $subtotal =   $this->subtotalDiscount();
         $total = $subtotal->plus($this->getTaxIva());
-        $total = $total->minus($this->getRetentionIva(), $this->getRetentionIsr());
+
+        $total = $total->minus($this->getRetentionIva());
+        $total = $total->minus( $this->getRetentionIsr());
+
         if ($formatter) {
             return $this->brickFormatter($total);
         }
+
         return  $total;
     }
 
