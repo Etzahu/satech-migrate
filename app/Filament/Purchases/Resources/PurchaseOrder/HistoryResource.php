@@ -333,7 +333,7 @@ class HistoryResource extends Resource
         $result = '';
         $items = $model->items;
         foreach ($items as $item) {
-            $resum = "{$item->quantity}, {$service->brickFormatter($item->unit_price)}, {$service->brickFormatter($item->sub_total)}, {$item->product->name} \n";
+            $resum = "{$item->product->name}\n";
             $result .= $resum;
         }
         return $result;
