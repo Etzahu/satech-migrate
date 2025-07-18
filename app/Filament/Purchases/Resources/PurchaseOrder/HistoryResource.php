@@ -151,6 +151,7 @@ class HistoryResource extends Resource
                                     'proveedor' => 'Proveedor',
                                     'subtotal' => 'Subtotal',
                                     'total' => 'Total',
+                                    'partidas' => 'Partidas',
                                     'moneda' => 'Moneda',
                                     'proyecto' => 'Proyecto',
                                     'tipo de pago' => 'Tipo de pago',
@@ -175,7 +176,7 @@ class HistoryResource extends Resource
                                 ])
                                 ->afterStateHydrated(function ($component, $state) {
                                     if (! filled($state)) {
-                                        $component->state(['fecha de creacion', 'comprador', 'folio', 'proveedor', 'subtotal', 'total', 'moneda', 'proyecto']);
+                                        $component->state(['fecha de creacion', 'comprador', 'folio', 'partidas', 'proveedor', 'subtotal', 'total', 'moneda', 'proyecto']);
                                     }
                                 }),
 
@@ -233,6 +234,7 @@ class HistoryResource extends Resource
                                 'proveedor' => $model->provider->company_name,
                                 'subtotal' => $service->getSubtotalItems(true),
                                 'total' =>  $service->getTotal(true),
+                                'partidas' => static::contactDataItems($model),
                                 'moneda' => $model->currency,
                                 'proyecto' => "({$model->requisition->project->code}){$model->requisition->project->name}",
                                 'tipo de pago' => $model->type_payment,
@@ -323,5 +325,17 @@ class HistoryResource extends Resource
             return 'N/A';
         }
         return  implode(',', array_column($model->documentation_delivery, 'name'));
+    }
+
+    public static function contactDataItems($model)
+    {
+        $service = new OrderCalculationService();
+        $result = '';
+        $items = $model->items;
+        foreach ($items as $item) {
+            $resum = "{$item->quantity}, {$service->brickFormatter($item->unit_price)}, {$service->brickFormatter($item->sub_total)}, {$item->product->name} \n";
+            $result .= $resum;
+        }
+        return $result;
     }
 }
