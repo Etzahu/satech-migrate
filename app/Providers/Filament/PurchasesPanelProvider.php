@@ -6,6 +6,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use Filament\Enums\ThemeMode;
 use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
@@ -36,6 +37,7 @@ class PurchasesPanelProvider extends PanelProvider
         return $panel
             ->id('compras')
             ->path('compras')
+               ->defaultThemeMode(ThemeMode::Light)
             // ->databaseNotifications()
             ->maxContentWidth(MaxWidth::Full)
             ->sidebarFullyCollapsibleOnDesktop()

@@ -1,5 +1,7 @@
 <?php
 
+use App\Livewire\HomeMenu;
+use App\Livewire\TestEditItemOrder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -9,12 +11,13 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Http\Controllers\PurchaseOrderController;
 use Vormkracht10\FilamentMails\Facades\FilamentMails;
 use App\Http\Controllers\PurchaseRequisitionController;
-use App\Livewire\TestEditItemOrder;
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::get('/login/google', [LoginController::class, 'redirectToProvider'])->name('login.redirect');
 Route::get('/login/google/callback', [LoginController::class, 'handleProviderCallback'])->name('login.callback');
-Route::get('home', [LoginController::class, 'home'])->name('home')->middleware('auth');
+
+// Route::get('home', [LoginController::class, 'home'])->name('home')->middleware('auth');
+Route::get('home', HomeMenu::class)->name('home')->middleware('auth');
 
 if (config('app.env')=== 'local' && config('app.debug') === true) {
     @include_once('pruebas.php');

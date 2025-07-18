@@ -26,7 +26,6 @@ class ViewPurchaseRequisition extends ViewRecord
                 Action::make('Enviar requisición')
                     ->color('success')
                     ->requiresConfirmation()
-
                     ->visible(
                         $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 && filled($this->record->category)
                     )

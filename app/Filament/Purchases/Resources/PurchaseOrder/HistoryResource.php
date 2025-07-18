@@ -3,20 +3,23 @@
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
 
+use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
+use App\Models\PurchaseOrder;
+use App\Models\User;
+use App\Services\OrderCalculationService;
 use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Tables;
 use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\PurchaseOrder;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
 use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
-use App\Services\OrderCalculationService;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Rap2hpoutre\FastExcel\SheetCollection;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
-use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
 
 class HistoryResource extends Resource
 {
@@ -47,7 +50,6 @@ class HistoryResource extends Resource
     }
     public static function canEdit($record = null): bool
     {
-
         return
             auth()->user()->hasRole('super_admin') ||
             auth()->user()->hasRole('administrador_compras') ||
@@ -82,6 +84,7 @@ class HistoryResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('provider.company_name')
                     ->label('Proveedor')
+                    ->searchable()
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('requisition.folio')
@@ -125,12 +128,15 @@ class HistoryResource extends Resource
             ])
             ->headerActions([
                 Tables\Actions\Action::make('Generar reporte')
+                    ->slideOver()
+                    ->modalWidth(MaxWidth::FiveExtraLarge)
                     ->visible(
                         auth()->user()->id == 106 ||
-                        auth()->user()->hasRole('comprador') ||
-                        auth()->user()->hasRole('gerente_compras') ||
-                        auth()->user()->hasRole('super_admin') ||
-                        auth()->user()->hasRole('administrador_compras'))
+                            auth()->user()->hasRole('comprador') ||
+                            auth()->user()->hasRole('gerente_compras') ||
+                            auth()->user()->hasRole('super_admin') ||
+                            auth()->user()->hasRole('administrador_compras')
+                    )
                     ->form(
                         [
                             Forms\Components\CheckboxList::make('columns')
@@ -169,27 +175,48 @@ class HistoryResource extends Resource
                                 ])
                                 ->afterStateHydrated(function ($component, $state) {
                                     if (! filled($state)) {
-                                        $component->state(['fecha de creacion', 'comprador', 'folio', 'proveedor', 'subtotal', 'total', 'moneda','proyecto']);
+                                        $component->state(['fecha de creacion', 'comprador', 'folio', 'proveedor', 'subtotal', 'total', 'moneda', 'proyecto']);
                                     }
                                 }),
-                            Forms\Components\DatePicker::make('created_start')
-                                ->label('Creados desde')
-                                ->beforeOrEqual('created_end')
-                                ->required(),
-                            Forms\Components\DatePicker::make('created_end')
-                                ->label('Creados hasta')
-                                ->afterOrEqual('created_start')
-                                ->required(),
+
+                            Forms\Components\Grid::make([
+                                'default' => 2,
+                                'sm' => 1,
+                                'md' => 2,
+                                'lg' => 2,
+                            ])
+                                ->schema([
+                                    Forms\Components\DatePicker::make('created_start')
+                                        ->label('Creados desde')
+                                        ->beforeOrEqual('created_end')
+                                        ->required(),
+                                    Forms\Components\DatePicker::make('created_end')
+                                        ->label('Creados hasta')
+                                        ->afterOrEqual('created_start')
+                                        ->required(),
+                                ]),
+                            Forms\Components\Select::make('buyers')
+                                ->label('Compradores')
+                                ->multiple()
+                                ->nullable()
+                                ->options(function () {
+                                    return User::role('comprador')->pluck('name', 'id');
+                                })
                         ]
                     )
                     ->action(function (array $data) {
-                        // dd($data);
+
                         $startDate = Carbon::createFromFormat('Y-m-d', $data['created_start'])->startOfDay();
                         $endDate = Carbon::createFromFormat('Y-m-d', $data['created_end'])->endOfDay();
-                        $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'items', 'purchaser'])
+                        $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'items.purchase', 'items.product', 'purchaser'])
                             ->where('company_id', session()->get('company_id'))
-                            ->whereBetween('created_at', [$startDate, $endDate])
-                            ->get();
+                            ->whereBetween('created_at', [$startDate, $endDate]);
+
+                        if (filled($data['buyers'])) {
+                            $models = $models->whereIn('purchaser_user_id', $data['buyers']);
+                        }
+
+                        $models = $models->get();
                         if (blank($models)) {
                             return   Notification::make()
                                 ->title('No se encontraron registros')
@@ -236,7 +263,27 @@ class HistoryResource extends Resource
                             return collect($item)->only($data['columns'])->toArray();
                         });
 
-                        return  fastexcel($result)->download("ordenes de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
+                        $items = $models->pluck('items')->flatten();
+                        $dataItems = [];
+
+                        $service = new OrderCalculationService();
+                        foreach ($items as $item) {
+                            $dataItems[] = [
+                                'Orden' => $item->purchase->folio,
+                                'Cantidad' => $item->quantity,
+                                'Precio unitario' => $service->brickFormatter($item->unit_price),
+                                'Subtotal' => $service->brickFormatter($item->sub_total),
+                                'Producto-Servicio' => $item->product->name,
+                                'Observaciones' => $item->observation
+                            ];
+                        }
+
+                        $sheets = new SheetCollection([
+                            'ordenes' => $result,
+                            'partidas' => $dataItems
+                        ]);
+                        return  fastexcel($sheets)
+                            ->download("ordenes de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
                     }),
             ])
             ->actions([

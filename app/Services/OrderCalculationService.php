@@ -18,12 +18,14 @@ class OrderCalculationService
 {
     public $order;
 
-    public $localeOptions = ['MXN' => 'es_MX', 'USD' => 'en_US',];
+    public $localeOptions = ['MXN' => 'es_MX', 'USD' => 'en_US'];
     public $locale;
-    public function __construct($id)
+    public function __construct($id = null)
     {
-        $this->order = PurchaseOrder::with(['items'])->find($id);
-        $this->locale = $this->localeOptions[$this->order->currency];
+        if (filled($id)) {
+            $this->order = PurchaseOrder::with(['items'])->find($id);
+            $this->locale = $this->localeOptions[$this->order->currency];
+        }
     }
     // public function moneyFormatter($value)
     // {
@@ -190,7 +192,7 @@ class OrderCalculationService
         $total = $subtotal->plus($this->getTaxIva());
 
         $total = $total->minus($this->getRetentionIva());
-        $total = $total->minus( $this->getRetentionIsr());
+        $total = $total->minus($this->getRetentionIsr());
 
         if ($formatter) {
             return $this->brickFormatter($total);

@@ -2,28 +2,29 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Pages;
-use Filament\Panel;
-use Filament\Widgets;
-use Filament\PanelProvider;
-use Hexters\HexaLite\HexaLite;
-use Filament\Support\Colors\Color;
-use Filament\Navigation\NavigationItem;
-use Shanerbaner82\PanelRoles\PanelRoles;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Vormkracht10\FilamentMails\FilamentMailsPlugin;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Vormkracht10\FilamentMails\Facades\FilamentMails;
-use Illuminate\Session\Middleware\AuthenticateSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
+use Filament\Pages;
+use Filament\Panel;
+use Filament\PanelProvider;
+use Filament\Support\Colors\Color;
+use Filament\Widgets;
+use Hexters\HexaLite\HexaLite;
 use Hugomyb\FilamentErrorMailer\FilamentErrorMailerPlugin;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Shanerbaner82\PanelRoles\PanelRoles;
 use Tobiasla78\FilamentSimplePages\FilamentSimplePagesPlugin;
+use Vormkracht10\FilamentMails\Facades\FilamentMails;
+use Vormkracht10\FilamentMails\FilamentMailsPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -35,7 +36,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->favicon(asset('images/favicon.png'))
             ->spa()
-            // ->login()
+            ->defaultThemeMode(ThemeMode::Light)
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -51,7 +52,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationItems([
                 NavigationItem::make('LogViewer')
-                ->visible(fn (): bool =>  auth()->user()->hasRole('super_admin'))
+                    ->visible(fn(): bool =>  auth()->user()->hasRole('super_admin'))
                     ->label('Log viewer')
                     ->url(fn(): string => route('log-viewer.index'))
                     ->icon('heroicon-o-archive-box'),
@@ -70,13 +71,13 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->routes(fn () => FilamentMails::routes())
+            ->routes(fn() => FilamentMails::routes())
             ->plugins([
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 FilamentMailsPlugin::make(),
                 FilamentErrorMailerPlugin::make(),
                 PanelRoles::make()
-                ->restrictedRoles(['super_admin']),
+                    ->restrictedRoles(['super_admin']),
             ]);
     }
 }

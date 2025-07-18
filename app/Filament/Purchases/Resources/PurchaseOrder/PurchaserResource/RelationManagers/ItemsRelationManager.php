@@ -145,23 +145,27 @@ class ItemsRelationManager extends RelationManager
                 Forms\Components\Select::make('product_id')
                     ->label('Producto/Servicio')
                     ->options(function () {
-                        $type = $this->getOwnerRecord()->requisition->category;
-                        if (session()->get('company_id') == 1) { //ID 1:GPT IM
-                            return Product::where('status', 'aprobado')
-                                ->where('company_id', session()->get('company_id'))
-                                ->pluck('name', 'id');
-                        }
+                        return Product::where('status', 'aprobado')
+                            ->where('company_id', session()->get('company_id'))
+                            ->pluck('name', 'id');
 
-                        if (filled($type)) {
-                            return Product::where('status', 'aprobado')
-                                ->where('company_id', session()->get('company_id'))
-                                ->where('type_purchase', $type)
-                                ->pluck('name', 'id');
-                        } else {
-                            return Product::where('status', 'aprobado')
-                                ->where('company_id', session()->get('company_id'))
-                                ->pluck('name', 'id');
-                        }
+                        // $type = $this->getOwnerRecord()->requisition->category;
+                        // if (session()->get('company_id') == 1) { //ID 1:GPT IM
+                        //     return Product::where('status', 'aprobado')
+                        //         ->where('company_id', session()->get('company_id'))
+                        //         ->pluck('name', 'id');
+                        // }
+
+                        // if (filled($type)) {
+                        //     return Product::where('status', 'aprobado')
+                        //         ->where('company_id', session()->get('company_id'))
+                        //         ->where('type_purchase', $type)
+                        //         ->pluck('name', 'id');
+                        // } else {
+                        //     return Product::where('status', 'aprobado')
+                        //         ->where('company_id', session()->get('company_id'))
+                        //         ->pluck('name', 'id');
+                        // }
                     })
                     ->searchPrompt('Busca los productos o servicios por su descripción')
                     ->searchable()
