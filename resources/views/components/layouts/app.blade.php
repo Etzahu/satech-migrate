@@ -14,7 +14,8 @@
         class="flex shadow-md py-4 px-4 sm:px-10  min-h-[70px] tracking-wide relative z-50 border border-b-gray-300 bg-white">
         <div class="flex flex-wrap items-center justify-between w-full gap-5">
             <a href="javascript:void(0)" class="">
-                <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 792 160.23" class="w-36">
+                <svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 792 160.23"
+                    class="w-36">
                     <defs>
                         <style>
                             .cls-1 {
@@ -36,9 +37,9 @@
                 </svg>
             </a>
             <div class="flex space-x-4 max-lg:ml-auto">
-                <button
+                <a href="{{ route('login') }}"
                     class="px-4 py-2 text-sm font-medium tracking-wide text-white transition-all bg-red-600 border border-red-600 rounded-lg cursor-pointer hover:bg-red-700">Iniciar
-                    sesión</button>
+                    sesión</a>
             </div>
         </div>
     </header>

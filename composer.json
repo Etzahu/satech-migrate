@@ -16,6 +16,7 @@
         "filament/spatie-laravel-media-library-plugin": "^3.2",
         "hugomyb/filament-error-mailer": "v3.2.0.3",
         "joaopaulolndev/filament-pdf-viewer": "^1.0",
+        "lara-zeus/qr": "^1.1",
         "laravel/framework": "^11.9",
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
