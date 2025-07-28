@@ -14,12 +14,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-
+        
 
         \DB::table('users')->delete();
-
+        
         \DB::table('users')->insert(array (
-            0 =>
+            0 => 
             array (
                 'id' => 13,
                 'name' => 'Benjamín Alcántara Bautista',
@@ -34,7 +34,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:12',
                 'management_id' => NULL,
             ),
-            1 =>
+            1 => 
             array (
                 'id' => 14,
                 'name' => 'Jesús Becerra Yebra',
@@ -44,12 +44,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'E8yhTY1I4FYPadUlfR5jbPbFuedNh5BsdeYqdYpnEGHwOcLIq5En4kQDEyf3',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-27 17:47:30',
                 'management_id' => 8,
             ),
-            2 =>
+            2 => 
             array (
                 'id' => 18,
                 'name' => 'Ana Lilia López Arreola',
@@ -59,27 +59,27 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => 'r3GYFoUeurf9fzH0ozBTgvqjp4MhxwrgdUVdPSWvekkEoc09wveVpT9vlNrf',
+                'remember_token' => '4o9US6YhFzNWblaSbB61n3wTruNvlN1KhQCQCJfkV3g3EmtwudWZuDyVCZ7o',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:50',
                 'management_id' => 7,
             ),
-            3 =>
+            3 => 
             array (
                 'id' => 19,
                 'name' => 'Rafael García Arroyo',
                 'puesto' => 'Gerencia de Ingeniería y Manufactura',
                 'email' => 'rgarciaa@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'bdNAsyHHwGG9UZVq4WfgAri6P8PsxTBv5vLYFMeICqGu0VrUq28yBDD2yYvy',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:12',
-                'management_id' => NULL,
+                'updated_at' => '2025-01-28 16:47:14',
+                'management_id' => 5,
             ),
-            4 =>
+            4 => 
             array (
                 'id' => 22,
                 'name' => 'Iván Ponce Reyes',
@@ -89,12 +89,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'Le6H5txxyGJ2ex2lFk0sxyzu9hNNxvyjcjiSmuqj0Hg8ADqCv7TrrxdxNtfW',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-27 17:47:05',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:39:12',
+                'management_id' => 10,
             ),
-            5 =>
+            5 => 
             array (
                 'id' => 26,
                 'name' => 'Sinhue Ulloa Tello',
@@ -109,7 +109,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:12',
                 'management_id' => NULL,
             ),
-            6 =>
+            6 => 
             array (
                 'id' => 36,
                 'name' => 'Guillermo Gutiérrez Melo',
@@ -119,27 +119,27 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'prq8AySoVAUriVhPRYECTGK0Hti63Vj1715mV86yXoHLditdrV2cY5o43fth',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-27 17:46:51',
-                'management_id' => 9,
+                'updated_at' => '2025-02-26 08:57:08',
+                'management_id' => 6,
             ),
-            7 =>
+            7 => 
             array (
                 'id' => 37,
                 'name' => 'Luis Reyes Yáñez',
                 'puesto' => 'Mecánico Tornero',
                 'email' => 'lreyesy@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:13',
-                'management_id' => NULL,
+                'updated_at' => '2025-02-19 18:00:47',
+                'management_id' => 5,
             ),
-            8 =>
+            8 => 
             array (
                 'id' => 40,
                 'name' => 'Fernando Basave Arce',
@@ -149,12 +149,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'kEa9aSXWQOwjoesRpTt8Fc2ZzuFRxJZXYAP2ljZist8N8higHsed1u4QsyLk',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:33',
                 'management_id' => 4,
             ),
-            9 =>
+            9 => 
             array (
                 'id' => 46,
                 'name' => 'Aquiles Gonzalo García Montiel',
@@ -164,42 +164,42 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'TZ7NjcLpROIVFNSLfiVONklIduTW43TL7DaepP9BwBfftEiLuwKE5IEtnfIt',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            10 =>
+            10 => 
             array (
                 'id' => 50,
                 'name' => 'Aurelio Cruz Báez',
                 'puesto' => 'Técnico Especialista en HT & LS Nivel I',
                 'email' => 'acruzb@gptservices.com',
-            'phone' => '(+52) 55 7667 3044',
+                'phone' => '52 55 7667 3044',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => '4T6dZuRa2uZ7bVJMflUo25WR6L9KELGVMz3BGRCGXRmyDjl8E31I54sPFuaH',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:45',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:33:28',
+                'management_id' => 10,
             ),
-            11 =>
+            11 => 
             array (
                 'id' => 53,
                 'name' => 'Adriana González Huitrón',
                 'puesto' => 'Ingeniería',
                 'email' => 'agonzalezh@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'FPcxO71KXkj6alzYQtH9AVTnkf8McCA1PgJWJ44EQX7lIjGCX3rpfwk0o3Cd',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:39',
-                'management_id' => 5,
+                'updated_at' => '2025-07-09 04:07:32',
+                'management_id' => 9,
             ),
-            12 =>
+            12 => 
             array (
                 'id' => 64,
                 'name' => 'Luis Sandoval Cabello',
@@ -214,7 +214,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            13 =>
+            13 => 
             array (
                 'id' => 89,
                 'name' => 'Juan Jiménez Camacho',
@@ -229,22 +229,22 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            14 =>
+            14 => 
             array (
                 'id' => 92,
                 'name' => 'Néstor Adair Acosta Arroyo',
                 'puesto' => 'Técnico Especialista en HT & LS Nivel II',
                 'email' => 'naacostaa@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:45',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:39:52',
+                'management_id' => 10,
             ),
-            15 =>
+            15 => 
             array (
                 'id' => 99,
                 'name' => 'Raúl Rodríguez Guzmán',
@@ -254,12 +254,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'B7CPquQvSDbePyOaateI8HaFjnrE94mOSyiu4m9ZX76hTPBlaFQGmqNzrTpH',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            16 =>
+            16 => 
             array (
                 'id' => 106,
                 'name' => 'Denise Marisol Reyes Ramírez',
@@ -274,22 +274,22 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-27 17:46:23',
                 'management_id' => 1,
             ),
-            17 =>
+            17 => 
             array (
                 'id' => 114,
                 'name' => 'Manuel Antonio Ríos Cuautitla',
                 'puesto' => 'Diseñador',
                 'email' => 'mariosc@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'bosXGLt9erUZ0BqCy34qI4S3RZSg2DtUZeHr2BVbLeDL9dI9xNbcAthQ0Van',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:39',
-                'management_id' => 5,
+                'updated_at' => '2025-02-19 17:03:56',
+                'management_id' => 9,
             ),
-            18 =>
+            18 => 
             array (
                 'id' => 120,
                 'name' => 'Roberto González Muñoz',
@@ -299,12 +299,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'hgrOadt57aNVOVCSf9RuDMVHTTypGcBpS6nz6w5OonZxXJvRvzfrCqQVXLut',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:39',
                 'management_id' => 5,
             ),
-            19 =>
+            19 => 
             array (
                 'id' => 123,
                 'name' => 'Angélica Salgado Zúñiga',
@@ -314,12 +314,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'i0NbUj3EF3znaA2wDOEeuhIekjblpVG451S0O2GDh7cHfAeyVmsvRPwlscWf',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:14:29',
                 'management_id' => 1,
             ),
-            20 =>
+            20 => 
             array (
                 'id' => 131,
                 'name' => 'Axel Javier Martínez Segura',
@@ -334,7 +334,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-24 20:16:11',
                 'management_id' => 8,
             ),
-            21 =>
+            21 => 
             array (
                 'id' => 132,
                 'name' => 'Martín Paes Santillán',
@@ -344,27 +344,27 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'sKLkQRabEl2OT0sRsDMHShty231bL18KaHSe4GYIDOgwLwUuiKwOGIqmp01S',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:16:11',
                 'management_id' => 8,
             ),
-            22 =>
+            22 => 
             array (
                 'id' => 137,
                 'name' => 'Luis Jesús Godínez Rivera',
                 'puesto' => 'Mecánico Especialista',
                 'email' => 'lgodinez@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => '5V4VRDb5pLnGFG4O4d70QTdPgqjRggRlm1WqPfYzmDaSp8ZY3KQFpp7Cr7CO',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:45',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:34:05',
+                'management_id' => 10,
             ),
-            23 =>
+            23 => 
             array (
                 'id' => 152,
                 'name' => 'Edgar David Meza Rivera',
@@ -374,27 +374,27 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => 'hRwtcPNHjQlRqjaSXyb0uu4981jebWIpEPoGhCX398ZmNIAsdS7pGYK0IYmz',
+                'remember_token' => 'zAqb153mPSwatY560XyTrUfaOFhI0VRsxHrQRLzwyI4leMUg52X4i5qUMKlG',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-27 17:19:50',
                 'management_id' => 7,
             ),
-            24 =>
+            24 => 
             array (
                 'id' => 157,
                 'name' => 'Claudio Magdaleno Pérez Hernández',
                 'puesto' => 'Trainee HT & LS',
                 'email' => 'cperez@gptservices.com',
-            'phone' => '(+52) 55 8531 7147',
+                'phone' => '52 55 8531 7147',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'JB4mTte887lLL5D1MFZNN7FHMll1HRRw4RHJruDxk61BDfXxWaN1hODU3ysa',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:45',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:34:24',
+                'management_id' => 10,
             ),
-            25 =>
+            25 => 
             array (
                 'id' => 158,
                 'name' => 'Yanet Rosario Colín Antonio',
@@ -409,7 +409,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-24 20:14:29',
                 'management_id' => 1,
             ),
-            26 =>
+            26 => 
             array (
                 'id' => 166,
                 'name' => 'Rafael Alejandro Jiménez Ávila',
@@ -424,22 +424,22 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-24 20:14:29',
                 'management_id' => 1,
             ),
-            27 =>
+            27 => 
             array (
                 'id' => 168,
                 'name' => 'Sergio Antonio Ordaz Espinoza',
                 'puesto' => 'Gerencia de Contratos',
                 'email' => 'santonio@gptservices.com',
-            'phone' => '(+52) 55 5103 5335',
+                'phone' => '55 5103 5335',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'YCJFgjOY6UF1p4YfmY6OtyrUOSifBAkr0rnsCZUlSSL52kcH3rTUuA5bcK9M',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:33',
+                'updated_at' => '2025-02-06 16:14:39',
                 'management_id' => 4,
             ),
-            28 =>
+            28 => 
             array (
                 'id' => 180,
                 'name' => 'Jorge Eduardo García Ojeda',
@@ -449,42 +449,42 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => 'MEteYbvArL2QBLSJinpcIUuAVTVrs7cMh4AXq5NU3kLYlQXMPaoX9aMFZv1F',
+                'remember_token' => '4NlnzBKCat214Wjil1dBEU4JMUf8YZOcmAm26p6zU4hGeJrrVxRHksl0BJlK',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:13',
-                'management_id' => NULL,
+                'updated_at' => '2025-02-05 14:36:22',
+                'management_id' => 2,
             ),
-            29 =>
+            29 => 
             array (
                 'id' => 187,
                 'name' => 'Alejandro Aldair Ramírez Pérez',
                 'puesto' => 'Ingeniero de Costos Jr',
                 'email' => 'aramirezp@gptservices.com',
-            'phone' => '(+52) 55 83 59 05 08',
+                'phone' => '55 83 59 05 08',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'D3A7ZzHaLSp8MGYYS1NmvlPGlzbN8CwEGCRuLjLd8Qgenq6CUOazsgFEqQFk',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:13',
-                'management_id' => NULL,
+                'updated_at' => '2025-02-04 17:15:15',
+                'management_id' => 9,
             ),
-            30 =>
+            30 => 
             array (
                 'id' => 191,
                 'name' => 'Jennifer Martínez Jarquín',
                 'puesto' => 'Diseñador',
                 'email' => 'jmartinezj@gptservices.com',
-            'phone' => '(+52) 55 74 99 89 47',
+                'phone' => '55 74 99 89 47',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'Ip5RKoYeCQfeiuSjgKbITpQGr0MdRlix80ayAyrIZ0xR4ya8WJ13wfAKatd0',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:39',
-                'management_id' => 5,
+                'updated_at' => '2025-02-19 17:03:38',
+                'management_id' => 9,
             ),
-            31 =>
+            31 => 
             array (
                 'id' => 193,
                 'name' => 'Martín Alejandro Martínez Hernández',
@@ -494,12 +494,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'pvft0pN413TxLA5dwwXEBeBhU1mi9gFkUCsUCZ6stpumfKtGRy3hOwSN6Yvv',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:50',
                 'management_id' => 7,
             ),
-            32 =>
+            32 => 
             array (
                 'id' => 199,
                 'name' => 'Alan Etzahu Hernández Mendoza',
@@ -509,27 +509,27 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => 'fH8sUhyvytE7Mt9ef2qLRdW0zktc9sg9PkVo7N4kNGKVYPTjAtAqIezb8O91',
+                'remember_token' => 'UYsqUuZood5JiD5dpRkdh2w6SxDVCXeQWKuu9flTe1zPBEizHwrTu3NocYOB',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:50',
                 'management_id' => 7,
             ),
-            33 =>
+            33 => 
             array (
                 'id' => 200,
                 'name' => 'Rocío Rojas González',
                 'puesto' => 'Ingeniero de Calidad Jr.',
                 'email' => 'rrojasg@gptservices.com',
-            'phone' => '(+52) 5591862465',
+                'phone' => '52 5591862465',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'rv6W4HQMpNdTOAxf0YohuzZa4T3QhWONTwct80QFJ4p4NHUQpismLRXuXJHI',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:16:18',
-                'management_id' => 9,
+                'updated_at' => '2025-02-19 17:36:23',
+                'management_id' => 6,
             ),
-            34 =>
+            34 => 
             array (
                 'id' => 202,
                 'name' => 'Daniel González García',
@@ -544,37 +544,37 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            35 =>
+            35 => 
             array (
                 'id' => 205,
                 'name' => 'Erik David López Olvera',
                 'puesto' => 'Trainee HT & LS',
                 'email' => 'edlopezo@gptservices.com',
-            'phone' => '(+52) 55 81 29 09 74',
+                'phone' => '52 55 81 29 09 74',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:45',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:34:40',
+                'management_id' => 10,
             ),
-            36 =>
+            36 => 
             array (
                 'id' => 212,
                 'name' => 'Enrique Villafranca García',
                 'puesto' => 'Trainee HT & LS',
                 'email' => 'evillafranca@gptservices.com',
-            'phone' => '(+52) 55 45 94 36 60',
+                'phone' => '52 55 45 94 36 60',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'OAfKqg3BqFFFzt6XY1IvWrvE9gaSuUcMmMOxIGLlt1niNH8GMD6cAYYFbwDm',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:45',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:35:00',
+                'management_id' => 10,
             ),
-            37 =>
+            37 => 
             array (
                 'id' => 223,
                 'name' => 'José Héctor Avilés Nieto',
@@ -584,12 +584,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'ujnCNmcMsOWPQaRGCPFNvfU8IBK1m72n4XboIgoHEwmKDR31A23JmdX3ooJV',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:50',
                 'management_id' => 7,
             ),
-            38 =>
+            38 => 
             array (
                 'id' => 227,
                 'name' => 'Kevin Hazael Pérez Rodríguez',
@@ -599,12 +599,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => 'WsL64DGjlC5BRfL69NVXDSJvPBlVZ9VqrbFJkqhscyjTmPKm4rwpxalg5MNJ',
+                'remember_token' => 'p8KOHDWmoa14OZ1cKVeM9r4LoioymNukremdqqYGjZbXbHANgKFCvZM0dbvb',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:33',
+                'updated_at' => '2025-02-06 16:38:33',
                 'management_id' => 4,
             ),
-            39 =>
+            39 => 
             array (
                 'id' => 230,
                 'name' => 'Ernesto Bautista Cruz',
@@ -619,7 +619,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-24 20:15:50',
                 'management_id' => 7,
             ),
-            40 =>
+            40 => 
             array (
                 'id' => 233,
                 'name' => 'Israel Correa Cruz',
@@ -634,7 +634,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            41 =>
+            41 => 
             array (
                 'id' => 235,
                 'name' => 'Giovanni Lugardo Aguilar',
@@ -649,7 +649,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            42 =>
+            42 => 
             array (
                 'id' => 240,
                 'name' => 'Mónica Jazmín Pimentel García',
@@ -664,7 +664,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            43 =>
+            43 => 
             array (
                 'id' => 247,
                 'name' => 'Juan Carlos Prado Hernández',
@@ -679,7 +679,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            44 =>
+            44 => 
             array (
                 'id' => 249,
                 'name' => 'Rocío Salgado Rangel',
@@ -689,12 +689,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'tXK8VqmS27sRv0q2qvkIanQBlCju5xEfe04LSlK6V63Df3wThewILzsU3JKz',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:39',
                 'management_id' => 5,
             ),
-            45 =>
+            45 => 
             array (
                 'id' => 250,
                 'name' => 'José Carlos Martínez Amador',
@@ -704,12 +704,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'WeC3pDwW9EBMqLvEGI28cRV8bJkQJqbfUw1C73CAb1opZKzy3ae5YrZBl2rw',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:50',
-                'management_id' => 7,
+                'updated_at' => '2025-02-26 09:37:53',
+                'management_id' => 11,
             ),
-            46 =>
+            46 => 
             array (
                 'id' => 251,
                 'name' => 'Alejandro Rodríguez Vázquez',
@@ -724,7 +724,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            47 =>
+            47 => 
             array (
                 'id' => 252,
                 'name' => 'Israel Omar Mora Barrios',
@@ -739,7 +739,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            48 =>
+            48 => 
             array (
                 'id' => 253,
                 'name' => 'Daniel Nuñez Cruz',
@@ -749,12 +749,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'mIEYcL7dNeIlakTpPRK11neKFyK5D60Uzb2KUQliMawofGzsnbUMGUnLpQev',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:45',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:35:17',
+                'management_id' => 10,
             ),
-            49 =>
+            49 => 
             array (
                 'id' => 256,
                 'name' => 'Rosa Maria Mendoza Gutierrez',
@@ -769,22 +769,22 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            50 =>
+            50 => 
             array (
                 'id' => 257,
                 'name' => 'Sergio Martín Ramírez Jaimes',
                 'puesto' => 'Maniobrista',
                 'email' => 'sramirez@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:50',
-                'management_id' => 7,
+                'updated_at' => '2025-02-26 09:40:05',
+                'management_id' => 11,
             ),
-            51 =>
+            51 => 
             array (
                 'id' => 258,
                 'name' => 'Julia  Flores Valenzuela ',
@@ -799,22 +799,22 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            52 =>
+            52 => 
             array (
                 'id' => 260,
                 'name' => 'José de Jesús Lázaro Juárez',
                 'puesto' => 'Ingeniero de Producto',
                 'email' => 'jlazaro@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'Bt50tohWIsAU1p9zn9IUWOSc8enrJG6kOAIRK0rWpV4xNZ3Oz7SugMkGBwBq',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:39',
-                'management_id' => 5,
+                'updated_at' => '2025-02-19 17:04:32',
+                'management_id' => 9,
             ),
-            53 =>
+            53 => 
             array (
                 'id' => 263,
                 'name' => 'Elizabeth García Real Joya',
@@ -829,7 +829,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            54 =>
+            54 => 
             array (
                 'id' => 264,
                 'name' => 'Juan Carlos López Hernández',
@@ -839,12 +839,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'KKgW1u4vmIAbvmEx4TJQkl07FQS3vwnl7B0aRqoOUJ46O1GA3Ns2ZyfcmA52',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:50',
                 'management_id' => 7,
             ),
-            55 =>
+            55 => 
             array (
                 'id' => 265,
                 'name' => 'Alfonso  Gómez López ',
@@ -859,37 +859,37 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            56 =>
+            56 => 
             array (
                 'id' => 266,
                 'name' => 'Omar Alvarado Bailey',
             'puesto' => 'Ingeniero de Desarrollo (Mejora Continua)',
                 'email' => 'oalvarado@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'PAJmYUSxWOq83O33qmtDgkgOlTZawMOzglMu1PgOuFlaP8rT9EvyTanXekBe',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:16:18',
-                'management_id' => 9,
+                'updated_at' => '2025-04-07 11:21:02',
+                'management_id' => 12,
             ),
-            57 =>
+            57 => 
             array (
                 'id' => 268,
                 'name' => 'Carlos Ivan Carbajal Cerezo',
                 'puesto' => 'Mecánico Especialista',
                 'email' => 'ccarbajal@gptservices.com',
-                'phone' => '',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'nBdGtozGHulXrQcWeKDGsLxzLRKVAcVeSpK96uSbgvBgOMqn55IYD6hMJRaf',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:45',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:35:30',
+                'management_id' => 10,
             ),
-            58 =>
+            58 => 
             array (
                 'id' => 269,
                 'name' => 'Javier Mozart Santos Cruces',
@@ -899,12 +899,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'MPwUtoroAsvuvOV5jC9r4dTPzXfnhuBwg9KzQMiSWohvFxMZtCcTgeylMIbZ',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:33',
                 'management_id' => 4,
             ),
-            59 =>
+            59 => 
             array (
                 'id' => 270,
                 'name' => 'Miguel Eduardo Orduña Álvarez',
@@ -914,12 +914,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'XnluiHjSkgZy9F3DYF00c5haB6maA8iiojlbZqBzRVfcbWjKek5gNIXfWjQO',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:45',
-                'management_id' => 6,
+                'updated_at' => '2025-02-19 17:35:42',
+                'management_id' => 10,
             ),
-            60 =>
+            60 => 
             array (
                 'id' => 271,
                 'name' => 'José Manuel Cardona Salinas',
@@ -934,7 +934,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            61 =>
+            61 => 
             array (
                 'id' => 274,
                 'name' => 'María Fernanda López Muñóz',
@@ -946,10 +946,10 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => 'x2Vp35cgIheuOmiION3sz80n8dlonTSScYozhrxfmcc5dyzEKvJAsM5MZo2R',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:13',
-                'management_id' => NULL,
+                'updated_at' => '2025-03-13 09:03:55',
+                'management_id' => 2,
             ),
-            62 =>
+            62 => 
             array (
                 'id' => 275,
                 'name' => 'Agustín Quechol Millán',
@@ -964,22 +964,22 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            63 =>
+            63 => 
             array (
                 'id' => 276,
                 'name' => 'Leonardo Paredes Chávez',
                 'puesto' => 'Ingeniero de Producto',
                 'email' => 'lparedes@gptservices.com',
-                'phone' => 'NA',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'ed5oO2wWzNyJZDFMk6TtqP9YJ3VZq4mCgUvA7h6GmGPXlK4r6OLigS9o5ko6',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:13',
-                'management_id' => NULL,
+                'updated_at' => '2025-07-09 06:52:13',
+                'management_id' => 9,
             ),
-            64 =>
+            64 => 
             array (
                 'id' => 277,
                 'name' => 'Antonio  Guevara Galán ',
@@ -994,7 +994,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            65 =>
+            65 => 
             array (
                 'id' => 282,
                 'name' => 'Diana Martínez Dolores',
@@ -1009,7 +1009,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            66 =>
+            66 => 
             array (
                 'id' => 285,
                 'name' => 'Juan Gabriel Castañeda Martínez',
@@ -1024,7 +1024,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            67 =>
+            67 => 
             array (
                 'id' => 286,
                 'name' => 'Luis Enrique Pardo Sánchez',
@@ -1039,22 +1039,22 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            68 =>
+            68 => 
             array (
                 'id' => 287,
                 'name' => 'Eduardo Moreno Carmona',
                 'puesto' => 'Ingeniero de Producto',
                 'email' => 'emoreno@gptservices.com',
-                'phone' => 'NA',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'FTunhj5wJrmiwcvpbkOfJ3R9oRpAV8UXfpBFLKvuiwCbT03j2S8ylR1sebIP',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:39',
-                'management_id' => 5,
+                'updated_at' => '2025-02-19 17:04:19',
+                'management_id' => 9,
             ),
-            69 =>
+            69 => 
             array (
                 'id' => 289,
                 'name' => 'Miguel Ángel Raya Espino',
@@ -1069,7 +1069,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            70 =>
+            70 => 
             array (
                 'id' => 290,
                 'name' => 'Mariana Karina Jiménez Ortega',
@@ -1079,42 +1079,42 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'E4ZHIUG7nr6iuOLYQfMS6VbMApQNa4cm3QXnJjQNAqJwnl3xPrNNpJ4fhVcR',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            71 =>
+            71 => 
             array (
                 'id' => 292,
                 'name' => 'Fernando Zamora González',
                 'puesto' => 'Almacenista',
                 'email' => 'fzamora@gptservices.com',
-                'phone' => 'NA',
+                'phone' => NULL,
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => '0OXgCcThb3LYf3dkqA4RQJaBgJIwBzldSvVpfOddNUnnzL4nwkirJTIGk16e',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:50',
-                'management_id' => 7,
+                'updated_at' => '2025-06-26 04:58:21',
+                'management_id' => 11,
             ),
-            72 =>
+            72 => 
             array (
                 'id' => 293,
                 'name' => 'Jatziri Yamile Alejo Osorio',
                 'puesto' => 'Trainee de HSE',
                 'email' => 'jalejo@gptservices.com',
-                'phone' => 'NA',
+                'phone' => '0',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
                 'remember_token' => 'mKwpSoCS6wCTyeqRuoNGz7pQjQ6cpSNtLFu96xflQfMMwcazIzTYhFUKNtPY',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:16:18',
-                'management_id' => 9,
+                'updated_at' => '2025-02-18 14:39:05',
+                'management_id' => 6,
             ),
-            73 =>
+            73 => 
             array (
                 'id' => 296,
                 'name' => 'Paola Chávez Huerta',
@@ -1124,27 +1124,27 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'FMhLQNlOCva1PuRQoJhXpcvFRhdvApmc3TsvKILAPM8bnqz4IKXWiHfPVTFb',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            74 =>
+            74 => 
             array (
                 'id' => 298,
                 'name' => 'Ingrid Danae González Cisneros',
                 'puesto' => 'Comprador',
                 'email' => 'igonzalez@gptservices.com',
-                'phone' => '00000000000',
+                'phone' => '55 8107 4294',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'a7QIyUJjyTsQ1As2cAgIXfRUtHZKvX55cHhdt1SIyfEktjL4g6PgNlfTmYTs',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:13',
-                'management_id' => NULL,
+                'updated_at' => '2025-03-13 12:43:32',
+                'management_id' => 2,
             ),
-            75 =>
+            75 => 
             array (
                 'id' => 299,
                 'name' => 'Christian Alberto Gómez Matilde',
@@ -1159,22 +1159,22 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            76 =>
+            76 => 
             array (
                 'id' => 301,
                 'name' => 'Pablo Angel Vazquez Hernández',
             'puesto' => 'Trainee de Sistema de Gestión Integral (SGI)',
                 'email' => 'pvazquez@gptservices.com',
-                'phone' => 'NA',
+                'phone' => '0',
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
                 'remember_token' => '0Opg0fXoL6m75gTpQSxsHCwlCbkuoiIrY09zvjstm3EcfebJKbaNWdDGra4K',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:16:18',
-                'management_id' => 9,
+                'updated_at' => '2025-02-18 18:16:06',
+                'management_id' => 6,
             ),
-            77 =>
+            77 => 
             array (
                 'id' => 302,
                 'name' => 'Monica Esthela Padilla Gónzalez',
@@ -1184,12 +1184,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'Q0e9rlX1vNhsjVkyACcDhS7sKDvrNS3KurpWsZsbwFqEJNZilZVou0ovOzvt',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            78 =>
+            78 => 
             array (
                 'id' => 303,
                 'name' => 'Luis Adrián Sánchez González',
@@ -1199,12 +1199,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'xjoWeIl7yVQugcH28dcQfFRfxQdMFzfpHt0zRws6VFtnNCBZFetGnwwS0viV',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:33',
                 'management_id' => 4,
             ),
-            79 =>
+            79 => 
             array (
                 'id' => 304,
                 'name' => 'Francisco Alejandro Contreras García',
@@ -1214,12 +1214,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'fNJlvRIiFDgTGhi8EzsFP9Y2uQUrxiYSHmDXZUpMCLSH20RwpnbTvqnMpCQR',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:33',
                 'management_id' => 4,
             ),
-            80 =>
+            80 => 
             array (
                 'id' => 305,
                 'name' => 'María de los Ángeles Quintanar Pérez',
@@ -1229,12 +1229,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'hMwX3k2baNLkHFXm8mnqohO1BicAsJowHQXM16X7IRehuG6KSZBUVj6W2RhF',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            81 =>
+            81 => 
             array (
                 'id' => 306,
                 'name' => 'Bruno Cruz Montes',
@@ -1249,7 +1249,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            82 =>
+            82 => 
             array (
                 'id' => 307,
                 'name' => 'Francisco Luna García',
@@ -1259,12 +1259,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => '9V13JAGL3EtUd759Sj2LNx6XjZatsz2C2zJxA0p7K2svdPhhNzyOsuxZc7ER',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:15:50',
-                'management_id' => 7,
+                'updated_at' => '2025-02-26 09:39:42',
+                'management_id' => 11,
             ),
-            83 =>
+            83 => 
             array (
                 'id' => 309,
                 'name' => 'Fernando Butrón González',
@@ -1276,10 +1276,10 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => NULL,
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-24 20:16:18',
-                'management_id' => 9,
+                'updated_at' => '2025-02-19 17:36:43',
+                'management_id' => 6,
             ),
-            84 =>
+            84 => 
             array (
                 'id' => 310,
                 'name' => 'Daniel Iriarte Pérez',
@@ -1289,12 +1289,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'WOC0psuQKSV4xy6jHYryuNjNcbpmko4UMqegLt3pOBHGNbcHWncLE9J4UOYv',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:13',
-                'management_id' => NULL,
+                'updated_at' => '2025-03-25 09:09:57',
+                'management_id' => 4,
             ),
-            85 =>
+            85 => 
             array (
                 'id' => 311,
                 'name' => 'Miguel Ángel Guerrero Cruz',
@@ -1309,7 +1309,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            86 =>
+            86 => 
             array (
                 'id' => 313,
                 'name' => 'María Guadalupe Osorio Rodríguez',
@@ -1319,12 +1319,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'oMaZzDZOWdNUuFr3KS6Kb4lId4JEL1ICcpu7wKPE5IBZGhv9NdXq9zQBXIbs',
                 'created_at' => '2025-01-08 19:59:00',
                 'updated_at' => '2025-01-24 20:15:33',
                 'management_id' => 4,
             ),
-            87 =>
+            87 => 
             array (
                 'id' => 314,
                 'name' => 'Edgar Domínguez Espinosa',
@@ -1339,7 +1339,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => '2025-01-23 03:28:13',
                 'management_id' => NULL,
             ),
-            88 =>
+            88 => 
             array (
                 'id' => 315,
                 'name' => 'Carlos Alonso Pérez',
@@ -1349,12 +1349,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => 'O8BeyLfJ59HuPc7sRYKEHxJDcgi5k9hTsg5IxfH2KR1dTNDpecHMLHnCZRr9',
+                'remember_token' => 'GiCpf5mAlY9v0K4Hjp4Xh8JlEFlBqkRHSYpvWyZpraNQfdK8vI8Sy56WYPvZ',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:13',
-                'management_id' => NULL,
+                'updated_at' => '2025-03-05 12:00:49',
+                'management_id' => 3,
             ),
-            89 =>
+            89 => 
             array (
                 'id' => 316,
                 'name' => 'Daniel Eduardo Serrano González',
@@ -1364,12 +1364,12 @@ class UsersTableSeeder extends Seeder
                 'active' => 1,
                 'email_verified_at' => NULL,
                 'password' => NULL,
-                'remember_token' => NULL,
+                'remember_token' => 'JF4lWtgDooU7yny2ECygOVTG2tIk4FE5vrc2SdVQJz3g5dPaD5u32BGRBXvI',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-23 03:28:13',
-                'management_id' => NULL,
+                'updated_at' => '2025-02-19 17:37:02',
+                'management_id' => 6,
             ),
-            90 =>
+            90 => 
             array (
                 'id' => 331,
                 'name' => 'José Carmen Rodríguez Lara',
@@ -1381,11 +1381,26 @@ class UsersTableSeeder extends Seeder
                 'password' => NULL,
                 'remember_token' => 'MW2DxkWTx6FvKmeffaGpMQ06vz0M50FVQPUDhYLenWOskawDlardawimsopy',
                 'created_at' => '2025-01-08 19:59:00',
-                'updated_at' => '2025-01-27 17:47:45',
+                'updated_at' => '2025-03-04 12:56:02',
                 'management_id' => 7,
             ),
+            91 => 
+            array (
+                'id' => 332,
+                'name' => 'María Fernanda Salazar Ramírez',
+                'puesto' => 'Control Documental',
+                'email' => 'msalazar@gptservices.com',
+                'phone' => NULL,
+                'active' => 1,
+                'email_verified_at' => NULL,
+                'password' => NULL,
+                'remember_token' => 'PZHAFZVNPr3xGYZlIiniLOXygKsbNb8NR7aNFkqcLdH8JoxXRTHvV48KF8hl',
+                'created_at' => '2025-05-07 05:37:01',
+                'updated_at' => '2025-05-07 05:38:45',
+                'management_id' => 4,
+            ),
         ));
-
-
+        
+        
     }
 }

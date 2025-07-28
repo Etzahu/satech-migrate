@@ -111,6 +111,12 @@ class PurchaseOrderController extends Controller
         if ($model->requisition->category == 'proveeduria') {
             $files[] = $supplier;
         }
+        if ($model->requisition->company_id == 1) {
+            $files[] = $supplier;
+            $files[] = $service;
+        }
+
+
 
         try {
             $this->pdf($id, true);

@@ -3,12 +3,10 @@
 namespace App\Filament\Purchases\Pages;
 
 use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Pages\Page;
-use LaraZeus\Qr\Components\Qr;
-use Filament\Forms\Contracts\HasForms;
-use LaraZeus\Qr\Facades\Qr as FacadeQr;
-use Filament\Forms\Concerns\InteractsWithForms;
 
 class GenerateQR extends Page implements HasForms
 {
@@ -36,7 +34,7 @@ class GenerateQR extends Page implements HasForms
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-                       FacadeQr::getFormSchema(
+                        ...\LaraZeus\Qr\Facades\Qr::getFormSchema(
                             statePath: 'enlace',
                             optionsStatePath: 'text-options'
                         ),
