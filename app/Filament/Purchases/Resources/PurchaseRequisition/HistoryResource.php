@@ -15,6 +15,7 @@ use App\Models\PurchaseRequisition;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
+use Rap2hpoutre\FastExcel\SheetCollection;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
 
@@ -138,6 +139,7 @@ class HistoryResource extends Resource
             ])
             ->headerActions([
                 Tables\Actions\Action::make('Generar reporte')
+                    ->slideOver()
                     ->visible(
                         auth()->user()->id == 106 ||
                             auth()->user()->hasRole('comprador') ||
@@ -156,6 +158,7 @@ class HistoryResource extends Resource
                                 ->options([
                                     'folio' => 'Folio',
                                     'motivo' => 'Motivo',
+                                    'partidas' => 'Partidas',
                                     'prioridad' => 'Prioridad',
                                     'tipo' => 'Tipo',
                                     'observaciones' => 'Observaciones',
@@ -167,25 +170,47 @@ class HistoryResource extends Resource
                                     'solicitante' => 'Solicitante',
                                     'comprador' => 'Comprador',
                                     'fecha de creacion' => 'Fecha de creación',
-                                ]),
-                            Forms\Components\DatePicker::make('created_start')
-                                ->label('Creados desde')
-                                ->beforeOrEqual('created_end')
-                                ->required(),
-                            Forms\Components\DatePicker::make('created_end')
-                                ->label('Creados hasta')
-                                ->afterOrEqual('created_start')
-                                ->required(),
+                                ])
+                                ->afterStateHydrated(function ($component, $state) {
+                                    if (! filled($state)) {
+                                        $component->state(['solicitante', 'motivo', 'comprador', 'folio', 'partidas', 'proyecto', 'partidas']);
+                                    }
+                                }),
+                            Forms\Components\ToggleButtons::make('without_orders')
+                                ->label('¿Sin órden?')
+                                ->boolean()
+                                ->default(false)
+                                ->inline(),
+                            Forms\Components\Grid::make([
+                                'sm' => 1,
+                                'md' => 2,
+                                'lg' => 2,
+                                'xl' => 2,
+                            ])->schema([
+                                Forms\Components\DatePicker::make('created_start')
+                                    ->label('Creados desde')
+                                    ->beforeOrEqual('created_end')
+                                    ->required(),
+                                Forms\Components\DatePicker::make('created_end')
+                                    ->label('Creados hasta')
+                                    ->afterOrEqual('created_start')
+                                    ->default(now())
+                                    ->required(),
+                            ])
                         ]
                     )
                     ->action(function (array $data) {
                         // dd($data);
                         $startDate = Carbon::createFromFormat('Y-m-d', $data['created_start'])->startOfDay();
                         $endDate = Carbon::createFromFormat('Y-m-d', $data['created_end'])->endOfDay();
-                        $models = PurchaseRequisition::with(['company', 'project', 'approvalChain', 'purchaser'])
+                        $models = PurchaseRequisition::with(['company', 'project', 'approvalChain', 'purchaser', 'items.product'])
                             ->where('company_id', session()->get('company_id'))
-                            ->whereBetween('created_at', [$startDate, $endDate])
-                            ->get();
+                            ->whereBetween('created_at', [$startDate, $endDate]);
+                        if ($data['without_orders']) {
+                            $models->whereDoesntHave('orders')
+                                ->whereIn('status', ['comprador asignado', 'comprador reasignado']);
+                        }
+                        $models = $models->get();
                         if (blank($models)) {
                             return   Notification::make()
                                 ->title('No se encontraron registros')
@@ -215,7 +240,24 @@ class HistoryResource extends Resource
                             return collect($item)->only($data['columns'])->toArray();
                         });
 
-                        return  fastexcel($result)->download("requisiciones de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
+                        $items = $models->pluck('items')->flatten();
+                        $dataItems = [];
+
+
+                        foreach ($items as $item) {
+                            $dataItems[] = [
+                                'Requisición' => $item->requisition->folio,
+                                'Cantidad' => $item->quantity_purchase,
+                                'Producto-Servicio' => $item->product->name,
+                                'Observaciones' => $item->observation
+                            ];
+                        }
+                        $sheets = new SheetCollection([
+                            'requisiciones' => $result,
+                            'partidas' => $dataItems
+                        ]);
+
+                        return  fastexcel($sheets)->download("requisiciones de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
                     }),
             ])
             ->actions([

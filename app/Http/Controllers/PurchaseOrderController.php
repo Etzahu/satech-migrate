@@ -116,6 +116,8 @@ class PurchaseOrderController extends Controller
             $files[] = $service;
         }
 
+        $files = array_unique($files);
+
 
 
         try {

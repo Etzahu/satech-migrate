@@ -19,8 +19,6 @@ return new class extends Migration
             $table->text('observation', 600)->nullable();
             $table->foreignId('product_id')->constrained('products')
                 ->onDelete('cascade');
-            $table->foreignId('product_replace_id')->nullable()->constrained('products')
-                ->onDelete('cascade');
             $table->foreignId('purchase_order_id')->constrained('purchase_orders')
                 ->onDelete('cascade');
             $table->timestamps();

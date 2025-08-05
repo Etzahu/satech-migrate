@@ -194,6 +194,7 @@ class HistoryResource extends Resource
                                     Forms\Components\DatePicker::make('created_end')
                                         ->label('Creados hasta')
                                         ->afterOrEqual('created_start')
+                                        ->default(now())
                                         ->required(),
                                 ]),
                             Forms\Components\Select::make('buyers')

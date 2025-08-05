@@ -61,12 +61,8 @@ class LoginController extends Controller
     public function logout()
     {
         Filament::auth()->logout();
-
         session()->invalidate();
         session()->regenerateToken();
-        // Session::flush();
-        // Auth::logout();
-        // return redirect()->route('login');
     }
 
     public function setCompany($id, $redirect = true)
@@ -88,16 +84,8 @@ class LoginController extends Controller
             ->iconColor('success')
             ->icon('heroicon-m-building-office-2')
             ->send();
-        // return redirect()->to(url()->previous());
-        return redirect('/compras');
-    }
 
-    public function home()
-    {
-        $items = [
-            ['title' => 'TI Tickets', 'link' => 'https://it.satechenergy.com/'],
-        ];
-        return view('home')
-            ->with('items', $items);
+        return redirect()->to(url()->previous());
+        return redirect('/compras');
     }
 }

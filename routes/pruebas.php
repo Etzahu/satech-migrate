@@ -1498,21 +1498,11 @@ Route::get('history-service', function () {
     }
 });
 
-Route::get('excel-orders',function(){
-// Obtener todos los PurchaseOrder con sus PurchaseOrderItem
-        $purchaseOrders = PurchaseOrder::with(['items'])->where('purchaser_user_id',152)->get();
-        // Transformar los datos en una colección plana
-        $data = $purchaseOrders->flatMap(function ($purchaseOrder) {
-            return $purchaseOrder->items->map(function ($item) use ($purchaseOrder) {
-                return [
-                    'order_id' => $purchaseOrder->id,
-                    'order_date' => $purchaseOrder->created_at->toDateString(),
-                    'order_status' => $purchaseOrder->status, // Ejemplo de campo
-                    'item_id' => $item->id,
-                    'item_quantity' => $item->quantity, // Ejemplo de campo
-                    'item_price' => $item->unit_price, // Ejemplo de campo
-                ];
-            });
-        });
-        return (new FastExcel($data))->download('purchase_orders.xlsx');
+Route::get('excel-orders', function () {
+    $models = PurchaseRequisition::
+    whereDoesntHave('orders')
+        ->whereIn('status', ['comprador asignado', 'comprador reasignado'])
+        ->where('company_id',1)
+        ->get();
+    // dd($models?->toArray());
 });

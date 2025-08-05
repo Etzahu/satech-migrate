@@ -11,7 +11,7 @@
                     <tr>
                         <th class="border border-gray-400">ID partida</th>
                         <th class="border border-gray-400">ID Producto</th>
-                        <th class="border border-gray-400">ID item PR</th>
+                        <th class="border border-gray-400">ID item PR test</th>
                     </tr>
                 </thead>
                 <tbody>
