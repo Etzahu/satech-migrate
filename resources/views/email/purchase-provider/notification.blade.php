@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
     xmlns:o="urn:schemas-microsoft-com:office:office">
@@ -68,20 +67,24 @@
                                             </tbody>
                                         </table>
                                         <table class="table table-bordered" border="0" cellpadding="0"
-                                            cellspacing="0" style="border-radius: 6px;border: 1px solid #6c6c6c;width: 100%;border-collapse: collapse;">
+                                            cellspacing="0"
+                                            style="border-radius: 6px;border: 1px solid #6c6c6c;width: 100%;border-collapse: collapse;">
                                             <tbody>
                                                 <tr>
                                                     <td class="text-center"
-                                                        style="color: #162d4d;padding:4px;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;" width="120">
+                                                        style="color: #162d4d;padding:4px;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;"
+                                                        width="120">
                                                         RFC</td>
                                                     <td class="text-center"
-                                                        style="color: #162d4d;padding:4px;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;"
-                                                        >Nombre</td>
+                                                        style="color: #162d4d;padding:4px;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;">
+                                                        Nombre</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="font-size: 12px;border: 1px solid #6c6c6c;padding:4px;font-family: Roboto, sans-serif;font-weight: bold;color: #343a40;padding:4px;">
+                                                    <td
+                                                        style="font-size: 12px;border: 1px solid #6c6c6c;padding:4px;font-family: Roboto, sans-serif;font-weight: bold;color: #343a40;padding:4px;">
                                                         {{ $data['rfc'] }}</td>
-                                                    <td style="font-size: 12px;border: 1px solid #6c6c6c;padding:4px;font-family: Roboto, sans-serif;font-weight: bold;color: #343a40;padding:4px;">
+                                                    <td
+                                                        style="font-size: 12px;border: 1px solid #6c6c6c;padding:4px;font-family: Roboto, sans-serif;font-weight: bold;color: #343a40;padding:4px;">
                                                         {{ $data['name'] }}</td>
                                                 </tr>
                                             </tbody>
@@ -95,26 +98,29 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                        @if(filled($data['observations'] ))
-                                         <table class="table table-bordered" border="0" cellpadding="0"
-                                            cellspacing="0"
-                                            style="border-radius: 6px;width: 100%;border: 1px solid #6c6c6c;padding:4px;border-collapse: collapse;">
-                                            <thead>
-                                                <tr>
-                                                    <th colspan="2"
-                                                        style="color: #162d4d;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;">
-                                                        OBSERVACIONES O NOTAS</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td style="font-family: Roboto, sans-serif;color: #5b6c82;">
-                                                        <p class="text-justify" style="font-size: 12px;padding-left:5px;">
-                                                            {{ $data['observations'] }}</p>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                        @if (isset($data['observations']))
+                                            @if (filled($data['observations']))
+                                                <table class="table table-bordered" border="0" cellpadding="0"
+                                                    cellspacing="0"
+                                                    style="border-radius: 6px;width: 100%;border: 1px solid #6c6c6c;padding:4px;border-collapse: collapse;">
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="2"
+                                                                style="color: #162d4d;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;">
+                                                                OBSERVACIONES O NOTAS</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="font-family: Roboto, sans-serif;color: #5b6c82;">
+                                                                <p class="text-justify"
+                                                                    style="font-size: 12px;padding-left:5px;">
+                                                                    {{ $data['observations'] }}</p>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            @endif
                                         @endif
 
 
@@ -127,10 +133,14 @@
                                             </tbody>
                                         </table>
                                         <table class="btn btn-success btn-md btn-rounded" border="0"
-                                        cellpadding="0" cellspacing="0" role="presentation" style="text-align: center;width: 200px; background-color:#cc2647;border-radius: 6px;">
-                                        <tbody>
-                                            <tr>
-                                                <td class="btn-content" style=" padding: 10px 20px; border: none;cursor: pointer;vertical-align: middle;font-weight: 800;"><a href="https://app.gptsatech.com" style="color: #fff;text-decoration: none;">VER</a></td>
+                                            cellpadding="0" cellspacing="0" role="presentation"
+                                            style="text-align: center;width: 200px; background-color:#cc2647;border-radius: 6px;">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="btn-content"
+                                                        style=" padding: 10px 20px; border: none;cursor: pointer;vertical-align: middle;font-weight: 800;">
+                                                        <a href="https://app.gptsatech.com"
+                                                            style="color: #fff;text-decoration: none;">VER</a></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -157,4 +167,3 @@
 </body>
 
 </html>
-
