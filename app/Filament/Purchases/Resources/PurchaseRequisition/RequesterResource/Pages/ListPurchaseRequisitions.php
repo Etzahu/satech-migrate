@@ -7,6 +7,7 @@ use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
+use App\Models\PurchaseRequisition;
 
 class ListPurchaseRequisitions extends ListRecords
 {
@@ -23,7 +24,9 @@ class ListPurchaseRequisitions extends ListRecords
     {
         return [
             'drafts' => Tab::make('Borradores')
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereIn('status', ['borrador', 'devuelto por almacén', 'devuelto por revisor', 'devuelto por gerencia', 'devuelto por DG', 'devuelto por comprador', 'devuelto por gerente de compras'])),
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereIn('status', ['borrador', 'devuelto por almacén', 'devuelto por revisor', 'devuelto por gerencia', 'devuelto por DG', 'devuelto por comprador', 'devuelto por gerente de compras']))
+                ->badge(PurchaseRequisition::query()->myRequisitionsDraft()->count())
+                ->badgeColor('danger'),
             'assigned' => Tab::make('Comprador asignado')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'comprador asignado')),
             'closed' => Tab::make('Cerradas')
@@ -35,3 +38,4 @@ class ListPurchaseRequisitions extends ListRecords
         return 'drafts';
     }
 }
+// myRequisitionsDraft()->count()
