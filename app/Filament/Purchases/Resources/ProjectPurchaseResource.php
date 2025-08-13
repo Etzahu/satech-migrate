@@ -9,8 +9,11 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use App\Models\ProjectPurchase;
 use Filament\Resources\Resource;
+use Illuminate\Support\Collection;
 use Filament\Forms\Components\Actions;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -87,58 +90,6 @@ class ProjectPurchaseResource extends Resource
                             ->required()
                             ->maxLength(255),
                     ]),
-                // Forms\Components\Section::make('Documentacion para aprobacion por DG')
-                //     // ->visible(fn($operation) => $operation == 'edit')
-                //     ->schema([
-
-                //         SpatieMediaLibraryFileUpload::make('doc_1')
-                //             ->label('Ficha de proyecto')
-                //             ->acceptedFileTypes(['application/pdf'])
-                //             ->collection('project_sheet')
-                //             ->hintActions([
-                //                 MediaAction::make('ver documento')
-                //                     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                //                     ->media(function ($state) {
-                //                         $key = array_keys($state);
-                //                         $media = Media::where('uuid', $key[0])->first();
-                //                         $url = Storage::url($media->getPathRelativeToRoot());
-                //                         return $url;
-                //                     })
-                //                     ->autoplay()
-                //                     ->preload(false),
-                //             ]),
-                //         SpatieMediaLibraryFileUpload::make('doc_2')
-                //             ->label('Cotización de cliente')
-                //             ->acceptedFileTypes(['application/pdf'])
-                //             ->collection('customer_quote')->hintActions([
-                //                 MediaAction::make('ver documento')
-                //                     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                //                     ->media(function ($state) {
-                //                         $key = array_keys($state);
-                //                         $media = Media::where('uuid', $key[0])->first();
-                //                         $url = Storage::url($media->getPathRelativeToRoot());
-                //                         return $url;
-                //                     })
-                //                     ->autoplay()
-                //                     ->preload(false),
-                //             ]),
-                //         SpatieMediaLibraryFileUpload::make('doc_3')
-                //             ->label('Pedido')
-                //             ->acceptedFileTypes(['application/pdf'])
-                //             ->collection('order')
-                //             ->hintActions([
-                //                 MediaAction::make('ver documento')
-                //                     ->visible(fn($operation, $state) => $operation == 'view' && filled($state))
-                //                     ->media(function ($state) {
-                //                         $key = array_keys($state);
-                //                         $media = Media::where('uuid', $key[0])->first();
-                //                         $url = Storage::url($media->getPathRelativeToRoot());
-                //                         return $url;
-                //                     })
-                //                     ->autoplay()
-                //                     ->preload(false),
-                //             ]),
-                //     ]),
             ]);
     }
 
@@ -167,7 +118,31 @@ class ProjectPurchaseResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ]);
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkAction::make('aceptar')
+                    ->requiresConfirmation()
+                    ->action(function (Collection $records) {
+                        try {
+                            $records->each(function ($item) {
+                                $item->status()->transitionTo('activo');
+                            });
+                            Notification::make()
+                                ->title('Respuesta enviada')
+                                ->success()
+                                ->send();
+                        } catch (\Exception $e) {
+                            logger()->error($e->getMessages());
+                            Notification::make()
+                                ->title('Ocurrió un error.')
+                                ->danger()
+                                ->send();
+                        }
+                    })
+            ])
+            ->checkIfRecordIsSelectableUsing(
+                fn(Model $record): bool => $record->status == 'pendiente',
+            );
     }
 
     public static function getPages(): array

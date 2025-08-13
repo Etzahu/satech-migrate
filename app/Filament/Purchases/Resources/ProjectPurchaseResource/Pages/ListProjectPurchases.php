@@ -22,10 +22,6 @@ class ListProjectPurchases extends ListRecords
     public function getTabs(): array
     {
         return [
-            'todos' => Tab::make('Todos')->modifyQueryUsing(
-                fn(Builder $query) =>
-                $query->orderBy('created_at', 'desc')
-            ),
             'pendiente' => Tab::make('Pendientes')
                 ->modifyQueryUsing(
                     fn(Builder $query) =>
@@ -39,6 +35,10 @@ class ListProjectPurchases extends ListRecords
                         ->count()
                 )
                 ->badgeColor('danger'),
+            'todos' => Tab::make('Todos')->modifyQueryUsing(
+                fn(Builder $query) =>
+                $query->orderBy('created_at', 'desc')
+            ),
             'rechazado' => Tab::make('Rechazados')
                 ->modifyQueryUsing(fn(Builder $query) => $query
                     ->where('company_id', session()->get('company_id'))

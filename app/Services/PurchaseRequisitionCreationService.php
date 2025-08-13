@@ -49,9 +49,12 @@ class PurchaseRequisitionCreationService
 
     public function getApprovalChain($reviewerId, $approverId)
     {
-        return PurchaseRequisitionApprovalChain::where('requester_id', auth()->user()->id)
+        return PurchaseRequisitionApprovalChain::
+        where('requester_id', auth()->user()->id)
             ->where('reviewer_id', $reviewerId)
-            ->where('approver_id', $approverId)->first()->id;
+            ->where('approver_id', $approverId)
+            ->first()
+            ->id;
     }
     public function getApprovalChainConfidential()
     {

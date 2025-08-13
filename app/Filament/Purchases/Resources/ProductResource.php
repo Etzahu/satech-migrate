@@ -15,6 +15,8 @@ use App\Models\CategoryFamily;
 use Filament\Resources\Resource;
 use Illuminate\Support\Collection;
 use Filament\Forms\Components\Textarea;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Purchases\Resources\ProductResource\Pages;
@@ -166,7 +168,31 @@ class ProductResource extends Resource
                 // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make()
                     ->visible(fn($record) => $record->status == 'aprobado' || $record->status == 'pendiente'),
-            ]);
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkAction::make('aceptar')
+                    ->requiresConfirmation()
+                    ->action(function (Collection $records) {
+                        try {
+                            $records->each(function ($item) {
+                                $item->status()->transitionTo('aprobado');
+                            });
+                            Notification::make()
+                                ->title('Respuesta enviada')
+                                ->success()
+                                ->send();
+                        } catch (\Exception $e) {
+                            logger()->error($e->getMessages());
+                            Notification::make()
+                                ->title('Ocurrió un error.')
+                                ->danger()
+                                ->send();
+                        }
+                    })
+            ])
+            ->checkIfRecordIsSelectableUsing(
+                fn(Model $record): bool => $record->status == 'pendiente',
+            );
     }
 
     public static function getRelations(): array

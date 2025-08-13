@@ -250,6 +250,22 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         return $this->belongsTo(User::class, 'assign_user_id');
     }
     // SCOPES
+    public function scopeMyRequisitions(Builder $query)
+    {
+        return $query
+            ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
+            ->where('company_id', session()->get('company_id'))
+            // ->whereIn('status', [
+            //     'borrador',
+            //     'devuelto por almacén',
+            //     'devuelto por revisor',
+            //     'devuelto por gerencia',
+            //     'devuelto por DG',
+            //     'devuelto por comprador',
+            //     'devuelto por gerente de compras'
+            // ])
+            ->orderBy('id', 'desc');
+    }
     public function scopeMyRequisitionsDraft(Builder $query)
     {
         return $query

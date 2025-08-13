@@ -24,9 +24,11 @@ use Filament\Forms\Components\Component;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Console\View\Components\Task;
 use Spatie\MediaLibrary\Support\MediaStream;
 use App\Infolists\Components\PRProgressApproval;
 use App\Models\PurchaseRequisitionApprovalChain;
+use App\Services\PurchaseRequisitionCreationService;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
@@ -69,7 +71,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
-            ->myRequisitionsDraft();
+            ->myRequisitions();
     }
     public static function getNavigationBadge(): ?string
     {
@@ -221,7 +223,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                 ->get();
                                         }
                                         $result = collect($result);
-                                        $result =$result->mapWithKeys(function ($item) {
+                                        $result = $result->mapWithKeys(function ($item) {
                                             return [$item->id => "($item->code)" . $item->name];
                                         })->toArray();
                                         return $result;
@@ -487,7 +489,23 @@ class RequesterResource extends Resource implements HasShieldPermissions
                         ->icon('heroicon-m-document')
                         ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
+                    Tables\Actions\ReplicateAction::make()->form(fn(Form $form) => static::form($form)->columns(1))
+
+                        ->beforeReplicaSaved(function (Model $replica): void {
+                            $service = new PurchaseRequisitionCreationService();
+                            $replica->folio = $service->generateFolio();
+                        })
+                        ->mutateRecordDataUsing(function (array $data): array {
+                            $chain = PurchaseRequisitionApprovalChain::find($data['approval_chain_id']);
+                            $data['reviewer_id'] = $chain->reviewer_id;
+                            $data['approver_id'] = $chain->approver_id;
+                            return $data;
+                        })
+                        ->slideOver(),
                 ]),
+            ])
+            ->bulkActions([
+                // ...
             ]);
     }
 
