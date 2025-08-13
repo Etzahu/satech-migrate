@@ -506,7 +506,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             return $data;
                         })
                         ->slideOver()
-                        ->excludeAttributes(['status']),
+                        ->excludeAttributes(['status','assign_user_id']),
                 ]),
             ]);
     }
