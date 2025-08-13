@@ -263,7 +263,7 @@ class HistoryResource extends Resource
             ->actions([
                 ActionGroup::make([
                     Tables\Actions\ViewAction::make(),
-                    // Tables\Actions\EditAction::make(),
+                    Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
                         ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
