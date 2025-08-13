@@ -449,10 +449,15 @@ class RequesterResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('project.name')
                     ->label('Proyecto')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('motive')
+                    ->label('Motivo')
+                    ->searchable()
+                     ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('date_delivery')
                     ->label('Fecha deseable de entrega')
                     ->date()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
                     ->searchable(),
