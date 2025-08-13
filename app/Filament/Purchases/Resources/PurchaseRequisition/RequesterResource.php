@@ -495,7 +495,6 @@ class RequesterResource extends Resource implements HasShieldPermissions
                         ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
                     Tables\Actions\ReplicateAction::make()->form(fn(Form $form) => static::form($form)->columns(1))
-
                         ->beforeReplicaSaved(function (Model $replica): void {
                             $service = new PurchaseRequisitionCreationService();
                             $replica->folio = $service->generateFolio();
@@ -506,11 +505,9 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             $data['approver_id'] = $chain->approver_id;
                             return $data;
                         })
-                        ->slideOver(),
+                        ->slideOver()
+                        ->excludeAttributes(['status']),
                 ]),
-            ])
-            ->bulkActions([
-                // ...
             ]);
     }
 
