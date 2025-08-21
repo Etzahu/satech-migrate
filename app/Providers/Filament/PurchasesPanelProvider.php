@@ -96,6 +96,7 @@ class PurchasesPanelProvider extends PanelProvider
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 PanelRoles::make()
                     ->restrictedRoles([
+                        'administrador_compras',
                         'super_admin',
                         'gerente_compras',
                         'solicita_requisicion_compra',

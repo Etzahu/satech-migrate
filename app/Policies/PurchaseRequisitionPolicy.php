@@ -55,7 +55,7 @@ class PurchaseRequisitionPolicy
         $allowedIds = array_values($allowedIds);
         $allowedIds[] = 106;
         $allowedIds[] = 199;
-        $allowedIds[] = 152;
+        $allowedIds[] = 306;
         $allowedIds[] = $purchaseRequisition->purchaser?->id;
 
 
@@ -85,7 +85,7 @@ class PurchaseRequisitionPolicy
             'devuelto por gerente de compras'
         ];
 
-        return ($user->can('update_purchase::requisition::requester') &&  in_array($purchaseRequisition->status, $states)) || $user->hasRole('super_admin');
+        return ($user->can('update_purchase::requisition::requester') &&  in_array($purchaseRequisition->status, $states)) || $user->hasRole('super_admin') || $user->hasRole('administrador_compras');
     }
 
     /**

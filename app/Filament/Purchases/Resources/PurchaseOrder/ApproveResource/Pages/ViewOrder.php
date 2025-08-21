@@ -57,29 +57,16 @@ class ViewOrder extends ViewRecord
                 ->action(function (array $data) {
                     $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
                     if ($data['response'] == 'aprobado por DG nivel 1') {
-                        // validar el tipo de moneda
-                        // $minAmount = 0;
-                        // $maxAmount = 0;
-                        // if ($this->record->currency == 'USD') {
-                        //     // $minAmount = Money::USD(1);
-                        //     // $maxAmount = Money::USD(1500000);
-                        //     $minAmount = 1; //$1;
-                        //     $maxAmount = 15000; //$15,000
-                        // }
-                        // if ($this->record->currency == 'MXN') {
-                        //     $minAmount = 1; //$1;
-                        //     $maxAmount = 300000; //$300,000;
-                        // }
-                        // $service = new OrderCalculationService($this->record->id);
-                        // $total = $service->getTotal();
-
-                        // if ($total->isGreaterThanOrEqualTo($minAmount) && $total->isLessThanOrEqualTo($maxAmount)) {
-                        //     $this->record->status()->transitionTo('autorizada para proveedor');
-                        // }
-
                         $service = new OrderCalculationService($this->record->id);
-                        if ($service->isOrderTotalBetweenLimits()) {
+
+                        if ($this->record->company_id = 1) {
                             $this->record->status()->transitionTo('autorizada para proveedor');
+                        }
+
+                        if ($this->record->company_id = 2) {
+                            if ($service->isOrderTotalBetweenLimits()) {
+                                $this->record->status()->transitionTo('autorizada para proveedor');
+                            }
                         }
                     }
                     Notification::make()
