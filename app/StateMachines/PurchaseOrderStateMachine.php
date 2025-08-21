@@ -130,7 +130,7 @@ class PurchaseOrderStateMachine extends StateMachine
                 $service = new OrderCalculationService($model->id);
                 $total = $service->getTotal();
 
-                if ($model->company_id = 2) {
+                if ($model->company_id == 2) {
                     if ($total->isGreaterThan($maxAmount)) {
                         Mail::to($recipients)->send(new Notification($data));
                     }

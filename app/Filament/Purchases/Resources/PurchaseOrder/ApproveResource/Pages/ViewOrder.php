@@ -59,11 +59,11 @@ class ViewOrder extends ViewRecord
                     if ($data['response'] == 'aprobado por DG nivel 1') {
                         $service = new OrderCalculationService($this->record->id);
 
-                        if ($this->record->company_id = 1) {
+                        if ($this->record->company_id == 1) {
                             $this->record->status()->transitionTo('autorizada para proveedor');
                         }
 
-                        if ($this->record->company_id = 2) {
+                        if ($this->record->company_id == 2) {
                             if ($service->isOrderTotalBetweenLimits()) {
                                 $this->record->status()->transitionTo('autorizada para proveedor');
                             }
