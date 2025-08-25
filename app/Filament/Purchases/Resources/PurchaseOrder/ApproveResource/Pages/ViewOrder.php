@@ -59,21 +59,20 @@ class ViewOrder extends ViewRecord
                     if ($data['response'] == 'aprobado por DG nivel 1') {
                         $service = new OrderCalculationService($this->record->id);
 
-                        if ($this->record->company_id == 1) {
+                        //Proveedor GPT Ingeniería y Manufactura, S.A. de C.V.
+                        if ($this->record->provider->id == 427) {
                             $this->record->status()->transitionTo('autorizada para proveedor');
+                            Notification::make()
+                                ->title('Respuesta enviada')
+                                ->success()
+                                ->send();
+                            return redirect(ApproveResource::getUrl('index'));
                         }
 
-                        if ($this->record->company_id == 2) {
-                            if ($service->isOrderTotalBetweenLimits()) {
-                                $this->record->status()->transitionTo('autorizada para proveedor');
-                            }
+                        if ($service->isOrderTotalBetweenLimits()) {
+                            $this->record->status()->transitionTo('autorizada para proveedor');
                         }
                     }
-                    Notification::make()
-                        ->title('Respuesta enviada')
-                        ->success()
-                        ->send();
-                    return redirect(ApproveResource::getUrl('index'));
                 }),
 
 

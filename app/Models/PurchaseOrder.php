@@ -180,9 +180,9 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         ];
 
         $service = new OrderCalculationService($this->id);
-        if ($service->isOrderTotalBetweenLimits()) {
-            unset($revisions[4]);
-        }
+        // if ($service->isOrderTotalBetweenLimits()) {
+        //     unset($revisions[4]);
+        // }
 
         // Encontrar la última devolución que reinicia el ciclo
         $ultimaDevolucion = $this->status()->history()
@@ -220,25 +220,25 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         $purchaseManager =  User::role('gerente_compras')->first()->name;
         $dgLevel2 =  User::role('autoriza_nivel-2-orden_compra')->first()->name;
 
-        $progress = [];
         $data = $this->getRevisionDates();
         $service = new OrderCalculationService($this->id);
+
+        $progress = [];
+        $progress = [
+            'purchaser' => ['title' => 'Comprador', 'name' => $this->purchaser?->name, 'date' => $data['revisión gerente de compras']],
+            'reviewer' => ['title' => 'Revisa', 'name' => $purchaseManager, 'date' => $data['aprobado por gerente de compras']],
+            'approver' => ['title' => 'Aprueba', 'name' => $this->requisition->approvalChain->approver->name, 'date' => $data['aprobado por gerente solicitante']],
+            'authorizer-1' => ['title' => 'Autoriza', 'name' => $this->requisition->approvalChain->authorizer->name, 'date' => $data['aprobado por DG nivel 1']],
+            'authorizer-2' => ['title' => 'Autoriza', 'name' => $dgLevel2, 'date' => $data['aprobado por DG nivel 2']]
+        ];
         if ($service->isOrderTotalBetweenLimits()) {
-            $progress = [
-                'purchaser' => ['title' => 'Comprador', 'name' => $this->purchaser?->name, 'date' => $data['revisión gerente de compras']],
-                'reviewer' => ['title' => 'Revisa', 'name' => $purchaseManager, 'date' => $data['aprobado por gerente de compras']],
-                'approver' => ['title' => 'Aprueba', 'name' => $this->requisition->approvalChain->approver->name, 'date' => $data['aprobado por gerente solicitante']],
-                'authorizer-1' => ['title' => 'Autoriza', 'name' => $this->requisition->approvalChain->authorizer->name, 'date' => $data['aprobado por DG nivel 1']]
-            ];
-        } else {
-            $progress = [
-                'purchaser' => ['title' => 'Comprador', 'name' => $this->purchaser?->name, 'date' => $data['revisión gerente de compras']],
-                'reviewer' => ['title' => 'Revisa', 'name' => $purchaseManager, 'date' => $data['aprobado por gerente de compras']],
-                'approver' => ['title' => 'Aprueba', 'name' => $this->requisition->approvalChain->approver->name, 'date' => $data['aprobado por gerente solicitante']],
-                'authorizer-1' => ['title' => 'Autoriza 1', 'name' => $this->requisition->approvalChain->authorizer->name, 'date' => $data['aprobado por DG nivel 1']],
-                'authorizer-2' => ['title' => 'Autoriza 2', 'name' => $dgLevel2, 'date' => $data['aprobado por DG nivel 2']]
-            ];
+            unset($progress['authorizer-2']);
         }
+        if ($this->provider->id == 427) {
+            unset($progress['authorizer-2']);
+        }
+
+        $test = ['uno' => 1, 'dos' => 2];
         return $progress;
     }
 }

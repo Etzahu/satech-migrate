@@ -130,10 +130,11 @@ class PurchaseOrderStateMachine extends StateMachine
                 $service = new OrderCalculationService($model->id);
                 $total = $service->getTotal();
 
-                if ($model->company_id == 2) {
-                    if ($total->isGreaterThan($maxAmount)) {
-                        Mail::to($recipients)->send(new Notification($data));
-                    }
+                if ($model->provider->id == 427) {
+                    return;
+                }
+                if ($total->isGreaterThan($maxAmount)) {
+                    Mail::to($recipients)->send(new Notification($data));
                 }
             }],
             'devuelto por DG nivel 1' => [function ($to, $model) {
