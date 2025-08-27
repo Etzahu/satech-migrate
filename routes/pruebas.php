@@ -1499,10 +1499,13 @@ Route::get('history-service', function () {
 });
 
 Route::get('excel-orders', function () {
-    $models = PurchaseRequisition::
-    whereDoesntHave('orders')
-        ->whereIn('status', ['comprador asignado', 'comprador reasignado'])
-        ->where('company_id',1)
-        ->get();
-    // dd($models?->toArray());
+    $models = PurchaseOrder::withTrashed()
+        ->where('company_id', session()->get('company_id'))
+        ->whereYear('created_at', now()->year)
+        ->pluck('folio');
+    $models = $models->map(function ($item) {
+        return str()->remove(['G', '/25'], $item);
+    });
+
+    dd($models);
 });

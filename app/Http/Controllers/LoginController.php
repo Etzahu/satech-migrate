@@ -49,13 +49,14 @@ class LoginController extends Controller
         }
 
         $this->setCompany(1, false);
-        if ($request->session()->has('intended_url')) {
-            $intended_url = $request->session()->get('intended_url');
-            $request->session()->forget('intended_url');
-            return redirect()->to($intended_url);
-        } else {
-            return redirect()->route('filament.compras.pages.dashboard');
-        }
+        return redirect()->route('filament.compras.pages.dashboard');
+        // if ($request->session()->has('intended_url')) {
+        //     $intended_url = $request->session()->get('intended_url');
+        //     $request->session()->forget('intended_url');
+        //     return redirect()->to($intended_url);
+        // } else {
+        //     return redirect()->route('filament.compras.pages.dashboard');
+        // }
     }
 
     public function logout()
@@ -84,8 +85,7 @@ class LoginController extends Controller
             ->iconColor('success')
             ->icon('heroicon-m-building-office-2')
             ->send();
-
-        return redirect()->to(url()->previous());
+        // return redirect()->to(url()->previous());
         return redirect('/compras');
     }
 }
