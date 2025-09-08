@@ -387,7 +387,8 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                 Infolists\Components\TextEntry::make('product.unit.acronym')
                                                                     ->label('Unidad'),
                                                                 Infolists\Components\TextEntry::make('quantity')
-                                                                    ->label('Cantidad'),
+                                                                    ->label('Cantidad')
+                                                                    ->numeric(decimalPlaces: 2),
                                                                 Infolists\Components\TextEntry::make('unit_price')
                                                                     ->label('Precio unitario')
                                                                     ->formatStateUsing(function ($state) {
@@ -661,8 +662,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         Infolists\Components\TextEntry::make('product.name')
                                                             ->label('Producto'),
                                                         Infolists\Components\TextEntry::make('quantity_warehouse')
+                                                        ->numeric(decimalPlaces: 2)
                                                             ->label('Cantidad en almacén'),
                                                         Infolists\Components\TextEntry::make('quantity_purchase')
+                                                         ->numeric(decimalPlaces: 2)
                                                             ->label('Cantidad para comprar'),
                                                         Infolists\Components\TextEntry::make('observation')
                                                             ->label('Observación')

@@ -130,7 +130,7 @@ class PurchaseOrderStateMachine extends StateMachine
                 $service = new OrderCalculationService($model->id);
                 $total = $service->getTotal();
 
-                if ($model->provider->id == 427) {
+                if (in_array($model->provider->id, [427, 425, 332])) {
                     return;
                 }
                 if ($total->isGreaterThan($maxAmount)) {

@@ -154,4 +154,14 @@ class PurchaseRequisitionCreationService
         }
         return array_unique($moreUsers);
     }
+    public function getUserAssignedPurchaser($model)
+    {
+        $moreUsers = [];
+        $moreUsers[] = $model->approvalChain->requester->email;
+        $moreUsers[] = $model->approvalChain->reviewer->email;
+        $moreUsers[] = $model->approvalChain->approver->email;
+        $moreUsers[] = $model->approvalChain->authorizer->email;
+        $moreUsers[] = User::role('gerente_compras')->first()->email;
+        return array_unique($moreUsers);
+    }
 }

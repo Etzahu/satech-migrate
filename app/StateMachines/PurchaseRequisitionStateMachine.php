@@ -25,9 +25,9 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'devuelto por revisor' => ['revisión por almacén', 'revisión'],
             'devuelto por gerencia' => ['revisión por almacén', 'revisión'],
             'devuelto por DG' => ['revisión por almacén', 'revisión'],
-            'devuelto por almacén' => ['revisión por almacén','revisión'],
-            'devuelto por comprador' => ['revisión por almacén','revisión'],
-            'devuelto por gerente de compras' => ['revisión por almacén','revisión'],
+            'devuelto por almacén' => ['revisión por almacén', 'revisión'],
+            'devuelto por comprador' => ['revisión por almacén', 'revisión'],
+            'devuelto por gerente de compras' => ['revisión por almacén', 'revisión'],
 
             'revisión por almacén' => ['revisión', 'devuelto por almacén'],
             'revisión' => ['aprobado por revisor', 'devuelto por revisor', 'cancelado por revisor'],
@@ -168,11 +168,12 @@ class PurchaseRequisitionStateMachine extends StateMachine
                 function ($to, $model) {
                     $model->load('responsiblePurchaseOrder');
                     $recipient = $model->responsiblePurchaseOrder->email;
-                    $cc = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
                     $data = $service->generateDataForEmail('colocar orden de compra', $model);
+                    $moreUsers = $service->getUserAssignedPurchaser($model);
+
                     Mail::to($recipient)
-                        ->cc($cc)
+                        ->cc($moreUsers)
                         ->send(new Notification($data));
                 }
             ],
@@ -180,11 +181,12 @@ class PurchaseRequisitionStateMachine extends StateMachine
                 function ($to, $model) {
                     $model->load('responsiblePurchaseOrder');
                     $recipient = $model->responsiblePurchaseOrder->email;
-                    $cc = $model->approvalChain->requester;
                     $service = new PurchaseRequisitionCreationService();
                     $data = $service->generateDataForEmail('comprador reasignado-colocar orden de compra', $model);
+                    $moreUsers = $service->getUserAssignedPurchaser($model);
+
                     Mail::to($recipient)
-                        ->cc($cc)
+                        ->cc($moreUsers)
                         ->send(new Notification($data));
                 }
             ],

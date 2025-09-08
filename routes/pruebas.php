@@ -1509,3 +1509,26 @@ Route::get('excel-orders', function () {
 
     dd($models);
 });
+
+Route::get('lineas',function(){
+
+    $model = PurchaseRequisition::find(342);
+
+    return $model;
+
+    return;
+    $lineas = fastexcel()->import('lineas.xlsx');
+    $lineasEdgar = fastexcel()->import('lienas-2.xlsx');
+    // dd($lineas);
+    foreach($lineas as $linea){
+
+        $exists = $lineasEdgar->firstWhere('CELULAR',$linea['Número']);
+        if(filled($exists)){
+            echo "<p style='color:green;margin:0;padding:0;font-weight: bold;'>{$linea['Número']}</p>";
+            echo "<p style='color:green;margin:0;padding:0 0 10px 0;'> {$exists['USUARIO']}</p>";
+        }else{
+               echo "<p style='color:red;margin:0;padding:0;font-weight: bold;'>{$linea['Número']}</p>";
+        }
+    }
+
+});

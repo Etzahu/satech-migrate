@@ -33,7 +33,7 @@ class ItemsRelationManager extends RelationManager
                 Forms\Components\Select::make('product_id')
                     ->label('Producto')
                     ->options(function () {
-                      $type = $this->getOwnerRecord()->category;
+                        $type = $this->getOwnerRecord()->category;
                         if (session()->get('company_id') == 1) { //ID 1:GPT IM
                             return Product::where('status', 'aprobado')
                                 ->where('company_id', session()->get('company_id'))
@@ -46,7 +46,7 @@ class ItemsRelationManager extends RelationManager
                                 ->where('type_purchase', $type)
                                 ->pluck('name', 'id');
                         } else {
-                              return Product::where('status', 'aprobado')
+                            return Product::where('status', 'aprobado')
                                 ->where('company_id', session()->get('company_id'))
                                 ->pluck('name', 'id');
                         }
@@ -59,11 +59,13 @@ class ItemsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('quantity_requested')
                     ->label('Cantidad solicitada')
                     ->numeric()
+                    ->inputMode('decimal')
                     ->readonly()
                     ->minValue(1),
                 Forms\Components\TextInput::make('quantity_warehouse')
                     ->label('Cantidad en almacén')
                     ->numeric()
+                    ->inputMode('decimal')
                     ->required()
                     ->default(0)
                     ->maxValue(fn(Get $get) => $get('quantity_requested'))
@@ -79,15 +81,15 @@ class ItemsRelationManager extends RelationManager
                     ->label('Producto'),
                 Tables\Columns\TextColumn::make('quantity_requested')
                     ->label('Cantidad solicitada')
-                    ->numeric()
+                    ->numeric(decimalPlaces: 2)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity_warehouse')
                     ->label('Cantidad en almacén')
-                    ->numeric()
+                    ->numeric(decimalPlaces: 2)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity_purchase')
                     ->label('Cantidad a comprar')
-                    ->numeric()
+                    ->numeric(decimalPlaces: 2)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')

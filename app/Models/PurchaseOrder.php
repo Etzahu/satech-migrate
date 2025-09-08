@@ -234,10 +234,10 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         if ($service->isOrderTotalBetweenLimits()) {
             unset($progress['authorizer-2']);
         }
-        if ($this->provider->id == 427) {
+
+        if (in_array($this->provider->id,[427,425,332])) {
             unset($progress['authorizer-2']);
         }
-
         $test = ['uno' => 1, 'dos' => 2];
         return $progress;
     }

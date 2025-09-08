@@ -340,9 +340,11 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                         Infolists\Components\TextEntry::make('product.name')
                                             ->label('Producto'),
                                         Infolists\Components\TextEntry::make('quantity_warehouse')
-                                            ->label('Cantidad en almacén'),
+                                            ->label('Cantidad en almacén')
+                                            ->numeric(decimalPlaces: 2),
                                         Infolists\Components\TextEntry::make('quantity_purchase')
-                                            ->label('Cantidad para comprar'),
+                                            ->label('Cantidad para comprar')
+                                            ->numeric(decimalPlaces: 2),
                                         Infolists\Components\TextEntry::make('observation')
                                             ->label('Observación')
                                             ->columnSpan(2),

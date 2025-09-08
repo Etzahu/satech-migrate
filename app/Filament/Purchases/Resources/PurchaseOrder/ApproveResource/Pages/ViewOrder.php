@@ -60,7 +60,7 @@ class ViewOrder extends ViewRecord
                         $service = new OrderCalculationService($this->record->id);
 
                         //Proveedor GPT Ingeniería y Manufactura, S.A. de C.V.
-                        if ($this->record->provider->id == 427) {
+                        if ( in_array($this->record->provider->id,[427,425,332])) {
                             $this->record->status()->transitionTo('autorizada para proveedor');
                             Notification::make()
                                 ->title('Respuesta enviada')

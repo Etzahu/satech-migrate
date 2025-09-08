@@ -29,6 +29,7 @@ class ItemsRelationManager extends RelationManager
                 Forms\Components\TextInput::make('quantity_requested')
                     ->label('Cantidad solicitada')
                     ->numeric()
+                    ->inputMode('decimal')
                     ->required()
                     ->minValue(1),
                 Forms\Components\Select::make('product_id')
@@ -100,15 +101,15 @@ class ItemsRelationManager extends RelationManager
                     ->label('UM'),
                 Tables\Columns\TextColumn::make('quantity_requested')
                     ->label('Cantidad solicitada')
-                    ->numeric()
+                    ->numeric(decimalPlaces: 2)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity_warehouse')
                     ->label('Cantidad en almacén')
-                    ->numeric()
+                    ->numeric(decimalPlaces: 2)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('quantity_purchase')
                     ->label('Cantidad a comprar')
-                    ->numeric()
+                    ->numeric(decimalPlaces: 2)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('observation')
                     ->label('Observación')
