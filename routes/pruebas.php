@@ -1512,23 +1512,33 @@ Route::get('excel-orders', function () {
 
 Route::get('lineas',function(){
 
-    $model = PurchaseRequisition::find(342);
+    // $model = PurchaseRequisition::find(342);
 
-    return $model;
+    // return $model;
 
-    return;
+    // return;
     $lineas = fastexcel()->import('lineas.xlsx');
     $lineasEdgar = fastexcel()->import('lienas-2.xlsx');
-    // dd($lineas);
-    foreach($lineas as $linea){
+    dd($lineas);
 
+    $data = [];
+    foreach($lineas as $linea){
         $exists = $lineasEdgar->firstWhere('CELULAR',$linea['Número']);
         if(filled($exists)){
-            echo "<p style='color:green;margin:0;padding:0;font-weight: bold;'>{$linea['Número']}</p>";
-            echo "<p style='color:green;margin:0;padding:0 0 10px 0;'> {$exists['USUARIO']}</p>";
+            $data[]=[
+                'Número'=>$linea['Número'],
+                'Usuario'=>$exists['USUARIO'],
+                'Plan'=>$linea['Renta'],
+                'GB'=>$linea['GB'],
+                'Fecha de vencimiento'=>$linea['Fecha de Vencimiento']->format('m-d-Y'),
+            ];
+            // echo "<p style='color:green;margin:0;padding:0;font-weight: bold;'>{$linea['Número']}</p>";
+            // echo "<p style='color:green;margin:0;padding:0 0 10px 0;'> {$exists['USUARIO']}</p>";
         }else{
                echo "<p style='color:red;margin:0;padding:0;font-weight: bold;'>{$linea['Número']}</p>";
         }
     }
+    $data = collect($data)->sortByDesc('Plan');
+    return fastexcel($data)->download('lineas.xlsx');
 
 });

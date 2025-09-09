@@ -58,6 +58,8 @@ class PurchaseOrderController extends Controller
         $data['total'] = $total;
         $data['media'] = $media;
         $data['itemsFormatted'] = $itemsFormatted;
+        $data['progress'] = $data->progress;
+        // return($data);
 
         $revisions = $data->status()->timesWas('autorizada para proveedor');
 

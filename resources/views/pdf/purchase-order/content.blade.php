@@ -371,7 +371,36 @@
         </div>
 
         {{-- aprobaciones --}}
+
         <div style="width: 100%;margin-top:100px;">
+            <table style="border:none;width:900px;margin: 0 auto;">
+                <tbody>
+                    <tr>
+                        @foreach ($data['progress'] as $step)
+                            <td style="border:none;width:100px;text-align: center;">
+                                @if (filled($step['date']))
+                                    <p style="font-size: 11px;margin:0;font-weight: bold;">{{ $step['job-pdf'] }}</p>
+                                    <p style="font-size: 11px;margin:0;">
+                                        {{ $step['name'] }}
+                                        <br>
+                                        {{ $step['date'] }}
+                                    </p>
+                                @else
+                                    <p style="font-size: 11px;margin:0;font-weight: bold;color:#808080;">{{ $step['job-pdf'] }}</p>
+                                    <p style="font-size: 11px;margin:0;color:#808080;">
+                                        {{ $step['name'] }}
+                                    </p>
+                                    <p style="font-size: 11px;margin:0;color:#808080;">
+                                       <span class="inline-flex items-center px-2 py-1 text-xs font-medium text-red-500 rounded-md bg-red-600/10 inset-ring inset-ring-red-400/20">Sin respuesta</span>
+                                    </p>
+                                @endif
+                            </td>
+                        @endforeach
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {{-- <div style="width: 100%;margin-top:100px;">
             <table style="border:none;width:900px;margin: 0 auto;">
                 <tbody>
                     <tr>
@@ -436,7 +465,7 @@
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </div> --}}
     </div>
 </body>
 

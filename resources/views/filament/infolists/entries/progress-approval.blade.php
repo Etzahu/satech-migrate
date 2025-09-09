@@ -14,7 +14,7 @@
                             </svg>
                         </div>
                         <div
-                            class="box-content flex flex-col items-center justify-center w-full h-24 px-5 break-words bg-green-300 rounded-b-lg">
+                            class="flex flex-col items-center justify-center w-full h-24 px-5 bg-green-300 rounded-b-lg">
                             <h2 class="text-sm font-bold"> {{ $step['title'] }}</h2>
                             <p class="text-xs text-justify text-gray-600">
                                 {{ $step['name'] }}

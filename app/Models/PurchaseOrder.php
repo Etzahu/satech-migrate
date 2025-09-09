@@ -191,7 +191,8 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
                 'devuelto por gerente de compras',
                 'devuelto por gerente solicitante',
                 'devuelto por DG nivel 1',
-                'devuelto por DG nivel 2'
+                'devuelto por DG nivel 2',
+                'reabierta para edición'
             ])
             ->orderBy('created_at', 'desc')
             ->first();
@@ -225,17 +226,17 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
 
         $progress = [];
         $progress = [
-            'purchaser' => ['title' => 'Comprador', 'name' => $this->purchaser?->name, 'date' => $data['revisión gerente de compras']],
-            'reviewer' => ['title' => 'Revisa', 'name' => $purchaseManager, 'date' => $data['aprobado por gerente de compras']],
-            'approver' => ['title' => 'Aprueba', 'name' => $this->requisition->approvalChain->approver->name, 'date' => $data['aprobado por gerente solicitante']],
-            'authorizer-1' => ['title' => 'Autoriza', 'name' => $this->requisition->approvalChain->authorizer->name, 'date' => $data['aprobado por DG nivel 1']],
-            'authorizer-2' => ['title' => 'Autoriza', 'name' => $dgLevel2, 'date' => $data['aprobado por DG nivel 2']]
+            'purchaser' => ['title' => 'Comprador', 'name' => $this->purchaser?->name, 'job-pdf' => 'Comprador', 'date' => $data['revisión gerente de compras']],
+            'reviewer' => ['title' => 'Revisa', 'name' => $purchaseManager,'job-pdf' => 'Gerente de compras', 'date' => $data['aprobado por gerente de compras']],
+            'approver' => ['title' => 'Aprueba', 'name' => $this->requisition->approvalChain->approver->name,'job-pdf' => 'Gerente solicitante', 'date' => $data['aprobado por gerente solicitante']],
+            'authorizer-1' => ['title' => 'Autoriza', 'name' => $this->requisition->approvalChain->authorizer->name,'job-pdf' => 'Dirección general', 'date' => $data['aprobado por DG nivel 1']],
+            'authorizer-2' => ['title' => 'Autoriza', 'name' => $dgLevel2,'job-pdf' => 'Dirección general CA', 'date' => $data['aprobado por DG nivel 2']]
         ];
         if ($service->isOrderTotalBetweenLimits()) {
             unset($progress['authorizer-2']);
         }
 
-        if (in_array($this->provider->id,[427,425,332])) {
+        if (in_array($this->provider->id, [427, 425, 332])) {
             unset($progress['authorizer-2']);
         }
         $test = ['uno' => 1, 'dos' => 2];
