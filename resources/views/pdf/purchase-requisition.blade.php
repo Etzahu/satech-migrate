@@ -83,7 +83,7 @@
             <tr>
                 <td rowspan="4" align="center" valing="middle">
                     {{-- row-1-1 --}}
-                     {{-- <img src="{{ secure_asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" /> --}}
+                    {{-- <img src="{{ secure_asset('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" /> --}}
                     <img src="{{ public_path('images/logo/logotipo_GPT.png') }}" alt="logo" width="150px" />
                 </td>
                 <td colspan="4">
@@ -320,76 +320,29 @@
             <table style="border:none;width:900px;margin: 0 auto;">
                 <tbody>
                     <tr>
-                        <td style="border:none;width:100px;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">Solicita</p>
-                        </td>
-                        {{-- <td style="border:none;width:100px;text-align: center;"><p style="font-size: 11px;margin:0;">Almacén</p></td> --}}
-                        <td style="border:none;width:100px;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">Revisa</p>
-                        </td>
-                        <td style="border:none;width:100px;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">Aprueba</p>
-                        </td>
-                        <td style="border:none;width:100px;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">Autoriza</p>
-                        </td>
+                        @foreach ($stages as $stage)
+                            <td style="border:none;width:100px;text-align: center;">
+                                <p style="font-size: 11px;margin:0;font-weight: bold;">{{ $stage['title'] }}</p>
+                            </td>
+                        @endforeach
                     </tr>
                     <tr>
-                        <td style="border:none;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">
-                                @if (filled($stages[1]))
-                                    {{ $stages[1]->responsible->name }}
-                                    <br>
-                                    {{ $stages[1]->created_at }}
-                                @else
-                                    Sin respuesta
-                                @endif
-                            </p>
-                        </td>
-                        <td style="border:none;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">
-                                @if (filled($stages[2]))
-                                    {{ $stages[2]->responsible->name }}
-                                    <br>
-                                    {{ $stages[2]->created_at }}
-                                @else
-                                    Sin respuesta
-                                @endif
-                            </p>
-                        </td>
-                        <td style="border:none;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">
-                                @if (filled($stages[3]))
-                                    {{ $stages[3]->responsible->name }}
-                                    <br>
-                                    {{ $stages[3]->created_at }}
-                                @else
-                                    Sin respuesta
-                                @endif
-
-                            </p>
-                        </td>
-                        <td style="border:none;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">
-                                @if (filled($stages[4]))
-                                    {{ $stages[4]->responsible->name }}
-                                    <br>
-                                    {{ $stages[4]->created_at }}
-                                @else
-                                    Sin respuesta
-                                @endif
-                            </p>
-                        </td>
-                        {{-- <td style="border:none;text-align: center;">
+                        @foreach ($stages as $stage)
+                            <td style="border:none;text-align: center;">
                                 <p style="font-size: 11px;margin:0;">
-                                    @if (filled($stages[4]))
-                                        {{ $stages[4]->responsible->name }}
-                                        {{ $stages[4]->created_at }}
-                                         @else
-                                    Sin respuesta
-                                    @endif
+                                    {{ $stage['name'] }}
                                 </p>
-                            </td> --}}
+                                @if (filled($stage['date']))
+                                    <p  style="font-size: 11px;margin:0;">
+                                        {{ $stage['date']->format('d-m-Y') }}
+                                    </p>
+                                @else
+                                    <p  style="font-size: 11px;margin:0;">
+                                        Sin respuesta
+                                    </p>
+                                @endif
+                            </td>
+                        @endforeach
                     </tr>
                 </tbody>
             </table>

@@ -383,7 +383,7 @@
                                     <p style="font-size: 11px;margin:0;">
                                         {{ $step['name'] }}
                                         <br>
-                                        {{ $step['date'] }}
+                                        {{ $step['date']->format('d-m-Y') }}
                                     </p>
                                 @else
                                     <p style="font-size: 11px;margin:0;font-weight: bold;color:#808080;">{{ $step['job-pdf'] }}</p>

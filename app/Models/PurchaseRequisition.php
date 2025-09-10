@@ -132,12 +132,12 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         $ultimaDevolucion = $this->status()->history()
             ->where('field', 'status')
             ->whereIn('to', [
-                'devuelto por comprador',
-                'devuelto por gerente de compras',
-                'devuelto por DG',
-                'devuelto por gerencia',
+                'devuelto por almacén',
                 'devuelto por revisor',
-                'devuelto por almacén'
+                'devuelto por gerencia',
+                'devuelto por DG',
+                'devuelto por gerente de compras',
+                'devuelto por comprador'
             ])
             ->orderBy('created_at', 'desc')
             ->first();
@@ -155,7 +155,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             }
 
             $registro = $query->first();
-            $fechas[$revision] = $registro ? $registro->created_at->format('d-m-Y') : null;
+            $fechas[$revision] = $registro ? $registro->created_at : null;
         }
         return $fechas;
     }
@@ -255,15 +255,6 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         return $query
             ->whereIn('approval_chain_id', auth()->user()->approvalChainsPurchaseRequisition->pluck('id')->toArray())
             ->where('company_id', session()->get('company_id'))
-            // ->whereIn('status', [
-            //     'borrador',
-            //     'devuelto por almacén',
-            //     'devuelto por revisor',
-            //     'devuelto por gerencia',
-            //     'devuelto por DG',
-            //     'devuelto por comprador',
-            //     'devuelto por gerente de compras'
-            // ])
             ->orderBy('id', 'desc');
     }
     public function scopeMyRequisitionsDraft(Builder $query)

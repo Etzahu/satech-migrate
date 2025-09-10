@@ -198,7 +198,7 @@ class HistoryResource extends Resource
                                         ->required(),
                                 ]),
                             Forms\Components\Select::make('buyers')
-                                ->label('Compradores')
+                                ->label('Compradores (opcional)')
                                 ->multiple()
                                 ->nullable()
                                 ->options(function () {
@@ -277,6 +277,7 @@ class HistoryResource extends Resource
                                 'Precio unitario' => $service->brickFormatter($item->unit_price),
                                 'Subtotal' => $service->brickFormatter($item->sub_total),
                                 'Producto-Servicio' => $item->product->name,
+                                'Tipo' => $item->product->type_purchase,
                                 'Observaciones' => $item->observation
                             ];
                         }
@@ -330,11 +331,10 @@ class HistoryResource extends Resource
 
     public static function contactDataItems($model)
     {
-        $service = new OrderCalculationService();
         $result = '';
         $items = $model->items;
         foreach ($items as $item) {
-            $resum = "{$item->product->name}\n";
+            $resum = "{$item->product->name} ({$item->product->type_purchase})\n";
             $result .= $resum;
         }
         return $result;

@@ -225,6 +225,7 @@ class HistoryResource extends Resource
                                 'motivo' => $model->motive,
                                 'tipo' => $model->type,
                                 'observaciones' => $model->observation,
+                                'partidas' => static::contactDataItems($model),
                                 'fecha de entrega' => $model->date_delivery->format('d-m-Y'),
                                 'dirección de entrega' => $model->delivery_address,
                                 'estatus' => $model->status,
@@ -249,6 +250,7 @@ class HistoryResource extends Resource
                                 'Requisición' => $item->requisition->folio,
                                 'Cantidad' => $item->quantity_purchase,
                                 'Producto-Servicio' => $item->product->name,
+                                'Tipo' => $item->product->type_purchase,
                                 'Observaciones' => $item->observation
                             ];
                         }
@@ -284,5 +286,16 @@ class HistoryResource extends Resource
             'view' => Pages\View::route('/{record}'),
             'edit' => Pages\Edit::route('/{record}/edit'),
         ];
+    }
+
+    public static function contactDataItems($model)
+    {
+        $result = '';
+        $items = $model->items;
+        foreach ($items as $item) {
+            $resum = "{$item->product->name} ({$item->product->type_purchase})\n";
+            $result .= $resum;
+        }
+        return $result;
     }
 }

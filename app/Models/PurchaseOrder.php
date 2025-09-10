@@ -210,7 +210,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             }
 
             $registro = $query->first();
-            $fechas[$revision] = $registro ? $registro->created_at->format('d-m-Y') : null;
+            $fechas[$revision] = $registro ? $registro->created_at : null;
         }
         return $fechas;
     }
@@ -222,6 +222,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         $dgLevel2 =  User::role('autoriza_nivel-2-orden_compra')->first()->name;
 
         $data = $this->getRevisionDates();
+       
         $service = new OrderCalculationService($this->id);
 
         $progress = [];

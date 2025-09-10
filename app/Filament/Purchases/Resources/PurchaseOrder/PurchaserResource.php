@@ -395,8 +395,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                         if (blank($state)) {
                                                                             return '0.0000';
                                                                         }
+                                                                        $service = new OrderCalculationService();
                                                                         $state = BigDecimal::of($state)->dividedBy(10000, 4);
-                                                                        return (string) $state;
+                                                                        $state = $service->brickFormatter($state);
+                                                                        return  $state;
                                                                     }),
                                                                 Infolists\Components\TextEntry::make('sub_total')
                                                                     ->label('Subtotal')
@@ -404,8 +406,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                         if (blank($state)) {
                                                                             return '0.0000';
                                                                         }
+                                                                        $service = new OrderCalculationService();
                                                                         $state = BigDecimal::of($state)->dividedBy(10000, 4);
-                                                                        return (string) $state;
+                                                                        $state = $service->brickFormatter($state);
+                                                                        return  $state;
                                                                     }),
                                                                 Infolists\Components\TextEntry::make('observation')
                                                                     ->label('Observación')
@@ -427,6 +431,11 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->view('filament.infolists.entries.progress-approval')
                                             ])
                                             ->columns(1),
+                                        Infolists\Components\Tabs\Tab::make('Historial')
+                                            ->schema([
+                                                Infolists\Components\ViewEntry::make('status')
+                                                    ->view('filament.infolists.entries.history'),
+                                            ]),
                                         Infolists\Components\Tabs\Tab::make('Condiciones de pago')
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('condition_payment')
@@ -596,12 +605,6 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                 Infolists\Components\Textentry::make('observations')
                                                     ->label('Observaciones'),
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Historial')
-                                            ->schema([
-                                                Infolists\Components\ViewEntry::make('status')
-                                                    ->view('filament.infolists.entries.history'),
-                                            ]),
-
                                         Infolists\Components\Tabs\Tab::make('Resumen del total')
                                             ->columns(1)
                                             ->schema([
@@ -611,7 +614,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                             ]),
                                     ])
                                     ->contained(false)
-                                    ->activeTab(3)
+                                    ->activeTab(1)
                             ]),
                         Infolists\Components\Tabs\Tab::make('Requisición')
                             ->schema([
@@ -662,10 +665,10 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         Infolists\Components\TextEntry::make('product.name')
                                                             ->label('Producto'),
                                                         Infolists\Components\TextEntry::make('quantity_warehouse')
-                                                        ->numeric(decimalPlaces: 2)
+                                                            ->numeric(decimalPlaces: 2)
                                                             ->label('Cantidad en almacén'),
                                                         Infolists\Components\TextEntry::make('quantity_purchase')
-                                                         ->numeric(decimalPlaces: 2)
+                                                            ->numeric(decimalPlaces: 2)
                                                             ->label('Cantidad para comprar'),
                                                         Infolists\Components\TextEntry::make('observation')
                                                             ->label('Observación')
