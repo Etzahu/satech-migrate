@@ -10,7 +10,7 @@
                         <div class="relative flex mb-8">
                             @if (!$loop->last)
                                 <!-- Línea conectora -->
-                                <div class="absolute left-8 top-14 h-16 w-0.5 bg-gray-200"></div>
+                                <div class="absolute left-8 top-14 h-24 w-0.5 bg-gray-200"></div>
                             @endif
                             <!-- Badge de fecha -->
                             <div

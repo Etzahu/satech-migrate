@@ -179,7 +179,6 @@ class HistoryResource extends Resource
                                         $component->state(['fecha de creacion', 'comprador', 'folio', 'partidas', 'proveedor', 'subtotal', 'total', 'moneda', 'proyecto']);
                                     }
                                 }),
-
                             Forms\Components\Grid::make([
                                 'default' => 2,
                                 'sm' => 1,
@@ -203,22 +202,33 @@ class HistoryResource extends Resource
                                 ->nullable()
                                 ->options(function () {
                                     return User::role('comprador')->pluck('name', 'id');
-                                })
+                                }),
+                            Forms\Components\CheckboxList::make('type_purchase')
+                                ->label('Tipo (opcional)')
+                                ->columns(2)
+                                ->options([
+                                    'proveeduria' => 'Producto',
+                                    'servicio' => 'Servicio',
+                                ]),
                         ]
                     )
                     ->action(function (array $data) {
-
                         $startDate = Carbon::createFromFormat('Y-m-d', $data['created_start'])->startOfDay();
                         $endDate = Carbon::createFromFormat('Y-m-d', $data['created_end'])->endOfDay();
-                        $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'items.purchase', 'items.product', 'purchaser'])
+                        $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'purchaser'])
                             ->where('company_id', session()->get('company_id'))
                             ->whereBetween('created_at', [$startDate, $endDate]);
-
                         if (filled($data['buyers'])) {
                             $models = $models->whereIn('purchaser_user_id', $data['buyers']);
                         }
-
+                        if (filled($data['type_purchase'])) {
+                            $models->whereHas('items.product', function ($query) use ($data) {
+                                $query->whereIn('type_purchase', $data['type_purchase']);
+                            });
+                        }
                         $models = $models->get();
+                        // $models->load(['items.purchase', 'items.product']);
+
                         if (blank($models)) {
                             return   Notification::make()
                                 ->title('No se encontraron registros')
