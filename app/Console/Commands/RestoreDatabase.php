@@ -13,41 +13,32 @@ class RestoreDatabase extends Command
      *
      * @var string
      */
-    protected $signature = 'db:restore {filename}';
+    protected $signature = 'db:restore {file}';
     protected $description = 'Restore the database from a backup';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        // Obtener el nombre del archivo de respaldo
-        $filename = $this->argument('filename');
-        $path = storage_path('app/backups/' . $filename);
+        // $filename = $this->argument('filename');
+        $file= $this->argument('file');
+        $filePath = storage_path('app/backups/' . $file);
 
-        // Verificar si el archivo de respaldo existe
-        if (!file_exists($path)) {
-            $this->error('El archivo de respaldo no existe: ' . $filename);
-            return;
+        $database = config('database.connections.mysql.database');
+        $username = config('database.connections.mysql.username');
+        $password = config('database.connections.mysql.password');
+        $host = config('database.connections.mysql.host');
+
+        // Verifica si el archivo existe
+        if (!file_exists($filePath)) {
+            $this->error("El archivo $filePath no existe.");
+            return 1;
         }
 
-        // Obtener las credenciales de la base de datos
-        $dbName = config('database.connections.mysql.database');
-        $dbUser = config('database.connections.mysql.username');
-        $dbPass = config('database.connections.mysql.password');
-
-        // Paso 1: Eliminar la base de datos existente
+             // Paso 1: Eliminar la base de datos existente
         $dropCommand = sprintf(
             'mysql -u%s -p%s -e "DROP DATABASE IF EXISTS %s;"',
-            $dbUser,
-            $dbPass,
-            $dbName
+            $username,
+            $password,
+            $database
         );
 
         $dropProcess = Process::fromShellCommandline($dropCommand);
@@ -57,14 +48,15 @@ class RestoreDatabase extends Command
             throw new ProcessFailedException($dropProcess);
         }
 
-        $this->info('Base de datos eliminada: ' . $dbName);
+        $this->info('Base de datos eliminada: ' . $database);
 
-        // Paso 2: Crear una nueva base de datos vacía
+
+         // Paso 2: Crear una nueva base de datos vacía
         $createCommand = sprintf(
             'mysql -u%s -p%s -e "CREATE DATABASE %s;"',
-            $dbUser,
-            $dbPass,
-            $dbName
+            $username,
+            $password,
+            $database
         );
 
         $createProcess = Process::fromShellCommandline($createCommand);
@@ -74,24 +66,30 @@ class RestoreDatabase extends Command
             throw new ProcessFailedException($createProcess);
         }
 
-        $this->info('Base de datos creada: ' . $dbName);
+        $this->info('Base de datos creada: ' . $database);
 
-        // Paso 3: Cargar el respaldo en la nueva base de datos
-        $restoreCommand = sprintf(
-            'mysql -u%s -p%s %s < %s',
-            $dbUser,
-            $dbPass,
-            $dbName,
-            $path
+        
+        // Comando para restaurar
+        $command = sprintf(
+            'mysql -h %s -u %s %s %s < %s',
+            $host,
+            $username,
+            $password ? '-p' . escapeshellarg($password) : '',
+            $database,
+            escapeshellarg($filePath)
         );
 
-        $restoreProcess = Process::fromShellCommandline($restoreCommand);
-        $restoreProcess->run();
+        // Ejecuta el comando
+        $process = Process::fromShellCommandline($command);
+        $process->setTimeout(3600); // Timeout de 1 hora para archivos grandes
+        $process->run();
 
-        if (!$restoreProcess->isSuccessful()) {
-            throw new ProcessFailedException($restoreProcess);
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
         }
 
-        $this->info('Base de datos restaurada desde: ' . $filename);
+        $this->info('Base de datos restaurada exitosamente.');
+        return 0;
     }
+
 }

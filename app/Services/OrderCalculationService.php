@@ -95,13 +95,20 @@ class OrderCalculationService
     // }
     public function brickFormatter($value)
     {
+       logger($value);
         if (!$value instanceof BigDecimal) {
             $value = BigDecimal::of($value)->dividedBy(10000, 4);
             // Redondear hacia arriba a 2 decimales
             $value = $value->toScale(2, RoundingMode::CEILING);
         }
+        // logger($value);
 
-        $amount = BrickMoney::of($value->__toString(), 'MXN');
+        try {
+            $amount = BrickMoney::of($value->__toString(), 'MXN');
+        } catch (\Exception $e) {
+            logger()->error($value);
+            throw $e;
+        }
         return $amount->formatTo('es_MX'); // Salida: $100.57
         // return $value;
     }

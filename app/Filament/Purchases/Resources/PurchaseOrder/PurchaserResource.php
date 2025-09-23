@@ -396,7 +396,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                             return '0.0000';
                                                                         }
                                                                         $service = new OrderCalculationService();
-                                                                        $state = BigDecimal::of($state)->dividedBy(10000, 4);
+                                                                        // $state = BigDecimal::of($state)->dividedBy(10000, 4);
                                                                         $state = $service->brickFormatter($state);
                                                                         return  $state;
                                                                     }),
@@ -407,7 +407,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                             return '0.0000';
                                                                         }
                                                                         $service = new OrderCalculationService();
-                                                                        $state = BigDecimal::of($state)->dividedBy(10000, 4);
+                                                                        // $state = BigDecimal::of($state)->dividedBy(10000, 4);
                                                                         $state = $service->brickFormatter($state);
                                                                         return  $state;
                                                                     }),
