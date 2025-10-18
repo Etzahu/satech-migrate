@@ -1,8 +1,13 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
     @php
-        $progress = $getRecord()->provider->approval_chain == 'especial'?
-            $getRecord()->progressSpecial :
-            $getRecord()->progress;
+        if (get_Class($getRecord()) == 'App\Models\PurchaseOrder') {
+            $progress =
+                $getRecord()->provider->approval_chain == 'especial'
+                    ? $getRecord()->progressSpecial
+                    : $getRecord()->progress;
+        } else {
+            $progress = $getRecord()->progress;
+        }
     @endphp
     <div class="w-full max-w-2xl mx-auto">
         <!-- Tarjeta de cronología -->
