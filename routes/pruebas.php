@@ -1542,3 +1542,9 @@ Route::get('lineas',function(){
     return fastexcel($data)->download('lineas.xlsx');
 
 });
+
+Route::get('chain-special',function(){
+    $model = PurchaseOrder::find(983);
+    $data =  $model->progressSpecial;
+   dd($data);
+});

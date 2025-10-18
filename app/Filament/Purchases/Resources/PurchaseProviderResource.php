@@ -87,7 +87,8 @@ class PurchaseProviderResource extends Resource
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('cp')
                                     ->label('Código postal')
-                                    ->required()
+                                    ->default('NA')
+                                    ->nullable()
                                     ->maxLength(10),
                                 Forms\Components\TextInput::make('web_company')
                                     ->label('Sitio web  de la empresa')
@@ -101,96 +102,100 @@ class PurchaseProviderResource extends Resource
                                     ->required()
                                     ->searchable()
                                     ->options([
-                                        'BANAMEX',
-                                        'SERFIN',
-                                        'ATLÁNTICO',
-                                        'CITIBANK',
-                                        'UNIÓN',
-                                        'CONFÍA',
-                                        'BBVA BANCOMER',
-                                        'INDUSTRIAL',
-                                        'SANTANDER',
-                                        'INTERBANCO',
-                                        'BBVA SERVICIOS',
-                                        'HSBC',
-                                        'GE MONEY',
-                                        'SURESTE',
-                                        'CAPITAL',
-                                        'BAJÍO',
-                                        'IXE',
-                                        'INBURSA',
-                                        'INTERACCIONES',
-                                        'MIFEL',
-                                        'SCOTIABANK INVERLAT',
-                                        'PRONORTE',
-                                        'QUADRUM',
-                                        'BANREGIO',
-                                        'INVEX',
-                                        'BANSI',
+                                        'NO APLICA',
+                                        'ABC CAPITAL',
                                         'AFIRME',
-                                        'ANÁHUAC',
-                                        'PROMEX',
-                                        'BANPAÍS',
-                                        'BANORTE/IXE',
-                                        'ORIENTE',
-                                        'BANCEN',
-                                        'CREMI',
-                                        'INVESTA BANK',
                                         'AMERICAN EXPRESS',
-                                        'SANTANDER',
-                                        'BAMSA',
-                                        'BOSTON',
-                                        'TOKYO',
-                                        'BNP',
-                                        'JP MORGAN',
-                                        'MONEX',
-                                        'VE POR MÁS',
-                                        'BANK ONE',
-                                        'FUJI',
-                                        'ING',
-                                        'NATIONSBANK',
-                                        'REPUBLIC NY',
-                                        'SOCIÉTÉ',
-                                        'DEUTSCHE',
-                                        'Credit Suisse First Boston',
-                                        'AZTECA',
+                                        'ANÁHUAC',
+                                        'ATLÁNTICO',
                                         'AUTOFIN',
-                                        'BARCLAYS',
-                                        'COMPARTAMOS',
+                                        'AZTECA',
+                                        'BAJÍO',
+                                        'BAMSA',
+                                        'BANAMEX',
+                                        'BANCEN',
                                         'BANCO FAMSA',
                                         'BANCO MULTIVA',
-                                        'BM ACTINVER',
-                                        'WAL-MART',
-                                        'INTERCAM BANCO',
                                         'BANCOPPEL',
-                                        'ABC CAPITAL',
-                                        'UBS BANK',
-                                        'CONSUBANCO',
-                                        'VOLKSWAGEN',
-                                        'CIBANCO',
-                                        'BANK NEW YORK',
-                                        'BM BASE',
-                                        'BICENTENARIO',
-                                        'BANKAOOL',
-                                        'PAGATODO',
-                                        'FORJADORES',
-                                        'INMOBILIARIO',
-                                        'DONDÉ',
                                         'BANCREA',
-                                        'CHIHUAHUA',
-                                        'FINTERRA',
-                                        'BANK OF CHINA',
                                         'Bancrecer, S.A.',
+                                        'BANKAOOL',
+                                        'BANORTE/IXE',
+                                        'BANPAÍS',
+                                        'BANREGIO',
+                                        'BANSI',
+                                        'BANK NEW YORK',
+                                        'BANK OF CHINA',
+                                        'BANK ONE',
+                                        'BARCLAYS',
+                                        'BBVA BANCOMER',
+                                        'BBVA SERVICIOS',
+                                        'BICENTENARIO',
+                                        'BM ACTINVER',
+                                        'BM BASE',
+                                        'BNP',
+                                        'BOSTON',
+                                        'CAPITAL',
+                                        'CHIHUAHUA',
+                                        'CIBANCO',
+                                        'CITIBANK',
+                                        'COMPARTAMOS',
+                                        'CONFÍA',
+                                        'CONSUBANCO',
+                                        'Credit Suisse First Boston',
+                                        'CREMI',
+                                        'DEUTSCHE',
+                                        'DONDÉ',
+                                        'FINTERRA',
+                                        'FORJADORES',
+                                        'FUJI',
+                                        'GE MONEY',
+                                        'HSBC',
+                                        'INBURSA',
+                                        'INDUSTRIAL',
+                                        'ING',
+                                        'INMOBILIARIO',
+                                        'INTERBANCO',
+                                        'INTERACCIONES',
+                                        'INTERCAM BANCO',
+                                        'INVESTA BANK',
+                                        'INVEX',
+                                        'IXE',
+                                        'JP MORGAN',
+                                        'MIFEL',
+                                        'MONEX',
+                                        'NATIONSBANK',
                                         'OBRERO',
-                                    ]),
+                                        'ORIENTE',
+                                        'PAGATODO',
+                                        'PROMEX',
+                                        'PRONORTE',
+                                        'QUADRUM',
+                                        'REPUBLIC NY',
+                                        'SANTANDER',
+                                        'SCOTIABANK INVERLAT',
+                                        'SERFIN',
+                                        'SOCIÉTÉ',
+                                        'SURESTE',
+                                        'TOKYO',
+                                        'UBS BANK',
+                                        'UNIÓN',
+                                        'VE POR MÁS',
+                                        'VOLKSWAGEN',
+                                        'WAL-MART',
+                                    ])
+                                    ->default('NO APLICA')
+                                    ->nullable(),
                                 Forms\Components\TextInput::make('bank_account')
                                     ->label('Cuenta de banco')
+                                    ->default('')
                                     ->maxLength(30)
-                                    ->required(),
+                                    ->nullable(),
                                 Forms\Components\TextInput::make('bank_account_number')
                                     ->label('Clabe')
                                     ->maxLength(30)
-                                    ->required()
+                                    ->default('')
+                                    ->nullable()
                             ]),
                         Forms\Components\Tabs\Tab::make('Documentacion')
                             ->schema([
@@ -230,11 +235,21 @@ class PurchaseProviderResource extends Resource
                             ->visible(fn($operation) => $operation !== 'create')
                             ->schema([
                                 \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ContactsRelationManager::class)->lazy(true)
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Cadena de aprobación')
+                            ->visible(auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('gerente_compras'))
+                            ->columns(1)
+                            ->schema([
+                                Forms\Components\Select::make('approval_chain')
+                                    ->label('Tipo')
+                                    ->required()
+                                    ->searchable()
+                                    ->options(['normal' => 'Normal', 'especial' => 'Especial'])
+                                    ->helperText('Selecciona la cadena de aprobación que se utilizará para este proveedor.'),
                             ])
                     ])
             ]);
     }
-
     public static function table(Table $table): Table
     {
         return $table

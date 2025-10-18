@@ -21,11 +21,12 @@ return new class extends Migration
             $table->string('municipality');
             $table->string('state');
             $table->string('country');
-            $table->string('cp');
+            $table->string('cp')->default('N/A');
             $table->string('web_company')->nullable();
             $table->string('bank',50)->default('N/A');
             $table->string('bank_account')->default(0);
             $table->string('bank_account_number')->default(0);
+            $table->string('approval_chain',20)->default('normal');  //Especial(es mas corta)
             $table->string('status');
             $table->foreignId('user_request_id')->constrained('users');
             $table->foreignId('user_approve_id')->nullable()->constrained('users');

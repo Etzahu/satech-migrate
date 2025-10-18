@@ -24,7 +24,7 @@ class ApproveResource extends Resource
     protected static ?string $slug = 'ordenes/aprobar';
     protected static ?string $navigationGroup = 'Orden';
     protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     public static function canAccess(): bool
     {

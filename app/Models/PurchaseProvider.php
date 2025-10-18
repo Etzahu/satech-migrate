@@ -26,6 +26,7 @@ class PurchaseProvider extends Model implements HasMedia
         'bank',
         'bank_account',
         'bank_account_number',
+        'approval_chain',
         'status',
         'user_request_id',
         'user_approve_id',

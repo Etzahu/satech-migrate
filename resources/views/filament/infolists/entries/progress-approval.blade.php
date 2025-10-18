@@ -1,10 +1,15 @@
 <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    @php
+        $progress = $getRecord()->provider->approval_chain == 'especial'?
+            $getRecord()->progressSpecial :
+            $getRecord()->progress;
+    @endphp
     <div class="w-full max-w-2xl mx-auto">
         <!-- Tarjeta de cronología -->
         <div class="overflow-hidden bg-white shadow-lg rounded-xl">
             <!-- Contenido -->
             <div class="p-6">
-                @foreach ($getRecord()->progress as $step)
+                @foreach ($progress as $step)
                     @if (filled($step['name']) && isset($step['date']))
                         <!-- Etapa  Completada -->
                         <div class="relative flex mb-8">

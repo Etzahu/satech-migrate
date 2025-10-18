@@ -21,7 +21,10 @@ class PurchaseOrderStateMachine extends StateMachine
     public function transitions(): array
     {
         return [
-            'borrador' => ['revisión gerente de compras'],
+            'borrador' => [
+                'revisión gerente de compras',
+                'revision por dirección general' // Existe un segundo camino cuando el proveedor en la orden es de una lista especial prorpocinada por el generente de compras
+            ],
             'revisión gerente de compras' =>  ['aprobado por gerente de compras', 'devuelto por gerente de compras', 'cancelado por gerente de compras'],
 
             'aprobado por gerente de compras' => ['aprobado por gerente solicitante', 'devuelto por gerente solicitante', 'cancelado por gerente solicitante'],
@@ -35,6 +38,10 @@ class PurchaseOrderStateMachine extends StateMachine
             'devuelto por DG nivel 1' => ['revisión gerente de compras'],
             'devuelto por DG nivel 2' => ['revisión gerente de compras'],
             'reabierta para edición' => ['revisión gerente de compras'],
+
+            // Existe un segundo camino cuando el proveedor en la orden es de una lista especial prorpocinada por el generente de compras
+            'revision por dirección general' => ['autorizada para proveedor', 'devuelto por dirección general', 'cancelado por dirección general'],
+            'devuelto por dirección general' => ['revision por dirección general'],
 
         ];
     }
@@ -164,6 +171,30 @@ class PurchaseOrderStateMachine extends StateMachine
             'cancelado por DG nivel 2' => [function ($to, $model) {
                 $service = new OrderService();
                 $data = $service->generateDataEmail($model->id, 'cancelado por DG');
+
+                $recipient = $model->purchaser->email;
+
+                Mail::to($recipient)->send(new Notification($data));
+            }],
+
+            'revision por dirección general' => [function ($to, $model) {
+                $service = new OrderService();
+                $data = $service->generateDataEmail($model->id, 'revision');
+                $recipient = User::find(106)->email;
+                Mail::to($recipient)->send(new Notification($data));
+            }],
+
+            'devuelto por dirección general' => [function ($to, $model) {
+                $service = new OrderService();
+                $data = $service->generateDataEmail($model->id, 'devuelto por dirección general');
+
+                $recipient = $model->purchaser->email;
+
+                Mail::to($recipient)->send(new Notification($data));
+            }],
+            'cancelado por dirección general' => [function ($to, $model) {
+                $service = new OrderService();
+                $data = $service->generateDataEmail($model->id, 'cancelado por dirección general');
 
                 $recipient = $model->purchaser->email;
 

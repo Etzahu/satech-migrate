@@ -48,7 +48,7 @@ class LoginController extends Controller
             return redirect()->route('login');
         }
 
-        $this->setCompany(1, false);
+        $this->setCompany(2, false);
         return redirect()->route('filament.compras.pages.dashboard');
         // if ($request->session()->has('intended_url')) {
         //     $intended_url = $request->session()->get('intended_url');

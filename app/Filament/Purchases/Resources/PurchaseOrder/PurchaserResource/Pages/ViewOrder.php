@@ -29,10 +29,7 @@ class ViewOrder extends ViewRecord
                 ->icon('heroicon-m-arrow-down-tray')
                 ->openUrlInNewTab(),
             Actions\Action::make('Solicitar')
-                ->modalHeading('Enviar respuesta')
-                ->color('success')
                 ->visible(function () {
-                    // TODO falta agregar la logica para habilitar el boton cuando la orden se rechazo y debe comenzar el proceso
                     // TODO: fala la logica para que se muestre el boton una vez que el comprado agrege un precio unitario a cada item
                     $items = $this->record->items->pluck('unit_price');
                     $hasZeroQuantity = $items->contains(function ($item) {
@@ -41,17 +38,26 @@ class ViewOrder extends ViewRecord
                     if ($hasZeroQuantity) {
                         return false;
                     }
-                    return $this->record->status()->canBe('revisión gerente de compras') && $this->record->items()->count() > 0;
+                    return ($this->record->status()->canBe('revisión gerente de compras') || $this->record->status()->canBe('revision por dirección general')) && $this->record->items()->count() > 0;
                 })
-                ->requiresConfirmation()
-                ->action(function (array $data) {
-                    $this->record->status()->transitionTo('revisión gerente de compras');
+                ->action(function () {
+                    // dd($this->record->provider->approval_chain);
+                    if ($this->record->provider->approval_chain == 'especial') {
+                        $this->record->status()->transitionTo('revision por dirección general');
+                    } else {
+                        $this->record->status()->transitionTo('revisión gerente de compras');
+                    }
                     Notification::make()
                         ->title('Respuesta enviada')
                         ->success()
                         ->send();
                     return redirect(PurchaserResource::getUrl('index'));
-                }),
+                })
+                ->requiresConfirmation() // This makes the action require confirmation
+                ->modalHeading('Enviar respuesta')
+                ->modalDescription(fn() => $this->record->provider->approval_chain == 'especial' ? "¿Está segura/o de enviar esta solicitud?\nTu orden seguirá un proceso de aprobación rápido por ser un proveedor especial." : '¿Está segura/o de enviar esta solicitud?')
+                ->color(fn() => $this->record->provider->approval_chain == 'especial' ? 'danger' : 'success')
+                ->modalSubmitActionLabel('Sí, enviar'),
 
             Actions\EditAction::make(),
             Actions\DeleteAction::make()
@@ -63,7 +69,7 @@ class ViewOrder extends ViewRecord
                     $this->record->status()->transitionTo('reabierta para edición');
                 }),
             Actions\Action::make('Ver pdf')
-                ->color('danger')
+                ->color('gray')
                 ->url(route('order.pdf', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
                 ->openUrlInNewTab(),

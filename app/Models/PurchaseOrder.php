@@ -159,6 +159,13 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
+    public function scopeApproveSpecial(Builder $query)
+    {
+        return $query
+            ->where('status', 'revision por dirección general')
+            ->where('company_id', session()->get('company_id'))
+            ->orderBy('id', 'desc');
+    }
     public function scopeAuthorize(Builder $query)
     {
         return $query
@@ -180,9 +187,6 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         ];
 
         $service = new OrderCalculationService($this->id);
-        // if ($service->isOrderTotalBetweenLimits()) {
-        //     unset($revisions[4]);
-        // }
 
         // Encontrar la última devolución que reinicia el ciclo
         $ultimaDevolucion = $this->status()->history()
@@ -214,7 +218,6 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         }
         return $fechas;
     }
-
     public function getProgressAttribute()
     {
 
@@ -222,16 +225,16 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         $dgLevel2 =  User::role('autoriza_nivel-2-orden_compra')->first()->name;
 
         $data = $this->getRevisionDates();
-       
+
         $service = new OrderCalculationService($this->id);
 
         $progress = [];
         $progress = [
             'purchaser' => ['title' => 'Comprador', 'name' => $this->purchaser?->name, 'job-pdf' => 'Comprador', 'date' => $data['revisión gerente de compras']],
-            'reviewer' => ['title' => 'Revisa', 'name' => $purchaseManager,'job-pdf' => 'Gerente de compras', 'date' => $data['aprobado por gerente de compras']],
-            'approver' => ['title' => 'Aprueba', 'name' => $this->requisition->approvalChain->approver->name,'job-pdf' => 'Gerente solicitante', 'date' => $data['aprobado por gerente solicitante']],
-            'authorizer-1' => ['title' => 'Autoriza', 'name' => $this->requisition->approvalChain->authorizer->name,'job-pdf' => 'Dirección general', 'date' => $data['aprobado por DG nivel 1']],
-            'authorizer-2' => ['title' => 'Autoriza', 'name' => $dgLevel2,'job-pdf' => 'Dirección general CA', 'date' => $data['aprobado por DG nivel 2']]
+            'reviewer' => ['title' => 'Revisa', 'name' => $purchaseManager, 'job-pdf' => 'Gerente de compras', 'date' => $data['aprobado por gerente de compras']],
+            'approver' => ['title' => 'Aprueba', 'name' => $this->requisition->approvalChain->approver->name, 'job-pdf' => 'Gerente solicitante', 'date' => $data['aprobado por gerente solicitante']],
+            'authorizer-1' => ['title' => 'Autoriza', 'name' => $this->requisition->approvalChain->authorizer->name, 'job-pdf' => 'Dirección general', 'date' => $data['aprobado por DG nivel 1']],
+            'authorizer-2' => ['title' => 'Autoriza', 'name' => $dgLevel2, 'job-pdf' => 'Dirección general CA', 'date' => $data['aprobado por DG nivel 2']]
         ];
         if ($service->isOrderTotalBetweenLimits()) {
             unset($progress['authorizer-2']);
@@ -241,6 +244,64 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             unset($progress['authorizer-2']);
         }
         $test = ['uno' => 1, 'dos' => 2];
+        return $progress;
+    }
+
+    public function getRevisionSpecialDates()
+    {
+        $revisions = [
+            'revision por dirección general',
+            'autorizada para proveedor'
+        ];
+
+        $service = new OrderCalculationService($this->id);
+        // Encontrar la última devolución que reinicia el ciclo
+        $ultimaDevolucion = $this->status()->history()
+            ->where('field', 'status')
+            ->whereIn('to', [
+                'devuelto por dirección general',
+                'reabierta para edición'
+            ])
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        $fechas = [];
+        foreach ($revisions as $revision) {
+            $query = $this->status()->history()
+                ->where('field', 'status')
+                ->where('to', $revision)
+                ->orderBy('created_at', 'desc'); // Última entrada a la revisión
+
+            // Si hay una devolución, filtrar por registros posteriores a ella
+            if ($ultimaDevolucion) {
+                $query->where('created_at', '>', $ultimaDevolucion->created_at);
+            }
+
+            $registro = $query->first();
+            $fechas[$revision] = $registro ? $registro : null;
+        }
+        return $fechas;
+    }
+    public function getProgressSpecialAttribute()
+    {
+
+        $data = $this->getRevisionSpecialDates();
+        $progress = [];
+        $progress = [
+            'purchaser' =>
+            [
+                'title' => 'Comprador',
+                'name' => isset($data['revision por dirección general']) ? $data['revision por dirección general']->responsible->name : null,
+                'job-pdf' => 'Comprador',
+                'date' => isset($data['revision por dirección general']) ? $data['revision por dirección general']->created_at : null
+            ],
+            'authorizer' => [
+                'title' => 'Autoriza',
+                'name' => 'Denise Marisol Reyes Ramírez',
+                'job-pdf' => 'Dirección general',
+                'date' => isset($data['autorizada para proveedor']) ? $data['autorizada para proveedor']->created_at : null
+            ],
+        ];
         return $progress;
     }
 }
