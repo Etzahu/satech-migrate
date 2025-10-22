@@ -33,15 +33,16 @@ class PurchaseOrderStateMachine extends StateMachine
             'aprobado por DG nivel 2' => ['autorizada para proveedor'],
             'autorizada para proveedor' => ['reabierta para edición'],
 
-            'devuelto por gerente de compras' => ['revisión gerente de compras'],
-            'devuelto por gerente solicitante' => ['revisión gerente de compras'],
-            'devuelto por DG nivel 1' => ['revisión gerente de compras'],
-            'devuelto por DG nivel 2' => ['revisión gerente de compras'],
-            'reabierta para edición' => ['revisión gerente de compras'],
+            'devuelto por gerente de compras' => ['revisión gerente de compras', 'revision por dirección general'],
+            'devuelto por gerente solicitante' => ['revisión gerente de compras', 'revision por dirección general'],
+            'devuelto por DG nivel 1' => ['revisión gerente de compras', 'revision por dirección general'],
+            'devuelto por DG nivel 2' => ['revisión gerente de compras', 'revision por dirección general'],
+            'reabierta para edición' => ['revisión gerente de compras', 'revision por dirección general'],
 
             // Existe un segundo camino cuando el proveedor en la orden es de una lista especial prorpocinada por el generente de compras
             'revision por dirección general' => ['autorizada para proveedor', 'devuelto por dirección general', 'cancelado por dirección general'],
             'devuelto por dirección general' => ['revision por dirección general'],
+
 
         ];
     }
