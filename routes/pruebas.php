@@ -43,6 +43,7 @@ use Rap2hpoutre\FastExcel\SheetCollection;
 
 use function Spatie\LaravelPdf\Support\pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Revolution\Google\Sheets\Facades\Sheets;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use App\Mail\PurchaseOrder\Notification as NotificationOrder;
@@ -1510,7 +1511,7 @@ Route::get('excel-orders', function () {
     dd($models);
 });
 
-Route::get('lineas',function(){
+Route::get('lineas', function () {
 
     // $model = PurchaseRequisition::find(342);
 
@@ -1522,29 +1523,169 @@ Route::get('lineas',function(){
     dd($lineas);
 
     $data = [];
-    foreach($lineas as $linea){
-        $exists = $lineasEdgar->firstWhere('CELULAR',$linea['Número']);
-        if(filled($exists)){
-            $data[]=[
-                'Número'=>$linea['Número'],
-                'Usuario'=>$exists['USUARIO'],
-                'Plan'=>$linea['Renta'],
-                'GB'=>$linea['GB'],
-                'Fecha de vencimiento'=>$linea['Fecha de Vencimiento']->format('m-d-Y'),
+    foreach ($lineas as $linea) {
+        $exists = $lineasEdgar->firstWhere('CELULAR', $linea['Número']);
+        if (filled($exists)) {
+            $data[] = [
+                'Número' => $linea['Número'],
+                'Usuario' => $exists['USUARIO'],
+                'Plan' => $linea['Renta'],
+                'GB' => $linea['GB'],
+                'Fecha de vencimiento' => $linea['Fecha de Vencimiento']->format('m-d-Y'),
             ];
             // echo "<p style='color:green;margin:0;padding:0;font-weight: bold;'>{$linea['Número']}</p>";
             // echo "<p style='color:green;margin:0;padding:0 0 10px 0;'> {$exists['USUARIO']}</p>";
-        }else{
-               echo "<p style='color:red;margin:0;padding:0;font-weight: bold;'>{$linea['Número']}</p>";
+        } else {
+            echo "<p style='color:red;margin:0;padding:0;font-weight: bold;'>{$linea['Número']}</p>";
         }
     }
     $data = collect($data)->sortByDesc('Plan');
     return fastexcel($data)->download('lineas.xlsx');
-
 });
 
-Route::get('chain-special',function(){
-    $model = PurchaseOrder::find(983);
-    $data =  $model->progressSpecial;
-   dd($data);
+Route::get('chain-special', function () {
+    // $rows = Sheets::spreadsheet('1ha_45TdVN7odz-64yKlXlvjXD66O5zfXG7HKeamFJfU')
+    //     ->sheet('test')
+    //     ->get();
+    // dd($rows);
+    // $header = $rows->pull(0);
+    // $values = Sheets::collection(header: $header, rows: $rows);
+    // $values = array_values($values->toArray());
+
+    // $sheets =  Sheets::spreadsheet('1ha_45TdVN7odz-64yKlXlvjXD66O5zfXG7HKeamFJfU')
+    //     ->sheet('test');
+    // ->append([['name' => 'name4', 'mail' => 'mail4', 'id' => 4]]);
+    // dd($sheets);
+
+    // return $values;
+
+
+    $spreadsheetId = '1ha_45TdVN7odz-64yKlXlvjXD66O5zfXG7HKeamFJfU';
+    $sheetName = 'test';
+
+    // Mapeo de columnas antiguas a nuevas
+    $columnMapping = [
+        'name' => 'Nombre Completo',
+        'email' => 'Correo Electrónico',
+        'phone' => 'Teléfono de Contacto',
+        'created_at' => 'Fecha de Creación'
+    ];
+
+    try {
+        $sheet = Sheets::spreadsheet($spreadsheetId)->sheet($sheetName);
+        $allData = $sheet->get();
+
+        if ($allData->isEmpty()) {
+            return "La hoja está vacía";
+        }
+
+        $dataArray = $allData->toArray();
+        $currentHeaders = $dataArray[0];
+
+        // Crear nuevos encabezados basados en el mapeo
+        $newHeaders = [];
+        foreach ($currentHeaders as $currentHeader) {
+            $newHeaders[] = $columnMapping[$currentHeader] ?? $currentHeader;
+        }
+
+        // Reemplazar los encabezados
+        $dataArray[0] = $newHeaders;
+        // dd($dataArray);
+
+        // Actualizar toda la hoja
+        $sheet->update($dataArray);
+
+        return "Columnas específicas renombradas exitosamente";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
+
+// Ruta de prueba para el GoogleSheetsService
+Route::get('test-sheets-service', function () {
+    $service = new \App\Services\GoogleSheetsService();
+
+    try {
+        // Ejemplo 1: Generar iniciales
+        $buyerName = "Alan Mendoza";
+        $initials = $service->generateBuyerInitials($buyerName);
+
+        // Ejemplo 2: Crear hoja para el comprador
+        $sheetName = $service->generateBuyerSheet($buyerName);
+
+        // Ejemplo 3: Registrar una orden de compra
+        $orderData = [
+            'fecha' => now()->format('Y-m-d'),
+            'folio_requisicion' => 'REQ-2024-001',
+            'folio_orden' => 'ORD-2024-001',
+            'proveedor' => 'Proveedor Ejemplo S.A. de C.V.',
+            'total' => '$15,000.00',
+            'moneda' => 'MXN',
+            'estado' => 'Aprobada',
+            'observaciones' => 'Orden procesada correctamente'
+        ];
+
+        $service->logPurchaseOrder($buyerName, $orderData);
+
+        return response()->json([
+            'success' => true,
+            'buyer_name' => $buyerName,
+            'initials' => $initials,
+            'sheet_name' => $sheetName,
+            'message' => 'Hoja creada y datos registrados exitosamente',
+            'spreadsheet_id' => $service->getSpreadsheetId()
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+});
+
+// Ruta para listar todas las hojas
+Route::get('list-sheets', function () {
+    $service = new \App\Services\GoogleSheetsService();
+
+    try {
+        $sheets = $service->getSheetList();
+
+        return response()->json([
+            'success' => true,
+            'sheets' => $sheets,
+            'total_sheets' => count($sheets)
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
+});
+
+// Ruta para probar el trait LogsToGoogleSheets con una orden específica
+Route::get('test-order-sheets/{orderId}', function ($orderId) {
+    try {
+        $order = \App\Models\PurchaseOrder::findOrFail($orderId);
+
+        // Simular el registro manual en Google Sheets
+        $result = $order->syncToGoogleSheets();
+
+        // Crear hoja del comprador si no existe
+        $sheetName = $order->createBuyerSheet();
+
+        return response()->json([
+            'success' => true,
+            'order_folio' => $order->folio,
+            'buyer_name' => $order->purchaser->name ?? 'Sin comprador',
+            'sheet_name' => $sheetName,
+            'sync_result' => $result,
+            'message' => 'Orden sincronizada con Google Sheets'
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage()
+        ]);
+    }
 });

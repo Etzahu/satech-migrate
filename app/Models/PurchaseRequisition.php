@@ -11,6 +11,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Dyrynda\Database\Support\CascadeSoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Services\PurchaseRequisitionCreationService;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\StateMachines\PurchaseRequisitionStateMachine;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,6 +22,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
 {
     use SoftDeletes, CascadeSoftDeletes;
     use \OwenIt\Auditing\Auditable;
+    use \Bkwld\Cloner\Cloneable;
     use HasStateMachines;
     use InteractsWithMedia;
     use HasFactory;
@@ -62,16 +64,8 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         'assign_user_id',
         'approval_chain_id',
     ];
-
     protected $cascadeDeletes = ['items'];
-
     protected $dates = ['deleted_at'];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'id' => 'integer',
         'request_user_id' => 'integer',
@@ -104,6 +98,13 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         'devuelto por comprador' => 40,
         'devuelto por gerente de compras' => 40,
     ];
+
+    protected $cloneable_relations = ['items'];
+    public function onCloning($src, $child = null)
+    {
+        $service = new PurchaseRequisitionCreationService();
+        $this->folio = $service->generateFolio();
+    }
     public function getProgresoAttribute()
     {
         return self::$estadosProgreso[$this->status] ?? 0;
@@ -194,7 +195,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
                 ];
             }
 
-            if (blank($this->category) ) {
+            if (blank($this->category)) {
                 $progress = [
                     'requester' => ['title' => 'Solicita', 'name' => $this->approvalChain->requester->name, 'date' => $data['revisión por almacén']],
                     'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'date' => $data['revisión']],

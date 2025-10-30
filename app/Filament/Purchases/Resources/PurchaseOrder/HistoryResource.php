@@ -7,6 +7,7 @@ use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
 use App\Models\PurchaseOrder;
 use App\Models\User;
 use App\Services\OrderCalculationService;
+use App\Services\GoogleSheetsService;
 use Carbon\Carbon;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -139,6 +140,25 @@ class HistoryResource extends Resource
                     )
                     ->form(
                         [
+                            Forms\Components\ToggleButtons::make('type_save')
+                                ->label('Guardar información en:')
+                                ->required()
+                                ->options([
+                                    'excel' => 'Excel',
+                                    'sheets' => 'Google Sheets',
+                                ])
+                                ->icons([
+                                    'excel' => 'fileicon-microsoft-excel',
+                                    'sheets' => 'si-googlesheets',
+                                ])
+                                ->colors([
+                                    'excel' => 'info',
+                                    'sheets' => 'success',
+                                ])
+
+                                ->default('excel')
+                                ->inline()
+                                ->disableOptionWhen(fn(string $value): bool => $value === 'sheets' &&  !auth()->user()->hasRole('comprador')),
                             Forms\Components\CheckboxList::make('columns')
                                 ->label('Datos de la orden')
                                 ->bulkToggleable()
@@ -215,89 +235,87 @@ class HistoryResource extends Resource
                     ->action(function (array $data) {
                         $startDate = Carbon::createFromFormat('Y-m-d', $data['created_start'])->startOfDay();
                         $endDate = Carbon::createFromFormat('Y-m-d', $data['created_end'])->endOfDay();
-                        $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'purchaser'])
-                            ->where('company_id', session()->get('company_id'))
-                            ->whereBetween('created_at', [$startDate, $endDate]);
-                        if (filled($data['buyers'])) {
-                            $models = $models->whereIn('purchaser_user_id', $data['buyers']);
-                        }
-                        if (filled($data['type_purchase'])) {
-                            $models->whereHas('items.product', function ($query) use ($data) {
-                                $query->whereIn('type_purchase', $data['type_purchase']);
-                            });
-                        }
-                        $models = $models->get();
-                        // $models->load(['items.purchase', 'items.product']);
 
-                        if (blank($models)) {
-                            return   Notification::make()
-                                ->title('No se encontraron registros')
-                                ->danger()
-                                ->send();
-                        }
-                        $result = [];
-                        foreach ($models as $model) {
-                            $service = new OrderCalculationService($model->id);
-                            $result[] = [
-                                'fecha de creacion' => $model->created_at->format('d-m-Y'),
-                                'comprador' => $model->purchaser->name,
-                                'folio' => $model->folio,
-                                'proveedor' => $model->provider->company_name,
-                                'subtotal' => $service->getSubtotalItems(true),
-                                'total' =>  $service->getTotal(true),
-                                'partidas' => static::contactDataItems($model),
-                                'moneda' => $model->currency,
-                                'proyecto' => "({$model->requisition->project->code}){$model->requisition->project->name}",
-                                'tipo de pago' => $model->type_payment,
-                                'forma de pago' => $model->form_payment,
-                                'condiciones de pago' => static::formatConditionPayment($model),
-                                'forma de pago' => $model->form_payment,
-                                'folio de cotización' => $model->quote_folio,
-                                'uso de CFDI' => $model->use_cfdi,
-                                'método de envío' => $model->shipping_method,
-                                'descuento por proveedor' => $model->discount,
-                                'descuento' =>  $service->getDiscountProvider(true),
-                                'iva' =>  $service->getTaxIva(true),
-                                'retención de IVA' =>  $service->getRetentionIva(true),
-                                'retención de ISR' =>  $service->getRetentionIsr(true),
-                                'fecha de entrega inicial' => $model->initial_delivery_date,
-                                'fecha de entrega final' => $model->final_delivery_date,
-                                'dirección de entrega' => $model->delivery_address,
-                                'documentación de entrega' => static::documentation($model),
-                                'observaciones' => $model->observations,
-                                'contacto de proveedor' => $model->providerContact->cell_phone,
-                                'empresa' => $model->company->name,
-                                'requisición' => $model->requisition->folio,
-                                'estatus' => $model->status,
-                            ];
-                        }
-                        $result = collect($result);
-                        $result = $result->map(function ($item) use ($data) {
-                            return collect($item)->only($data['columns'])->toArray();
-                        });
+                        if ($data['type_save'] == 'sheets') {
+                            try {
+                                $sheetsService = new GoogleSheetsService();
+                                $result_sheets = $sheetsService->processOrdersReport($data);
 
-                        $items = $models->pluck('items')->flatten();
-                        $dataItems = [];
+                                return Notification::make()
+                                    ->title('Reporte cargado correctamente en tu hoja personal')
+                                    ->success()
+                                    ->body("Las órdenes se han cargado en tu hoja personal <strong>{$result_sheets['user_sheet']}</strong><br>
+                                           <a href='{$result_sheets['spreadsheet_url']}' target='_blank' class='font-bold text-blue-600 underline hover:text-blue-800'>
+                                               🔗 Abrir Google Sheets
+                                           </a><br>
+                                           <small class='text-gray-600'>
+                                               📊 Usuario: {$result_sheets['user_name']}<br>
+                                               📅 Rango: {$result_sheets['date_range']}<br>
+                                               📋 Total de órdenes: {$result_sheets['total_orders']}
+                                           </small>")
+                                    ->persistent()
+                                    ->send();
+                            } catch (\Exception $e) {
+                                return Notification::make()
+                                    ->title('Error al cargar en Google Sheets')
+                                    ->danger()
+                                    ->body("❌ Error: {$e->getMessage()}")
+                                    ->persistent()
+                                    ->send();
+                            }
+                        } else {
+                            // Exportación a Excel usando el servicio reestructurado
+                            try {
+                                $exportService = new GoogleSheetsService();
+                                $ordersData = $exportService->processOrdersReport($data);
 
-                        $service = new OrderCalculationService();
-                        foreach ($items as $item) {
-                            $dataItems[] = [
-                                'Orden' => $item->purchase->folio,
-                                'Cantidad' => $item->quantity,
-                                'Precio unitario' => $service->brickFormatter($item->unit_price),
-                                'Subtotal' => $service->brickFormatter($item->sub_total),
-                                'Producto-Servicio' => $item->product->name,
-                                'Tipo' => $item->product->type_purchase,
-                                'Observaciones' => $item->observation
-                            ];
+                                // Preparar datos de items para la segunda hoja
+                                $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'purchaser'])
+                                    ->where('company_id', session()->get('company_id'))
+                                    ->whereBetween('created_at', [$startDate, $endDate]);
+
+                                if (filled($data['buyers'])) {
+                                    $models = $models->whereIn('purchaser_user_id', $data['buyers']);
+                                }
+                                if (filled($data['type_purchase'])) {
+                                    $models->whereHas('items.product', function ($query) use ($data) {
+                                        $query->whereIn('type_purchase', $data['type_purchase']);
+                                    });
+                                }
+                                $models = $models->get();
+
+                                $items = $models->pluck('items')->flatten();
+                                $dataItems = [];
+                                $service = new OrderCalculationService();
+
+                                foreach ($items as $item) {
+                                    $dataItems[] = [
+                                        'Orden' => $item->purchase->folio,
+                                        'Cantidad' => $item->quantity,
+                                        'Precio unitario' => $service->brickFormatter($item->unit_price),
+                                        'Subtotal' => $service->brickFormatter($item->sub_total),
+                                        'Producto-Servicio' => $item->product->name,
+                                        'Tipo' => $item->product->type_purchase,
+                                        'Observaciones' => $item->observation
+                                    ];
+                                }
+
+                                $sheets = new SheetCollection([
+                                    'ordenes' => $ordersData,
+                                    'partidas' => $dataItems
+                                ]);
+
+                                return fastexcel($sheets)
+                                    ->download("ordenes de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
+                            } catch (\Exception $e) {
+                                return Notification::make()
+                                    ->title('Error al generar reporte Excel')
+                                    ->danger()
+                                    ->body("❌ Error: {$e->getMessage()}")
+                                    ->persistent()
+                                    ->send();
+                            }
                         }
-
-                        $sheets = new SheetCollection([
-                            'ordenes' => $result,
-                            'partidas' => $dataItems
-                        ]);
-                        return  fastexcel($sheets)
-                            ->download("ordenes de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
                     }),
             ])
             ->actions([

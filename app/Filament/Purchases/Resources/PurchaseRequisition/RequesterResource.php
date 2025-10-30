@@ -454,7 +454,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                 Tables\Columns\TextColumn::make('motive')
                     ->label('Motivo')
                     ->searchable()
-                     ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: false),
                 Tables\Columns\TextColumn::make('date_delivery')
                     ->label('Fecha deseable de entrega')
                     ->date()
@@ -496,19 +496,55 @@ class RequesterResource extends Resource implements HasShieldPermissions
                         ->icon('heroicon-m-document')
                         ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
-                    Tables\Actions\ReplicateAction::make()->form(fn(Form $form) => static::form($form)->columns(1))
-                        ->beforeReplicaSaved(function (Model $replica): void {
-                            $service = new PurchaseRequisitionCreationService();
-                            $replica->folio = $service->generateFolio();
-                        })
-                        ->mutateRecordDataUsing(function (array $data): array {
-                            $chain = PurchaseRequisitionApprovalChain::find($data['approval_chain_id']);
-                            $data['reviewer_id'] = $chain->reviewer_id;
-                            $data['approver_id'] = $chain->approver_id;
-                            return $data;
-                        })
+                    // Tables\Actions\ReplicateAction::make()->form(fn(Form $form) => static::form($form)->columns(1))
+                    //     ->beforeReplicaSaved(function (Model $replica): void {
+                    //         $service = new PurchaseRequisitionCreationService();
+                    //         $replica->folio = $service->generateFolio();
+                    //     })
+                    //     ->mutateRecordDataUsing(function (array $data): array {
+                    //         $chain = PurchaseRequisitionApprovalChain::find($data['approval_chain_id']);
+                    //         $data['reviewer_id'] = $chain->reviewer_id;
+                    //         $data['approver_id'] = $chain->approver_id;
+                    //         return $data;
+                    //     })
+                    //     ->slideOver()
+                    //     ->excludeAttributes(['status','assign_user_id']),
+                    Tables\Actions\Action::make('Replicar')
+                        ->fillForm(fn(PurchaseRequisition $record): array => [
+                            'folio' => 'N/A',
+                            'project_id' => $record->project_id,
+                            'motive' => '(replicado)'.str()->replace("\n", '', $record->motive),
+                            'date_delivery' => now()->addDays(1),
+                            'status' => null,
+                            'assign_user_id' => null,
+                            'priority' => $record->priority,
+                            'type' => $record->type,
+                            'category' => $record->category,
+                            'delivery_address' => $record->delivery_address,
+                            'approval_chain_id' => $record->approval_chain_id,
+                            'reviewer_id' => $record->approvalChain->reviewer_id,
+                            'approver_id' => $record->approvalChain->approver_id,
+                            'observation' => str()->replace("\n", '', $record->observation),
+                        ])
+                        ->form(fn(Form $form) => static::form($form)->columns(1))
                         ->slideOver()
-                        ->excludeAttributes(['status','assign_user_id']),
+                        ->action(function (PurchaseRequisition $record) {
+                            try {
+                                $record->duplicate();
+                                Notification::make()
+                                    ->title('Requisición replicada correctamente')
+                                    ->success()
+                                    ->send();
+                            } catch (\Exception $e) {
+                                logger()->error($e->getMessage());
+                                Notification::make()
+                                    ->title('Ocurrió un error al replicar la requisición')
+                                    ->danger()
+                                    ->send();
+                                return;
+                            }
+                        })
+                        ->icon('heroicon-s-document-duplicate'),
                 ]),
             ]);
     }

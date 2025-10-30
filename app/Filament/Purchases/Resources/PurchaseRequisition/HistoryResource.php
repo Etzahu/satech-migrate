@@ -16,6 +16,8 @@ use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Database\Eloquent\Builder;
 use Rap2hpoutre\FastExcel\SheetCollection;
+use Filament\Support\Enums\MaxWidth;
+use App\Services\GoogleSheetsRequisitionService;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 use App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
 
@@ -140,6 +142,7 @@ class HistoryResource extends Resource
             ->headerActions([
                 Tables\Actions\Action::make('Generar reporte')
                     ->slideOver()
+                    ->modalWidth(MaxWidth::FiveExtraLarge)
                     ->visible(
                         auth()->user()->id == 106 ||
                             auth()->user()->hasRole('comprador') ||
@@ -150,6 +153,24 @@ class HistoryResource extends Resource
                     )
                     ->form(
                         [
+                            Forms\Components\ToggleButtons::make('type_save')
+                                ->label('Guardar información en:')
+                                ->required()
+                                ->options([
+                                    'excel' => 'Excel',
+                                    'sheets' => 'Google Sheets',
+                                ])
+                                ->icons([
+                                    'excel' => 'fileicon-microsoft-excel',
+                                    'sheets' => 'si-googlesheets',
+                                ])
+                                ->colors([
+                                    'excel' => 'info',
+                                    'sheets' => 'success',
+                                ])
+                                ->default('excel')
+                                ->inline()
+                                ->disableOptionWhen(fn(string $value): bool => $value === 'sheets' &&  !auth()->user()->hasRole('comprador')),
                             Forms\Components\CheckboxList::make('columns')
                                 ->label('Datos de la requisición')
                                 ->bulkToggleable()
@@ -200,66 +221,89 @@ class HistoryResource extends Resource
                         ]
                     )
                     ->action(function (array $data) {
-                        // dd($data);
                         $startDate = Carbon::createFromFormat('Y-m-d', $data['created_start'])->startOfDay();
                         $endDate = Carbon::createFromFormat('Y-m-d', $data['created_end'])->endOfDay();
-                        $models = PurchaseRequisition::with(['company', 'project', 'approvalChain', 'purchaser', 'items.product'])
-                            ->where('company_id', session()->get('company_id'))
-                            ->whereBetween('created_at', [$startDate, $endDate]);
-                        if ($data['without_orders']) {
-                            $models->whereDoesntHave('orders')
-                                ->whereIn('status', ['comprador asignado', 'comprador reasignado']);
-                        }
-                        $models = $models->get();
-                        if (blank($models)) {
-                            return   Notification::make()
-                                ->title('No se encontraron registros')
-                                ->danger()
-                                ->send();
-                        }
-                        $result = [];
-                        foreach ($models as $model) {
-                            $result[] = [
-                                'folio' => $model->folio,
-                                'prioridad' => $model->priority,
-                                'motivo' => $model->motive,
-                                'tipo' => $model->type,
-                                'observaciones' => $model->observation,
-                                'partidas' => static::contactDataItems($model),
-                                'fecha de entrega' => $model->date_delivery->format('d-m-Y'),
-                                'dirección de entrega' => $model->delivery_address,
-                                'estatus' => $model->status,
-                                'empresa' => $model->company->name,
-                                'proyecto' => $model->project->name,
-                                'solicitante' => $model->approvalChain->requester->name,
-                                'comprador' => $model->purchaser?->name,
-                                'fecha de creacion' => $model->created_at->format('d-m-Y'),
-                            ];
-                        }
-                        $result = collect($result);
-                        $result = $result->map(function ($item) use ($data) {
-                            return collect($item)->only($data['columns'])->toArray();
-                        });
 
-                        $items = $models->pluck('items')->flatten();
-                        $dataItems = [];
+                        if ($data['type_save'] == 'sheets') {
+                            try {
+                                $sheetsService = new GoogleSheetsRequisitionService();
+                                $result_sheets = $sheetsService->processRequisitionsReport($data);
 
+                                return Notification::make()
+                                    ->title('Reporte cargado correctamente en tu hoja personal')
+                                    ->success()
+                                    ->body("Las requisiciones se han cargado en tu hoja personal <strong>{$result_sheets['user_sheet']}</strong><br>
+                                           <a href='{$result_sheets['spreadsheet_url']}' target='_blank' class='font-bold text-blue-600 underline hover:text-blue-800'>
+                                               🔗 Abrir Google Sheets
+                                           </a><br>
+                                           <small class='text-gray-600'>
+                                               📊 Usuario: {$result_sheets['user_name']}<br>
+                                               📅 Rango: {$result_sheets['date_range']}<br>
+                                               📋 Total de requisiciones: {$result_sheets['total_requisitions']}
+                                           </small>")
+                                    ->persistent()
+                                    ->send();
+                            } catch (\Exception $e) {
+                                return Notification::make()
+                                    ->title('Error al cargar en Google Sheets')
+                                    ->danger()
+                                    ->body("❌ Error: {$e->getMessage()}")
+                                    ->persistent()
+                                    ->send();
+                            }
+                        } else {
+                            // Exportación a Excel usando el servicio reestructurado
+                            try {
+                                $exportService = new GoogleSheetsRequisitionService();
+                                $requisitionsData = $exportService->processRequisitionsReport($data);
 
-                        foreach ($items as $item) {
-                            $dataItems[] = [
-                                'Requisición' => $item->requisition->folio,
-                                'Cantidad' => $item->quantity_purchase,
-                                'Producto-Servicio' => $item->product->name,
-                                'Tipo' => $item->product->type_purchase,
-                                'Observaciones' => $item->observation
-                            ];
+                                // Preparar datos de items para la segunda hoja
+                                $models = PurchaseRequisition::with(['company', 'project', 'approvalChain', 'purchaser', 'items.product'])
+                                    ->where('company_id', session()->get('company_id'))
+                                    ->whereBetween('created_at', [$startDate, $endDate]);
+
+                                if ($data['without_orders']) {
+                                    $models->whereDoesntHave('orders')
+                                        ->whereIn('status', ['comprador asignado', 'comprador reasignado']);
+                                }
+                                $models = $models->get();
+
+                                if (blank($models)) {
+                                    return Notification::make()
+                                        ->title('No se encontraron registros')
+                                        ->danger()
+                                        ->send();
+                                }
+
+                                $items = $models->pluck('items')->flatten();
+                                $dataItems = [];
+
+                                foreach ($items as $item) {
+                                    $dataItems[] = [
+                                        'Requisición' => $item->requisition->folio,
+                                        'Cantidad' => $item->quantity_purchase,
+                                        'Producto-Servicio' => $item->product->name,
+                                        'Tipo' => $item->product->type_purchase,
+                                        'Observaciones' => $item->observation
+                                    ];
+                                }
+
+                                $sheets = new SheetCollection([
+                                    'requisiciones' => $requisitionsData,
+                                    'partidas' => $dataItems
+                                ]);
+
+                                return fastexcel($sheets)
+                                    ->download("requisiciones de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
+                            } catch (\Exception $e) {
+                                return Notification::make()
+                                    ->title('Error al generar reporte Excel')
+                                    ->danger()
+                                    ->body("❌ Error: {$e->getMessage()}")
+                                    ->persistent()
+                                    ->send();
+                            }
                         }
-                        $sheets = new SheetCollection([
-                            'requisiciones' => $result,
-                            'partidas' => $dataItems
-                        ]);
-
-                        return  fastexcel($sheets)->download("requisiciones de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
                     }),
             ])
             ->actions([

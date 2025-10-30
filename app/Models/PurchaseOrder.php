@@ -85,6 +85,9 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
 
     ];
 
+
+
+
     public static function boot()
     {
         parent::boot();
