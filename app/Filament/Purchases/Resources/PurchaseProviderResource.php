@@ -271,6 +271,7 @@ class PurchaseProviderResource extends Resource
                         'revisión' => 'warning',
                         'rechazado' => 'danger',
                         'aprobado' => 'success',
+                        default => 'primary',
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
