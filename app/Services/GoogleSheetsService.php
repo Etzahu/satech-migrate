@@ -88,8 +88,8 @@ class GoogleSheetsService
             // 6. Retornar información del resultado
             return [
                 'success' => true,
-                'user_sheet' => $userSheetName,
-                'user_name' => $user->name,
+                'user_sheet' => $this->sanitizeUtf8($userSheetName),
+                'user_name' => $this->sanitizeUtf8($user->name),
                 'spreadsheet_url' => "https://docs.google.com/spreadsheets/d/{$this->spreadsheetId}",
                 'date_range' => Carbon::parse($formData['created_start'])->format('d/m/Y') . ' - ' . Carbon::parse($formData['created_end'])->format('d/m/Y'),
                 'total_orders' => $orders->count(),
@@ -179,12 +179,15 @@ class GoogleSheetsService
      */
     public function generateBuyerInitials(string $userName): string
     {
+        // Asegurar que el nombre esté en UTF-8
+        $userName = mb_convert_encoding($userName, 'UTF-8', 'auto');
         $words = explode(' ', trim($userName));
         $initials = 'reporte-ordenes-';
 
         foreach ($words as $word) {
             if (!empty($word)) {
-                $initials .= strtoupper(substr($word, 0, 1));
+                // Usar mb_substr para caracteres UTF-8
+                $initials .= mb_strtoupper(mb_substr($word, 0, 1, 'UTF-8'), 'UTF-8');
             }
         }
 
@@ -287,37 +290,37 @@ class GoogleSheetsService
         foreach ($orders as $order) {
             $service = new \App\Services\OrderCalculationService($order->id);
 
-            // Datos completos de la orden
+            // Datos completos de la orden - asegurar codificación UTF-8
             $fullOrderData = [
                 'fecha de creacion' => $order->created_at->format('d-m-Y'),
-                'comprador' => $order->purchaser->name,
-                'folio' => $order->folio,
-                'proveedor' => $order->provider->company_name,
+                'comprador' => $this->sanitizeUtf8($order->purchaser->name ?? ''),
+                'folio' => $this->sanitizeUtf8($order->folio ?? ''),
+                'proveedor' => $this->sanitizeUtf8($order->provider->company_name ?? ''),
                 'subtotal' => $service->getSubtotalItems(true),
                 'total' => $service->getTotal(true),
-                'partidas' => $this->formatOrderItems($order),
-                'moneda' => $order->currency,
-                'proyecto' => "({$order->requisition->project->code}){$order->requisition->project->name}",
-                'tipo de pago' => $order->type_payment,
-                'forma de pago' => $order->form_payment,
-                'condiciones de pago' => $this->formatConditionPayment($order),
-                'folio de cotización' => $order->quote_folio,
-                'uso de CFDI' => $order->use_cfdi,
-                'método de envío' => $order->shipping_method,
-                'descuento por proveedor' => $order->discount,
+                'partidas' => $this->sanitizeUtf8($this->formatOrderItems($order)),
+                'moneda' => $this->sanitizeUtf8($order->currency ?? ''),
+                'proyecto' => $this->sanitizeUtf8("({$order->requisition->project->code}){$order->requisition->project->name}"),
+                'tipo de pago' => $this->sanitizeUtf8($order->type_payment ?? ''),
+                'forma de pago' => $this->sanitizeUtf8($order->form_payment ?? ''),
+                'condiciones de pago' => $this->sanitizeUtf8($this->formatConditionPayment($order)),
+                'folio de cotización' => $this->sanitizeUtf8($order->quote_folio ?? ''),
+                'uso de CFDI' => $this->sanitizeUtf8($order->use_cfdi ?? ''),
+                'método de envío' => $this->sanitizeUtf8($order->shipping_method ?? ''),
+                'descuento por proveedor' => $order->discount ?? '',
                 'descuento' => $service->getDiscountProvider(true),
                 'iva' => $service->getTaxIva(true),
                 'retención de IVA' => $service->getRetentionIva(true),
                 'retención de ISR' => $service->getRetentionIsr(true),
-                'fecha de entrega inicial' => $order->initial_delivery_date,
-                'fecha de entrega final' => $order->final_delivery_date,
-                'dirección de entrega' => $order->delivery_address,
-                'documentación de entrega' => $this->formatDocumentation($order),
-                'observaciones' => $order->observations,
-                'contacto de proveedor' => $order->providerContact->cell_phone ?? '',
-                'empresa' => $order->company->name,
-                'requisición' => $order->requisition->folio,
-                'estatus' => $order->status,
+                'fecha de entrega inicial' => $order->initial_delivery_date ?? '',
+                'fecha de entrega final' => $order->final_delivery_date ?? '',
+                'dirección de entrega' => $this->sanitizeUtf8($order->delivery_address ?? ''),
+                'documentación de entrega' => $this->sanitizeUtf8($this->formatDocumentation($order)),
+                'observaciones' => $this->sanitizeUtf8($order->observations ?? ''),
+                'contacto de proveedor' => $this->sanitizeUtf8($order->providerContact->cell_phone ?? ''),
+                'empresa' => $this->sanitizeUtf8($order->company->name ?? ''),
+                'requisición' => $this->sanitizeUtf8($order->requisition->folio ?? ''),
+                'estatus' => $this->sanitizeUtf8($order->status ?? ''),
             ];
 
             // Agregar fecha de carga actual
@@ -510,7 +513,9 @@ class GoogleSheetsService
         $items = $order->items;
 
         foreach ($items as $item) {
-            $result .= "{$item->product->name} ({$item->product->type_purchase})\n";
+            $productName = $this->sanitizeUtf8($item->product->name ?? '');
+            $productType = $this->sanitizeUtf8($item->product->type_purchase ?? '');
+            $result .= "{$productName} ({$productType})\n";
         }
 
         return trim($result);
@@ -526,10 +531,12 @@ class GoogleSheetsService
         }
 
         if (is_array($order->condition_payment)) {
-            return implode(',', array_column($order->condition_payment, 'concept'));
+            $concepts = array_column($order->condition_payment, 'concept');
+            $concepts = array_map([$this, 'sanitizeUtf8'], $concepts);
+            return implode(',', $concepts);
         }
 
-        return $order->condition_payment;
+        return $this->sanitizeUtf8($order->condition_payment);
     }
 
     /**
@@ -541,7 +548,31 @@ class GoogleSheetsService
             return 'N/A';
         }
 
-        return implode(',', array_column($order->documentation_delivery, 'name'));
+        $names = array_column($order->documentation_delivery, 'name');
+        $names = array_map([$this, 'sanitizeUtf8'], $names);
+        return implode(',', $names);
+    }
+
+    /**
+     * Sanitiza y asegura que el texto esté en UTF-8 correctamente codificado
+     *
+     * @param string $text
+     * @return string
+     */
+    protected function sanitizeUtf8(string $text): string
+    {
+        // Convertir a UTF-8 si no lo está
+        $text = mb_convert_encoding($text, 'UTF-8', 'auto');
+
+        // Remover caracteres de control excepto los básicos (tab, nueva línea, carriage return)
+        $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $text);
+
+        // Asegurar que sea UTF-8 válido
+        if (!mb_check_encoding($text, 'UTF-8')) {
+            $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8//IGNORE');
+        }
+
+        return $text;
     }
 
     /**

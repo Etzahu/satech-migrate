@@ -22,7 +22,6 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
 {
     use SoftDeletes, CascadeSoftDeletes;
     use \OwenIt\Auditing\Auditable;
-    use \Bkwld\Cloner\Cloneable;
     use HasStateMachines;
     use InteractsWithMedia;
     use HasFactory;
@@ -99,12 +98,6 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         'devuelto por gerente de compras' => 40,
     ];
 
-    protected $cloneable_relations = ['items'];
-    public function onCloning($src, $child = null)
-    {
-        $service = new PurchaseRequisitionCreationService();
-        $this->folio = $service->generateFolio();
-    }
     public function getProgresoAttribute()
     {
         return self::$estadosProgreso[$this->status] ?? 0;

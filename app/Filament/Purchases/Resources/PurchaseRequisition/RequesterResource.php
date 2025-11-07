@@ -496,52 +496,72 @@ class RequesterResource extends Resource implements HasShieldPermissions
                         ->icon('heroicon-m-document')
                         ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
-                    // Tables\Actions\ReplicateAction::make()->form(fn(Form $form) => static::form($form)->columns(1))
-                    //     ->beforeReplicaSaved(function (Model $replica): void {
-                    //         $service = new PurchaseRequisitionCreationService();
-                    //         $replica->folio = $service->generateFolio();
-                    //     })
-                    //     ->mutateRecordDataUsing(function (array $data): array {
-                    //         $chain = PurchaseRequisitionApprovalChain::find($data['approval_chain_id']);
-                    //         $data['reviewer_id'] = $chain->reviewer_id;
-                    //         $data['approver_id'] = $chain->approver_id;
-                    //         return $data;
-                    //     })
-                    //     ->slideOver()
-                    //     ->excludeAttributes(['status','assign_user_id']),
                     Tables\Actions\Action::make('Replicar')
                         ->fillForm(fn(PurchaseRequisition $record): array => [
-                            'folio' => 'N/A',
                             'project_id' => $record->project_id,
-                            'motive' => '(replicado)'.str()->replace("\n", '', $record->motive),
+                            'motive' => '(replicado) ' . $record->motive,
                             'date_delivery' => now()->addDays(1),
-                            'status' => null,
-                            'assign_user_id' => null,
                             'priority' => $record->priority,
                             'type' => $record->type,
                             'category' => $record->category,
                             'delivery_address' => $record->delivery_address,
-                            'approval_chain_id' => $record->approval_chain_id,
                             'reviewer_id' => $record->approvalChain->reviewer_id,
                             'approver_id' => $record->approvalChain->approver_id,
-                            'observation' => str()->replace("\n", '', $record->observation),
+                            'observation' => $record->observation,
                         ])
                         ->form(fn(Form $form) => static::form($form)->columns(1))
                         ->slideOver()
-                        ->action(function (PurchaseRequisition $record) {
+                        ->action(function (array $data, PurchaseRequisition $record) {
                             try {
-                                $record->duplicate();
+                                // Crear nueva requisición con los datos del formulario
+                                $newRequisition = new PurchaseRequisition();
+
+                                // Llenar con los datos del formulario (respeta cambios del usuario)
+                                $newRequisition->fill($data);
+
+                                // Asignar valores que no vienen del formulario
+                                $newRequisition->company_id = $record->company_id;
+                                $newRequisition->approval_chain_id = $record->approval_chain_id;
+                                $newRequisition->status = 'borrador';
+                                $newRequisition->assign_user_id = null;
+
+                                // Generar nuevo folio
+                                $service = new PurchaseRequisitionCreationService();
+                                $newRequisition->folio = $service->generateFolio();
+
+                                // Guardar la nueva requisición
+                                $newRequisition->save();
+
+                                // Replicar las relaciones
+
+                                // Replicar items (partidas)
+                                foreach ($record->items as $item) {
+                                    $newItem = $item->replicate();
+                                    $newItem->requisition_id = $newRequisition->id;
+                                    $newItem->save();
+                                }
+
                                 Notification::make()
                                     ->title('Requisición replicada correctamente')
+                                    ->body("Nueva requisición creada: {$newRequisition->folio}")
                                     ->success()
                                     ->send();
+
+                                // Opcional: Redirigir a la nueva requisición
+                                return redirect()->to(static::getUrl('edit', ['record' => $newRequisition]));
                             } catch (\Exception $e) {
-                                logger()->error($e->getMessage());
+                                logger()->error('Error al replicar requisición: ' . $e->getMessage(), [
+                                    'original_id' => $record->id,
+                                    'user_id' => auth()->id(),
+                                    'form_data' => $data,
+                                    'trace' => $e->getTraceAsString()
+                                ]);
+
                                 Notification::make()
-                                    ->title('Ocurrió un error al replicar la requisición')
+                                    ->title('Error al replicar requisición')
+                                    ->body('Ocurrió un error: ' . $e->getMessage())
                                     ->danger()
                                     ->send();
-                                return;
                             }
                         })
                         ->icon('heroicon-s-document-duplicate'),
