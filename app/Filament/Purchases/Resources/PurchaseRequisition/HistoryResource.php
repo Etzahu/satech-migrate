@@ -229,25 +229,33 @@ class HistoryResource extends Resource
                                 $sheetsService = new GoogleSheetsRequisitionService();
                                 $result_sheets = $sheetsService->processRequisitionsReport($data);
 
+                                // Sanitizar y codificar correctamente los datos para UTF-8
+                                $userSheet = htmlspecialchars($result_sheets['user_sheet'], ENT_QUOTES, 'UTF-8');
+                                $userName = htmlspecialchars($result_sheets['user_name'], ENT_QUOTES, 'UTF-8');
+                                $dateRange = htmlspecialchars($result_sheets['date_range'], ENT_QUOTES, 'UTF-8');
+                                $totalRequisitions = (int) $result_sheets['total_requisitions'];
+                                $spreadsheetUrl = filter_var($result_sheets['spreadsheet_url'], FILTER_SANITIZE_URL);
+
                                 return Notification::make()
                                     ->title('Reporte cargado correctamente en tu hoja personal')
                                     ->success()
-                                    ->body("Las requisiciones se han cargado en tu hoja personal <strong>{$result_sheets['user_sheet']}</strong><br>
-                                           <a href='{$result_sheets['spreadsheet_url']}' target='_blank' class='font-bold text-blue-600 underline hover:text-blue-800'>
-                                               🔗 Abrir Google Sheets
+                                    ->body("Las requisiciones se han cargado en tu hoja personal <strong>{$userSheet}</strong><br>
+                                           <a href='{$spreadsheetUrl}' target='_blank' class='font-bold text-blue-600 underline hover:text-blue-800'>
+                                               Abrir Google Sheets
                                            </a><br>
                                            <small class='text-gray-600'>
-                                               📊 Usuario: {$result_sheets['user_name']}<br>
-                                               📅 Rango: {$result_sheets['date_range']}<br>
-                                               📋 Total de requisiciones: {$result_sheets['total_requisitions']}
+                                               Usuario: {$userName}<br>
+                                               Rango: {$dateRange}<br>
+                                               Total de requisiciones: {$totalRequisitions}
                                            </small>")
                                     ->persistent()
                                     ->send();
                             } catch (\Exception $e) {
+                                $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
                                 return Notification::make()
                                     ->title('Error al cargar en Google Sheets')
                                     ->danger()
-                                    ->body("❌ Error: {$e->getMessage()}")
+                                    ->body("Error: {$errorMessage}")
                                     ->persistent()
                                     ->send();
                             }
@@ -296,10 +304,11 @@ class HistoryResource extends Resource
                                 return fastexcel($sheets)
                                     ->download("requisiciones de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
                             } catch (\Exception $e) {
+                                $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
                                 return Notification::make()
                                     ->title('Error al generar reporte Excel')
                                     ->danger()
-                                    ->body("❌ Error: {$e->getMessage()}")
+                                    ->body("Error: {$errorMessage}")
                                     ->persistent()
                                     ->send();
                             }

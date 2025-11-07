@@ -88,8 +88,8 @@ class GoogleSheetsRequisitionService
       // 6. Retornar información del resultado
       return [
         'success' => true,
-        'user_sheet' => $userSheetName,
-        'user_name' => $user->name,
+        'user_sheet' => $this->sanitizeUtf8($userSheetName),
+        'user_name' => $this->sanitizeUtf8($user->name),
         'spreadsheet_url' => "https://docs.google.com/spreadsheets/d/{$this->spreadsheetId}",
         'date_range' => Carbon::parse($formData['created_start'])->format('d/m/Y') . ' - ' . Carbon::parse($formData['created_end'])->format('d/m/Y'),
         'total_requisitions' => $requisitions->count(),
@@ -174,12 +174,15 @@ class GoogleSheetsRequisitionService
    */
   public function generateUserInitials(string $userName): string
   {
+    // Asegurar que el nombre esté en UTF-8
+    $userName = mb_convert_encoding($userName, 'UTF-8', 'auto');
     $words = explode(' ', trim($userName));
     $initials = 'reporte-requisiciones-';
 
     foreach ($words as $word) {
       if (!empty($word)) {
-        $initials .= strtoupper(substr($word, 0, 1));
+        // Usar mb_substr para caracteres UTF-8
+        $initials .= mb_strtoupper(mb_substr($word, 0, 1, 'UTF-8'), 'UTF-8');
       }
     }
 
@@ -280,21 +283,21 @@ class GoogleSheetsRequisitionService
     $requisitionsData = [];
 
     foreach ($requisitions as $requisition) {
-      // Datos completos de la requisición
+      // Datos completos de la requisición - asegurar codificación UTF-8
       $fullRequisitionData = [
-        'folio' => $requisition->folio,
-        'prioridad' => $requisition->priority,
-        'motivo' => $requisition->motive,
-        'tipo' => $requisition->type,
-        'observaciones' => $requisition->observation,
-        'partidas' => $this->formatRequisitionItems($requisition),
+        'folio' => $this->sanitizeUtf8($requisition->folio ?? ''),
+        'prioridad' => $this->sanitizeUtf8($requisition->priority ?? ''),
+        'motivo' => $this->sanitizeUtf8($requisition->motive ?? ''),
+        'tipo' => $this->sanitizeUtf8($requisition->type ?? ''),
+        'observaciones' => $this->sanitizeUtf8($requisition->observation ?? ''),
+        'partidas' => $this->sanitizeUtf8($this->formatRequisitionItems($requisition)),
         'fecha de entrega' => $requisition->date_delivery?->format('d-m-Y') ?? 'N/A',
-        'dirección de entrega' => $requisition->delivery_address,
-        'estatus' => $requisition->status,
-        'empresa' => $requisition->company->name,
-        'proyecto' => $requisition->project->name,
-        'solicitante' => $requisition->approvalChain->requester->name,
-        'comprador' => $requisition->purchaser?->name ?? 'Sin asignar',
+        'dirección de entrega' => $this->sanitizeUtf8($requisition->delivery_address ?? ''),
+        'estatus' => $this->sanitizeUtf8($requisition->status ?? ''),
+        'empresa' => $this->sanitizeUtf8($requisition->company->name ?? ''),
+        'proyecto' => $this->sanitizeUtf8($requisition->project->name ?? ''),
+        'solicitante' => $this->sanitizeUtf8($requisition->approvalChain->requester->name ?? ''),
+        'comprador' => $this->sanitizeUtf8($requisition->purchaser?->name ?? 'Sin asignar'),
         'fecha de creacion' => $requisition->created_at->format('d-m-Y'),
       ];
 
@@ -488,10 +491,34 @@ class GoogleSheetsRequisitionService
     $items = $requisition->items;
 
     foreach ($items as $item) {
-      $result .= "{$item->product->name} ({$item->product->type_purchase})\n";
+      $productName = $this->sanitizeUtf8($item->product->name ?? '');
+      $productType = $this->sanitizeUtf8($item->product->type_purchase ?? '');
+      $result .= "{$productName} ({$productType})\n";
     }
 
     return trim($result);
+  }
+
+  /**
+   * Sanitiza y asegura que el texto esté en UTF-8 correctamente codificado
+   *
+   * @param string $text
+   * @return string
+   */
+  protected function sanitizeUtf8(string $text): string
+  {
+    // Convertir a UTF-8 si no lo está
+    $text = mb_convert_encoding($text, 'UTF-8', 'auto');
+
+    // Remover caracteres de control excepto los básicos (tab, nueva línea, carriage return)
+    $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $text);
+
+    // Asegurar que sea UTF-8 válido
+    if (!mb_check_encoding($text, 'UTF-8')) {
+      $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8//IGNORE');
+    }
+
+    return $text;
   }
 
   /**
