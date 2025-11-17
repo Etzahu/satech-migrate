@@ -6,4 +6,5 @@ return [
     App\Providers\Filament\IngenieriaPanelProvider::class,
     App\Providers\Filament\PurchasesPanelProvider::class,
     App\Providers\Filament\WarehousePanelProvider::class,
+    App\Providers\TelescopeServiceProvider::class,
 ];
