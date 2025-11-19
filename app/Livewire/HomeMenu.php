@@ -20,6 +20,7 @@ class HomeMenu extends Component
             ['area' => 'Compras',  'link' => 'https://app.gptsatech.com/compras'],
             ['area' => 'QHSE',  'link' => 'https://qhse.gptsatech.com'],
             ['area' => 'Proyectos',  'link' => 'https://reportesgpt.satechenergy.com'],
+            ['area' => 'Evaluación de competencia',  'link' => 'https://ec.satechenergy.com'],
         ];
         return view('livewire.home-menu')
             ->with('munu', $this->menu);
