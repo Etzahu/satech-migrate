@@ -17,6 +17,7 @@ use App\Http\Middleware\CompanySession;
 use Filament\Navigation\NavigationItem;
 use Shanerbaner82\PanelRoles\PanelRoles;
 use Filament\Http\Middleware\Authenticate;
+use App\Http\Middleware\EnableDebugBarForAdmin;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Routing\Middleware\SubstituteBindings;
@@ -86,7 +87,8 @@ class PurchasesPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
-                CompanySession::class
+                CompanySession::class,
+                EnableDebugBarForAdmin::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

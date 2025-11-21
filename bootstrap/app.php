@@ -18,8 +18,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
+        $middleware->web(append: [
+            \App\Http\Middleware\EnableDebugBarForAdmin::class
+        ]);
 
         // Using a closure...
+        // $middleware->append(\App\Http\Middleware\EnableDebugBarForAdmin::class,); // Adds to the end of the stack
         $middleware->redirectGuestsTo(fn(Request $request) => route('login'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
