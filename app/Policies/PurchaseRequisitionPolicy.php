@@ -43,21 +43,17 @@ class PurchaseRequisitionPolicy
      */
     public function view(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        $usersWarehouse = User::role('revisa_almacen_requisicion_compra')->get()->pluck('id')->toArray();
-        $usersAdminPurchase = User::role('gerente_compras')->get()->pluck('id')->toArray();
-        $usersPurchasers = User::role('comprador')->get()->pluck('id')->toArray();
-
+        $usersRoles = [];
+        $usersRoles = User::role(['revisa_almacen_requisicion_compra', 'gerente_compras', 'comprador'])->get()->pluck('id')->toArray();
         $allowedIds = [];
 
-
         $allowedIds = $purchaseRequisition->approvalChain->only(['requester_id', 'reviewer_id', 'approver_id', 'authorizer_id']);
-        $allowedIds = array_merge($allowedIds, $usersWarehouse, $usersAdminPurchase,$usersPurchasers);
+        $allowedIds = array_merge($allowedIds, $usersRoles);
         $allowedIds = array_values($allowedIds);
         $allowedIds[] = 106;
         $allowedIds[] = 199;
         $allowedIds[] = 306;
         $allowedIds[] = $purchaseRequisition->purchaser?->id;
-
 
         return $user->can('view_purchase::requisition::requester') && in_array($user->id, $allowedIds);
     }
