@@ -37,7 +37,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
-use App\Filament\Purchases\Resources\PurchaseResource\PurchaserResource\RelationManagers;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\RelationManagers;
 
 
 class PurchaserResource extends Resource  implements HasShieldPermissions

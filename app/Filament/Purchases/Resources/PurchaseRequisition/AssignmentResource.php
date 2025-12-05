@@ -112,7 +112,7 @@ class AssignmentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageAssignmentResource::route('/'),
+            'index' => Pages\ManagePRAssingResource::route('/'),
             'view' => Pages\View::route('/{record}'),
         ];
     }
