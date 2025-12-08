@@ -1,7 +1,6 @@
 <?php
 
-// namespace App\Filament\Purchases\Resources\PurchaserResource\RelationManagers;
-namespace App\Filament\Purchases\Resources\PurchaseResource\PurchaserResource\RelationManagers;
+namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\RelationManagers;
 
 use Closure;
 use Filament\Forms;

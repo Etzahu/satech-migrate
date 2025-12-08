@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Pages\ManageRecords;
 use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource;
 
-class ManageAssignmentResource extends ManageRecords
+class ManagePRAssingResource extends ManageRecords
 {
     protected static string $resource = AssignmentResource::class;
 
