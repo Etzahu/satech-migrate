@@ -17,11 +17,12 @@ class EnableDebugBarForAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (auth()->user()->id == 199) {
-            Debugbar::enable();
-        } else {
             Debugbar::disable();
-        }
+        // if (auth()->user()->id == 199) {
+        //     Debugbar::enable();
+        // } else {
+        //     Debugbar::disable();
+        // }
 
         return $next($request);
     }

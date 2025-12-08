@@ -796,7 +796,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
             'create' => Pages\CreatePurchaseOrder::route('/create/{requisition?}'),
             'edit' => Pages\EditPurchaseOrder::route('/{record}/edit'),
             'view' => Pages\ViewOrder::route('/{record}/ver'),
-            'add-item' => Pages\addItemPR::route('/{record}/agregar/partidas')
+            'add-item' => Pages\AddItemPR::route('/{record}/agregar/partidas')
         ];
     }
 }
