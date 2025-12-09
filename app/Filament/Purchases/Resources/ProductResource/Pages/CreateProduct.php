@@ -14,7 +14,7 @@ class CreateProduct extends CreateRecord
     protected static string $resource = ProductResource::class;
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['name'] = Str::of($data['name'])->squish()->lower();
+        $data['name'] = Str::of($data['name'])->squish()->toString();
         $data['company_id'] = session()->get('company_id');
         $data['registered_user_id']= auth()->user()->id;
         $data['requester_id']= auth()->user()->id;
