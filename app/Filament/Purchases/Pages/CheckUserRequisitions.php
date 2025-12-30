@@ -26,7 +26,7 @@ class CheckUserRequisitions extends Page implements HasForms, HasActions
 
   protected static string $view = 'filament.purchases.pages.check-user-requisitions';
 
-  protected static ?string $navigationLabel = 'Verificar requisicion usuario';
+  protected static ?string $navigationLabel = 'Verificar requisiciones';
 
   protected static ?string $title = 'Verificar Requisiciones de Usuario';
 
@@ -68,6 +68,10 @@ class CheckUserRequisitions extends Page implements HasForms, HasActions
     $this->requisitionsToReview = collect();
     $this->requisitionsToApprove = collect();
     $this->requisitionsToAuthorize = collect();
+  }
+   public static function canAccess(): bool
+  {
+    return auth()->user()->hasAnyRole(['super_admin', 'gerente_compras', 'administrador_compras']);
   }
 
   public function form(Forms\Form $form): Forms\Form

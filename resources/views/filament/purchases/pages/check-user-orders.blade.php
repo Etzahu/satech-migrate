@@ -139,7 +139,10 @@
                                             </x-filament::badge>
                                         </td>
                                         <td class="px-4 py-2">
-                                            {{ ($this->reassignOrderRequisitionAction)(['order' => $order->id]) }}
+                                            <div class="flex gap-2">
+                                                {{ ($this->reassignOrderRequisitionChainAction)(['order' => $order->id]) }}
+                                                {{ ($this->createChainForOrderAction)(['order' => $order->id]) }}
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -198,7 +201,10 @@
                                             </x-filament::badge>
                                         </td>
                                         <td class="px-4 py-2">
-                                            {{ ($this->reassignOrderRequisitionAction)(['order' => $order->id]) }}
+                                            <div class="flex gap-2">
+                                                {{ ($this->reassignOrderRequisitionChainAction)(['order' => $order->id]) }}
+                                                {{ ($this->createChainForOrderAction)(['order' => $order->id]) }}
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -22,7 +22,7 @@ class PurchaseOrderStateMachine extends StateMachine
     {
         return [
             // Wildcard: permite reasignar desde cualquier estado
-            '*' => ['requisición reasignada'],
+            '*' => ['requisición reasignada', 'cadena reasignada'],
 
             'borrador' => [
                 'revisión gerente de compras',
@@ -44,6 +44,9 @@ class PurchaseOrderStateMachine extends StateMachine
 
             // Estado de reasignación de requisición
             'requisición reasignada' => ['revisión gerente de compras', 'revision por dirección general'],
+
+            // Estado de cambio de cadena de aprobación (sin cambiar requisición)
+            'cadena reasignada' => ['revisión gerente de compras', 'revision por dirección general'],
 
             // Existe un segundo camino cuando el proveedor en la orden es de una lista especial prorpocinada por el generente de compras
             'revision por dirección general' => ['autorizada para proveedor', 'devuelto por dirección general', 'cancelado por dirección general'],
@@ -233,7 +236,7 @@ class PurchaseOrderStateMachine extends StateMachine
                     'new_requisition' => $newRequisitionId ? \App\Models\PurchaseRequisition::find($newRequisitionId)?->folio : 'N/A',
                     'new_approver' => $model->requisition->approvalChain->approver->name ?? 'N/A',
                     'new_authorizer' => $model->requisition->approvalChain->authorizer->name ?? 'N/A',
-                    'action_url' => route('filament.compras.resources.ordenes-de-compra.index'),
+                    'action_url' => 'https://app.gptsatech.com/compras',
                     'action_text' => 'Ver Orden de Compra',
                 ];
 
@@ -243,6 +246,44 @@ class PurchaseOrderStateMachine extends StateMachine
                 $purchaseManagers = User::role('gerente_compras')->pluck('email')->toArray();
 
                 Mail::to($recipient)->cc($purchaseManagers)->send(new Notification($data));
+            }],
+
+            'cadena reasignada' => [function ($to, $model) {
+                // Obtener información del cambio de cadena del historial
+                $historial = $model->status()->history()
+                    ->where('to', 'cadena reasignada')
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                $oldChainId = $historial->custom_properties['old_chain_id'] ?? null;
+                $newChainId = $historial->custom_properties['new_chain_id'] ?? null;
+
+                $oldChain = $oldChainId ? \App\Models\PurchaseRequisitionApprovalChain::find($oldChainId) : null;
+                $newChain = $newChainId ? \App\Models\PurchaseRequisitionApprovalChain::find($newChainId) : $model->requisition->approvalChain;
+
+                // Usar OrderService para generar datos completos del email
+                $service = new OrderService();
+                $data = $service->generateDataEmail($model->id, 'cadena reasignada');
+
+                // Agregar información adicional específica del cambio de cadena
+                $data['subject'] = '🔄 Orden de Compra - Cadena de Aprobación Modificada';
+                $data['title'] = 'Cadena de Aprobación Reasignada';
+                $data['message'] = "La orden de compra {$model->folio} ha cambiado su cadena de aprobación y volverá al inicio del proceso.";
+                $data['old_approver'] = $oldChain?->approver->name ?? 'N/A';
+                $data['old_authorizer'] = $oldChain?->authorizer->name ?? 'N/A';
+                $data['new_approver'] = $newChain?->approver->name ?? 'N/A';
+                $data['new_authorizer'] = $newChain?->authorizer->name ?? 'N/A';
+
+                $recipient = $model->purchaser->email;
+
+                // Enviar a comprador, al gerente de compras y a los nuevos aprobadores
+                $purchaseManagers = User::role('gerente_compras')->pluck('email')->toArray();
+                $ccEmails = array_merge($purchaseManagers, [
+                    $newChain?->approver->email,
+                    $newChain?->authorizer->email
+                ]);
+
+                Mail::to($recipient)->cc(array_filter($ccEmails))->send(new Notification($data));
             }],
         ];
     }

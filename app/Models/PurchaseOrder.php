@@ -200,7 +200,8 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
                 'devuelto por DG nivel 1',
                 'devuelto por DG nivel 2',
                 'reabierta para edición',
-                'requisición reasignada' // Nuevo estado que reinicia el ciclo
+                'requisición reasignada', // Estado que reinicia el ciclo al cambiar de requisición
+                'cadena reasignada' // Nuevo estado que reinicia el ciclo al cambiar de cadena
             ])
             ->orderBy('created_at', 'desc')
             ->first();
