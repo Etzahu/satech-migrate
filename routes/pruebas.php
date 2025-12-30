@@ -296,7 +296,8 @@ Route::get('media-test', function () {
 // TODO: este codigo  es para reenviar un correo dependiendo el status de una requisicion
 Route::get('history', function () {
     // $model = PurchaseProvider::find(1);
-    $model = PurchaseOrder::first();
+    $model = PurchaseRequisition::find(1394);
+    return $model->status()->history()->get()->toArray();
     $afterTransitionHooks = $model->status()->stateMachine()->transitions();
 
     $afterTransitionHooks = collect($afterTransitionHooks)->flatten()->unique();
@@ -1686,6 +1687,140 @@ Route::get('test-order-sheets/{orderId}', function ($orderId) {
         return response()->json([
             'success' => false,
             'error' => $e->getMessage()
+        ]);
+    }
+});
+
+Route::get('reporte-proveedores-324-669', function () {
+    try {
+        $providerIds = [324, 669];
+
+        // Buscar todas las órdenes de compra de ambos proveedores
+        $orders = PurchaseOrder::with(['provider', 'items.product', 'purchaser', 'company'])
+            ->whereIn('provider_id', $providerIds)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if ($orders->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontraron órdenes para los proveedores ' . implode(', ', $providerIds)
+            ]);
+        }
+
+        // Preparar datos para Excel
+        $data = [];
+        foreach ($orders as $order) {
+            $service = new OrderCalculationService($order->id);
+
+            foreach ($order->items as $item) {
+                $data[] = [
+                    'Folio OC' => $order->folio,
+                    'Fecha Creación' => $order->created_at->format('d/m/Y'),
+                    'Estado' => $order->status,
+                    'Proveedor' => $order->provider->name ?? 'N/A',
+                    'RFC Proveedor' => $order->provider->rfc ?? 'N/A',
+                    'Comprador' => $order->purchaser->name ?? 'N/A',
+                    'Empresa' => $order->company->name ?? 'N/A',
+                    'Moneda' => $order->currency,
+                    'Producto' => $item->product->name ?? $item->description,
+                    'Descripción' => $item->description,
+                    'Cantidad' => $item->quantity,
+                    'Unidad' => $item->measure_unit,
+                    'Precio Unitario' => $item->price ? moneyFormatter($item->price, $order->currency, 4) : '0.0000',
+                    'Subtotal Item' => $item->subtotal ? moneyFormatter($item->subtotal, $order->currency, 4) : '0.0000',
+                    'Subtotal OC' => $service->brickFormatter($service->getSubtotalItems()),
+                    'IVA OC' => $service->brickFormatter($service->getTaxIva()),
+                    'Descuento OC' => $service->brickFormatter($service->getDiscountProvider()),
+                    'Total OC' => $service->brickFormatter($service->getTotal()),
+                    'Fecha Entrega Inicial' => $order->initial_delivery_date ? Carbon::parse($order->initial_delivery_date)->format('d/m/Y') : 'N/A',
+                    'Fecha Entrega Final' => $order->final_delivery_date ? Carbon::parse($order->final_delivery_date)->format('d/m/Y') : 'N/A',
+                    'Dirección Entrega' => $order->delivery_address ?? 'N/A',
+                    'Forma Pago' => $order->form_payment ?? 'N/A',
+                    'Tipo Pago' => $order->type_payment ?? 'N/A',
+                    'Observaciones' => $order->observations ?? 'N/A',
+                ];
+            }
+        }
+
+        // Generar archivo Excel
+        $fileName = 'reporte_proveedores_324_669_' . now()->format('Y-m-d_His') . '.xlsx';
+
+        return (new FastExcel($data))->download($fileName);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ]);
+    }
+});
+
+Route::get('reporte-proveedor-324-liberadas', function () {
+
+    try {
+        $providerId = [324, 669];
+
+        // Buscar todas las órdenes liberadas (autorizadas para proveedor) del proveedor 324
+        $orders = PurchaseOrder::with(['provider', 'items.product', 'purchaser', 'company'])
+            ->whereIn('provider_id', $providerId)
+            ->where('status', 'autorizada para proveedor')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        if ($orders->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontraron órdenes liberadas para el proveedor ' . $providerId
+            ]);
+        }
+
+        // Preparar datos para Excel
+        $data = [];
+        foreach ($orders as $order) {
+            $service = new OrderCalculationService($order->id);
+            foreach ($order->items as $item) {
+                echo '<br>';
+                echo  $service->brickFormatter($item->unit_price);
+                echo '<br>';
+                $data[] = [
+                    'Folio OC' => $order->folio,
+                    'Fecha Creación' => $order->created_at->format('d/m/Y'),
+                    'Estado' => $order->status,
+                    'Proveedor' => $order->provider->company_name ?? 'N/A',
+                    'RFC Proveedor' => $order->provider->rfc ?? 'N/A',
+                    'Comprador' => $order->purchaser->name ?? 'N/A',
+                    'Empresa' => $order->company->name ?? 'N/A',
+                    'Moneda' => $order->currency,
+                    'Partida/Producto' => $item->product->name ?? $item->description,
+                    'Descripción' => $item->description,
+                    'Cantidad' => $item->quantity,
+                    'Unidad' => $item->measure_unit,
+                    'Precio Unitario' => $service->brickFormatter($item->unit_price),
+                    'Subtotal Item' => $service->brickFormatter($item->sub_total),
+                    'Subtotal OC' => $service->brickFormatter($service->getSubtotalItems()),
+                    'IVA OC' => $service->brickFormatter($service->getTaxIva()),
+                    'Descuento OC' => $service->brickFormatter($service->getDiscountProvider()),
+                    'Total OC' => $service->brickFormatter($service->getTotal()),
+                    'Fecha Entrega Inicial' => $order->initial_delivery_date ? Carbon::parse($order->initial_delivery_date)->format('d/m/Y') : 'N/A',
+                    'Fecha Entrega Final' => $order->final_delivery_date ? Carbon::parse($order->final_delivery_date)->format('d/m/Y') : 'N/A',
+                    'Dirección Entrega' => $order->delivery_address ?? 'N/A',
+                    'Forma Pago' => $order->form_payment ?? 'N/A',
+                    'Tipo Pago' => $order->type_payment ?? 'N/A',
+                    'Observaciones' => $order->observations ?? 'N/A',
+                ];
+            }
+        }
+
+        // Generar archivo Excel
+        $fileName = 'reporte_proveedor_324_liberadas_' . now()->format('Y-m-d_His') . '.xlsx';
+
+        return (new FastExcel($data))->download($fileName);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
         ]);
     }
 });

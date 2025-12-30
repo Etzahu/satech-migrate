@@ -191,7 +191,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
 
         $service = new OrderCalculationService($this->id);
 
-        // Encontrar la última devolución que reinicia el ciclo
+        // Encontrar la última devolución o reasignación que reinicia el ciclo
         $ultimaDevolucion = $this->status()->history()
             ->where('field', 'status')
             ->whereIn('to', [
@@ -199,7 +199,8 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
                 'devuelto por gerente solicitante',
                 'devuelto por DG nivel 1',
                 'devuelto por DG nivel 2',
-                'reabierta para edición'
+                'reabierta para edición',
+                'requisición reasignada' // Nuevo estado que reinicia el ciclo
             ])
             ->orderBy('created_at', 'desc')
             ->first();
@@ -306,5 +307,89 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             ],
         ];
         return $progress;
+    }
+
+    /**
+     * Reasignar la orden a una nueva requisición (cambiando la cadena de aprobación)
+     * y regresar al estado inicial del flujo de aprobación
+     *
+     * @param int $newRequisitionId ID de la nueva requisición
+     * @return void
+     */
+    public function reassignRequisition(int $newRequisitionId): void
+    {
+        $oldRequisitionId = $this->requisition_id;
+
+        // Actualizar la requisición
+        $this->update([
+            'requisition_id' => $newRequisitionId
+        ]);
+
+        // Resetear al estado inicial
+        $this->resetToInitialState($oldRequisitionId);
+    }
+
+    /**
+     * Resetear la orden al estado inicial del flujo
+     *
+     * @param int|null $oldRequisitionId ID de la requisición anterior (para auditoría)
+     * @return void
+     */
+    protected function resetToInitialState(?int $oldRequisitionId = null): void
+    {
+        // Transicionar a un estado que indica el cambio de requisición
+        $this->status()->transitionTo('requisición reasignada', [
+            'old_requisition_id' => $oldRequisitionId,
+            'new_requisition_id' => $this->requisition_id
+        ]);
+    }
+
+    /**
+     * Método de conveniencia que combina reasignar y resetear
+     *
+     * @param int $newRequisitionId
+     * @return void
+     */
+    public function reassignAndReset(int $newRequisitionId): void
+    {
+        $this->reassignRequisition($newRequisitionId);
+    }
+
+    /**
+     * Verificar si la orden está bloqueada por un usuario inactivo en la cadena
+     *
+     * @return array
+     */
+    public function checkForInactiveUsers(): array
+    {
+        $issues = [];
+
+        if (!$this->requisition || !$this->requisition->approvalChain) {
+            return ['error' => 'No tiene requisición o cadena de aprobación asignada'];
+        }
+
+        $chain = $this->requisition->approvalChain;
+
+        // Verificar aprobador (gerente solicitante)
+        if ($chain->approver && !$chain->approver->is_active) {
+            $issues['approver'] = [
+                'user_id' => $chain->approver->id,
+                'user_name' => $chain->approver->name,
+                'role' => 'Aprobador (Gerente Solicitante)',
+                'status' => $this->status
+            ];
+        }
+
+        // Verificar autorizador (DG)
+        if ($chain->authorizer && !$chain->authorizer->is_active) {
+            $issues['authorizer'] = [
+                'user_id' => $chain->authorizer->id,
+                'user_name' => $chain->authorizer->name,
+                'role' => 'Autorizador (Dirección General)',
+                'status' => $this->status
+            ];
+        }
+
+        return $issues;
     }
 }

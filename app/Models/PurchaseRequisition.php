@@ -79,6 +79,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
     ];
     public static $estadosProgreso = [
         'borrador' => 0,
+        'cadena reasignada' => 0,
         'revisión por almacén' => 20,
         'revisión' => 40,
         'aprobado por revisor' => 60,
@@ -122,7 +123,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             }
         }
 
-        // Encontrar la última devolución que reinicia el ciclo
+        // Encontrar la última devolución o reasignación que reinicia el ciclo
         $ultimaDevolucion = $this->status()->history()
             ->where('field', 'status')
             ->whereIn('to', [
@@ -131,7 +132,8 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
                 'devuelto por gerencia',
                 'devuelto por DG',
                 'devuelto por gerente de compras',
-                'devuelto por comprador'
+                'devuelto por comprador',
+                'cadena reasignada'
             ])
             ->orderBy('created_at', 'desc')
             ->first();
@@ -318,5 +320,133 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             // ->OrWhere('status', 'aprobado por DG')
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
+    }
+
+    /**
+     * Reasigna la cadena de aprobación de esta requisición
+     *
+     * @param int $newApprovalChainId ID de la nueva cadena de aprobación
+     * @param bool $resetToStart Si es true, regresa la requisición al estado inicial
+     * @return bool
+     */
+    public function reassignApprovalChain(int $newApprovalChainId, bool $resetToStart = false): bool
+    {
+        $oldChainId = $this->approval_chain_id;
+        $this->approval_chain_id = $newApprovalChainId;
+
+        if ($resetToStart) {
+            $this->resetToInitialState($oldChainId);
+        }
+
+        return $this->save();
+    }
+
+    /**
+     * Regresa la requisición al estado inicial según su categoría
+     *
+     * @param int|null $oldChainId ID de la cadena anterior para el historial
+     * @return void
+     */
+    public function resetToInitialState(?int $oldChainId = null): void
+    {
+        // Usar estado 'cadena reasignada' para indicar que hubo un cambio de cadena
+        $this->status()->transitionTo('cadena reasignada', [
+            'old_chain_id' => $oldChainId
+        ]);
+    }
+
+    /**
+     * Reasigna la cadena y resetea al inicio del proceso
+     * Este es un método de conveniencia que combina reasignación y reseteo
+     *
+     * @param int $newApprovalChainId ID de la nueva cadena de aprobación
+     * @return bool
+     */
+    public function reassignAndReset(int $newApprovalChainId): bool
+    {
+        return $this->reassignApprovalChain($newApprovalChainId, true);
+    }
+
+    /**
+     * Verifica si la requisición está bloqueada por un usuario inactivo
+     *
+     * @return bool
+     */
+    public function isBlockedByInactiveUser(): bool
+    {
+        // Solo verificar si está en estados de aprobación pendiente
+        $pendingStates = [
+            'revisión',
+            'aprobado por revisor',
+            'aprobado por gerencia'
+        ];
+
+        if (!in_array($this->status, $pendingStates)) {
+            return false;
+        }
+
+        $this->load('approvalChain.reviewer', 'approvalChain.approver', 'approvalChain.authorizer');
+
+        // Verificar según el estado actual
+        switch ($this->status) {
+            case 'revisión':
+                return $this->approvalChain->reviewer?->trashed() ?? false;
+            case 'aprobado por revisor':
+                return $this->approvalChain->approver?->trashed() ?? false;
+            case 'aprobado por gerencia':
+                return $this->approvalChain->authorizer?->trashed() ?? false;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Obtiene el usuario que actualmente debería revisar/aprobar esta requisición
+     *
+     * @return User|null
+     */
+    public function getCurrentApprover(): ?User
+    {
+        $this->load('approvalChain.reviewer', 'approvalChain.approver', 'approvalChain.authorizer');
+
+        return match ($this->status) {
+            'revisión' => $this->approvalChain->reviewer,
+            'aprobado por revisor' => $this->approvalChain->approver,
+            'aprobado por gerencia' => $this->approvalChain->authorizer,
+            default => null,
+        };
+    }
+
+    /**
+     * Scope para requisiciones bloqueadas por usuarios inactivos
+     */
+    public function scopeBlockedByInactiveUsers(Builder $query)
+    {
+        return $query->whereIn('status', [
+            'revisión',
+            'aprobado por revisor',
+            'aprobado por gerencia'
+        ])
+            ->where('company_id', session()->get('company_id'))
+            ->whereHas('approvalChain', function ($q) {
+                $q->where(function ($subQ) {
+                    // Requisiciones en revisión con reviewer eliminado
+                    $subQ->whereHas('reviewer', function ($userQ) {
+                        $userQ->onlyTrashed();
+                    })->whereIn('purchase_requisitions.status', ['revisión']);
+                })
+                    ->orWhere(function ($subQ) {
+                        // Requisiciones aprobadas por revisor con approver eliminado
+                        $subQ->whereHas('approver', function ($userQ) {
+                            $userQ->onlyTrashed();
+                        })->whereIn('purchase_requisitions.status', ['aprobado por revisor']);
+                    })
+                    ->orWhere(function ($subQ) {
+                        // Requisiciones aprobadas por gerencia con authorizer eliminado
+                        $subQ->whereHas('authorizer', function ($userQ) {
+                            $userQ->onlyTrashed();
+                        })->whereIn('purchase_requisitions.status', ['aprobado por gerencia']);
+                    });
+            });
     }
 }

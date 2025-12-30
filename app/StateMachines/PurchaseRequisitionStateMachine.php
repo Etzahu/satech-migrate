@@ -19,7 +19,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
     public function transitions(): array
     {
         return [
-            '*' => ['comprador reasignado', 'cerrada'],
+            '*' => ['comprador reasignado', 'cerrada', 'revisión por almacén', 'revisión', 'cadena reasignada'],
             'borrador' => ['revisión por almacén', 'revisión', 'aprobado por revisor'],
 
             'devuelto por revisor' => ['revisión por almacén', 'revisión'],
@@ -28,6 +28,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'devuelto por almacén' => ['revisión por almacén', 'revisión'],
             'devuelto por comprador' => ['revisión por almacén', 'revisión'],
             'devuelto por gerente de compras' => ['revisión por almacén', 'revisión'],
+            'cadena reasignada' => ['revisión por almacén', 'revisión'],
 
             'revisión por almacén' => ['revisión', 'devuelto por almacén'],
             'revisión' => ['aprobado por revisor', 'devuelto por revisor', 'cancelado por revisor'],
@@ -45,6 +46,30 @@ class PurchaseRequisitionStateMachine extends StateMachine
     {
         // TODO: falta crear la logica en el caso donde los items de una partida si los tenga completo almacen
         return [
+            'cadena reasignada' => [
+                function ($to, $model) {
+                    $recipient = $model->approvalChain->requester;
+                    $service = new PurchaseRequisitionCreationService();
+
+                    // Obtener el old_chain_id de la última transición
+                    $latestHistory = $model->status()->history()
+                        ->where('to', 'cadena reasignada')
+                        ->orderBy('created_at', 'desc')
+                        ->first();
+
+                    $oldChainId = $latestHistory && isset($latestHistory->custom_properties['old_chain_id'])
+                        ? $latestHistory->custom_properties['old_chain_id']
+                        : $model->approval_chain_id;
+
+                    $data = $service->generateDataForReassignmentEmail(
+                        $model,
+                        $oldChainId,
+                        $model->approval_chain_id
+                    );
+
+                    Mail::to($recipient)->send(new Notification($data));
+                }
+            ],
             'revisión por almacén' => [
                 function ($to, $model) {
                     $users = User::role('revisa_almacen_requisicion_compra')->get();

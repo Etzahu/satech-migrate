@@ -49,8 +49,7 @@ class PurchaseRequisitionCreationService
 
     public function getApprovalChain($reviewerId, $approverId)
     {
-        return PurchaseRequisitionApprovalChain::
-        where('requester_id', auth()->user()->id)
+        return PurchaseRequisitionApprovalChain::where('requester_id', auth()->user()->id)
             ->where('reviewer_id', $reviewerId)
             ->where('approver_id', $approverId)
             ->first()
@@ -163,5 +162,45 @@ class PurchaseRequisitionCreationService
         $moreUsers[] = $model->approvalChain->authorizer->email;
         $moreUsers[] = User::role('gerente_compras')->first()->email;
         return array_unique($moreUsers);
+    }
+
+    /**
+     * Genera datos para email de reasignación de cadena de aprobación
+     */
+    public function generateDataForReassignmentEmail($model, $oldChainId, $newChainId)
+    {
+        $oldChain = PurchaseRequisitionApprovalChain::find($oldChainId);
+        $newChain = PurchaseRequisitionApprovalChain::find($newChainId);
+
+        $data = [
+            'id' => $model->id,
+            'subject' => "CADENA REASIGNADA - REQUISICIÓN: {$model->folio}",
+            'company' => $model->company->name,
+            'management' => $model->approvalChain->requester->management->name,
+            'requester' => $model->approvalChain->requester->name,
+            'folio' => $model->folio,
+            'created_at' => $model->created_at->format('d-m-Y'),
+            'date_delivery' => $model->date_delivery->format('d-m-Y'),
+            'delivery_address' => $model->delivery_address,
+            'project' => $model->project->code . '-' . $model->project->name,
+            'observation' => $model->observation . "\n\n" .
+                "⚠️ NOTIFICACIÓN DE REASIGNACIÓN DE CADENA DE APROBACIÓN\n\n" .
+                "Su requisición ha sido reasignada a una nueva cadena de aprobación debido a cambios administrativos.\n\n" .
+                "CADENA ANTERIOR (#{$oldChainId}):\n" .
+                "• Revisor: {$oldChain->reviewer->name}\n" .
+                "• Aprobador: {$oldChain->approver->name}\n" .
+                "• Autorizador: {$oldChain->authorizer->name}\n\n" .
+                "NUEVA CADENA (#{$newChainId}):\n" .
+                "• Revisor: {$newChain->reviewer->name}\n" .
+                "• Aprobador: {$newChain->approver->name}\n" .
+                "• Autorizador: {$newChain->authorizer->name}\n\n" .
+                "La requisición ha sido regresada al inicio del proceso de aprobación.",
+            'items' => $this->getItemsForEmail($model->items),
+            'mensaje' => '',
+            'url_btn' => '',
+            'informative' => true
+        ];
+
+        return $data;
     }
 }

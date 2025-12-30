@@ -21,6 +21,9 @@ class PurchaseOrderStateMachine extends StateMachine
     public function transitions(): array
     {
         return [
+            // Wildcard: permite reasignar desde cualquier estado
+            '*' => ['requisición reasignada'],
+
             'borrador' => [
                 'revisión gerente de compras',
                 'revision por dirección general' // Existe un segundo camino cuando el proveedor en la orden es de una lista especial prorpocinada por el generente de compras
@@ -38,6 +41,9 @@ class PurchaseOrderStateMachine extends StateMachine
             'devuelto por DG nivel 1' => ['revisión gerente de compras', 'revision por dirección general'],
             'devuelto por DG nivel 2' => ['revisión gerente de compras', 'revision por dirección general'],
             'reabierta para edición' => ['revisión gerente de compras', 'revision por dirección general'],
+
+            // Estado de reasignación de requisición
+            'requisición reasignada' => ['revisión gerente de compras', 'revision por dirección general'],
 
             // Existe un segundo camino cuando el proveedor en la orden es de una lista especial prorpocinada por el generente de compras
             'revision por dirección general' => ['autorizada para proveedor', 'devuelto por dirección general', 'cancelado por dirección general'],
@@ -200,6 +206,43 @@ class PurchaseOrderStateMachine extends StateMachine
                 $recipient = $model->purchaser->email;
 
                 Mail::to($recipient)->send(new Notification($data));
+            }],
+
+            'requisición reasignada' => [function ($to, $model) {
+                // Obtener información de la reasignación del historial
+                $historial = $model->status()->history()
+                    ->where('to', 'requisición reasignada')
+                    ->orderBy('created_at', 'desc')
+                    ->first();
+
+                $oldRequisitionId = $historial->custom_properties['old_requisition_id'] ?? null;
+                $newRequisitionId = $historial->custom_properties['new_requisition_id'] ?? null;
+
+                // Enviar notificación al comprador
+                $service = new OrderService();
+
+                // Generar datos para el correo de reasignación
+                $data = [
+                    'subject' => '🔄 Orden de Compra - Requisición Reasignada',
+                    'title' => 'Requisición Reasignada',
+                    'message' => "La orden de compra {$model->folio} ha sido reasignada a una nueva requisición debido a cambios en la cadena de aprobación.",
+                    'folio' => $model->folio,
+                    'order_id' => $model->id,
+                    'status' => 'Requisición Reasignada',
+                    'old_requisition' => $oldRequisitionId ? \App\Models\PurchaseRequisition::find($oldRequisitionId)?->folio : 'N/A',
+                    'new_requisition' => $newRequisitionId ? \App\Models\PurchaseRequisition::find($newRequisitionId)?->folio : 'N/A',
+                    'new_approver' => $model->requisition->approvalChain->approver->name ?? 'N/A',
+                    'new_authorizer' => $model->requisition->approvalChain->authorizer->name ?? 'N/A',
+                    'action_url' => route('filament.compras.resources.ordenes-de-compra.index'),
+                    'action_text' => 'Ver Orden de Compra',
+                ];
+
+                $recipient = $model->purchaser->email;
+
+                // Enviar a comprador y al gerente de compras
+                $purchaseManagers = User::role('gerente_compras')->pluck('email')->toArray();
+
+                Mail::to($recipient)->cc($purchaseManagers)->send(new Notification($data));
             }],
         ];
     }

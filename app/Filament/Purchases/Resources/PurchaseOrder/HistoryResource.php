@@ -93,6 +93,10 @@ class HistoryResource extends Resource
                     ->numeric()
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('requisition.approvalChain.requester.name')
+                    ->label('Solicitante')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
                     ->searchable(),

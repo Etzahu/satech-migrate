@@ -2,29 +2,30 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Enums\ThemeMode;
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
-use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use Filament\PanelProvider;
+use Filament\Enums\ThemeMode;
 use Hexters\HexaLite\HexaLite;
-use Hugomyb\FilamentErrorMailer\FilamentErrorMailerPlugin;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\AuthenticateSession;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Navigation\NavigationItem;
 use Shanerbaner82\PanelRoles\PanelRoles;
-use Tobiasla78\FilamentSimplePages\FilamentSimplePagesPlugin;
-use Vormkracht10\FilamentMails\Facades\FilamentMails;
+use Filament\Http\Middleware\Authenticate;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Cookie\Middleware\EncryptCookies;
 use Vormkracht10\FilamentMails\FilamentMailsPlugin;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Vormkracht10\FilamentMails\Facades\FilamentMails;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Filament\Http\Middleware\DisableBladeIconComponents;
+use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Hugomyb\FilamentErrorMailer\FilamentErrorMailerPlugin;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
+use Tobiasla78\FilamentSimplePages\FilamentSimplePagesPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -37,6 +38,8 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('images/favicon.png'))
             ->spa()
             ->defaultThemeMode(ThemeMode::Light)
+            ->maxContentWidth(MaxWidth::Full)
+            ->sidebarFullyCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Amber,
             ])

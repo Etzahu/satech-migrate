@@ -484,6 +484,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                         ->visible(function (PurchaseRequisition $record) {
                             $states = [
                                 'borrador',
+                                'cadena reasignada',
                                 'devuelto por almacén',
                                 'devuelto por revisor',
                                 'devuelto por gerencia',
