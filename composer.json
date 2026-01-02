@@ -28,6 +28,7 @@
         "livewire/livewire": "^3.5",
         "moneyphp/money": "^4.7",
         "njxqlus/filament-relation-manager-component": "^1.0",
+        "okeonline/filament-archivable": "^1.2",
         "opcodesio/log-viewer": "^3.15",
         "orangehill/iseed": "^3.0",
         "rap2hpoutre/fast-excel": "^5.5",

@@ -42,6 +42,7 @@ class EditPurchaseRequisition extends EditRecord
                             ->title('Requisición enviada')
                             ->success()
                             ->send();
+                        return redirect(RequesterResource::getUrl('show', ['record' => $this->record]));
                     }),
                 Actions\ViewAction::make(),
                 Actions\DeleteAction::make(),

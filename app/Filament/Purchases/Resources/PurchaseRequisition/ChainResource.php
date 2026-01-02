@@ -18,6 +18,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Actions\Action;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Okeonline\FilamentArchivable\Tables\Actions\ArchiveAction;
+use Okeonline\FilamentArchivable\Tables\Filters\ArchivedFilter;
+use Okeonline\FilamentArchivable\Tables\Actions\UnArchiveAction;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ChainResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ChainResource\RelationManagers;
 
@@ -97,7 +100,9 @@ class ChainResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([])
+            ->filters([
+                ArchivedFilter::make(),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
@@ -160,6 +165,8 @@ class ChainResource extends Resource
                                 ->send();
                         }
                     }),
+                ArchiveAction::make(),
+                UnArchiveAction::make(),
             ])
         ;
     }

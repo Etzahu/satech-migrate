@@ -95,6 +95,7 @@ class PurchasesPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentErrorMailerPlugin::make(),
+                \Okeonline\FilamentArchivable\FilamentArchivablePlugin::make(),
                 \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
                 PanelRoles::make()
                     ->restrictedRoles([
