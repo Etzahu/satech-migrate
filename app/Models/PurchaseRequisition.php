@@ -265,7 +265,8 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
                 'devuelto por gerencia',
                 'devuelto por DG',
                 'devuelto por comprador',
-                'devuelto por gerente de compras'
+                'devuelto por gerente de compras',
+                'cadena reasignada'
             ])
             ->orderBy('id', 'desc');
     }

@@ -24,7 +24,7 @@ class ListPurchaseRequisitions extends ListRecords
     {
         return [
             'drafts' => Tab::make('Borradores')
-                ->modifyQueryUsing(fn(Builder $query) => $query->whereIn('status', ['borrador', 'devuelto por almacén', 'devuelto por revisor', 'devuelto por gerencia', 'devuelto por DG', 'devuelto por comprador', 'devuelto por gerente de compras']))
+                ->modifyQueryUsing(fn(Builder $query) => $query->whereIn('status', ['borrador', 'devuelto por almacén', 'devuelto por revisor', 'devuelto por gerencia', 'devuelto por DG', 'devuelto por comprador', 'devuelto por gerente de compras', 'cadena reasignada']))
                 ->badge(PurchaseRequisition::query()->myRequisitionsDraft()->count())
                 ->badgeColor('danger'),
             'assigned' => Tab::make('Comprador asignado')
