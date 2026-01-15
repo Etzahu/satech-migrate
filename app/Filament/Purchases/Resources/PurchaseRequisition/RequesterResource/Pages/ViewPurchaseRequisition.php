@@ -31,12 +31,12 @@ class ViewPurchaseRequisition extends ViewRecord
                     )
                     ->action(function () {
                         if (session()->get('company_id') == 1) { //ID 1:GPT IM
-                            return $this->record->status()->transitionTo('revisión por almacén');
+                             $this->record->status()->transitionTo('revisión por almacén');
                         }
                         if ($this->record->category == 'servicio') {
-                            return $this->record->status()->transitionTo('revisión');
+                             $this->record->status()->transitionTo('revisión');
                         } else {
-                            return $this->record->status()->transitionTo('revisión por almacén');
+                             $this->record->status()->transitionTo('revisión por almacén');
                         }
                         Notification::make()
                             ->title('Requisición enviada')
