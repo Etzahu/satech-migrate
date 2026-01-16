@@ -19,7 +19,7 @@ Route::get('/login/google/callback', [LoginController::class, 'handleProviderCal
 // Route::get('home', [LoginController::class, 'home'])->name('home')->middleware('auth');
 Route::get('home', HomeMenu::class)->name('home');
 
-if ((config('app.env') === 'local' && config('app.debug') === true) || auth()->user()->hasRole('super-admin')) {
+if ((config('app.env') === 'local' && config('app.debug') === true)) {
     @include_once('pruebas.php');
 }
 @include_once('purchase-requisition.php');
