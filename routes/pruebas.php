@@ -1828,8 +1828,8 @@ Route::get('reporte-proveedor-324-liberadas', function () {
 
 Route::get('excel-orders-rqs', function () {
 
-$history =PurchaseOrder::find(1315);
-return $history->status()->history()->get();
+// $history =PurchaseOrder::find(1315);
+// return $history->status()->history()->get();
     $sheets =  fastexcel()->importSheets('facturas.xlsx');
 
     $ordersExcel = collect($sheets[0]);
@@ -1885,7 +1885,7 @@ return $history->status()->history()->get();
                 $order->provider_contact_id = 49;
                 $order->requisition_id = $rq->id;
 
-                
+
                 $order->save();
          
         }
