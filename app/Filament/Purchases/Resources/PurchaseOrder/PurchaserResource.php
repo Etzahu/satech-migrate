@@ -469,6 +469,9 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         $media = Media::where('model_id', $record->id)
                                                             ->where('collection_name', 'justification')
                                                             ->first();
+                                                        if (!filled($media)) {
+                                                            return 'Sin documento';
+                                                        }
                                                         return $media->name;
                                                     })
                                                     ->hintActions([
@@ -477,6 +480,9 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                 $media = Media::where('model_id', $record->id)
                                                                     ->where('collection_name', 'justification')
                                                                     ->first();
+                                                                    if (!filled($media)) {
+                                                                        return '#';
+                                                                    }
                                                                 return  route('media.show', ['id' => $media->id]);
                                                             })
                                                             ->openUrlInNewTab(),
@@ -494,6 +500,9 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         $media = Media::where('model_id', $record->id)
                                                             ->where('collection_name', 'quote')
                                                             ->first();
+                                                            if (!filled($media)) {
+                                                                return 'Sin documento';
+                                                            }
                                                         return $media->name;
                                                     })
                                                     ->hintActions([
@@ -502,6 +511,9 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                 $media = Media::where('model_id', $record->id)
                                                                     ->where('collection_name', 'quote')
                                                                     ->first();
+                                                                    if (!filled($media)) {
+                                                                        return '#';
+                                                                    }   
                                                                 return  route('media.show', ['id' => $media->id]);
                                                             })
                                                             ->openUrlInNewTab(),
@@ -510,6 +522,9 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                 $media = Media::where('model_id', $record->id)
                                                                     ->where('collection_name', 'quote')
                                                                     ->first();
+                                                                    if (!filled($media)) {
+                                                                        return 'Sin documento';
+                                                                    }
                                                                 return response()->download($media->getPath(), $media->file_name);
                                                             }),
                                                     ]),

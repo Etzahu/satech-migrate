@@ -1824,3 +1824,77 @@ Route::get('reporte-proveedor-324-liberadas', function () {
         ]);
     }
 });
+
+
+Route::get('excel-orders-rqs', function () {
+
+$history =PurchaseOrder::find(1315);
+return $history->status()->history()->get();
+    $sheets =  fastexcel()->importSheets('facturas.xlsx');
+
+    $ordersExcel = collect($sheets[0]);
+
+
+
+    $foliosOrdersExcel = $ordersExcel->pluck('OC');
+    $ordersDB = PurchaseOrder::with(['requisition'])
+        ->whereIn('folio', $foliosOrdersExcel)
+        ->get();
+  
+    try{
+        DB::beginTransaction();
+        foreach ($ordersDB as $order) {
+            $orderData = $ordersExcel->firstWhere('OC', $order->folio);
+            $rq = PurchaseRequisition::where('folio', $orderData['RFQ'])->first();
+            /*
+             'folio',
+        'currency',
+        'type_payment',
+        'form_payment',
+        'condition_payment',
+        'quote_folio',
+        'use_cfdi',
+        'shipping_method',
+        'tax_iva',
+        'discount',
+        'retention_iva',
+        'retention_isr',
+        'retention_another',
+        'initial_delivery_date',
+        'final_delivery_date',
+        'delivery_address',
+        'documentation_delivery',
+        'observations',
+        'provider_id',
+        'provider_contact_id',
+        'purchaser_user_id',
+        'company_id',
+        'requisition_id',
+        'status'
+             */
+                $order->currency = 'MXN';
+                $order->type_payment = 'PUE - Pago en una sola exhibición';
+                $order->form_payment = 'transferencia';
+                $order->condition_payment = "[{'concept':'Contado ','value':'100'}]";
+                $order->quote_folio = $orderData['FACTURA'];
+                $order->use_cfdi = 'G03 - Gastos en general';
+                $order->shipping_method = 'Almacén GPT';
+                $order->initial_delivery_date = now()->format('Y-m-d');
+                $order->final_delivery_date = now()->format('Y-m-d');
+                $order->delivery_address = 'Almacén, Av. Santa Mónica No.33, Col El Mirador, Tlalnepantla de Baz, Estado de México 54080.';
+                $order->provider_contact_id = 49;
+                $order->requisition_id = $rq->id;
+
+                
+                $order->save();
+         
+        }
+        DB::commit();
+    }catch(\Exception $e){
+        DB::rollBack();
+        throw $e;
+    }
+});
+
+
+

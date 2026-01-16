@@ -26,7 +26,6 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         'currency',
         'type_payment',
         'form_payment',
-        // 'term_payment',
         'condition_payment',
         'quote_folio',
         'use_cfdi',

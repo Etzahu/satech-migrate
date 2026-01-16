@@ -19,7 +19,7 @@ Route::get('/login/google/callback', [LoginController::class, 'handleProviderCal
 // Route::get('home', [LoginController::class, 'home'])->name('home')->middleware('auth');
 Route::get('home', HomeMenu::class)->name('home');
 
-if (config('app.env')=== 'local' && config('app.debug') === true) {
+if ((config('app.env') === 'local' && config('app.debug') === true) || auth()->user()->hasRole('super-admin')) {
     @include_once('pruebas.php');
 }
 @include_once('purchase-requisition.php');
@@ -38,13 +38,13 @@ Route::post('/logout', function () {
     return redirect()->to('/');
 })->name('logout');
 
-Route::get('compras/requisiciones/{id}/pdf',[PurchaseRequisitionController::class,'pdf'])
-->name('requisition.pdf')
-->middleware('auth');
+Route::get('compras/requisiciones/{id}/pdf', [PurchaseRequisitionController::class, 'pdf'])
+    ->name('requisition.pdf')
+    ->middleware('auth');
 
-Route::get('compras/ordenes/{id}/pdf',[PurchaseOrderController::class,'pdf'])
-->name('order.pdf')
-->middleware('auth');
-Route::get('compras/ordenes/{id}/pdf/download',[PurchaseOrderController::class,'download'])
-->name('order.pdf.download')
-->middleware('auth');
+Route::get('compras/ordenes/{id}/pdf', [PurchaseOrderController::class, 'pdf'])
+    ->name('order.pdf')
+    ->middleware('auth');
+Route::get('compras/ordenes/{id}/pdf/download', [PurchaseOrderController::class, 'download'])
+    ->name('order.pdf.download')
+    ->middleware('auth');
