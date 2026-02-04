@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Management extends Model
 {
@@ -16,7 +17,7 @@ class Management extends Model
      * @var array
      */
 
-     protected $table = 'management';
+    protected $table = 'management';
     protected $fillable = [
         'name',
         'depto',
@@ -43,5 +44,10 @@ class Management extends Model
     public function responsible(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function users(): HasMany
+    {
+        return $this->hasMany(User::class, 'management_id');
     }
 }

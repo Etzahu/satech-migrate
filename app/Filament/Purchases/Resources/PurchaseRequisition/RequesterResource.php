@@ -6,6 +6,7 @@ namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Infolists;
 use Filament\Forms\Form;
@@ -246,14 +247,22 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                             ->where('requester_id', auth()->user()->id)->get()
                                             ->pluck('reviewer.name', 'reviewer.id')
                                     )
+                                    ->live()
+                                    ->afterStateUpdated(fn(Set $set) => $set('approver_id', null))
                                     ->required(),
                                 Forms\Components\Select::make('approver_id')
                                     ->label('Aprueba')
-                                    ->options(
-                                        PurchaseRequisitionApprovalChain::with(['approver'])
-                                            ->where('requester_id', auth()->user()->id)->get()
-                                            ->pluck('approver.name', 'approver.id')
-                                    )
+                                    ->options(function (Get $get) {
+                                        $reviewerId = $get('reviewer_id');
+                                        if (!$reviewerId) {
+                                            return [];
+                                        }
+                                        return PurchaseRequisitionApprovalChain::with(['approver'])
+                                            ->where('requester_id', auth()->user()->id)
+                                            ->where('reviewer_id', $reviewerId)
+                                            ->get()
+                                            ->pluck('approver.name', 'approver.id');
+                                    })
                                     ->required()
                             ]),
                         Forms\Components\Tabs\Tab::make('Fichas técnicas')

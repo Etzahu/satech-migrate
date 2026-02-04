@@ -26,10 +26,10 @@ class ManagementResource extends Resource
     protected static ?int $navigationSort = 2;
 
 
-    public static function canView(Model $ownerRecord): bool
-    {
-        return false;
-    }
+    // public static function canView(Model $ownerRecord): bool
+    // {
+    //     return false;
+    // }
 
     public static function form(Form $form): Form
     {
@@ -113,7 +113,8 @@ class ManagementResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ProjectsRelationManager::class
+            RelationManagers\ProjectsRelationManager::class,
+            RelationManagers\UsersRelationManager::class,
         ];
     }
 

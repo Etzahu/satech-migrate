@@ -51,19 +51,19 @@ class EditManagement extends EditRecord
         $this->dispatch('refreshRelationManagerItemsProjects');
     }
 
-    public function hasCombinedRelationManagerTabsWithContent(): bool
-    {
-        return true;
-    }
+    // public function hasCombinedRelationManagerTabsWithContent(): bool
+    // {
+    //     return true;
+    // }
 
     public function getRelationManagers(): array
     {
+        $relationManagers = parent::getRelationManagers();
         // Ocultar todos los Relation Managers si el registro no está publicado
         if (blank($this->record->restriction_requisition)) {
-            return [];
+            unset($relationManagers[0]);
         }
-
         // Devolver los Relation Managers normalmente
-        return parent::getRelationManagers();
+        return $relationManagers;
     }
 }

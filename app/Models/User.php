@@ -66,7 +66,7 @@ class User extends Authenticatable  implements FilamentUser
     }
     public function management()
     {
-        return $this->hasOne(Management::class, 'id', 'management_id');
+        return $this->belongsTo(Management::class, 'management_id', 'id');
     }
     public function managementResponsible()
     {
