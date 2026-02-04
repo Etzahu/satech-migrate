@@ -138,6 +138,7 @@ class HistoryResource extends Resource
                     ->visible(
                         auth()->user()->id == 106 ||
                             auth()->user()->hasRole('comprador') ||
+                            auth()->user()->hasRole('visor_ordenes') ||
                             auth()->user()->hasRole('gerente_compras') ||
                             auth()->user()->hasRole('super_admin') ||
                             auth()->user()->hasRole('administrador_compras')
