@@ -101,6 +101,26 @@ class ChainResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Tables\Filters\SelectFilter::make('requester_id')
+                    ->label('Solicita')
+                    ->relationship('requester', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('reviewer_id')
+                    ->label('Revisa')
+                    ->relationship('reviewer', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('approver_id')
+                    ->label('Aprueba')
+                    ->relationship('approver', 'name')
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('authorizer_id')
+                    ->label('Autoriza')
+                    ->relationship('authorizer', 'name')
+                    ->searchable()
+                    ->preload(),
                 ArchivedFilter::make(),
             ])
             ->actions([
