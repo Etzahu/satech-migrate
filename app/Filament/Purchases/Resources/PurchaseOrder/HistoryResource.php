@@ -340,6 +340,37 @@ class HistoryResource extends Resource
                         ->icon('heroicon-m-document')
                         ->url(fn($record) => (string)route('order.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
+                    Tables\Actions\Action::make('devolver_orden')
+                        ->label('Devolver Orden')
+                        ->icon('heroicon-m-arrow-uturn-left')
+                        ->color('warning')
+                        ->visible(fn() => auth()->user()->hasRole('super_admin'))
+                        ->requiresConfirmation()
+                        ->modalHeading('¿Devolver orden al comprador?')
+                        ->modalDescription('Esta acción devolverá la orden al comprador independientemente del estado actual. Se enviará una notificación por correo.')
+                        ->modalSubmitActionLabel('Devolver')
+                        ->action(function ($record) {
+                            try {
+                                $record->status()->transitionTo('devuelto por administrador', [
+                                    'admin_id' => auth()->id(),
+                                    'admin_name' => auth()->user()->name,
+                                    'previous_state' => $record->status,
+                                    'returned_at' => now()
+                                ]);
+
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Orden devuelta exitosamente')
+                                    ->body("La orden {$record->folio} ha sido devuelta al comprador.")
+                                    ->success()
+                                    ->send();
+                            } catch (\Exception $e) {
+                                \Filament\Notifications\Notification::make()
+                                    ->title('Error al devolver la orden')
+                                    ->body('No se pudo devolver la orden: ' . $e->getMessage())
+                                    ->danger()
+                                    ->send();
+                            }
+                        }),
                 ]),
             ]);
     }

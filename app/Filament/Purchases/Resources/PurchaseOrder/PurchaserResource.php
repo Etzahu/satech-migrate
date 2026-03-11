@@ -513,7 +513,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                                     ->first();
                                                                     if (!filled($media)) {
                                                                         return '#';
-                                                                    }   
+                                                                    }
                                                                 return  route('media.show', ['id' => $media->id]);
                                                             })
                                                             ->openUrlInNewTab(),

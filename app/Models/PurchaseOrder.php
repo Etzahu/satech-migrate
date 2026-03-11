@@ -198,6 +198,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
                 'devuelto por gerente solicitante',
                 'devuelto por DG nivel 1',
                 'devuelto por DG nivel 2',
+                'devuelto por administrador', // Estado que reinicia el ciclo cuando admin devuelve la orden
                 'reabierta para edición',
                 'requisición reasignada', // Estado que reinicia el ciclo al cambiar de requisición
                 'cadena reasignada' // Nuevo estado que reinicia el ciclo al cambiar de cadena
@@ -264,6 +265,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             ->where('field', 'status')
             ->whereIn('to', [
                 'devuelto por dirección general',
+                'devuelto por administrador', // Estado que reinicia el ciclo cuando admin devuelve la orden
                 'reabierta para edición'
             ])
             ->orderBy('created_at', 'desc')

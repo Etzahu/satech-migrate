@@ -29,7 +29,8 @@ class ListPurchaseOrders extends ListRecords
                     'devuelto por gerente solicitante',
                     'devuelto por DG nivel 1',
                     'devuelto por DG nivel 2',
-                    'reabierta para edición'
+                    'reabierta para edición',
+                    'devuelto por administrador' // Permite agregar partidas cuando admin devuelve la orden
                 ])),
             'reopened' => Tab::make('Reabiertas')
                 ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'reabierta para edición')),

@@ -41,10 +41,11 @@ class AddItemPR extends Page implements HasForms, HasTable
             'devuelto por gerente solicitante',
             'devuelto por DG nivel 1',
             'devuelto por DG nivel 2',
+            'devuelto por administrador', // Permite agregar partidas cuando admin devuelve la orden
             'reabierta para edición'
         ];
         if (!in_array($this->record->status, $states)) {
-            return redirect(PurchaserResource::getUrl('view',['record' => $this->record]));
+            return redirect(PurchaserResource::getUrl('view', ['record' => $this->record]));
         }
     }
 

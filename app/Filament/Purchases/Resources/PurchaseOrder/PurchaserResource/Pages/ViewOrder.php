@@ -75,7 +75,7 @@ class ViewOrder extends ViewRecord
                 ->openUrlInNewTab(),
             Actions\Action::make('Agregar partidas de la requisición')
                 ->visible(function () {
-                    if ($this->record->status !== 'borrador' || $this->record->status !== 'reabierta para edición') {
+                    if ($this->record->status !== 'borrador' && $this->record->status !== 'reabierta para edición') {
                         return false;
                     }
                     // dd($this->record);

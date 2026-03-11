@@ -22,7 +22,7 @@ class PurchaseOrderStateMachine extends StateMachine
     {
         return [
             // Wildcard: permite reasignar desde cualquier estado
-            '*' => ['requisición reasignada', 'cadena reasignada'],
+            '*' => ['requisición reasignada', 'cadena reasignada', 'devuelto por administrador'],
 
             'borrador' => [
                 'revisión gerente de compras',
@@ -40,6 +40,7 @@ class PurchaseOrderStateMachine extends StateMachine
             'devuelto por gerente solicitante' => ['revisión gerente de compras', 'revision por dirección general'],
             'devuelto por DG nivel 1' => ['revisión gerente de compras', 'revision por dirección general'],
             'devuelto por DG nivel 2' => ['revisión gerente de compras', 'revision por dirección general'],
+            'devuelto por administrador' => ['revisión gerente de compras', 'revision por dirección general'],
             'reabierta para edición' => ['revisión gerente de compras', 'revision por dirección general'],
 
             // Estado de reasignación de requisición
@@ -284,6 +285,15 @@ class PurchaseOrderStateMachine extends StateMachine
                 ]);
 
                 Mail::to($recipient)->cc(array_filter($ccEmails))->send(new Notification($data));
+            }],
+
+            'devuelto por administrador' => [function ($to, $model) {
+                $service = new OrderService();
+                $data = $service->generateDataEmail($model->id, 'devuelto por administrador');
+
+                $recipient = $model->purchaser->email;
+
+                Mail::to($recipient)->send(new Notification($data));
             }],
         ];
     }
