@@ -344,7 +344,7 @@ class HistoryResource extends Resource
                         ->label('Devolver Orden')
                         ->icon('heroicon-m-arrow-uturn-left')
                         ->color('warning')
-                        ->visible(fn() => auth()->user()->hasRole('super_admin'))
+                        ->visible(fn() =>  auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('gerente_compras'))
                         ->requiresConfirmation()
                         ->modalHeading('¿Devolver orden al comprador?')
                         ->modalDescription('Esta acción devolverá la orden al comprador independientemente del estado actual. Se enviará una notificación por correo.')
