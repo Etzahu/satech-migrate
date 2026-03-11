@@ -61,6 +61,7 @@ class PurchaseOrderPolicy
             'devuelto por gerente solicitante',
             'devuelto por DG nivel 1',
             'devuelto por DG nivel 2',
+            'devuelto por administrador', // Permite agregar partidas cuando admin devuelve la orden
             'reabierta para edición'
         ];
         return ($user->can('update_purchase::order::purchaser') &&  in_array($purchaseOrder->status, $states)) || ($user->hasRole('super_admin') || $user->hasRole('administrador_compras') ||
