@@ -90,7 +90,6 @@ class ProductResource extends Resource
                                             $type = strtoupper($value->type);
                                             $options[$type][$value->id] = $value->name . ' (' . $value->code . ')';
                                         }
-                                        logger($options);
                                     }
                                     return $options;
                                 }
@@ -144,6 +143,19 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus'),
+                 Tables\Columns\TextColumn::make('type_purchase')
+                    ->label('Tipo')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'servicio' => 'info',
+                        'proveeduria' => 'success',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'servicio' => 'Servicio',
+                        'proveeduria' => 'Producto',
+                        default => $state,
+                    }),
                 Tables\Columns\TextColumn::make('unit.name')
                     ->label('Unidad de medida'),
                 Tables\Columns\TextColumn::make('requester.name')

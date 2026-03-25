@@ -8,7 +8,6 @@
         "php": "^8.2",
         "asantibanez/laravel-eloquent-state-machines": "^6.0",
         "aymanalhattami/filament-slim-scrollbar": "^2.0",
-        "barryvdh/laravel-debugbar": "^3.16",
         "barryvdh/laravel-dompdf": "^3.0",
         "bezhansalleh/filament-shield": "^3.2",
         "brick/money": "^0.10.1",

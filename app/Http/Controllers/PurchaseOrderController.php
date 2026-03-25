@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Money\Money;
-use Money\Currency;
-use Illuminate\Http\Request;
 use App\Models\PurchaseOrder;
 use App\Services\OrderCalculationService;
 use Spatie\Browsershot\Browsershot;
@@ -14,7 +12,7 @@ use function Spatie\LaravelPdf\Support\pdf;
 class PurchaseOrderController extends Controller
 {
 
-    public function pdf($id, $save = false)
+    public function pdf($id, $save = false, $disk = 'pdf_temp')
     {
         $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail($id);
         // return $data;
@@ -70,87 +68,106 @@ class PurchaseOrderController extends Controller
         $stages[4] =  $data->status()->snapshotWhen('aprobado por DG nivel 1'); //
         $stages[5] =  $data->status()->snapshotWhen('aprobado por DG nivel 2'); //
 
+        // Determinar qué anexos incluir
+        $includeSupplier = in_array($data->requisition->category, ['proveeduria', 'servicio']) || $data->requisition->company_id == 1;
+        $includeService = $data->requisition->category == 'servicio' || $data->requisition->company_id == 1;
+        $includeTerms = $this->getTermsAndConditionsByCompany($data->company_id);
+
         $pdf = pdf()
-            ->view('pdf.purchase-order.content', ['data' => $data, 'stages' => $stages])
+            ->view('pdf.purchase-order.complete', [
+                'data' => $data,
+                'stages' => $stages,
+                'includeSupplier' => $includeSupplier,
+                'includeService' => $includeService,
+                'includeTerms' => $includeTerms,
+            ])
             ->margins(55, 15, 15, 15)
             ->headerView('pdf.purchase-order.header', ['data' => $data, 'revisions' => $revisions])
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot
                     ->noSandbox()
+                    ->showBackground()
+                    ->displayHeaderFooter() // Habilita @pageNumber y @totalPages
                     ->writeOptionsToFile();
             })
-            // ->disk('public')
             ->name("orden-compra-{$data->folio}.pdf");
 
         if ($save) {
             return $pdf
-                ->disk('pdf_temp')
+                ->disk($disk)
                 ->save("orden_compra_{$id}.pdf");
         }
 
+        // return view('pdf.purchase-order.complete', [
+        //     'data' => $data,
+        //     'stages' => $stages,
+        //     'includeSupplier' => $includeSupplier,
+        //     'includeService' => $includeService,
+        //     'includeTerms' => $includeTerms,
+        // ]);
         return $pdf;
+    }
+
+    public function show($id)
+    {
+        $model = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail($id);
+
+        try {
+            // Generar PDF completo con todos los anexos y numeración continua
+            $pdf = $this->pdf($id, false);
+
+            $filename = str()->of("Orden de compra {$model->folio}")->replace('/', '-');
+
+            return $pdf->inline($filename . '.pdf');
+        } catch (\Exception $e) {
+            logger()->error('Error al generar PDF completo', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'order_id' => $id
+            ]);
+            return response()->json(['error' => 'No se pudo generar el PDF: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * Obtiene el archivo de términos y condiciones según la empresa
+     */
+    protected function getTermsAndConditionsByCompany($companyId): ?string
+    {
+        // Mapeo de empresas a archivos de términos y condiciones
+        $termsMap = [
+            // 1 => storage_path("app/private/docs_purchase_order/terminos-condiciones-gpt-im.pdf"),
+            // 2 => storage_path("app/private/docs_purchase_order/terminos-condiciones-tech.pdf"),
+            1 => "pdf/purchase-order/annexes/terms-conditions-gpt-im",
+            2 => "pdf/purchase-order/annexes/terms-conditions-tech",
+            // Agregar más empresas según sea necesario
+        ];
+        return $termsMap[$companyId] ?? null;
     }
 
     public function download($id)
     {
-        $model =  PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail($id);
-        $service =   storage_path("app/private/docs_purchase_order/servicio.pdf");
-        $supplier =   storage_path("app/private/docs_purchase_order/proveeduria.pdf");
-
-        $files = [
-            storage_path("app/public/pdf_temp/orden_compra_{$id}.pdf"),
-        ];
-
-        // if (blank($model->requisition->category)) {
-        //     return redirect()->back();
-        // }
-
-        if ($model->requisition->category == 'servicio') {
-            $files[] = $supplier;
-            $files[] = $service;
-        }
-
-        if ($model->requisition->category == 'proveeduria') {
-            $files[] = $supplier;
-        }
-        if ($model->requisition->company_id == 1) {
-            $files[] = $supplier;
-            $files[] = $service;
-        }
-
-        $files = array_unique($files);
-
-
+        $model = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail($id);
 
         try {
-            $this->pdf($id, true);
+            // Generar PDF completo con todos los anexos y numeración continua
+            $this->pdf($id, true, 'private');
+
+            $output = storage_path("app/private/orden_compra_{$id}.pdf");
+
+            if (file_exists($output)) {
+                $filename = str()->of("Orden de compra {$model->folio}")->replace('/', '-');
+                return response()->download($output, "{$filename}.pdf");
+            } else {
+                return response()->json(['error' => 'No se pudo generar el PDF'], 500);
+            }
         } catch (\Exception $e) {
-            logger()->error($e);
-        }
-
-
-        $output = storage_path('app/public/pdf_temp/merged.pdf');
-
-        $cmd = '';
-        // Construir el comando de Ghostscript
-        if (config('app.env') == 'production') {
-            $cmd = 'gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=' . escapeshellarg($output) . ' ';
-        } else {
-            $cmd = '"C:\Program Files\gs\gs9.22\bin\gs.exe" -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=' . escapeshellarg($output) . ' ';
-        }
-        foreach ($files as $file) {
-            $cmd .= escapeshellarg($file) . ' ';
-        }
-        // Ejecutar el comando
-        // $result = exec($cmd);
-        $result = shell_exec($cmd . ' 2>&1'); // Captura errores
-        logger()->error($result);
-
-        if (file_exists($output)) {
-            $filename = str()->of("Orden de compra {$model->folio}")->replace('/', '-');
-            return response()->download($output, "{$filename}.pdf")->deleteFileAfterSend(true);
-        } else {
-            return response()->json(['error' => 'No se pudo combinar los PDFs'], 500);
+            logger()->error('Error al generar PDF para descarga', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'order_id' => $id
+            ]);
+            return response()->json(['error' => 'No se pudo generar el PDF: ' . $e->getMessage()], 500);
         }
     }
 }

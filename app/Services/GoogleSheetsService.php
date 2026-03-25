@@ -124,8 +124,8 @@ class GoogleSheetsService
                 throw new Exception('No se encontraron registros para el rango de fechas especificado');
             }
 
-            // 2. Procesar órdenes y filtrar columnas seleccionadas (sin Google Sheets)
-            $ordersData = $this->prepareOrdersData($orders, $formData['columns']);
+            // 2. Procesar órdenes y filtrar columnas seleccionadas (formato asociativo para Excel)
+            $ordersData = $this->prepareOrdersDataForExcel($orders, $formData['columns']);
 
             // 3. Retornar collection para su uso con FastExcel
             return collect($ordersData);
@@ -277,7 +277,7 @@ class GoogleSheetsService
     }
 
     /**
-     * Prepara los datos de las órdenes (método base compartido)
+     * Prepara los datos de las órdenes para Google Sheets (formato secuencial)
      *
      * @param Collection $orders
      * @param array $selectedColumns
@@ -286,55 +286,88 @@ class GoogleSheetsService
     protected function prepareOrdersData(Collection $orders, array $selectedColumns): array
     {
         $ordersData = [];
-
         foreach ($orders as $order) {
-            $service = new \App\Services\OrderCalculationService($order->id);
-
-            // Datos completos de la orden - asegurar codificación UTF-8
-            $fullOrderData = [
-                'fecha de creacion' => $order->created_at->format('d-m-Y'),
-                'comprador' => $this->sanitizeUtf8($order->purchaser->name ?? ''),
-                'folio' => $this->sanitizeUtf8($order->folio ?? ''),
-                'proveedor' => $this->sanitizeUtf8($order->provider->company_name ?? ''),
-                'subtotal' => $service->getSubtotalItems(true),
-                'total' => $service->getTotal(true),
-                'partidas' => $this->sanitizeUtf8($this->formatOrderItems($order)),
-                'moneda' => $this->sanitizeUtf8($order->currency ?? ''),
-                'proyecto' => $this->sanitizeUtf8("({$order->requisition->project->code}){$order->requisition->project->name}"),
-                'tipo de pago' => $this->sanitizeUtf8($order->type_payment ?? ''),
-                'forma de pago' => $this->sanitizeUtf8($order->form_payment ?? ''),
-                'condiciones de pago' => $this->sanitizeUtf8($this->formatConditionPayment($order)),
-                'folio de cotización' => $this->sanitizeUtf8($order->quote_folio ?? ''),
-                'uso de CFDI' => $this->sanitizeUtf8($order->use_cfdi ?? ''),
-                'método de envío' => $this->sanitizeUtf8($order->shipping_method ?? ''),
-                'descuento por proveedor' => $order->discount ?? '',
-                'descuento' => $service->getDiscountProvider(true),
-                'iva' => $service->getTaxIva(true),
-                'retención de IVA' => $service->getRetentionIva(true),
-                'retención de ISR' => $service->getRetentionIsr(true),
-                'fecha de entrega inicial' => $order->initial_delivery_date ?? '',
-                'fecha de entrega final' => $order->final_delivery_date ?? '',
-                'dirección de entrega' => $this->sanitizeUtf8($order->delivery_address ?? ''),
-                'documentación de entrega' => $this->sanitizeUtf8($this->formatDocumentation($order)),
-                'observaciones' => $this->sanitizeUtf8($order->observations ?? ''),
-                'contacto de proveedor' => $this->sanitizeUtf8($order->providerContact->cell_phone ?? ''),
-                'empresa' => $this->sanitizeUtf8($order->company->name ?? ''),
-                'requisición' => $this->sanitizeUtf8($order->requisition->folio ?? ''),
-                'estatus' => $this->sanitizeUtf8($order->status ?? ''),
-            ];
+            $fullOrderData = $this->buildFullOrderData($order);
 
             // Agregar fecha de carga actual
             $rowData = [now()->format('d-m-Y H:i:s')]; // Fecha de carga
 
-            // Filtrar solo las columnas seleccionadas
+            // Filtrar solo las columnas seleccionadas (array secuencial para Google Sheets)
             foreach ($selectedColumns as $column) {
                 $rowData[] = $fullOrderData[$column] ?? '';
             }
 
             $ordersData[] = $rowData;
         }
-
         return $ordersData;
+    }
+
+    /**
+     * Prepara los datos de las órdenes para Excel (formato asociativo)
+     *
+     * @param Collection $orders
+     * @param array $selectedColumns
+     * @return array
+     */
+    protected function prepareOrdersDataForExcel(Collection $orders, array $selectedColumns): array
+    {
+        $ordersData = [];
+        foreach ($orders as $order) {
+            $fullOrderData = $this->buildFullOrderData($order);
+
+            // Crear array asociativo con solo las columnas seleccionadas
+            $rowData = [];
+            foreach ($selectedColumns as $column) {
+                $rowData[$column] = $fullOrderData[$column] ?? '';
+            }
+
+            $ordersData[] = $rowData;
+        }
+        return $ordersData;
+    }
+
+    /**
+     * Construye el array completo de datos de una orden
+     *
+     * @param PurchaseOrder $order
+     * @return array
+     */
+    protected function buildFullOrderData(PurchaseOrder $order): array
+    {
+        $service = new \App\Services\OrderCalculationService($order->id);
+
+        // Datos completos de la orden - asegurar codificación UTF-8
+        return [
+            'fecha de creacion' => $order->created_at->format('d-m-Y'),
+            'comprador' => $this->sanitizeUtf8($order->purchaser->name ?? ''),
+            'folio' => $this->sanitizeUtf8($order->folio ?? ''),
+            'proveedor' => $this->sanitizeUtf8($order->provider->company_name ?? ''),
+            'subtotal' => $service->getSubtotalItems(true),
+            'total' => $service->getTotal(true),
+            'partidas' => $this->sanitizeUtf8($this->formatOrderItems($order)),
+            'moneda' => $this->sanitizeUtf8($order->currency ?? ''),
+            'proyecto' => $this->sanitizeUtf8("({$order->requisition->project->code}){$order->requisition->project->name}"),
+            'tipo de pago' => $this->sanitizeUtf8($order->type_payment ?? ''),
+            'forma de pago' => $this->sanitizeUtf8($order->form_payment ?? ''),
+            'condiciones de pago' => $this->sanitizeUtf8($this->formatConditionPayment($order)),
+            'folio de cotización' => $this->sanitizeUtf8($order->quote_folio ?? ''),
+            'uso de CFDI' => $this->sanitizeUtf8($order->use_cfdi ?? ''),
+            'método de envío' => $this->sanitizeUtf8($order->shipping_method ?? ''),
+            'descuento por proveedor' => $order->discount ?? '',
+            'descuento' => $service->getDiscountProvider(true),
+            'iva' => $service->getTaxIva(true),
+            'retención de IVA' => $service->getRetentionIva(true),
+            'retención de ISR' => $service->getRetentionIsr(true),
+            'fecha de entrega inicial' => $order->initial_delivery_date ?? '',
+            'fecha de entrega final' => $order->final_delivery_date ?? '',
+            'dirección de entrega' => $this->sanitizeUtf8($order->delivery_address ?? ''),
+            'documentación de entrega' => $this->sanitizeUtf8($this->formatDocumentation($order)),
+            'observaciones' => $this->sanitizeUtf8($order->observations ?? ''),
+            'contacto de proveedor' => $this->sanitizeUtf8($order->providerContact->cell_phone ?? ''),
+            'empresa' => $this->sanitizeUtf8($order->company->name ?? ''),
+            'requisición' => $this->sanitizeUtf8($order->requisition->folio ?? ''),
+            'estatus' => $this->sanitizeUtf8($order->status ?? ''),
+        ];
     }
 
     /**

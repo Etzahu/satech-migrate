@@ -74,7 +74,7 @@ class View extends ViewRecord
                                 ->success()
                                 ->send();
                         } catch (\Exception $e) {
-                            logger($e->getMessage());
+                            logger()->error($e->getMessage());
                             Notification::make()
                                 ->title('Ocurrió un error')
                                 ->danger()
@@ -98,7 +98,7 @@ class View extends ViewRecord
                                 ->success()
                                 ->send();
                         } catch (\Exception $e) {
-                            logger($e->getMessage());
+                            logger()->error($e->getMessage());
                             Notification::make()
                                 ->title('Ocurrió un error')
                                 ->danger()

@@ -61,7 +61,7 @@ class CatalogResource  extends Resource
                             ->preload()
                             ->searchable()
                             ->required(),
-                          Forms\Components\Select::make('type_purchase')
+                        Forms\Components\Select::make('type_purchase')
                             ->label('Seleccione el tipo de elemento a registrar')
                             ->options([
                                 'servicio' => 'Servicio',
@@ -90,7 +90,20 @@ class CatalogResource  extends Resource
                         Infolists\Components\TextEntry::make('name')
                             ->label('Descripción del producto/servicio'),
                         Infolists\Components\TextEntry::make('unit.name')
-                            ->label('Unidad de medida')
+                            ->label('Unidad de medida'),
+                        Infolists\Components\TextEntry::make('type_purchase')
+                            ->label('Tipo')
+                            ->badge()
+                            ->color(fn(string $state): string => match ($state) {
+                                'servicio' => 'info',
+                                'proveeduria' => 'success',
+                                default => 'gray',
+                            })
+                            ->formatStateUsing(fn(string $state): string => match ($state) {
+                                'servicio' => 'Servicio',
+                                'proveeduria' => 'Producto',
+                                default => $state,
+                            })
                     ]),
                 Infolists\Components\Section::make('Documentación')
                     ->visible(fn($record) => $record->getMedia('documents')->count() > 0)
@@ -127,6 +140,19 @@ class CatalogResource  extends Resource
                 Tables\Columns\TextColumn::make('unit.name')
                     ->label('Unidad de medida')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('type_purchase')
+                    ->label('Tipo')
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'servicio' => 'info',
+                        'proveeduria' => 'success',
+                        default => 'gray',
+                    })
+                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                        'servicio' => 'Servicio',
+                        'proveeduria' => 'Producto',
+                        default => $state,
+                    }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus'),
                 Tables\Columns\TextColumn::make('created_at')

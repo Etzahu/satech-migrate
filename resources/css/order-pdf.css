@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Estilos para listas */
+ul {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding-left: 1.5rem;
+}
+
+ul li {
+    display: list-item;
+    margin-bottom: 0.5rem;
+}
+
+.doc-list {
+    list-style-type: disc;
+    list-style-position: outside;
+    padding-left: 1.5rem;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.doc-list li {
+    display: list-item;
+    margin-bottom: 0.5rem;
+}
+
+.body-text {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+}
+
+.section-title {
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.check-item {
+    margin-left: 1rem;
+    margin-bottom: 0.25rem;
+}

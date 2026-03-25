@@ -60,7 +60,7 @@ class ViewOrder extends ViewRecord
                         $service = new OrderCalculationService($this->record->id);
 
                         //Proveedor GPT Ingeniería y Manufactura, S.A. de C.V.
-                        if ( in_array($this->record->provider->id,[427,425,332])) {
+                        if (in_array($this->record->provider->id, [427, 425, 332])) {
                             $this->record->status()->transitionTo('autorizada para proveedor');
                             Notification::make()
                                 ->title('Respuesta enviada')
@@ -80,7 +80,7 @@ class ViewOrder extends ViewRecord
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
                     ->color('danger')
-                    ->url(route('order.pdf', ['id' => $this->record->id]))
+                    ->url(route('order.pdf.show', ['id' => $this->record->id]))
                     ->icon('heroicon-m-document')
                     ->openUrlInNewTab(),
             ])

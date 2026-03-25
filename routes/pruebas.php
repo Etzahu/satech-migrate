@@ -1906,3 +1906,245 @@ Route::get('excel-orders-rqs', function () {
         throw $e;
     }
 });
+
+// Analizar tiempos entre cambios en audits de PurchaseOrder
+Route::get('audits/purchase-order/analysis', function () {
+    try {
+        // Obtener todos los audits de PurchaseOrder
+        $audits = DB::table('audits')
+            ->where('auditable_type', 'App\\Models\\PurchaseOrder')
+            ->orderBy('auditable_id')
+            ->orderBy('created_at')
+            ->get();
+
+        if ($audits->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No se encontraron audits para PurchaseOrder'
+            ]);
+        }
+
+        // Agrupar por orden
+        $auditsByOrder = $audits->groupBy('auditable_id');
+
+        $allTimeDifferences = [];
+        $ordersAnalysis = [];
+
+        foreach ($auditsByOrder as $orderId => $orderAudits) {
+            // Si solo hay un audit, no hay cambios que medir
+            if ($orderAudits->count() < 2) {
+                continue;
+            }
+
+            $timeDifferences = [];
+            $changes = [];
+
+            // Calcular tiempo entre cada cambio
+            for ($i = 1; $i < $orderAudits->count(); $i++) {
+                $previousAudit = $orderAudits[$i - 1];
+                $currentAudit = $orderAudits[$i];
+
+                $previousTime = Carbon::parse($previousAudit->created_at);
+                $currentTime = Carbon::parse($currentAudit->created_at);
+
+                // Diferencia en minutos
+                $diffInMinutes = $previousTime->diffInMinutes($currentTime);
+                $timeDifferences[] = $diffInMinutes;
+                $allTimeDifferences[] = $diffInMinutes;
+
+                // Analizar qué cambió
+                $oldValues = json_decode($previousAudit->new_values ?? '{}', true);
+                $newValues = json_decode($currentAudit->new_values ?? '{}', true);
+
+                $changedFields = [];
+                foreach ($newValues as $key => $value) {
+                    if (!isset($oldValues[$key]) || $oldValues[$key] != $value) {
+                        $changedFields[] = $key;
+                    }
+                }
+
+                $changes[] = [
+                    'event' => $currentAudit->event,
+                    'time_diff_minutes' => $diffInMinutes,
+                    'time_diff_human' => formatMinutesToHuman($diffInMinutes),
+                    'changed_fields' => $changedFields,
+                    'timestamp' => $currentTime->format('Y-m-d H:i:s')
+                ];
+            }
+
+            // Estadísticas por orden
+            if (!empty($timeDifferences)) {
+                $ordersAnalysis[] = [
+                    'order_id' => $orderId,
+                    'total_changes' => count($timeDifferences),
+                    'avg_time_minutes' => round(array_sum($timeDifferences) / count($timeDifferences), 2),
+                    'min_time_minutes' => min($timeDifferences),
+                    'max_time_minutes' => max($timeDifferences),
+                    'total_time_minutes' => array_sum($timeDifferences),
+                ];
+            }
+        }
+
+        // Estadísticas globales
+        $globalStats = [];
+        if (!empty($allTimeDifferences)) {
+            $totalChanges = count($allTimeDifferences);
+            $avgTime = array_sum($allTimeDifferences) / $totalChanges;
+
+            $globalStats = [
+                'total_orders_analyzed' => count($ordersAnalysis),
+                'total_changes' => $totalChanges,
+                'average_time_between_changes_minutes' => round($avgTime, 2),
+                'average_time_between_changes_hours' => round($avgTime / 60, 2),
+                'average_time_between_changes_days' => round($avgTime / 1440, 2),
+                'average_time_human' => formatMinutesToHuman($avgTime),
+                'min_time_minutes' => min($allTimeDifferences),
+                'max_time_minutes' => max($allTimeDifferences),
+                'median_time_minutes' => calculateMedian($allTimeDifferences),
+            ];
+        }
+
+        // Análisis por tipo de evento
+        $totalAudits = $audits->count();
+        $eventAnalysis = $audits->groupBy('event')->map(function ($group, $event) use ($totalAudits) {
+            return [
+                'event' => $event,
+                'count' => $group->count(),
+                'percentage' => round(($group->count() / $totalAudits) * 100, 2) . '%'
+            ];
+        })->values();
+
+        // Top 10 órdenes con más cambios
+        $topOrders = collect($ordersAnalysis)
+            ->sortByDesc('total_changes')
+            ->take(10)
+            ->values();
+
+        // Órdenes con cambios más rápidos (promedio)
+        $fastestChanges = collect($ordersAnalysis)
+            ->sortBy('avg_time_minutes')
+            ->take(10)
+            ->values();
+
+        // Órdenes con cambios más lentos (promedio)
+        $slowestChanges = collect($ordersAnalysis)
+            ->sortByDesc('avg_time_minutes')
+            ->take(10)
+            ->values();
+
+        return response()->json([
+            'success' => true,
+            'global_statistics' => $globalStats,
+            'event_analysis' => $eventAnalysis,
+            'top_orders_by_changes' => $topOrders,
+            'fastest_changing_orders' => $fastestChanges,
+            'slowest_changing_orders' => $slowestChanges,
+            'detailed_analysis_sample' => collect($ordersAnalysis)->take(5)->toArray()
+        ], 200, [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    } catch (\Exception $e) {
+        return response()->json([
+            'success' => false,
+            'error' => $e->getMessage(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+})->name('audits.purchase-order.analysis');
+
+// Función helper para formatear minutos a formato legible
+function formatMinutesToHuman($minutes)
+{
+    $days = floor($minutes / 1440);
+    $hours = floor(($minutes % 1440) / 60);
+    $mins = $minutes % 60;
+
+    $parts = [];
+    if ($days > 0) $parts[] = "{$days}d";
+    if ($hours > 0) $parts[] = "{$hours}h";
+    if ($mins > 0) $parts[] = round($mins) . "m";
+
+    return empty($parts) ? '0m' : implode(' ', $parts);
+}
+
+// Función helper para calcular mediana
+function calculateMedian($array)
+{
+    sort($array);
+    $count = count($array);
+    $middle = floor($count / 2);
+
+    if ($count % 2 == 0) {
+        return ($array[$middle - 1] + $array[$middle]) / 2;
+    } else {
+        return $array[$middle];
+    }
+}
+
+Route::get('test-view',function(){
+             $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail(1315);
+        // return $data;
+        $service = new OrderCalculationService($data->id);
+        $items = $data->items;
+        $media[] = $data->getMedia('quote')->first();
+        $media[] = $data->getMedia('justification')->first();
+        // opcionales
+        if (filled($data->getMedia('direct_award')->first())) {
+            $media[] = $data->getMedia('direct_award')->first();
+        }
+        if (filled($data->getMedia('certifications')->first())) {
+            $media[] = $data->getMedia('certifications')->first();
+        }
+
+        $itemsFormatted = $items->map(function ($item) use ($data, $service) {
+            // $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
+            // $subTotal =  new Money($item->sub_total, new Currency($data->currency));
+            $unitPrice =  $item->unit_price;
+            $subTotal = $item->sub_total;
+            return [
+                'code' => $item->product->code,
+                'name' => $item->product->name,
+                'brand' => $item->product->brand?->name,
+                'unit' => $item->product->unit->acronym,
+                "quantity" => $item->quantity,
+                "unit_price" => $service->brickFormatter($unitPrice),
+                "sub_total" => $service->brickFormatter($subTotal),
+                "observation" => $item->observation,
+            ];
+        });
+        $total = [
+            'Subtotal' =>  $service->getSubtotalItems(true),
+            'Descuento' =>  $service->getDiscountProvider(true),
+            'IVA' =>  $service->getTaxIva(true),
+            'Retención de IVA' =>  $service->getRetentionIva(true),
+            'Retención de ISR' =>  $service->getRetentionIsr(true),
+            'Total' =>  $service->getTotal(true),
+        ];
+
+        $data['total'] = $total;
+        $data['media'] = $media;
+        $data['itemsFormatted'] = $itemsFormatted;
+        $data['progress'] = $data->progress;
+        // return($data);
+
+        $revisions = $data->status()->timesWas('autorizada para proveedor');
+
+        $stages = [];
+        $stages[1] =  $data->status()->snapshotWhen('revisión gerente de compras');
+        $stages[2] =  $data->status()->snapshotWhen('aprobado por gerente de compras');
+        $stages[3] =  $data->status()->snapshotWhen('aprobado por gerente solicitante');
+        $stages[4] =  $data->status()->snapshotWhen('aprobado por DG nivel 1'); //
+        $stages[5] =  $data->status()->snapshotWhen('aprobado por DG nivel 2'); //
+
+        // Determinar qué anexos incluir
+        $includeSupplier = in_array($data->requisition->category, ['proveeduria', 'servicio']) || $data->requisition->company_id == 1;
+        $includeService = $data->requisition->category == 'servicio' || $data->requisition->company_id == 1;
+        // $includeTerms = $this->getTermsAndConditionsByCompany($data->company_id) !== null;
+        $includeTerms = null;
+    return view('pdf.purchase-order.complete',[
+        'data' => $data,
+        'stages' => $stages,
+        'revisions' => $revisions,
+        'includeSupplier' => $includeSupplier,
+        'includeService' => $includeService,
+        'includeTerms' => $includeTerms,
+    ]);
+});

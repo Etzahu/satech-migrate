@@ -68,7 +68,7 @@ class ViewOrder extends ViewRecord
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
                     ->color('danger')
-                    ->url(route('order.pdf', ['id' => $this->record->id]))
+                    ->url(route('order.pdf.show', ['id' => $this->record->id]))
                     ->icon('heroicon-m-document')
                     ->openUrlInNewTab(),
             ])

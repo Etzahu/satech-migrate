@@ -295,6 +295,20 @@ class PurchaseOrderStateMachine extends StateMachine
 
                 Mail::to($recipient)->send(new Notification($data));
             }],
+            'reabierta para edición' => [function ($to, $model) {
+                $service = new OrderService();
+                $data = $service->generateDataEmail($model->id, 'reabierta para edición');
+                $recipient = $model->purchaser->email;
+                $moreUsers = [];
+                $moreUsers[] = $model->requisition->approvalChain->requester->email;
+                $moreUsers[] = $model->requisition->approvalChain->authorizer->email;
+                $moreUsers[] = User::find(106)->email;
+                $moreUsers[] = User::role('gerente_compras')->first()->email;
+
+                Mail::to($recipient)
+                ->cc($moreUsers)
+                ->send(new Notification($data));
+            }],
         ];
     }
 }

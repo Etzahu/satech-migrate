@@ -70,7 +70,7 @@ class ViewOrder extends ViewRecord
                 }),
             Actions\Action::make('Ver pdf')
                 ->color('gray')
-                ->url(route('order.pdf', ['id' => $this->record->id]))
+                ->url(route('order.pdf.show', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
                 ->openUrlInNewTab(),
             Actions\Action::make('Agregar partidas de la requisición')

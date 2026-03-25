@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Models\PurchaseOrder;
+use App\Observers\PurchaseOrderObserver;
 use App\Policies\AutidPolicy;
 use OwenIt\Auditing\Models\Audit;
 use Filament\View\PanelsRenderHook;
@@ -28,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Registrar Observer para PurchaseOrder
+        PurchaseOrder::observe(PurchaseOrderObserver::class);
+
         Gate::define('viewLogViewer', function (?User $user) {
 
             return $user->hasRole('super_admin');
@@ -41,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('audit', function (User $user,) {
             return $user->hasRole('super_admin');
         });
-            // Mail::alwaysTo('ahernandezm@gptservices.com');
+        // Mail::alwaysTo('ahernandezm@gptservices.com');
         // if ($this->app->environment('local')) {
         //     Mail::alwaysTo('ahernandezm@gptservices.com');
         // }

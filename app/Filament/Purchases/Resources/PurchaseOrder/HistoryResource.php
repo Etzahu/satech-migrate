@@ -6,9 +6,7 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder;
 use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
 use App\Models\PurchaseOrder;
 use App\Models\User;
-use App\Services\OrderCalculationService;
-use App\Services\GoogleSheetsService;
-use Carbon\Carbon;
+use App\Services\PurchaseOrderReportService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Infolist;
@@ -19,7 +17,6 @@ use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Rap2hpoutre\FastExcel\SheetCollection;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 
 class HistoryResource extends Resource
@@ -145,25 +142,6 @@ class HistoryResource extends Resource
                     )
                     ->form(
                         [
-                            Forms\Components\ToggleButtons::make('type_save')
-                                ->label('Guardar información en:')
-                                ->required()
-                                ->options([
-                                    'excel' => 'Excel',
-                                    'sheets' => 'Google Sheets',
-                                ])
-                                ->icons([
-                                    'excel' => 'fileicon-microsoft-excel',
-                                    'sheets' => 'si-googlesheets',
-                                ])
-                                ->colors([
-                                    'excel' => 'info',
-                                    'sheets' => 'success',
-                                ])
-
-                                ->default('excel')
-                                ->inline()
-                                ->disableOptionWhen(fn(string $value): bool => $value === 'sheets' &&  !auth()->user()->hasRole('comprador')),
                             Forms\Components\CheckboxList::make('columns')
                                 ->label('Datos de la orden')
                                 ->bulkToggleable()
@@ -238,97 +216,24 @@ class HistoryResource extends Resource
                         ]
                     )
                     ->action(function (array $data) {
-                        $startDate = Carbon::createFromFormat('Y-m-d', $data['created_start'])->startOfDay();
-                        $endDate = Carbon::createFromFormat('Y-m-d', $data['created_end'])->endOfDay();
+                        try {
+                            // Forzar exportación a Excel
+                            $data['type_save'] = 'excel';
 
-                        if ($data['type_save'] == 'sheets') {
-                            try {
-                                $sheetsService = new GoogleSheetsService();
-                                $result_sheets = $sheetsService->processOrdersReport($data);
+                            $reportService = new PurchaseOrderReportService();
+                            $result = $reportService->generateReport($data);
 
-                                // Sanitizar y codificar correctamente los datos para UTF-8
-                                $userSheet = htmlspecialchars($result_sheets['user_sheet'], ENT_QUOTES, 'UTF-8');
-                                $userName = htmlspecialchars($result_sheets['user_name'], ENT_QUOTES, 'UTF-8');
-                                $dateRange = htmlspecialchars($result_sheets['date_range'], ENT_QUOTES, 'UTF-8');
-                                $totalOrders = (int) $result_sheets['total_orders'];
-                                $spreadsheetUrl = filter_var($result_sheets['spreadsheet_url'], FILTER_SANITIZE_URL);
-
-                                return Notification::make()
-                                    ->title('Reporte cargado correctamente en tu hoja personal')
-                                    ->success()
-                                    ->body("Las órdenes se han cargado en tu hoja personal <strong>{$userSheet}</strong><br>
-                                           <a href='{$spreadsheetUrl}' target='_blank' class='font-bold text-blue-600 underline hover:text-blue-800'>
-                                               Abrir Google Sheets
-                                           </a><br>
-                                           <small class='text-gray-600'>
-                                               Usuario: {$userName}<br>
-                                               Rango: {$dateRange}<br>
-                                               Total de órdenes: {$totalOrders}
-                                           </small>")
-                                    ->persistent()
-                                    ->send();
-                            } catch (\Exception $e) {
-                                $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
-                                return Notification::make()
-                                    ->title('Error al cargar en Google Sheets')
-                                    ->danger()
-                                    ->body("Error: {$errorMessage}")
-                                    ->persistent()
-                                    ->send();
-                            }
-                        } else {
-                            // Exportación a Excel usando el servicio reestructurado
-                            try {
-                                $exportService = new GoogleSheetsService();
-                                $ordersData = $exportService->processOrdersReport($data);
-
-                                // Preparar datos de items para la segunda hoja
-                                $models = PurchaseOrder::with(['requisition', 'provider', 'company', 'purchaser'])
-                                    ->where('company_id', session()->get('company_id'))
-                                    ->whereBetween('created_at', [$startDate, $endDate]);
-
-                                if (filled($data['buyers'])) {
-                                    $models = $models->whereIn('purchaser_user_id', $data['buyers']);
-                                }
-                                if (filled($data['type_purchase'])) {
-                                    $models->whereHas('items.product', function ($query) use ($data) {
-                                        $query->whereIn('type_purchase', $data['type_purchase']);
-                                    });
-                                }
-                                $models = $models->get();
-
-                                $items = $models->pluck('items')->flatten();
-                                $dataItems = [];
-                                $service = new OrderCalculationService();
-
-                                foreach ($items as $item) {
-                                    $dataItems[] = [
-                                        'Orden' => $item->purchase->folio,
-                                        'Cantidad' => $item->quantity,
-                                        'Precio unitario' => $service->brickFormatter($item->unit_price),
-                                        'Subtotal' => $service->brickFormatter($item->sub_total),
-                                        'Producto-Servicio' => $item->product->name,
-                                        'Tipo' => $item->product->type_purchase,
-                                        'Observaciones' => $item->observation
-                                    ];
-                                }
-
-                                $sheets = new SheetCollection([
-                                    'ordenes' => $ordersData,
-                                    'partidas' => $dataItems
-                                ]);
-
-                                return fastexcel($sheets)
-                                    ->download("ordenes de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
-                            } catch (\Exception $e) {
-                                $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
-                                return Notification::make()
-                                    ->title('Error al generar reporte Excel')
-                                    ->danger()
-                                    ->body("Error: {$errorMessage}")
-                                    ->persistent()
-                                    ->send();
-                            }
+                            // Exportación a Excel
+                            return fastexcel($result['sheets'])
+                                ->download($result['filename']);
+                        } catch (\Exception $e) {
+                            $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+                            return Notification::make()
+                                ->title('Error al generar reporte')
+                                ->danger()
+                                ->body("Error: {$errorMessage}")
+                                ->persistent()
+                                ->send();
                         }
                     }),
             ])
@@ -338,7 +243,7 @@ class HistoryResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn($record) => (string)route('order.pdf', ['id' => $record->id]))
+                        ->url(fn($record) => (string)route('order.pdf.show', ['id' => $record->id]))
                         ->openUrlInNewTab(),
                     Tables\Actions\Action::make('devolver_orden')
                         ->label('Devolver Orden')

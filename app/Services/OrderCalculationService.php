@@ -95,14 +95,11 @@ class OrderCalculationService
     // }
     public function brickFormatter($value)
     {
-       logger($value);
         if (!$value instanceof BigDecimal) {
             $value = BigDecimal::of($value)->dividedBy(10000, 4);
             // Redondear hacia arriba a 2 decimales
             $value = $value->toScale(2, RoundingMode::CEILING);
         }
-        // logger($value);
-
         try {
             $amount = BrickMoney::of($value->__toString(), 'MXN');
         } catch (\Exception $e) {
@@ -222,11 +219,7 @@ class OrderCalculationService
             $minAmount = 1; //$1;
             $maxAmount = 300000; //$300,000;
         }
-
         $total = $this->getTotal();
-
-        logger($this->getTotal());
-
         if ($total->isGreaterThanOrEqualTo($minAmount) && $total->isLessThanOrEqualTo($maxAmount)) {
             return true;
         }

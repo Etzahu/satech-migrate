@@ -45,6 +45,9 @@ Route::get('compras/requisiciones/{id}/pdf', [PurchaseRequisitionController::cla
 Route::get('compras/ordenes/{id}/pdf', [PurchaseOrderController::class, 'pdf'])
     ->name('order.pdf')
     ->middleware('auth');
+Route::get('compras/ordenes/{id}/pdf/show', [PurchaseOrderController::class, 'show'])
+    ->name('order.pdf.show')
+    ->middleware('auth');
 Route::get('compras/ordenes/{id}/pdf/download', [PurchaseOrderController::class, 'download'])
     ->name('order.pdf.download')
     ->middleware('auth');

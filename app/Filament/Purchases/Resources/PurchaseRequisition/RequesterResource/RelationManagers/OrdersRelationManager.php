@@ -182,7 +182,7 @@ class OrdersRelationManager extends RelationManager
                 //             ->activeTab(1)
                 //     ]),
                 Tables\Actions\Action::make('Documento')
-                    ->url(fn($record) => route('order.pdf', ['id' => $record->id]))
+                    ->url(fn($record) => route('order.pdf.show', ['id' => $record->id]))
                     ->openUrlInNewTab()
             ]);
     }
