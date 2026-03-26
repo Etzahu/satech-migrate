@@ -1,7 +1,7 @@
 {{-- Anexo de Servicios --}}
-  <div class="max-w-[760px] mx-auto px-10 pt-8 pb-6">
+  <div class="page-break-before" style="page-break-before: always;">
 
-    <!-- LOGO -->
+    {{-- <!-- LOGO -->
     <div class="mb-5">
       <svg width="110" height="68" viewBox="0 0 110 68" xmlns="http://www.w3.org/2000/svg">
         <rect width="110" height="68" fill="#fff"/>
@@ -11,7 +11,7 @@
         <rect x="4" y="50" width="102" height="14" rx="1" fill="#444"/>
         <text x="55" y="61" font-size="9" font-family="Arial" font-weight="bold" fill="#fff" text-anchor="middle" letter-spacing="3">SERVICES</text>
       </svg>
-    </div>
+    </div> --}}
 
     <!-- TÍTULO -->
     <h1 class="doc-title">DOCUMENTACION &nbsp; HSE &nbsp; REQUERIDA &nbsp; PREVIAMENTE &nbsp; AL &nbsp; SERVICO &nbsp; PARA CONTRATISTAS:</h1>
@@ -79,7 +79,7 @@
     <p class="firma-label">NOMBRE &nbsp; FIRMA &nbsp; PUESTO Y EMPRESA</p>
 
     <!-- PIE DE PÁGINA -->
-    <div class="footer-bar">
+    {{-- <div class="footer-bar">
       <div>
         <div class="footer-text">Tech Energy Control, S.A. de C.V.</div>
         <div class="footer-sub">Av. Santa Mónica 33, Col. El Mirador, C.P. 54080, Tlalnepantla de Baz, Estado de México, México</div>
@@ -91,6 +91,6 @@
         <text x="33" y="13" font-size="6" font-family="Arial" font-weight="bold" fill="#1a3a6e" letter-spacing="0.5">GRUPO</text>
         <text x="33" y="23" font-size="8" font-family="Arial" font-weight="bold" fill="#1a3a6e" letter-spacing="0.5">WALWORTH.</text>
       </svg>
-    </div>
+    </div> --}}
 
   </div>

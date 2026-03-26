@@ -2,13 +2,14 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
-
 use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
 use App\Models\PurchaseOrder;
 use App\Models\User;
+use App\Services\OrderCalculationService;
 use App\Services\PurchaseOrderReportService;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
@@ -22,12 +23,19 @@ use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
 class HistoryResource extends Resource
 {
     protected static ?string $model = PurchaseOrder::class;
+
     protected static ?string $modelLabel = 'Orden';
+
     protected static ?string $pluralModelLabel = 'Historial de órdenes';
+
     protected static ?string $navigationLabel = 'Historial';
+
     protected static ?string $slug = 'orden-historial';
+
     protected static ?string $navigationGroup = 'Orden';
+
     protected static ?string $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 12;
 
     public static function canAccess(): bool
@@ -42,10 +50,12 @@ class HistoryResource extends Resource
             auth()->user()->hasRole('visor_ordenes') ||
             auth()->user()->hasRole('administrador_compras');
     }
+
     public static function canCreate(): bool
     {
         return false;
     }
+
     public static function canEdit($record = null): bool
     {
         return
@@ -53,23 +63,28 @@ class HistoryResource extends Resource
             auth()->user()->hasRole('administrador_compras') ||
             auth()->user()->hasRole('gerente_compras');
     }
+
     public static function infolist(Infolist $infolist): Infolist
     {
         $options = [];
+
         return PurchaserResource::infolist($infolist, $options);
     }
 
     public static function form(Form $form, array $options = []): Form
     {
         $options['show_relation_items'] = true;
+
         return PurchaserResource::form($form, $options);
     }
+
     public static function getRelations(): array
     {
         return [
             AuditsRelationManager::class,
         ];
     }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -126,7 +141,7 @@ class HistoryResource extends Resource
                                 $data['created_until'],
                                 fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
-                    })
+                    }),
             ])
             ->headerActions([
                 Tables\Actions\Action::make('Generar reporte')
@@ -220,7 +235,7 @@ class HistoryResource extends Resource
                             // Forzar exportación a Excel
                             $data['type_save'] = 'excel';
 
-                            $reportService = new PurchaseOrderReportService();
+                            $reportService = new PurchaseOrderReportService;
                             $result = $reportService->generateReport($data);
 
                             // Exportación a Excel
@@ -228,6 +243,7 @@ class HistoryResource extends Resource
                                 ->download($result['filename']);
                         } catch (\Exception $e) {
                             $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+
                             return Notification::make()
                                 ->title('Error al generar reporte')
                                 ->danger()
@@ -243,13 +259,13 @@ class HistoryResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn($record) => (string)route('order.pdf.show', ['id' => $record->id]))
+                        ->url(fn($record) => (string) route('order.pdf.show', ['id' => $record->id]))
                         ->openUrlInNewTab(),
                     Tables\Actions\Action::make('devolver_orden')
                         ->label('Devolver Orden')
                         ->icon('heroicon-m-arrow-uturn-left')
                         ->color('warning')
-                        ->visible(fn() =>  auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('gerente_compras'))
+                        ->visible(fn() => auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('gerente_compras'))
                         ->requiresConfirmation()
                         ->modalHeading('¿Devolver orden al comprador?')
                         ->modalDescription('Esta acción devolverá la orden al comprador independientemente del estado actual. Se enviará una notificación por correo.')
@@ -260,25 +276,89 @@ class HistoryResource extends Resource
                                     'admin_id' => auth()->id(),
                                     'admin_name' => auth()->user()->name,
                                     'previous_state' => $record->status,
-                                    'returned_at' => now()
+                                    'returned_at' => now(),
                                 ]);
 
-                                \Filament\Notifications\Notification::make()
+                                Notification::make()
                                     ->title('Orden devuelta exitosamente')
                                     ->body("La orden {$record->folio} ha sido devuelta al comprador.")
                                     ->success()
                                     ->send();
                             } catch (\Exception $e) {
-                                \Filament\Notifications\Notification::make()
+                                Notification::make()
                                     ->title('Error al devolver la orden')
                                     ->body('No se pudo devolver la orden: ' . $e->getMessage())
                                     ->danger()
                                     ->send();
                             }
                         }),
+                    Tables\Actions\Action::make('ver_partidas')
+                        ->label('Ver Partidas')
+                        ->icon('heroicon-m-list-bullet')
+                        ->color('info')
+                        ->slideOver()
+                        ->modalWidth(MaxWidth::FourExtraLarge)
+                        ->modalSubmitAction(false)
+                        ->infolist(function ($record): array {
+                            return [
+                                Infolists\Components\Section::make('Partidas de la Orden')
+                                    ->description('Detalle de los productos/servicios de la orden ' . $record->folio)
+                                    ->schema([
+                                        Infolists\Components\RepeatableEntry::make('items')
+                                            ->label('')
+                                            ->contained(false)
+                                            ->schema([
+                                                Infolists\Components\Fieldset::make('')
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('product.name')
+                                                            ->label('Producto/Servicio'),
+                                                        Infolists\Components\TextEntry::make('product.unit.acronym')
+                                                            ->label('Unidad'),
+                                                        Infolists\Components\TextEntry::make('quantity')
+                                                            ->label('Cantidad')
+                                                            ->numeric(decimalPlaces: 2),
+                                                        Infolists\Components\TextEntry::make('unit_price')
+                                                            ->label('Precio unitario')
+                                                            ->formatStateUsing(function ($state) {
+                                                                if (blank($state)) {
+                                                                    return '0.0000';
+                                                                }
+                                                                $service = new OrderCalculationService;
+                                                                $state = $service->brickFormatter($state);
+
+                                                                return $state;
+                                                            }),
+                                                        Infolists\Components\TextEntry::make('sub_total')
+                                                            ->label('Subtotal')
+                                                            ->formatStateUsing(function ($state) {
+                                                                if (blank($state)) {
+                                                                    return '0.0000';
+                                                                }
+                                                                $service = new OrderCalculationService;
+                                                                $state = $service->brickFormatter($state);
+
+                                                                return $state;
+                                                            }),
+                                                        Infolists\Components\TextEntry::make('observation')
+                                                            ->label('Observación')
+                                                            ->columnSpanFull()
+                                                            ->placeholder('Sin observaciones'),
+                                                    ])
+                                                    ->columns([
+                                                        'xs' => 1,
+                                                        'sm' => 2,
+                                                        'xl' => 4,
+                                                        '2xl' => 6,
+                                                    ]),
+                                            ])
+                                            ->grid(1),
+                                    ]),
+                            ];
+                        }),
                 ]),
             ]);
     }
+
     public static function getPages(): array
     {
         return [
@@ -287,6 +367,7 @@ class HistoryResource extends Resource
             'edit' => Pages\Edit::route('/{record}/edit'),
         ];
     }
+
     public static function formatConditionPayment($model)
     {
         if (blank($model->condition_payment)) {
@@ -294,17 +375,20 @@ class HistoryResource extends Resource
         }
         if (is_array($model->condition_payment)) {
             $value = implode(',', array_column($model->condition_payment, 'concept'));
+
             return $value;
         } else {
             return $model->condition_payment;
         }
     }
+
     public static function documentation($model)
     {
         if (blank($model->documentation_delivery)) {
             return 'N/A';
         }
-        return  implode(',', array_column($model->documentation_delivery, 'name'));
+
+        return implode(',', array_column($model->documentation_delivery, 'name'));
     }
 
     public static function contactDataItems($model)
@@ -315,6 +399,7 @@ class HistoryResource extends Resource
             $resum = "{$item->product->name} ({$item->product->type_purchase})\n";
             $result .= $resum;
         }
+
         return $result;
     }
 }

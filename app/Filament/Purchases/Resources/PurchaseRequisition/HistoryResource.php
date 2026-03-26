@@ -198,8 +198,11 @@ class HistoryResource extends Resource
                                     }
                                 }),
                             Forms\Components\ToggleButtons::make('without_orders')
-                                ->label('¿Sin órden?')
-                                ->boolean()
+                                ->label('¿Qué requisiciones desea incluir?')
+                                ->options([
+                                    true => 'Solo las que tienen orden',
+                                    false => 'Solo las que NO tienen orden',
+                                ])
                                 ->default(false)
                                 ->inline(),
                             Forms\Components\Grid::make([
@@ -270,7 +273,7 @@ class HistoryResource extends Resource
                                     ->where('company_id', session()->get('company_id'))
                                     ->whereBetween('created_at', [$startDate, $endDate]);
 
-                                if ($data['without_orders']) {
+                                if (!$data['without_orders']) {
                                     $models->whereDoesntHave('orders')
                                         ->whereIn('status', ['comprador asignado', 'comprador reasignado']);
                                 }

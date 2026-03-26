@@ -121,7 +121,7 @@
 <div class="page-break-before" style="page-break-before: always;">
 
     <!-- ENCABEZADO PÁGINA 2 -->
-    <table class="w-full mb-5 border-collapse" style="border:1px solid #000;">
+    {{-- <table class="w-full mb-5 border-collapse" style="border:1px solid #000;">
         <thead>
             <tr>
                 <td rowspan="2" class="border border-black w-[110px] p-0 align-middle text-center"
@@ -170,7 +170,7 @@
                 <td class="text-center border border-black" style="font-size:10px;padding:2px 6px;">FO-GPT-COM-01-F
                 </td>
             </tr>
-    </table>
+    </table> --}}
 
     <!-- LAYOUT DOS COLUMNAS -->
     <div class="grid grid-cols-2 gap-x-6" style="font-size:13px;">
