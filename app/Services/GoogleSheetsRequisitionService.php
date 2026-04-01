@@ -2,12 +2,10 @@
 
 namespace App\Services;
 
-use Exception;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\PurchaseRequisition;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Revolution\Google\Sheets\Facades\Sheets;
 
@@ -21,7 +19,7 @@ class GoogleSheetsRequisitionService
   /**
    * Constructor del servicio
    */
-  public function __construct(string $spreadsheetId = null)
+  public function __construct(?string $spreadsheetId = null)
   {
     $this->spreadsheetId = $spreadsheetId ?? config('google.default_spreadsheet_id', '1ha_45TdVN7odz-64yKlXlvjXD66O5zfXG7HKeamFJfU');
   }
@@ -29,7 +27,7 @@ class GoogleSheetsRequisitionService
   /**
    * Procesa el formulario del HistoryResource según el tipo de exportación seleccionado
    *
-   * @param array $formData Datos del formulario (incluyendo type_save, columns, fechas, etc.)
+   * @param  array  $formData  Datos del formulario (incluyendo type_save, columns, fechas, etc.)
    * @return array|Collection Resultado según el tipo de exportación
    */
   public function processRequisitionsReport(array $formData)
@@ -49,18 +47,15 @@ class GoogleSheetsRequisitionService
         'form_data' => $formData,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
-      throw new Exception("Error al procesar reporte de requisiciones: " . $e->getMessage());
+      throw new Exception('Error al procesar reporte de requisiciones: ' . $e->getMessage());
     }
   }
 
   /**
    * Procesa la exportación específica para Google Sheets
-   *
-   * @param array $formData
-   * @return array
    */
   protected function processGoogleSheetsExport(array $formData): array
   {
@@ -93,7 +88,7 @@ class GoogleSheetsRequisitionService
         'spreadsheet_url' => "https://docs.google.com/spreadsheets/d/{$this->spreadsheetId}",
         'date_range' => Carbon::parse($formData['created_start'])->format('d/m/Y') . ' - ' . Carbon::parse($formData['created_end'])->format('d/m/Y'),
         'total_requisitions' => $requisitions->count(),
-        'export_type' => 'sheets'
+        'export_type' => 'sheets',
       ];
     } catch (Exception $e) {
       Log::error('Error al procesar exportación a Google Sheets en GoogleSheetsRequisitionService', [
@@ -101,18 +96,15 @@ class GoogleSheetsRequisitionService
         'form_data' => $formData,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
-      throw new Exception("Error al procesar exportación a Google Sheets: " . $e->getMessage());
+      throw new Exception('Error al procesar exportación a Google Sheets: ' . $e->getMessage());
     }
   }
 
   /**
    * Procesa la exportación para Excel (sin interacción con Google Sheets)
-   *
-   * @param array $formData
-   * @return Collection
    */
   protected function processExcelExport(array $formData): Collection
   {
@@ -125,7 +117,7 @@ class GoogleSheetsRequisitionService
       }
 
       // 2. Procesar requisiciones y filtrar columnas seleccionadas (sin Google Sheets)
-      $requisitionsData = $this->prepareRequisitionsData($requisitions, $formData['columns']);
+      $requisitionsData = $this->prepareRequisitionsData($requisitions, $formData['columns'], true);
 
       // 3. Retornar collection para su uso con FastExcel
       return collect($requisitionsData);
@@ -135,18 +127,15 @@ class GoogleSheetsRequisitionService
         'form_data' => $formData,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
-      throw new Exception("Error al procesar exportación a Excel: " . $e->getMessage());
+      throw new Exception('Error al procesar exportación a Excel: ' . $e->getMessage());
     }
   }
 
   /**
    * Genera la colección de requisiciones basada en los filtros del formulario
-   *
-   * @param array $formData
-   * @return Collection
    */
   protected function generateRequisitionsCollection(array $formData): Collection
   {
@@ -158,7 +147,7 @@ class GoogleSheetsRequisitionService
       ->whereBetween('created_at', [$startDate, $endDate]);
 
     // Aplicar filtro de sin órdenes si está seleccionado
-    if (!empty($formData['without_orders']) && $formData['without_orders']) {
+    if (! empty($formData['without_orders']) && $formData['without_orders']) {
       $query->whereDoesntHave('orders')
         ->whereIn('status', ['comprador asignado', 'comprador reasignado']);
     }
@@ -169,7 +158,7 @@ class GoogleSheetsRequisitionService
   /**
    * Genera las iniciales del usuario a partir de su nombre completo
    *
-   * @param string $userName Nombre completo del usuario
+   * @param  string  $userName  Nombre completo del usuario
    * @return string Iniciales del usuario
    */
   public function generateUserInitials(string $userName): string
@@ -180,7 +169,7 @@ class GoogleSheetsRequisitionService
     $initials = 'reporte-requisiciones-';
 
     foreach ($words as $word) {
-      if (!empty($word)) {
+      if (! empty($word)) {
         // Usar mb_substr para caracteres UTF-8
         $initials .= mb_strtoupper(mb_substr($word, 0, 1, 'UTF-8'), 'UTF-8');
       }
@@ -193,14 +182,12 @@ class GoogleSheetsRequisitionService
    * Verifica si existe la hoja del usuario, si no existe la crea
    * Si existe, limpia todos los datos antes de cargar nuevos
    *
-   * @param string $userSheetName
-   * @param array $selectedColumns Columnas seleccionadas por el usuario
-   * @return bool
+   * @param  array  $selectedColumns  Columnas seleccionadas por el usuario
    */
   protected function ensureUserSheetExists(string $userSheetName, array $selectedColumns = []): bool
   {
     try {
-      if (!$this->sheetExists($userSheetName)) {
+      if (! $this->sheetExists($userSheetName)) {
         // Crear encabezados dinámicos basados en las columnas seleccionadas
         $dynamicHeaders = ['Fecha Carga']; // Siempre incluir fecha de carga
         $dynamicHeaders = array_merge($dynamicHeaders, $selectedColumns);
@@ -224,7 +211,7 @@ class GoogleSheetsRequisitionService
         'selected_columns' => $selectedColumns,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
       throw new Exception("Error al crear/verificar hoja del usuario '$userSheetName': " . $e->getMessage());
@@ -233,9 +220,6 @@ class GoogleSheetsRequisitionService
 
   /**
    * Limpia todos los datos de una hoja, manteniendo solo los encabezados
-   *
-   * @param string $sheetName
-   * @return bool
    */
   protected function clearSheetData(string $sheetName): bool
   {
@@ -264,7 +248,7 @@ class GoogleSheetsRequisitionService
         'sheet_name' => $sheetName,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
       throw new Exception("Error al limpiar datos de la hoja '$sheetName': " . $e->getMessage());
@@ -274,12 +258,27 @@ class GoogleSheetsRequisitionService
   /**
    * Prepara los datos de las requisiciones (método base compartido)
    *
-   * @param Collection $requisitions
-   * @param array $selectedColumns
-   * @return array
+   * @param  bool  $asAssociative  Si es true, retorna arrays asociativos (para Excel); si es false, retorna arrays indexados (para Google Sheets)
    */
-  protected function prepareRequisitionsData(Collection $requisitions, array $selectedColumns): array
+  protected function prepareRequisitionsData(Collection $requisitions, array $selectedColumns, bool $asAssociative = false): array
   {
+    $columnLabels = [
+      'folio' => 'Folio',
+      'prioridad' => 'Prioridad',
+      'motivo' => 'Motivo',
+      'tipo' => 'Tipo',
+      'observaciones' => 'Observaciones',
+      'partidas' => 'Partidas',
+      'fecha de entrega' => 'Fecha de entrega',
+      'dirección de entrega' => 'Dirección de entrega',
+      'estatus' => 'Estatus',
+      'empresa' => 'Empresa',
+      'proyecto' => 'Proyecto',
+      'solicitante' => 'Solicitante',
+      'comprador' => 'Comprador',
+      'fecha de creacion' => 'Fecha de creación',
+    ];
+
     $requisitionsData = [];
 
     foreach ($requisitions as $requisition) {
@@ -301,12 +300,21 @@ class GoogleSheetsRequisitionService
         'fecha de creacion' => $requisition->created_at->format('d-m-Y'),
       ];
 
-      // Agregar fecha de carga actual
-      $rowData = [now()->format('d-m-Y H:i:s')]; // Fecha de carga
+      if ($asAssociative) {
+        $rowData = ['Fecha de carga' => now()->format('d-m-Y H:i:s')];
 
-      // Filtrar solo las columnas seleccionadas
-      foreach ($selectedColumns as $column) {
-        $rowData[] = $fullRequisitionData[$column] ?? '';
+        foreach ($selectedColumns as $column) {
+          $label = $columnLabels[$column] ?? ucwords($column);
+          $rowData[$label] = $fullRequisitionData[$column] ?? '';
+        }
+      } else {
+        // Agregar fecha de carga actual
+        $rowData = [now()->format('d-m-Y H:i:s')]; // Fecha de carga
+
+        // Filtrar solo las columnas seleccionadas
+        foreach ($selectedColumns as $column) {
+          $rowData[] = $fullRequisitionData[$column] ?? '';
+        }
       }
 
       $requisitionsData[] = $rowData;
@@ -318,10 +326,6 @@ class GoogleSheetsRequisitionService
   /**
    * Inserta los datos de las requisiciones en la hoja del usuario
    * OPTIMIZADO: Inserta todos los datos en una sola llamada API
-   *
-   * @param string $userSheetName
-   * @param array $requisitionsData
-   * @return bool
    */
   protected function insertRequisitionsData(string $userSheetName, array $requisitionsData): bool
   {
@@ -346,7 +350,7 @@ class GoogleSheetsRequisitionService
         'spreadsheet_id' => $this->spreadsheetId,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
       throw new Exception("Error al insertar requisiciones en la hoja '$userSheetName': " . $e->getMessage());
@@ -355,10 +359,6 @@ class GoogleSheetsRequisitionService
 
   /**
    * Actualiza los encabezados de la hoja según las columnas seleccionadas
-   *
-   * @param string $sheetName
-   * @param array $headers
-   * @return bool
    */
   protected function updateSheetHeaders(string $sheetName, array $headers): bool
   {
@@ -378,7 +378,7 @@ class GoogleSheetsRequisitionService
         'spreadsheet_id' => $this->spreadsheetId,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
       // Si falla, continuar sin actualizar encabezados
@@ -388,9 +388,6 @@ class GoogleSheetsRequisitionService
 
   /**
    * Convierte un número de columna a letra de Excel (A, B, C, ..., AA, AB, etc.)
-   *
-   * @param int $columnNumber
-   * @return string
    */
   protected function getColumnLetter(int $columnNumber): string
   {
@@ -400,10 +397,11 @@ class GoogleSheetsRequisitionService
       $letter = chr($columnNumber % 26 + 65) . $letter;
       $columnNumber = intval($columnNumber / 26);
     }
+
     return $letter;
   }
 
-  // === MÉTODOS DE UTILIDAD ===
+    // === MÉTODOS DE UTILIDAD ===
 
   /**
    * Verifica si una hoja existe en el spreadsheet
@@ -412,6 +410,7 @@ class GoogleSheetsRequisitionService
   {
     try {
       $sheets = Sheets::spreadsheet($this->spreadsheetId)->sheetList();
+
       return in_array($sheetName, $sheets);
     } catch (Exception $e) {
       Log::error('Error al verificar si la hoja existe en GoogleSheetsRequisitionService', [
@@ -420,10 +419,10 @@ class GoogleSheetsRequisitionService
         'spreadsheet_id' => $this->spreadsheetId,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
-      throw new Exception("Error al verificar si la hoja existe: " . $e->getMessage());
+      throw new Exception('Error al verificar si la hoja existe: ' . $e->getMessage());
     }
   }
 
@@ -435,7 +434,7 @@ class GoogleSheetsRequisitionService
     try {
       Sheets::spreadsheet($this->spreadsheetId)->addSheet($sheetName);
 
-      if (!empty($headers)) {
+      if (! empty($headers)) {
         $this->addHeaders($sheetName, $headers);
       }
 
@@ -448,7 +447,7 @@ class GoogleSheetsRequisitionService
         'spreadsheet_id' => $this->spreadsheetId,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
       throw new Exception("Error al crear la hoja '$sheetName': " . $e->getMessage());
@@ -475,7 +474,7 @@ class GoogleSheetsRequisitionService
         'spreadsheet_id' => $this->spreadsheetId,
         'error' => $e->getMessage(),
         'user_id' => auth()->id(),
-        'trace' => $e->getTraceAsString()
+        'trace' => $e->getTraceAsString(),
       ]);
 
       throw new Exception("Error al agregar encabezados a la hoja '$sheetName': " . $e->getMessage());
@@ -501,9 +500,6 @@ class GoogleSheetsRequisitionService
 
   /**
    * Sanitiza y asegura que el texto esté en UTF-8 correctamente codificado
-   *
-   * @param string $text
-   * @return string
    */
   protected function sanitizeUtf8(string $text): string
   {
@@ -514,7 +510,7 @@ class GoogleSheetsRequisitionService
     $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $text);
 
     // Asegurar que sea UTF-8 válido
-    if (!mb_check_encoding($text, 'UTF-8')) {
+    if (! mb_check_encoding($text, 'UTF-8')) {
       $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8//IGNORE');
     }
 
