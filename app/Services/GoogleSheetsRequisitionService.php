@@ -72,10 +72,15 @@ class GoogleSheetsRequisitionService
       $userSheetName = $this->generateUserInitials($user->name);
 
       // 3. Validar/crear hoja del usuario con encabezados dinámicos
-      $this->ensureUserSheetExists($userSheetName, $formData['columns']);
+      $withOrders = (bool) ($formData['without_orders'] ?? false);
+      $columnsForHeader = $formData['columns'];
+      if ($withOrders) {
+        $columnsForHeader[] = 'Órdenes de compra';
+      }
+      $this->ensureUserSheetExists($userSheetName, $columnsForHeader);
 
       // 4. Procesar requisiciones y filtrar columnas seleccionadas
-      $requisitionsData = $this->prepareRequisitionsData($requisitions, $formData['columns']);
+      $requisitionsData = $this->prepareRequisitionsData($requisitions, $formData['columns'], false, $withOrders);
 
       // 5. Insertar datos en la hoja
       $this->insertRequisitionsData($userSheetName, $requisitionsData);
@@ -117,7 +122,8 @@ class GoogleSheetsRequisitionService
       }
 
       // 2. Procesar requisiciones y filtrar columnas seleccionadas (sin Google Sheets)
-      $requisitionsData = $this->prepareRequisitionsData($requisitions, $formData['columns'], true);
+      $withOrders = (bool) ($formData['without_orders'] ?? false);
+      $requisitionsData = $this->prepareRequisitionsData($requisitions, $formData['columns'], true, $withOrders);
 
       // 3. Retornar collection para su uso con FastExcel
       return collect($requisitionsData);
@@ -142,12 +148,16 @@ class GoogleSheetsRequisitionService
     $startDate = Carbon::createFromFormat('Y-m-d', $formData['created_start'])->startOfDay();
     $endDate = Carbon::createFromFormat('Y-m-d', $formData['created_end'])->endOfDay();
 
-    $query = PurchaseRequisition::with(['company', 'project', 'approvalChain.requester', 'purchaser', 'items.product'])
+    $query = PurchaseRequisition::with(['company', 'project', 'approvalChain.requester', 'purchaser', 'items.product', 'orders'])
       ->where('company_id', session()->get('company_id'))
       ->whereBetween('created_at', [$startDate, $endDate]);
 
-    // Aplicar filtro de sin órdenes si está seleccionado
-    if (! empty($formData['without_orders']) && $formData['without_orders']) {
+    // Aplicar filtro según la opción seleccionada
+    if ($formData['without_orders'] ?? false) {
+      // "Solo las que tienen orden"
+      $query->whereHas('orders');
+    } else {
+      // "Solo las que NO tienen orden"
       $query->whereDoesntHave('orders')
         ->whereIn('status', ['comprador asignado', 'comprador reasignado']);
     }
@@ -259,8 +269,9 @@ class GoogleSheetsRequisitionService
    * Prepara los datos de las requisiciones (método base compartido)
    *
    * @param  bool  $asAssociative  Si es true, retorna arrays asociativos (para Excel); si es false, retorna arrays indexados (para Google Sheets)
+   * @param  bool  $withOrders  Si es true, agrega una columna con los folios de las órdenes relacionadas
    */
-  protected function prepareRequisitionsData(Collection $requisitions, array $selectedColumns, bool $asAssociative = false): array
+  protected function prepareRequisitionsData(Collection $requisitions, array $selectedColumns, bool $asAssociative = false, bool $withOrders = false): array
   {
     $columnLabels = [
       'folio' => 'Folio',
@@ -298,6 +309,7 @@ class GoogleSheetsRequisitionService
         'solicitante' => $this->sanitizeUtf8($requisition->approvalChain->requester->name ?? ''),
         'comprador' => $this->sanitizeUtf8($requisition->purchaser?->name ?? 'Sin asignar'),
         'fecha de creacion' => $requisition->created_at->format('d-m-Y'),
+        'ordenes de compra' => $this->sanitizeUtf8($requisition->orders->pluck('folio')->join(', ')),
       ];
 
       if ($asAssociative) {
@@ -307,6 +319,10 @@ class GoogleSheetsRequisitionService
           $label = $columnLabels[$column] ?? ucwords($column);
           $rowData[$label] = $fullRequisitionData[$column] ?? '';
         }
+
+        if ($withOrders) {
+          $rowData['Órdenes de compra'] = $fullRequisitionData['ordenes de compra'];
+        }
       } else {
         // Agregar fecha de carga actual
         $rowData = [now()->format('d-m-Y H:i:s')]; // Fecha de carga
@@ -314,6 +330,10 @@ class GoogleSheetsRequisitionService
         // Filtrar solo las columnas seleccionadas
         foreach ($selectedColumns as $column) {
           $rowData[] = $fullRequisitionData[$column] ?? '';
+        }
+
+        if ($withOrders) {
+          $rowData[] = $fullRequisitionData['ordenes de compra'];
         }
       }
 

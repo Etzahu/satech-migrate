@@ -2,35 +2,40 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
-
+use App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
+use App\Models\Management;
+use App\Models\PurchaseRequisition;
+use App\Services\GoogleSheetsRequisitionService;
 use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Tables;
 use Filament\Forms\Form;
-use App\Models\Management;
-use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use App\Models\PurchaseRequisition;
 use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
+use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Rap2hpoutre\FastExcel\SheetCollection;
-use Filament\Support\Enums\MaxWidth;
-use App\Services\GoogleSheetsRequisitionService;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
-use App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
-
 
 class HistoryResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
+
     protected static ?string $modelLabel = 'Historial de requisición';
+
     protected static ?string $pluralModelLabel = 'Historial de requisiciones';
+
     protected static ?string $navigationLabel = 'Historial';
+
     protected static ?string $slug = 'requisiciones-historial';
+
     protected static ?string $navigationGroup = 'Requisiciones';
+
     protected static ?string $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 12;
 
     public static function canAccess(): bool
@@ -46,19 +51,24 @@ class HistoryResource extends Resource
             auth()->user()->hasRole('comprador') ||
             auth()->user()->hasRole('administrador_compras');
     }
+
     public static function canCreate(): bool
     {
         return false;
     }
-    public static function form(form $form): Form
+
+    public static function form(Form $form): Form
     {
         return RequesterResource::form($form);
     }
+
     public static function infolist(Infolist $infolist): Infolist
     {
         $options = [];
+
         return RequesterResource::infolist($infolist, $options);
     }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -125,7 +135,7 @@ class HistoryResource extends Resource
                     ->form([
                         Forms\Components\Select::make('management_id')
                             ->label('Gerencia')
-                            ->options(Management::all()->pluck('name', 'id'))
+                            ->options(Management::all()->pluck('name', 'id')),
                     ])
                     ->query(function (Builder $query, array $data): Builder {
                         return $query
@@ -170,7 +180,7 @@ class HistoryResource extends Resource
                                 ])
                                 ->default('excel')
                                 ->inline()
-                                ->disableOptionWhen(fn(string $value): bool => $value === 'sheets' &&  !auth()->user()->hasRole('comprador')),
+                                ->disableOptionWhen(fn(string $value): bool => $value === 'sheets' && ! auth()->user()->hasRole('comprador')),
                             Forms\Components\CheckboxList::make('columns')
                                 ->label('Datos de la requisición')
                                 ->bulkToggleable()
@@ -220,7 +230,7 @@ class HistoryResource extends Resource
                                     ->afterOrEqual('created_start')
                                     ->default(now())
                                     ->required(),
-                            ])
+                            ]),
                         ]
                     )
                     ->action(function (array $data) {
@@ -229,7 +239,7 @@ class HistoryResource extends Resource
 
                         if ($data['type_save'] == 'sheets') {
                             try {
-                                $sheetsService = new GoogleSheetsRequisitionService();
+                                $sheetsService = new GoogleSheetsRequisitionService;
                                 $result_sheets = $sheetsService->processRequisitionsReport($data);
 
                                 // Sanitizar y codificar correctamente los datos para UTF-8
@@ -255,6 +265,7 @@ class HistoryResource extends Resource
                                     ->send();
                             } catch (\Exception $e) {
                                 $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+
                                 return Notification::make()
                                     ->title('Error al cargar en Google Sheets')
                                     ->danger()
@@ -265,7 +276,7 @@ class HistoryResource extends Resource
                         } else {
                             // Exportación a Excel usando el servicio reestructurado
                             try {
-                                $exportService = new GoogleSheetsRequisitionService();
+                                $exportService = new GoogleSheetsRequisitionService;
                                 $requisitionsData = $exportService->processRequisitionsReport($data);
 
                                 // Preparar datos de items para la segunda hoja
@@ -273,7 +284,9 @@ class HistoryResource extends Resource
                                     ->where('company_id', session()->get('company_id'))
                                     ->whereBetween('created_at', [$startDate, $endDate]);
 
-                                if (!$data['without_orders']) {
+                                if ($data['without_orders'] ?? false) {
+                                    $models->whereHas('orders');
+                                } else {
                                     $models->whereDoesntHave('orders')
                                         ->whereIn('status', ['comprador asignado', 'comprador reasignado']);
                                 }
@@ -295,19 +308,20 @@ class HistoryResource extends Resource
                                         'Cantidad' => $item->quantity_purchase,
                                         'Producto-Servicio' => $item->product->name,
                                         'Tipo' => $item->product->type_purchase,
-                                        'Observaciones' => $item->observation
+                                        'Observaciones' => $item->observation,
                                     ];
                                 }
 
                                 $sheets = new SheetCollection([
                                     'requisiciones' => $requisitionsData,
-                                    'partidas' => $dataItems
+                                    'partidas' => $dataItems,
                                 ]);
 
                                 return fastexcel($sheets)
                                     ->download("requisiciones de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
                             } catch (\Exception $e) {
                                 $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+
                                 return Notification::make()
                                     ->title('Error al generar reporte Excel')
                                     ->danger()
@@ -324,17 +338,19 @@ class HistoryResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                        ->url(fn($record) => (string) route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
                 ]),
             ]);
     }
+
     public static function getRelations(): array
     {
         return [
             AuditsRelationManager::class,
         ];
     }
+
     public static function getPages(): array
     {
         return [
@@ -352,6 +368,7 @@ class HistoryResource extends Resource
             $resum = "{$item->product->name} ({$item->product->type_purchase})\n";
             $result .= $resum;
         }
+
         return $result;
     }
 }
