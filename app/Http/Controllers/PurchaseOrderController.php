@@ -53,10 +53,12 @@ class PurchaseOrderController extends Controller
             'Total' =>  $service->getTotal(true),
         ];
 
+// dd($data->provider->approval_chain == 'especial');
         $data['total'] = $total;
         $data['media'] = $media;
         $data['itemsFormatted'] = $itemsFormatted;
-        $data['progress'] = $data->progress;
+        // $data['progress'] = ($data->provider->approval_chain == 'especial') ? $data->progress_special : $data->progress;
+        // dd($data->progress_special , $data->progress,$data['progress']);
         // return($data);
 
         $revisions = $data->status()->timesWas('autorizada para proveedor');

@@ -364,7 +364,7 @@
         <table style="border:none;width:900px;margin: 0 auto;">
             <tbody>
                 <tr>
-                    @foreach ($data['progress'] as $step)
+                    @foreach ($data->provider->approval_chain == 'especial' ? $data->progress_special : $data->progress as $step)
                         <td style="border:none;width:100px;text-align: center;">
                             @if (filled($step['date']))
                                 <p style="font-size: 11px;margin:0;font-weight: bold;">{{ $step['job-pdf'] }}</p>
@@ -391,71 +391,6 @@
             </tbody>
         </table>
     </div>
-    {{-- <div style="width: 100%;margin-top:100px;">
-            <table style="border:none;width:900px;margin: 0 auto;">
-                <tbody>
-                    <tr>
-                        <td style="border:none;width:100px;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">Comprador</p>
-                            <p style="font-size: 11px;margin:0;">
-                                @if (filled($stages[1]))
-                                    {{ $stages[1]->responsible->name }}
-                                    <br>
-                                    {{ $stages[1]->created_at }}
-                                @else
-                                    Sin respuesta
-                                @endif
-                            </p>
-                        </td>
-                        <td style="border:none;width:100px;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">Gerente de compras</p>
-                            <p style="font-size: 11px;margin:0;">
-                                @if (filled($stages[2]))
-                                    {{ $stages[2]->responsible->name }}
-                                    <br>
-                                    {{ $stages[2]->created_at }}
-                                @else
-                                    Sin respuesta
-                                @endif
-                            </p>
-                        </td>
-                        <td style="border:none;width:100px;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">Gerente solicitante</p>
-                            <p style="font-size: 11px;margin:0;">
-                                @if (filled($stages[3]))
-                                    {{ $stages[3]->responsible->name }}
-                                    <br>
-                                    {{ $stages[3]->created_at }}
-                                @else
-                                    Sin respuesta
-                                @endif
-                            </p>
-                        </td>
-                        <td style="border:none;width:100px;text-align: center;">
-                            <p style="font-size: 11px;margin:0;">Dirección general</p>
-                            <p style="font-size: 11px;margin:0;">
-                                @if (filled($stages[4]))
-                                    {{ $stages[4]->responsible->name }}
-                                    <br>
-                                    {{ $stages[4]->created_at }}
-                                @else
-                                    Sin respuesta
-                                @endif
-                            </p>
-                        </td>
-                        @if (filled($stages[5]))
-                            <td style="border:none;width:100px;text-align: center;">
-                                <p style="font-size: 11px;margin:0;">Dirección general CA</p>
-                                <p style="font-size: 11px;margin:0;">
-                                    {{ $stages[5]->responsible->name }}
-                                    <br>
-                                    {{ $stages[5]->created_at }}
-                                </p>
-                            </td>
-                        @endif
-                    </tr>
-                </tbody>
-            </table>
-        </div> --}}
+
 </div>
 </div>
