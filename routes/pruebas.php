@@ -2079,67 +2079,67 @@ function calculateMedian($array)
     }
 }
 
-Route::get('test-view',function(){
-             $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail(1315);
-        // return $data;
-        $service = new OrderCalculationService($data->id);
-        $items = $data->items;
-        $media[] = $data->getMedia('quote')->first();
-        $media[] = $data->getMedia('justification')->first();
-        // opcionales
-        if (filled($data->getMedia('direct_award')->first())) {
-            $media[] = $data->getMedia('direct_award')->first();
-        }
-        if (filled($data->getMedia('certifications')->first())) {
-            $media[] = $data->getMedia('certifications')->first();
-        }
+Route::get('test-view', function () {
+    $data = PurchaseOrder::with(['company', 'requisition', 'provider', 'providerContact', 'items', 'items.product', 'items.product.unit', 'items.product.brand', 'purchaser'])->findOrFail(1315);
+    // return $data;
+    $service = new OrderCalculationService($data->id);
+    $items = $data->items;
+    $media[] = $data->getMedia('quote')->first();
+    $media[] = $data->getMedia('justification')->first();
+    // opcionales
+    if (filled($data->getMedia('direct_award')->first())) {
+        $media[] = $data->getMedia('direct_award')->first();
+    }
+    if (filled($data->getMedia('certifications')->first())) {
+        $media[] = $data->getMedia('certifications')->first();
+    }
 
-        $itemsFormatted = $items->map(function ($item) use ($data, $service) {
-            // $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
-            // $subTotal =  new Money($item->sub_total, new Currency($data->currency));
-            $unitPrice =  $item->unit_price;
-            $subTotal = $item->sub_total;
-            return [
-                'code' => $item->product->code,
-                'name' => $item->product->name,
-                'brand' => $item->product->brand?->name,
-                'unit' => $item->product->unit->acronym,
-                "quantity" => $item->quantity,
-                "unit_price" => $service->brickFormatter($unitPrice),
-                "sub_total" => $service->brickFormatter($subTotal),
-                "observation" => $item->observation,
-            ];
-        });
-        $total = [
-            'Subtotal' =>  $service->getSubtotalItems(true),
-            'Descuento' =>  $service->getDiscountProvider(true),
-            'IVA' =>  $service->getTaxIva(true),
-            'Retención de IVA' =>  $service->getRetentionIva(true),
-            'Retención de ISR' =>  $service->getRetentionIsr(true),
-            'Total' =>  $service->getTotal(true),
+    $itemsFormatted = $items->map(function ($item) use ($data, $service) {
+        // $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
+        // $subTotal =  new Money($item->sub_total, new Currency($data->currency));
+        $unitPrice =  $item->unit_price;
+        $subTotal = $item->sub_total;
+        return [
+            'code' => $item->product->code,
+            'name' => $item->product->name,
+            'brand' => $item->product->brand?->name,
+            'unit' => $item->product->unit->acronym,
+            "quantity" => $item->quantity,
+            "unit_price" => $service->brickFormatter($unitPrice),
+            "sub_total" => $service->brickFormatter($subTotal),
+            "observation" => $item->observation,
         ];
+    });
+    $total = [
+        'Subtotal' =>  $service->getSubtotalItems(true),
+        'Descuento' =>  $service->getDiscountProvider(true),
+        'IVA' =>  $service->getTaxIva(true),
+        'Retención de IVA' =>  $service->getRetentionIva(true),
+        'Retención de ISR' =>  $service->getRetentionIsr(true),
+        'Total' =>  $service->getTotal(true),
+    ];
 
-        $data['total'] = $total;
-        $data['media'] = $media;
-        $data['itemsFormatted'] = $itemsFormatted;
-        $data['progress'] = $data->progress;
-        // return($data);
+    $data['total'] = $total;
+    $data['media'] = $media;
+    $data['itemsFormatted'] = $itemsFormatted;
+    $data['progress'] = $data->progress;
+    // return($data);
 
-        $revisions = $data->status()->timesWas('autorizada para proveedor');
+    $revisions = $data->status()->timesWas('autorizada para proveedor');
 
-        $stages = [];
-        $stages[1] =  $data->status()->snapshotWhen('revisión gerente de compras');
-        $stages[2] =  $data->status()->snapshotWhen('aprobado por gerente de compras');
-        $stages[3] =  $data->status()->snapshotWhen('aprobado por gerente solicitante');
-        $stages[4] =  $data->status()->snapshotWhen('aprobado por DG nivel 1'); //
-        $stages[5] =  $data->status()->snapshotWhen('aprobado por DG nivel 2'); //
+    $stages = [];
+    $stages[1] =  $data->status()->snapshotWhen('revisión gerente de compras');
+    $stages[2] =  $data->status()->snapshotWhen('aprobado por gerente de compras');
+    $stages[3] =  $data->status()->snapshotWhen('aprobado por gerente solicitante');
+    $stages[4] =  $data->status()->snapshotWhen('aprobado por DG nivel 1'); //
+    $stages[5] =  $data->status()->snapshotWhen('aprobado por DG nivel 2'); //
 
-        // Determinar qué anexos incluir
-        $includeSupplier = in_array($data->requisition->category, ['proveeduria', 'servicio']) || $data->requisition->company_id == 1;
-        $includeService = $data->requisition->category == 'servicio' || $data->requisition->company_id == 1;
-        // $includeTerms = $this->getTermsAndConditionsByCompany($data->company_id) !== null;
-        $includeTerms = null;
-    return view('pdf.purchase-order.complete',[
+    // Determinar qué anexos incluir
+    $includeSupplier = in_array($data->requisition->category, ['proveeduria', 'servicio']) || $data->requisition->company_id == 1;
+    $includeService = $data->requisition->category == 'servicio' || $data->requisition->company_id == 1;
+    // $includeTerms = $this->getTermsAndConditionsByCompany($data->company_id) !== null;
+    $includeTerms = null;
+    return view('pdf.purchase-order.complete', [
         'data' => $data,
         'stages' => $stages,
         'revisions' => $revisions,
@@ -2147,4 +2147,24 @@ Route::get('test-view',function(){
         'includeService' => $includeService,
         'includeTerms' => $includeTerms,
     ]);
+});
+
+Route::get('orders-total', function () {
+    $models = PurchaseOrder::where('status', 'aprobado por DG nivel 1')->where('company_id', 2)->get();
+
+    $data = $models->map(function ($model) {
+        $service = new OrderCalculationService($model->id);
+        $total = $service->getTotal(); // BigDecimal
+
+        return [
+            'folio'    => $model->folio,
+            'moneda'   => $model->currency,
+            'total'    => $service->getTotal(true), // formateado para mostrar
+            'total_sort' => (float) $total->__toString(), // para ordenar
+        ];
+    })
+        ->sortByDesc('total_sort')
+        ->values();
+
+    return $data;
 });
