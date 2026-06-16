@@ -499,7 +499,14 @@ function initAll() {
         root.dataset.fdRendered = "1";
         render(root);
     });
+    // Señal para entornos sin interacción (p. ej. Browsershot/Puppeteer al
+    // exportar a PDF): permite esperar a que los diagramas estén dibujados.
+    window.__flowDiagramsReady = true;
 }
 
 document.addEventListener("DOMContentLoaded", initAll);
 document.addEventListener("livewire:navigated", initAll);
+
+// Si el script se evalúa cuando el DOM ya está listo (módulo diferido en
+// Browsershot, navegación SPA, etc.), renderiza de inmediato.
+if (document.readyState !== "loading") initAll();

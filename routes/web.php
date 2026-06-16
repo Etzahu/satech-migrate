@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\ProcessFlowController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\PurchaseRequisitionController;
 use App\Livewire\HomeMenu;
@@ -48,4 +49,8 @@ Route::get('compras/ordenes/{id}/pdf/show', [PurchaseOrderController::class, 'sh
     ->middleware('auth');
 Route::get('compras/ordenes/{id}/pdf/download', [PurchaseOrderController::class, 'download'])
     ->name('order.pdf.download')
+    ->middleware('auth');
+
+Route::get('compras/flujo-proceso/pdf', [ProcessFlowController::class, 'pdf'])
+    ->name('process-flow.pdf')
     ->middleware('auth');

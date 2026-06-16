@@ -2,6 +2,7 @@
 
 namespace App\Filament\Purchases\Pages;
 
+use Filament\Actions\Action;
 use Filament\Pages\Page;
 
 class ProcessFlow extends Page
@@ -15,6 +16,21 @@ class ProcessFlow extends Page
     protected static ?string $title = 'Flujo del proceso';
 
     protected static ?int $navigationSort = 3;
+
+    /**
+     * Acciones del encabezado: exportar ambos flujos a PDF (cada flujo en una
+     * página horizontal a tamaño completo).
+     */
+    protected function getHeaderActions(): array
+    {
+        return [
+            Action::make('exportarPdf')
+                ->label('Exportar PDF')
+                ->icon('heroicon-o-arrow-down-tray')
+                ->color('gray')
+                ->url(route('process-flow.pdf'), shouldOpenInNewTab: true),
+        ];
+    }
 
     /**
      * Diagrama de flujo de la requisición de compra.

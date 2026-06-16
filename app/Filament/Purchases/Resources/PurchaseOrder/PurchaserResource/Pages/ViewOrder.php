@@ -66,6 +66,7 @@ class ViewOrder extends ViewRecord
                 ->visible(fn ($record) => $record->status == 'autorizada para proveedor')
                 ->requiresConfirmation()
                 ->action(function () {
+                    unset($this->record->total); // evitar error de serialización del total calculado
                     $this->record->status()->transitionTo('reabierta para edición');
                 }),
             Actions\Action::make('Ver pdf')
