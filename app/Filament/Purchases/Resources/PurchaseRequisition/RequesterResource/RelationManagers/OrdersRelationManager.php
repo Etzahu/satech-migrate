@@ -2,34 +2,29 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Tables;
+use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Infolists;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\PurchaseOrder;
-use Filament\Infolists\Infolist;
-use Filament\Tables\Actions\Action;
-use Filament\Support\Enums\MaxWidth;
-use Illuminate\Support\Facades\Storage;
-use Filament\Support\Enums\IconPosition;
-use Illuminate\Database\Eloquent\Builder;
-use RelationManagers\ItemsRelationManager;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\IconPosition;
+use Filament\Support\Enums\Width;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
-use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
-use Hugomyb\FilamentMediaAction\Infolists\Components\Actions\MediaAction as MediaActionInfolist;
 
 class OrdersRelationManager extends RelationManager
 {
     protected static string $relationship = 'orders';
-    protected static ?string $modelLabel = 'Orden';
-    protected static ?string $pluralModelLabel = 'Ordenes';
-    protected static ?string $navigationLabel = 'Ordenes';
-    protected static ?string $title = 'Orden';
 
+    protected static ?string $modelLabel = 'Orden';
+
+    protected static ?string $pluralModelLabel = 'Ordenes';
+
+    protected static ?string $navigationLabel = 'Ordenes';
+
+    protected static ?string $title = 'Orden';
 
     public function isReadOnly(): bool
     {
@@ -61,16 +56,16 @@ class OrdersRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->actions([
-                // Tables\Actions\Action::make('Ver')
+            ->recordActions([
+                // Actions\Action::make('Ver')
                 //     ->slideOver()
-                //     ->modalWidth(MaxWidth::FiveExtraLarge)
+                //     ->modalWidth(Width::FiveExtraLarge)
                 //     ->modalSubmitAction(false)
                 //     ->icon('heroicon-s-eye')
-                //     ->infolist([
-                //         Infolists\Components\Tabs::make('Tabs')
+                //     ->schema([
+                //         Schemas\Components\Tabs::make('Tabs')
                 //             ->tabs([
-                //                 Infolists\Components\Tabs\Tab::make('Datos generales')
+                //                 Schemas\Components\Tabs\Tab::make('Datos generales')
                 //                     ->columns(3)
                 //                     ->schema([
                 //                         Infolists\Components\TextEntry::make('folio')
@@ -108,7 +103,7 @@ class OrdersRelationManager extends RelationManager
                 //                             ->label('Fecha de creación')
                 //                             ->date(),
                 //                     ]),
-                //                 Infolists\Components\Tabs\Tab::make('Proveedor')
+                //                 Schemas\Components\Tabs\Tab::make('Proveedor')
                 //                     ->schema([
                 //                         Infolists\Components\TextEntry::make('provider.company_name')
                 //                             ->label('Proveedor'),
@@ -119,7 +114,7 @@ class OrdersRelationManager extends RelationManager
                 //                         Infolists\Components\TextEntry::make('providerContact.cell_phone')
                 //                             ->label('Teléfono'),
                 //                     ]),
-                //                 Infolists\Components\Tabs\Tab::make('Retenciones')
+                //                 Schemas\Components\Tabs\Tab::make('Retenciones')
                 //                     ->columns(3)
                 //                     ->schema([
                 //                         Infolists\Components\TextEntry::make('retention_iva')
@@ -140,7 +135,7 @@ class OrdersRelationManager extends RelationManager
                 //                             ->iconColor('primary')
                 //                             ->numeric(),
                 //                     ]),
-                //                 Infolists\Components\Tabs\Tab::make('Descuento del proveedor')
+                //                 Schemas\Components\Tabs\Tab::make('Descuento del proveedor')
                 //                     ->columns(3)
                 //                     ->schema([
                 //                         MoneyEntry::make('discount')
@@ -148,7 +143,7 @@ class OrdersRelationManager extends RelationManager
                 //                             ->currency('MXN')
                 //                             ->locale('es_MX'),
                 //                     ]),
-                //                 Infolists\Components\Tabs\Tab::make('Entrega')
+                //                 Schemas\Components\Tabs\Tab::make('Entrega')
                 //                     ->columns(1)
                 //                     ->schema([
                 //                         Infolists\Components\TextEntry::make('initial_delivery_date')
@@ -166,13 +161,13 @@ class OrdersRelationManager extends RelationManager
                 //                                     ->label('Nombre del documento'),
                 //                             ]),
                 //                     ]),
-                //                 Infolists\Components\Tabs\Tab::make('Observaciones')
+                //                 Schemas\Components\Tabs\Tab::make('Observaciones')
                 //                     ->columns(1)
                 //                     ->schema([
                 //                         Infolists\Components\Textentry::make('observations')
                 //                             ->label('Observaciones'),
                 //                     ]),
-                //                 Infolists\Components\Tabs\Tab::make('Historial')
+                //                 Schemas\Components\Tabs\Tab::make('Historial')
                 //                     ->schema([
                 //                         Infolists\Components\ViewEntry::make('status')
                 //                             ->view('filament.infolists.entries.history'),
@@ -181,9 +176,9 @@ class OrdersRelationManager extends RelationManager
                 //             ->contained(false)
                 //             ->activeTab(1)
                 //     ]),
-                Tables\Actions\Action::make('Documento')
-                    ->url(fn($record) => route('order.pdf.show', ['id' => $record->id]))
-                    ->openUrlInNewTab()
+                Action::make('Documento')
+                    ->url(fn ($record) => route('order.pdf.show', ['id' => $record->id]))
+                    ->openUrlInNewTab(),
             ]);
     }
 }

@@ -3,29 +3,33 @@
 namespace App\Filament\Purchases\Resources;
 
 use App\Filament\Purchases\Resources\MeasureUnitResource\Pages;
-use App\Filament\Purchases\Resources\MeasureUnitResource\RelationManagers;
 use App\Models\MeasureUnit;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MeasureUnitResource extends Resource
 {
     protected static ?string $model = MeasureUnit::class;
+
     protected static ?string $modelLabel = 'Unidad de medida';
+
     protected static ?string $pluralModelLabel = 'Unidades de medida';
+
     protected static ?string $navigationLabel = 'UM';
+
     protected static ?string $slug = 'um';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 7;
 
-
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -64,10 +68,9 @@ class MeasureUnitResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-        ;
+            ->recordActions([
+                Actions\EditAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

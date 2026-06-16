@@ -1,0 +1,1 @@
+Después, agrega las partidas. Por cada producto indica la cantidad; el código y la unidad de medida se completan solos.

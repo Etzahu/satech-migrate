@@ -2,30 +2,25 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerResource\Pages;
 
-use Filament\Forms\Get;
+use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerResource;
 use Filament\Actions\Action;
-use App\Services\PRMediaService;
-use Filament\Infolists\Infolist;
-use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerResource;
-use Filament\Infolists\Concerns\InteractsWithInfolists;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
 class View extends ViewRecord
 {
     protected static string $resource = ReviewerResource::class;
+
     protected function getHeaderActions(): array
     {
         return [
             Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
-                ->visible(fn() => $this->record->status()->canBe('aprobado por revisor') || $this->record->status()->canBe('devuelto por revisor') || $this->record->status()->canBe('cancelado por revisor'))
+                ->visible(fn () => $this->record->status()->canBe('aprobado por revisor') || $this->record->status()->canBe('devuelto por revisor') || $this->record->status()->canBe('cancelado por revisor'))
                 ->color('success')
-                ->form([
+                ->schema([
                     Select::make('response')
                         ->label('Respuesta')
                         ->options([
@@ -49,13 +44,14 @@ class View extends ViewRecord
                         ->title('Respuesta enviada')
                         ->success()
                         ->send();
+
                     return redirect(ReviewerResource::getUrl('index'));
                 }),
             Action::make('Ver pdf')
                 ->color('danger')
                 ->url(route('requisition.pdf', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
-                ->openUrlInNewTab()
+                ->openUrlInNewTab(),
         ];
     }
 }

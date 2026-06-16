@@ -3,29 +3,33 @@
 namespace App\Filament\Purchases\Resources;
 
 use App\Filament\Purchases\Resources\TaxResource\Pages;
-use App\Filament\Purchases\Resources\TaxResource\RelationManagers;
 use App\Models\Tax;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TaxResource extends Resource
 {
     protected static ?string $model = Tax::class;
+
     protected static ?string $modelLabel = 'Impuesto';
+
     protected static ?string $pluralModelLabel = 'Impuestos';
+
     protected static ?string $navigationLabel = 'Impuestos';
+
     protected static ?string $slug = 'impuesto';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 7;
 
-
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -64,10 +68,9 @@ class TaxResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-        ;
+            ->recordActions([
+                Actions\EditAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

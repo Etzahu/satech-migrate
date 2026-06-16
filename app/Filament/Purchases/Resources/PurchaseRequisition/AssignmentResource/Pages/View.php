@@ -2,33 +2,14 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource\Pages;
 
-use App\Models\User;
-
-use Filament\Forms\Get;
-use Filament\Actions\Action;
-use App\Services\PRMediaService;
-use Filament\Infolists\Infolist;
-use Filament\Actions\ActionGroup;
-use App\Models\PurchaseRequisition;
-use App\Services\PRInfolistService;
-use Filament\Forms\Components\Select;
-use Filament\Support\Enums\ActionSize;
-use Filament\Forms\Components\Textarea;
-use Filament\Infolists\Components\Tabs;
-use Filament\Notifications\Notification;
-use Filament\Resources\Pages\ViewRecord;
-use Filament\Infolists\Components\IconEntry;
-use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Components\ViewEntry;
-use Spatie\MediaLibrary\Support\MediaStream;
-use Filament\Infolists\Components\RepeatableEntry;
-use Filament\Infolists\Concerns\InteractsWithInfolists;
-use Filament\Infolists\Components\Actions as ActionsInfo;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
-use Filament\Infolists\Components\Actions\Action as ActionInfo;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
 use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource;
-use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentResource\RelationManagers;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Forms\Components\Textarea;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Enums\Size;
 
 class View extends ViewRecord
 {
@@ -41,7 +22,7 @@ class View extends ViewRecord
                 Action::make('Crear orden')
                     ->color('success')
                     ->icon('heroicon-m-plus')
-                    ->url(PurchaserResource::getUrl('create',['requisition' => $this->record]))
+                    ->url(PurchaserResource::getUrl('create', ['requisition' => $this->record]))
                     ->visible($this->record->status !== 'cerrada'),
                 Action::make('Ver pdf')
                     ->color('danger')
@@ -55,12 +36,12 @@ class View extends ViewRecord
                     ->modalDescription(function ($record) {
                         $quantity = $record->orders->count();
                         if ($quantity > 0) {
-                            return "¿Estás seguro de hacer esto?. La requisición contiene ordenes, las cuales se borrarán.";
+                            return '¿Estás seguro de hacer esto?. La requisición contiene ordenes, las cuales se borrarán.';
                         } else {
-                            return "¿Estás seguro de hacer esto?";
+                            return '¿Estás seguro de hacer esto?';
                         }
                     })
-                    ->form([
+                    ->schema([
                         Textarea::make('observation')
                             ->label('Motivo')
                             ->required(),
@@ -85,7 +66,7 @@ class View extends ViewRecord
                     ->requiresConfirmation()
                     ->visible($this->record->status !== 'cerrada')
                     ->modalHeading('Cerrar la requisición')
-                    ->form([
+                    ->schema([
                         Textarea::make('observation')
                             ->label('Motivo o comentarios')
                             ->required(),
@@ -109,7 +90,7 @@ class View extends ViewRecord
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')
-                ->size(ActionSize::Small)
+                ->size(Size::Small)
                 ->color('primary')
                 ->button(),
         ];

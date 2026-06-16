@@ -2,20 +2,12 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
 
-use Filament\Forms\Get;
-
+use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource;
+use App\Services\OrderCalculationService;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
-use Filament\Infolists\Infolist;
-use App\Services\PRInfolistService;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
-use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use App\Services\OrderCalculationService;
-use Filament\Infolists\Concerns\InteractsWithInfolists;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
-use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource;
+use Filament\Schemas\Schema;
 
 class View extends ViewRecord
 {
@@ -26,7 +18,7 @@ class View extends ViewRecord
         return [
             Action::make('Descargar orden')
                 ->color('info')
-                ->visible(fn($record) => $record->status == 'autorizada para proveedor')
+                ->visible(fn ($record) => $record->status == 'autorizada para proveedor')
                 ->url(route('order.pdf.download', ['id' => $this->record->id]))
                 ->icon('heroicon-m-arrow-down-tray')
                 ->openUrlInNewTab(),
@@ -35,20 +27,22 @@ class View extends ViewRecord
                 ->url(route('order.pdf.show', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
                 ->openUrlInNewTab(),
-            EditAction::make()
+            EditAction::make(),
         ];
     }
-    public function infolist(Infolist $infolist): Infolist
+
+    public function infolist(Schema $infolist): Schema
     {
         $service = new OrderCalculationService($this->record->id);
         $this->record->total = [
             'Subtotal' => $service->getSubtotalItems(true),
-            'Descuento' =>  $service->getDiscountProvider(true),
-            'IVA' =>  $service->getTaxIva(true),
-            'Retención de IVA' =>  $service->getRetentionIva(true),
-            'Retención de ISR' =>  $service->getRetentionIsr(true),
-            'Total' =>  $service->getTotal(true),
+            'Descuento' => $service->getDiscountProvider(true),
+            'IVA' => $service->getTaxIva(true),
+            'Retención de IVA' => $service->getRetentionIva(true),
+            'Retención de ISR' => $service->getRetentionIsr(true),
+            'Total' => $service->getTotal(true),
         ];
+
         return static::getResource()::infolist($infolist);
     }
 }

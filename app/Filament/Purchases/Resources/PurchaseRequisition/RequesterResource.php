@@ -2,57 +2,60 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
-
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use Filament\Infolists;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\ProjectPurchase;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use Illuminate\Support\HtmlString;
-use App\Models\PurchaseRequisition;
-use App\Services\PRInfolistService;
-use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Filament\Forms\Components\Component;
-use Filament\Notifications\Notification;
-use Filament\Tables\Actions\ActionGroup;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Console\View\Components\Task;
-use Spatie\MediaLibrary\Support\MediaStream;
-use App\Infolists\Components\PRProgressApproval;
-use App\Models\PurchaseRequisitionApprovalChain;
-use App\Services\PurchaseRequisitionCreationService;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
-use Hugomyb\FilamentMediaAction\Infolists\Components\Actions\MediaAction as MediaActionInfolist;
+use App\Models\ProjectPurchase;
+use App\Models\PurchaseRequisition;
+use App\Models\PurchaseRequisitionApprovalChain;
+use App\Services\PurchaseRequisitionCreationService;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use Filament\Actions;
+use Filament\Actions\ActionGroup;
+use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Infolists;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Components\Icon;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Text;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Icons\Heroicon;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Njxqlus\Filament\Components\Infolists\RelationManager;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\Support\MediaStream;
 
 class RequesterResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = PurchaseRequisition::class;
-    protected static ?string $modelLabel = 'Requisición';
-    protected static ?string $pluralModelLabel = 'Requisiciones';
-    protected static ?string $navigationLabel = 'Mis requisiciones';
-    protected static ?string $slug = 'mis-requisiciones';
-    protected static ?string $navigationGroup = 'Requisiciones';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 1;
 
+    protected static ?string $modelLabel = 'Requisición';
+
+    protected static ?string $pluralModelLabel = 'Requisiciones';
+
+    protected static ?string $navigationLabel = 'Mis requisiciones';
+
+    protected static ?string $slug = 'mis-requisiciones';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Requisiciones';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
+    protected static ?int $navigationSort = 1;
 
     public static function canAccess(): bool
     {
         return auth()->user()->hasRole('solicita_requisicion_compra');
     }
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -66,46 +69,52 @@ class RequesterResource extends Resource implements HasShieldPermissions
             'view_review',
             'view_approve',
             'view_authorize',
-            'view_assing'
+            'view_assing',
         ];
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
             ->myRequisitions();
     }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::myRequisitionsDraft()->count();
     }
+
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form, ?\Closure $flujoAprobacionTab = null): Schema
     {
         return $form
             ->columns(1)
             ->schema([
-                Forms\Components\Tabs::make('tabs')
+                Tabs::make('tabs')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Información general')
+                        Tabs\Tab::make('Información general')
                             ->schema([
                                 Forms\Components\Select::make('category')
                                     ->label('Categoría de requisición')
-                                    ->helperText(new HtmlString("<p class='p-1 text-white bg-red-500 rounded-md'>Seleccione si la requisición es para solicitar <strong>productos</strong> o <strong>servicios</strong>. Esto determinará el tipo de partidas que puede cargar.</p>"))
+                                    ->belowContent([
+                                        Icon::make(Heroicon::InformationCircle),
+                                        Text::make('Seleccione si la requisición es para solicitar productos o servicios. Esto determinará el tipo de partidas que puede cargar.')->color('danger')->weight(FontWeight::Medium),
+                                    ])
                                     ->options([
                                         'servicio' => 'Servicio',
                                         'proveeduria' => 'Proveeduría',
                                     ])
-                                    ->disabled(fn($operation) => $operation == 'edit')
+                                    ->disabled(fn ($operation) => $operation == 'edit')
                                     ->hintAction(
-                                        Forms\Components\Actions\Action::make('Cambiar categoría')
+                                        Actions\Action::make('Cambiar categoría')
                                             ->icon('heroicon-m-arrow-path')
-                                            ->visible(fn($operation) => $operation == 'edit')
+                                            ->visible(fn ($operation) => $operation == 'edit')
                                             ->requiresConfirmation()
-                                            ->form([
+                                            ->schema([
                                                 Forms\Components\Select::make('selected')
                                                     ->label('Categoría de requisición')
                                                     ->options(function ($record) {
@@ -123,6 +132,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                                 'proveeduria' => 'Proveeduría',
                                                             ];
                                                         }
+
                                                         return [];
                                                     })
                                                     ->required(),
@@ -135,7 +145,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                     $set('category', $data['selected']);
                                                     $record->save();
                                                     if ($data['selected'] == 'servicio') {
-                                                        if (session()->get('company_id') == 2) { //ID 2:TECHENERGY
+                                                        if (session()->get('company_id') == 2) { // ID 2:TECHENERGY
                                                             $record->items()
                                                                 ->whereHas('product', function ($query) {
                                                                     $query->where('type_purchase', 'proveeduria');
@@ -144,7 +154,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                         }
                                                     }
                                                     if ($data['selected'] == 'proveeduria') {
-                                                        if (session()->get('company_id') == 2) { //ID 2:TECHENERGY
+                                                        if (session()->get('company_id') == 2) { // ID 2:TECHENERGY
                                                             $record->items()
                                                                 ->whereHas('product', function ($query) {
                                                                     $query->where('type_purchase', 'servicio');
@@ -156,6 +166,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                         ->title('Se aplicó el cambio')
                                                         ->success()
                                                         ->send();
+
                                                     return redirect(request()->header('Referer'));
                                                 } catch (\Exception $e) {
                                                     logger()->error($e->getMessage());
@@ -177,7 +188,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->options([
                                         'baja' => 'Baja',
                                         'media' => 'Media',
-                                        'alta' => 'Alta'
+                                        'alta' => 'Alta',
                                     ])
                                     ->default('baja')
                                     ->required(),
@@ -185,7 +196,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->label('Tipo de requisición')
                                     ->options([
                                         'compra' => 'Compra',
-                                        'cotización' => 'Cotización'
+                                        'cotización' => 'Cotización',
                                     ])
                                     ->required(),
                                 Forms\Components\DatePicker::make('date_delivery')
@@ -198,7 +209,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->maxLength(500),
                                 Forms\Components\Select::make('project_id')
                                     ->label('Proyecto')
-                                    ->options(function () {
+                                    ->options(function (?Model $record) {
                                         $management = auth()->user()->management;
                                         $result = [];
                                         if (filled($management->restriction_requisition)) {
@@ -224,48 +235,32 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                 ->get();
                                         }
                                         $result = collect($result);
+                                        // Si el proyecto actual está inactivo, incluirlo para no perder la selección
+                                        if ($record?->project_id && ! $result->contains('id', $record->project_id)) {
+                                            $current = ProjectPurchase::find($record->project_id);
+                                            if ($current) {
+                                                $result->prepend($current);
+                                            }
+                                        }
                                         $result = $result->mapWithKeys(function ($item) {
-                                            return [$item->id => "($item->code)" . $item->name];
+                                            $label = "($item->code)".$item->name;
+                                            if ($item->status !== 'activo') {
+                                                $label .= ' [Inactivo]';
+                                            }
+
+                                            return [$item->id => $label];
                                         })->toArray();
+
                                         return $result;
                                     })
-                                    //    { ->getOptionLabelFromRecordUsing(fn(Model $record) => "({$record->code}){$record->name}")}
                                     ->searchable()
                                     ->preload()
                                     ->required(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Flujo de aprobación')
-                            ->columns([
-                                'sm' => 1,
-                                'xl' => 2,
-                            ])
-                            ->schema([
-                                Forms\Components\Select::make('reviewer_id')
-                                    ->label('Revisa')
-                                    ->options(
-                                        PurchaseRequisitionApprovalChain::with(['reviewer'])
-                                            ->where('requester_id', auth()->user()->id)->get()
-                                            ->pluck('reviewer.name', 'reviewer.id')
-                                    )
-                                    ->live()
-                                    ->afterStateUpdated(fn(Set $set) => $set('approver_id', null))
-                                    ->required(),
-                                Forms\Components\Select::make('approver_id')
-                                    ->label('Aprueba')
-                                    ->options(function (Get $get) {
-                                        $reviewerId = $get('reviewer_id');
-                                        if (!$reviewerId) {
-                                            return [];
-                                        }
-                                        return PurchaseRequisitionApprovalChain::with(['approver'])
-                                            ->where('requester_id', auth()->user()->id)
-                                            ->where('reviewer_id', $reviewerId)
-                                            ->get()
-                                            ->pluck('approver.name', 'approver.id');
-                                    })
-                                    ->required()
-                            ]),
-                        Forms\Components\Tabs\Tab::make('Fichas técnicas')
+                        $flujoAprobacionTab
+                            ? ($flujoAprobacionTab)()
+                            : static::flujoAprobacionTab(),
+                        Tabs\Tab::make('Fichas técnicas')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('technical_data_sheets')
                                     ->label('Fichas técnica')
@@ -276,7 +271,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->collection('technical_data_sheets'),
                             ]),
 
-                        Forms\Components\Tabs\Tab::make('Soportes')
+                        Tabs\Tab::make('Soportes')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('supports')
                                     ->label('Soportes')
@@ -286,34 +281,72 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->hintColor('danger')
                                     ->collection('supports'),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Observación')
+                        Tabs\Tab::make('Observación')
                             ->schema([
                                 Forms\Components\Textarea::make('observation')
                                     ->label('Observación adicionales')
                                     ->maxLength(2000)
                                     ->default('Sin observaciones')
                                     ->required(),
-                            ])
+                            ]),
                     ]),
             ]);
     }
 
-    public static function infolist(Infolist $infolist, $options = []): Infolist
+    public static function flujoAprobacionTab(): Tabs\Tab
+    {
+        return Tabs\Tab::make('Flujo de aprobación')
+            ->columns([
+                'sm' => 1,
+                'xl' => 2,
+            ])
+            ->schema([
+                Forms\Components\Select::make('reviewer_id')
+                    ->label('Revisa')
+                    ->options(
+                        PurchaseRequisitionApprovalChain::with(['reviewer'])
+                            ->where('requester_id', auth()->user()->id)->get()
+                            ->pluck('reviewer.name', 'reviewer.id')
+                    )
+                    ->live()
+                    ->afterStateUpdated(fn (Set $set) => $set('approver_id', null))
+                    ->required(),
+                Forms\Components\Select::make('approver_id')
+                    ->label('Aprueba')
+                    ->options(function (Get $get) {
+                        $reviewerId = $get('reviewer_id');
+                        if (! $reviewerId) {
+                            return [];
+                        }
+
+                        return PurchaseRequisitionApprovalChain::with(['approver'])
+                            ->where('requester_id', auth()->user()->id)
+                            ->where('reviewer_id', $reviewerId)
+                            ->get()
+                            ->pluck('approver.name', 'approver.id');
+                    })
+                    ->required(),
+            ]);
+    }
+
+    public static function infolist(Schema $infolist, $options = []): Schema
     {
         return $infolist
-            ->columns(1)
+            ->columns(3)
             ->schema([
-                Infolists\Components\Tabs::make('Tabs')
-                    ->activeTab(1)
-                    ->tabs([
-                        Infolists\Components\Tabs\Tab::make('Información general')
+                // ── Columna principal (izquierda) ─────────────────────────────
+                Schemas\Components\Group::make()
+                    ->columnSpan(2)
+                    ->schema([
+                        // Header: datos clave siempre visibles
+                        Schemas\Components\Fieldset::make('')
+                            ->extraAttributes(['class' => 'bg-white dark:bg-gray-800 rounded-xl shadow-sm'])
                             ->schema([
+                                Infolists\Components\TextEntry::make('folio')
+                                    ->label('Folio')
+                                    ->weight(FontWeight::Bold),
                                 Infolists\Components\TextEntry::make('status')
                                     ->label('Estatus')
-                                    ->badge()
-                                    ->color('success'),
-                                Infolists\Components\TextEntry::make('type')
-                                    ->label('Tipo de requisición')
                                     ->badge()
                                     ->color('success'),
                                 Infolists\Components\TextEntry::make('priority')
@@ -321,129 +354,194 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                     ->badge()
                                     ->color('success'),
                                 Infolists\Components\TextEntry::make('category')
-                                    ->label('Categoría de requisición')
+                                    ->label('Categoría')
                                     ->badge()
                                     ->color('success'),
-                                Infolists\Components\TextEntry::make('approvalChain.requester.name')
-                                    ->label('Solicitante'),
-                                Infolists\Components\TextEntry::make('motive')
-                                    ->label('Referencia'),
-                                Infolists\Components\TextEntry::make('folio')
-                                    ->label('Folio'),
+                                Infolists\Components\TextEntry::make('project.name')
+                                    ->label('Proyecto'),
+                                Infolists\Components\TextEntry::make('created_at')
+                                    ->label('Creada el')
+                                    ->date('d/m/Y'),
+                            ])
+                            ->columns([
+                                'sm' => 2,
+                                'lg' => 3,
+                                'xl' => 6,
+                            ]),
+
+                        // Tabs de un solo nivel
+                        Tabs::make('tabs')
+                            ->tabs([
+                                // 1. Datos generales
+                                Tabs\Tab::make('Datos generales')
+                                    ->icon('heroicon-o-document-text')
+                                    ->columns(3)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('type')
+                                            ->label('Tipo de requisición')
+                                            ->badge()
+                                            ->color('success'),
+                                        Infolists\Components\TextEntry::make('approvalChain.requester.name')
+                                            ->label('Solicitante'),
+                                        Infolists\Components\TextEntry::make('motive')
+                                            ->label('Referencia'),
+                                        Infolists\Components\TextEntry::make('date_delivery')
+                                            ->label('Fecha deseable de entrega')
+                                            ->date(),
+                                        Infolists\Components\TextEntry::make('delivery_address')
+                                            ->label('Dirección de entrega')
+                                            ->columnSpan(2),
+                                        Infolists\Components\TextEntry::make('observation')
+                                            ->label('Observaciones')
+                                            ->columnSpanFull()
+                                            ->placeholder('Sin observaciones'),
+                                    ]),
+
+                                // 2. Partidas
+                                Tabs\Tab::make('Partidas')
+                                    ->icon('heroicon-o-list-bullet')
+                                    ->schema([
+                                        Infolists\Components\RepeatableEntry::make('items')
+                                            ->label('')
+                                            ->schema([
+                                                Infolists\Components\TextEntry::make('product.code')
+                                                    ->label('Código'),
+                                                Infolists\Components\TextEntry::make('product.name')
+                                                    ->label('Producto'),
+                                                Infolists\Components\TextEntry::make('quantity_warehouse')
+                                                    ->label('Cantidad en almacén')
+                                                    ->numeric(decimalPlaces: 2),
+                                                Infolists\Components\TextEntry::make('quantity_purchase')
+                                                    ->label('Cantidad para comprar')
+                                                    ->numeric(decimalPlaces: 2),
+                                                Infolists\Components\TextEntry::make('observation')
+                                                    ->label('Observación')
+                                                    ->columnSpan(2),
+                                            ])
+                                            ->columns(5),
+                                    ]),
+
+                                // 3. Adjuntos (fichas técnicas y soportes)
+                                Tabs\Tab::make('Adjuntos')
+                                    ->icon('heroicon-o-paper-clip')
+                                    ->visible(
+                                        fn ($record) => $record->getMedia('technical_data_sheets')->count() > 0
+                                            || $record->getMedia('supports')->count() > 0
+                                    )
+                                    ->schema([
+                                        Schemas\Components\Fieldset::make('Fichas técnicas')
+                                            ->visible(fn ($record) => $record->getMedia('technical_data_sheets')->count() > 0)
+                                            ->schema([
+                                                Infolists\Components\RepeatableEntry::make('media')
+                                                    ->state(function ($record) {
+                                                        $record->media = $record->getMedia('technical_data_sheets');
+
+                                                        return $record->media;
+                                                    })
+                                                    ->label('')
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('name')
+                                                            ->label('Nombre del archivo')
+                                                            ->hintActions([
+                                                                Actions\Action::make('Ver documento')
+                                                                    ->url(fn ($record): string => route('media.show', ['id' => $record->id]))
+                                                                    ->openUrlInNewTab(),
+                                                            ]),
+                                                    ]),
+                                                Schemas\Components\Actions::make([
+                                                    Actions\Action::make('Descargar fichas')
+                                                        ->action(function ($record) {
+                                                            $downloads = $record->getMedia('technical_data_sheets');
+
+                                                            return MediaStream::create($record->folio.'-fichas-tecnicas.zip')->addMedia($downloads);
+                                                        }),
+                                                ]),
+                                            ]),
+                                        Schemas\Components\Fieldset::make('Soportes')
+                                            ->visible(fn ($record) => $record->getMedia('supports')->count() > 0)
+                                            ->schema([
+                                                Infolists\Components\RepeatableEntry::make('media')
+                                                    ->state(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'supports')
+                                                            ->get();
+                                                        $record->media = $media;
+
+                                                        return $record->media;
+                                                    })
+                                                    ->label('')
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('name')
+                                                            ->label('Nombre del archivo')
+                                                            ->hintActions([
+                                                                Actions\Action::make('Ver documento')
+                                                                    ->url(fn ($record): string => route('media.show', ['id' => $record->id]))
+                                                                    ->openUrlInNewTab(),
+                                                            ]),
+                                                    ]),
+                                                Schemas\Components\Actions::make([
+                                                    Actions\Action::make('Descargar soportes')
+                                                        ->action(function ($record) {
+                                                            $downloads = Media::where('model_id', $record->id)
+                                                                ->where('collection_name', 'supports')
+                                                                ->get();
+
+                                                            return MediaStream::create($record->folio.'-soportes.zip')->addMedia($downloads);
+                                                        }),
+                                                ]),
+                                            ]),
+                                    ]),
+
+                                // 4. Órdenes de compra generadas
+                                Tabs\Tab::make('Órdenes de compra')
+                                    ->icon('heroicon-o-shopping-cart')
+                                    ->visible(fn ($record) => filled($record->orders))
+                                    ->schema([
+                                        RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)->lazy(false),
+                                    ]),
+                            ]),
+                    ]),
+
+                // ── Columna lateral derecha (siempre visible) ─────────────────
+                Schemas\Components\Group::make()
+                    ->columns(1)
+                    ->schema([
+                        // Resumen
+                        Schemas\Components\Fieldset::make('Resumen')
+                            ->extraAttributes(['class' => 'bg-white dark:bg-gray-800 rounded-xl shadow-sm'])
+                            ->columns(1)
+                            ->schema([
+                                Infolists\Components\TextEntry::make('purchaser.name')
+                                    ->label('Comprador asignado')
+                                    ->placeholder('Sin asignar'),
                                 Infolists\Components\TextEntry::make('date_delivery')
                                     ->label('Fecha deseable de entrega')
                                     ->date(),
-                                Infolists\Components\TextEntry::make('project.name')
-                                    ->label('Proyecto'),
-                                Infolists\Components\TextEntry::make('delivery_address')
-                                    ->label('Dirección de entrega'),
-                            ])
-                            ->columns(3),
-                        Infolists\Components\Tabs\Tab::make('Partidas')
-                            ->schema([
-                                Infolists\Components\RepeatableEntry::make('items')
-                                    ->label('')
-                                    ->schema([
-                                        Infolists\Components\TextEntry::make('product.code')
-                                            ->label('Código'),
-                                        Infolists\Components\TextEntry::make('product.name')
-                                            ->label('Producto'),
-                                        Infolists\Components\TextEntry::make('quantity_warehouse')
-                                            ->label('Cantidad en almacén')
-                                            ->numeric(decimalPlaces: 2),
-                                        Infolists\Components\TextEntry::make('quantity_purchase')
-                                            ->label('Cantidad para comprar')
-                                            ->numeric(decimalPlaces: 2),
-                                        Infolists\Components\TextEntry::make('observation')
-                                            ->label('Observación')
-                                            ->columnSpan(2),
-                                    ])
-                                    ->columns(5)
+                                Infolists\Components\TextEntry::make('orders_count')
+                                    ->label('Órdenes de compra generadas')
+                                    ->state(fn ($record) => $record->orders->count()),
                             ]),
-                        Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
+
+                        // Flujo de aprobación e Historial en pestañas
+                        Tabs::make('Seguimiento')
+                            ->visible(fn ($record) => $record->status !== 'borrador')
+                            ->extraAttributes(['class' => 'bg-white dark:bg-gray-800 rounded-xl shadow-sm'])
                             ->schema([
-                                Infolists\Components\ViewEntry::make('progress')
-                                    ->view('filament.infolists.entries.progress-approval')
-                            ])
-                            ->columns(1),
-                        Infolists\Components\Tabs\Tab::make('Fichas técnicas')
-                            ->visible(fn($record) => $record->getMedia('technical_data_sheets')->count() > 0)
-                            ->schema([
-                                Infolists\Components\RepeatableEntry::make('media')
-                                    ->state(function ($record) {
-                                        $record->media = $record->getMedia('technical_data_sheets');
-                                        return $record->media;
-                                    })
-                                    ->label('')
+                                Tabs\Tab::make('Flujo de aprobación')
                                     ->schema([
-                                        Infolists\Components\TextEntry::make('name')
-                                            ->label('Nombre del archivo')
-                                            ->hintActions([
-                                                Infolists\Components\Actions\Action::make('Ver documento')
-                                                    ->url(fn($record): string => route('media.show', ['id' => $record->id]))
-                                                    ->openUrlInNewTab()
-                                            ]),
+                                        Infolists\Components\ViewEntry::make('progress')
+                                            ->label('')
+                                            ->columnSpanFull()
+                                            ->view('filament.infolists.entries.progress-approval-v2'),
                                     ]),
-                                Infolists\Components\Actions::make([
-                                    Infolists\Components\Actions\Action::make('Descargar fichas')
-                                        ->action(function ($record) {
-                                            $downloads = $record->getMedia('technical_data_sheets');
-                                            return MediaStream::create($record->folio . '-fichas-tecnicas.zip')->addMedia($downloads);
-                                        }),
-                                ]),
-                            ]),
-                        Infolists\Components\Tabs\Tab::make('Soportes')
-                            ->visible(fn($record) => $record->getMedia('supports')->count() > 0)
-                            ->schema([
-                                Infolists\Components\RepeatableEntry::make('media')
-                                    ->state(function ($record) {
-                                        $media = Media::where('model_id', $record->id)
-                                            ->where('collection_name', 'supports')
-                                            ->get();
-                                        $record->media = $media;
-                                        return $record->media;
-                                    })
-                                    ->label('')
+
+                                Tabs\Tab::make('Historial')
                                     ->schema([
-                                        Infolists\Components\TextEntry::make('name')
-                                            ->label('Nombre del archivo')
-                                            ->hintActions([
-                                                Infolists\Components\Actions\Action::make('Ver documento')
-                                                    ->url(fn($record): string => route('media.show', ['id' => $record->id]))
-                                                    ->openUrlInNewTab()
-                                            ]),
+                                        Infolists\Components\ViewEntry::make('status')
+                                            ->label('')
+                                            ->columnSpanFull()
+                                            ->view('filament.infolists.entries.history'),
                                     ]),
-                                Infolists\Components\Actions::make([
-                                    Infolists\Components\Actions\Action::make('Descargar soportes')
-                                        ->action(function ($record) {
-                                            // $downloads = $record->getMedia('supports');
-                                            $downloads = Media::where('model_id', $record->id)
-                                                ->where('collection_name', 'supports')
-                                                ->get();
-                                            return MediaStream::create($record->folio . '-soportes.zip')->addMedia($downloads);
-                                        }),
-                                ]),
-                            ]),
-                        Infolists\Components\Tabs\Tab::make('Observaciones')
-                            ->schema([
-                                Infolists\Components\TextEntry::make('observation')
-                                    ->label('Observaciones'),
-                            ]),
-                        Infolists\Components\Tabs\Tab::make('Comprador asignado')
-                            ->visible(fn($record) => filled($record->purchaser))
-                            ->schema([
-                                Infolists\Components\TextEntry::make('purchaser.name')
-                                    ->label('Nombre'),
-                            ]),
-                        Infolists\Components\Tabs\Tab::make('Ordenes')
-                            ->visible(fn($record) => filled($record->orders))
-                            ->schema([
-                                \Njxqlus\Filament\Components\Infolists\RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)->lazy(false)
-                            ]),
-                        Infolists\Components\Tabs\Tab::make('Historial')
-                            ->schema([
-                                Infolists\Components\ViewEntry::make('status')
-                                    ->view('filament.infolists.entries.history'),
                             ]),
                     ]),
             ]);
@@ -486,10 +584,10 @@ class RequesterResource extends Resource implements HasShieldPermissions
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make()
+                    Actions\ViewAction::make(),
+                    Actions\EditAction::make()
                         ->visible(function (PurchaseRequisition $record) {
                             $states = [
                                 'borrador',
@@ -498,18 +596,19 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                 'devuelto por revisor',
                                 'devuelto por gerencia',
                                 'devuelto por DG',
-                                'devuelto por comprador'
+                                'devuelto por comprador',
                             ];
+
                             return in_array($record->status, $states);
                         }),
-                    Tables\Actions\Action::make('Ver pdf')
+                    Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                        ->url(fn ($record) => (string) route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
-                    Tables\Actions\Action::make('Replicar')
-                        ->fillForm(fn(PurchaseRequisition $record): array => [
+                    Actions\Action::make('Replicar')
+                        ->fillForm(fn (PurchaseRequisition $record): array => [
                             'project_id' => $record->project_id,
-                            'motive' => '(replicado) ' . $record->motive,
+                            'motive' => '(replicado) '.$record->motive,
                             'date_delivery' => now()->addDays(1),
                             'priority' => $record->priority,
                             'type' => $record->type,
@@ -519,12 +618,12 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             'approver_id' => $record->approvalChain->approver_id,
                             'observation' => $record->observation,
                         ])
-                        ->form(fn(Form $form) => static::form($form)->columns(1))
+                        ->schema(fn (Schema $form) => static::form($form)->columns(1))
                         ->slideOver()
                         ->action(function (array $data, PurchaseRequisition $record) {
                             try {
                                 // Crear nueva requisición con los datos del formulario
-                                $newRequisition = new PurchaseRequisition();
+                                $newRequisition = new PurchaseRequisition;
 
                                 // Llenar con los datos del formulario (respeta cambios del usuario)
                                 $newRequisition->fill($data);
@@ -536,7 +635,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                 $newRequisition->assign_user_id = null;
 
                                 // Generar nuevo folio
-                                $service = new PurchaseRequisitionCreationService();
+                                $service = new PurchaseRequisitionCreationService;
                                 $newRequisition->folio = $service->generateFolio();
 
                                 // Guardar la nueva requisición
@@ -560,16 +659,16 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                 // Opcional: Redirigir a la nueva requisición
                                 return redirect()->to(static::getUrl('edit', ['record' => $newRequisition]));
                             } catch (\Exception $e) {
-                                logger()->error('Error al replicar requisición: ' . $e->getMessage(), [
+                                logger()->error('Error al replicar requisición: '.$e->getMessage(), [
                                     'original_id' => $record->id,
                                     'user_id' => auth()->id(),
                                     'form_data' => $data,
-                                    'trace' => $e->getTraceAsString()
+                                    'trace' => $e->getTraceAsString(),
                                 ]);
 
                                 Notification::make()
                                     ->title('Error al replicar requisición')
-                                    ->body('Ocurrió un error: ' . $e->getMessage())
+                                    ->body('Ocurrió un error: '.$e->getMessage())
                                     ->danger()
                                     ->send();
                             }

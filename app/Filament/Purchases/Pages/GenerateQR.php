@@ -2,18 +2,20 @@
 
 namespace App\Filament\Purchases\Pages;
 
-use Filament\Forms;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Pages\Page;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use LaraZeus\Qr\Facades\Qr;
 
 class GenerateQR extends Page implements HasForms
 {
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-m-qr-code';
 
-    protected static ?string $navigationIcon = 'heroicon-m-qr-code';
-    protected static string $view = 'filament.purchases.pages.generate-q-r';
+    protected string $view = 'filament.purchases.pages.generate-q-r';
+
     protected static ?int $navigationSort = 2;
+
     public ?array $data = [];
 
     protected static ?string $navigationLabel = 'QR';
@@ -27,14 +29,14 @@ class GenerateQR extends Page implements HasForms
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $form): Schema
     {
         return $form
             ->statePath('data')
             ->schema([
-                Forms\Components\Section::make()
+                Schemas\Components\Section::make()
                     ->schema([
-                        ...\LaraZeus\Qr\Facades\Qr::getFormSchema(
+                        ...Qr::getFormSchema(
                             statePath: 'enlace',
                             optionsStatePath: 'text-options'
                         ),

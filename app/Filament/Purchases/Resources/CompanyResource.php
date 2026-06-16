@@ -3,32 +3,38 @@
 namespace App\Filament\Purchases\Resources;
 
 use App\Filament\Purchases\Resources\CompanyResource\Pages;
-use App\Filament\Purchases\Resources\CompanyResource\RelationManagers;
 use App\Models\Company;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CompanyResource extends Resource
 {
     protected static ?string $model = Company::class;
+
     protected static ?string $modelLabel = 'Empresa';
+
     protected static ?string $pluralModelLabel = 'Empresas';
+
     protected static ?string $navigationLabel = 'Empresas';
+
     protected static ?string $slug = 'empresas';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
+                Schemas\Components\Section::make()
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('short_name')
@@ -44,7 +50,7 @@ class CompanyResource extends Resource
                             ->maxLength(3)
                             ->required(),
                     ]),
-                Forms\Components\Section::make('Datos para facturación')
+                Schemas\Components\Section::make('Datos para facturación')
                     ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('name')
@@ -117,12 +123,12 @@ class CompanyResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

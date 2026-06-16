@@ -2,29 +2,26 @@
 
 namespace App\Models;
 
-use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\Contracts\Auditable;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Dyrynda\Database\Support\CascadeSoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Services\PurchaseRequisitionCreationService;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\StateMachines\PurchaseRequisitionStateMachine;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\DeletedModels\Models\Concerns\KeepsDeletedModels;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
+use Dyrynda\Database\Support\CascadeSoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class PurchaseRequisition extends Model implements HasMedia, Auditable
+class PurchaseRequisition extends Model implements Auditable, HasMedia
 {
-    use SoftDeletes, CascadeSoftDeletes;
-    use \OwenIt\Auditing\Auditable;
+    use CascadeSoftDeletes, SoftDeletes;
+    use HasFactory;
     use HasStateMachines;
     use InteractsWithMedia;
-    use HasFactory;
+    use \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.
@@ -32,6 +29,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
      * @var array
      */
     protected $table = 'purchase_requisitions';
+
     protected $fillable = [
         'folio',
         'date_delivery',
@@ -49,6 +47,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         'assign_user_id',
         'approval_chain_id',
     ];
+
     protected $auditInclude = [
         'date_delivery',
         'delivery_address',
@@ -63,8 +62,11 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         'assign_user_id',
         'approval_chain_id',
     ];
+
     protected $cascadeDeletes = ['items'];
+
     protected $dates = ['deleted_at'];
+
     protected $casts = [
         'id' => 'integer',
         'request_user_id' => 'integer',
@@ -77,6 +79,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
     public $stateMachines = [
         'status' => PurchaseRequisitionStateMachine::class,
     ];
+
     public static $estadosProgreso = [
         'borrador' => 0,
         'cadena reasignada' => 0,
@@ -113,7 +116,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             'aprobado por gerencia',
             'aprobado por DG',
             'comprador asignado',
-            'comprador reasignado'
+            'comprador reasignado',
         ];
 
         if (session()->get('company_id') == 2) {
@@ -133,7 +136,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
                 'devuelto por DG',
                 'devuelto por gerente de compras',
                 'devuelto por comprador',
-                'cadena reasignada'
+                'cadena reasignada',
             ])
             ->orderBy('created_at', 'desc')
             ->first();
@@ -153,6 +156,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             $registro = $query->first();
             $fechas[$revision] = $registro ? $registro->created_at : null;
         }
+
         return $fechas;
     }
 
@@ -169,7 +173,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             'comprador reasignado'
          */
         $data = $this->getRevisionDates();
-        if (session()->get('company_id') == 2) { //ID 1:GPT IM
+        if (session()->get('company_id') == 2) { // ID 1:GPT IM
             if ($this->category == 'servicio') {
                 $progress = [
                     'requester' => ['title' => 'Solicita', 'name' => $this->approvalChain->requester->name, 'date' => $data['revisión']],
@@ -201,7 +205,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
                 ];
             }
         }
-        if (session()->get('company_id') == 1) { //ID 1:GPT IM
+        if (session()->get('company_id') == 1) { // ID 1:GPT IM
             $progress = [
                 'requester' => ['title' => 'Solicita', 'name' => $this->approvalChain->requester->name, 'date' => $data['revisión por almacén']],
                 'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'date' => $data['revisión']],
@@ -219,10 +223,12 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
+
     public function approvalChain(): BelongsTo
     {
         return $this->belongsTo(PurchaseRequisitionApprovalChain::class, 'approval_chain_id');
     }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(ProjectPurchase::class, 'project_id');
@@ -237,14 +243,17 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
     {
         return $this->belongsTo(User::class, 'assign_user_id');
     }
+
     public function orders(): HasMany
     {
         return $this->hasMany(PurchaseOrder::class, 'requisition_id');
     }
+
     public function purchaser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'assign_user_id');
     }
+
     // SCOPES
     public function scopeMyRequisitions(Builder $query)
     {
@@ -253,6 +262,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
+
     public function scopeMyRequisitionsDraft(Builder $query)
     {
         return $query
@@ -266,16 +276,18 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
                 'devuelto por DG',
                 'devuelto por comprador',
                 'devuelto por gerente de compras',
-                'cadena reasignada'
+                'cadena reasignada',
             ])
             ->orderBy('id', 'desc');
     }
+
     public function scopeReviewWarehouse(Builder $query)
     {
         return $query->where('status', 'revisión por almacén')
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
+
     public function scopeReview(Builder $query)
     {
         return $query->where('status', 'revisión')
@@ -283,6 +295,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
+
     public function scopeApprove(Builder $query)
     {
         return $query->where('status', 'aprobado por revisor')
@@ -290,6 +303,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
+
     public function scopeAuthorize(Builder $query)
     {
         return $query->where('status', 'aprobado por gerencia')
@@ -297,6 +311,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
+
     public function scopeReadyAssing(Builder $query)
     {
         return $query
@@ -307,6 +322,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             })
             ->orderBy('id', 'desc');
     }
+
     public function scopeReadyAssingCount(Builder $query)
     {
         return $query
@@ -314,6 +330,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
             ->where('company_id', session()->get('company_id'))
             ->count();
     }
+
     public function scopeMyAssing(Builder $query)
     {
         return $query
@@ -326,9 +343,8 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
     /**
      * Reasigna la cadena de aprobación de esta requisición
      *
-     * @param int $newApprovalChainId ID de la nueva cadena de aprobación
-     * @param bool $resetToStart Si es true, regresa la requisición al estado inicial
-     * @return bool
+     * @param  int  $newApprovalChainId  ID de la nueva cadena de aprobación
+     * @param  bool  $resetToStart  Si es true, regresa la requisición al estado inicial
      */
     public function reassignApprovalChain(int $newApprovalChainId, bool $resetToStart = false): bool
     {
@@ -345,14 +361,13 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
     /**
      * Regresa la requisición al estado inicial según su categoría
      *
-     * @param int|null $oldChainId ID de la cadena anterior para el historial
-     * @return void
+     * @param  int|null  $oldChainId  ID de la cadena anterior para el historial
      */
     public function resetToInitialState(?int $oldChainId = null): void
     {
         // Usar estado 'cadena reasignada' para indicar que hubo un cambio de cadena
         $this->status()->transitionTo('cadena reasignada', [
-            'old_chain_id' => $oldChainId
+            'old_chain_id' => $oldChainId,
         ]);
     }
 
@@ -360,8 +375,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
      * Reasigna la cadena y resetea al inicio del proceso
      * Este es un método de conveniencia que combina reasignación y reseteo
      *
-     * @param int $newApprovalChainId ID de la nueva cadena de aprobación
-     * @return bool
+     * @param  int  $newApprovalChainId  ID de la nueva cadena de aprobación
      */
     public function reassignAndReset(int $newApprovalChainId): bool
     {
@@ -370,8 +384,6 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
 
     /**
      * Verifica si la requisición está bloqueada por un usuario inactivo
-     *
-     * @return bool
      */
     public function isBlockedByInactiveUser(): bool
     {
@@ -379,10 +391,10 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         $pendingStates = [
             'revisión',
             'aprobado por revisor',
-            'aprobado por gerencia'
+            'aprobado por gerencia',
         ];
 
-        if (!in_array($this->status, $pendingStates)) {
+        if (! in_array($this->status, $pendingStates)) {
             return false;
         }
 
@@ -403,8 +415,6 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
 
     /**
      * Obtiene el usuario que actualmente debería revisar/aprobar esta requisición
-     *
-     * @return User|null
      */
     public function getCurrentApprover(): ?User
     {
@@ -426,7 +436,7 @@ class PurchaseRequisition extends Model implements HasMedia, Auditable
         return $query->whereIn('status', [
             'revisión',
             'aprobado por revisor',
-            'aprobado por gerencia'
+            'aprobado por gerencia',
         ])
             ->where('company_id', session()->get('company_id'))
             ->whereHas('approvalChain', function ($q) {

@@ -2,14 +2,11 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 
-use Filament\Actions;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
 use App\Models\PurchaseOrder;
-use Filament\Actions\ActionGroup;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
-
 
 class EditPurchaseOrder extends EditRecord
 {
@@ -21,16 +18,18 @@ class EditPurchaseOrder extends EditRecord
             Actions\ViewAction::make(),
             Actions\Action::make('Agregar partidas de la requisición')
                 ->color('info')
-                ->url(fn(PurchaseOrder $record): string => PurchaserResource::getUrl('add-item', ['record' => $record->id]))
+                ->url(fn (PurchaseOrder $record): string => PurchaserResource::getUrl('add-item', ['record' => $record->id])),
 
         ];
     }
+
     protected function getFormActions(): array
     {
         return [
             $this->getSaveFormAction(),
         ];
     }
+
     protected function afterSave(): void
     {
         $this->dispatch('refreshRelationManagerItems');
@@ -40,7 +39,7 @@ class EditPurchaseOrder extends EditRecord
     {
         $sum = 0;
         foreach ($data['condition_payment'] as $item) {
-            $sum += (int)$item['value'];
+            $sum += (int) $item['value'];
         }
         if ($sum != 100) {
             Notification::make()
@@ -51,15 +50,17 @@ class EditPurchaseOrder extends EditRecord
                 ->send();
             $this->halt();
         }
+
         return $data;
     }
+
     protected function afterFill(): void
     {
         $sum = 0;
         $collection = $this->record->condition_payment;
         if (filled($collection)) {
             foreach ($collection as $item) {
-                $sum += (int)$item['value'];
+                $sum += (int) $item['value'];
             }
         }
         $this->data['total'] = $sum;

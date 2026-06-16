@@ -2,37 +2,39 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 
-use Filament\Tables\Table;
-use App\Models\PurchaseOrderItem;
-use Filament\Resources\Pages\Page;
-use Filament\Forms\Contracts\HasForms;
-use App\Models\PurchaseRequisitionItem;
-use Filament\Tables\Actions\BulkAction;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Notifications\Notification;
-use Illuminate\Database\Eloquent\Collection;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Tables\Concerns\InteractsWithTable;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
-
+use App\Models\PurchaseOrderItem;
+use App\Models\PurchaseRequisitionItem;
+use Filament\Actions\BulkAction;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use Filament\Resources\Pages\Page;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Concerns\InteractsWithTable;
+use Filament\Tables\Contracts\HasTable;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AddItemPR extends Page implements HasForms, HasTable
 {
-    use InteractsWithTable;
     use InteractsWithForms;
     use InteractsWithRecord;
+    use InteractsWithTable;
 
     protected static string $resource = PurchaserResource::class;
-    protected static string $view = 'filament.purchases.resources.purchase-order-resource.pages.add-item-p-r';
+
+    protected string $view = 'filament.purchases.resources.purchase-order-resource.pages.add-item-p-r';
+
     protected ?string $heading = 'Agregar partidas';
+
     protected static ?string $title = 'Partidas';
 
     public $rq;
-    public function mount(int | string $record)
+
+    public function mount(int|string $record)
     {
         $this->record = $this->resolveRecord($record);
         $states = [
@@ -42,9 +44,9 @@ class AddItemPR extends Page implements HasForms, HasTable
             'devuelto por DG nivel 1',
             'devuelto por DG nivel 2',
             'devuelto por administrador', // Permite agregar partidas cuando admin devuelve la orden
-            'reabierta para edición'
+            'reabierta para edición',
         ];
-        if (!in_array($this->record->status, $states)) {
+        if (! in_array($this->record->status, $states)) {
             return redirect(PurchaserResource::getUrl('view', ['record' => $this->record]));
         }
     }
@@ -52,17 +54,19 @@ class AddItemPR extends Page implements HasForms, HasTable
     public function getBreadcrumbs(): array
     {
         $resource = static::getResource();
+
         return [
             // PRAssingResource::getUrl() => 'Courses',
             $resource::getUrl() => 'Ordenes',
             $resource::getUrl('view', ['record' => $this->record]) => $this->record->folio,
-            $this->getBreadcrumb()
+            $this->getBreadcrumb(),
         ];
     }
+
     public function table(Table $table): Table
     {
         return $table
-            ->relationship(fn(): HasMany => $this->record->requisition->items())
+            ->relationship(fn (): HasMany => $this->record->requisition->items())
             ->columns([
                 TextColumn::make('product.name')
                     ->label('Producto'),
@@ -76,8 +80,8 @@ class AddItemPR extends Page implements HasForms, HasTable
                     ->label('Fecha de creación')
                     ->dateTime('d-m-Y')->sinceTooltip(),
             ])
-            ->actions([])
-            ->bulkActions([
+            ->recordActions([])
+            ->toolbarActions([
                 BulkAction::make('Agregar partidas seleccionadas a la orden')
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
@@ -102,12 +106,13 @@ class AddItemPR extends Page implements HasForms, HasTable
                                 ->danger()
                                 ->send();
                         }
-                    })
+                    }),
             ])
             ->checkIfRecordIsSelectableUsing(function (PurchaseRequisitionItem $record) {
-                return  $this->checkItemInOrder($record->product_id);
+                return $this->checkItemInOrder($record->product_id);
             });
     }
+
     public function checkItemInOrder($product_id)
     {
         // Obtengo todas las ordenes relacionadas

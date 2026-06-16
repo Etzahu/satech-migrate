@@ -2,54 +2,70 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
-
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use App\Models\PurchaseRequisition;
-use Filament\Tables\Actions\ActionGroup;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
 use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentAdminResource\Pages;
+use App\Models\PurchaseRequisition;
+use Filament\Actions;
+use Filament\Actions\ActionGroup;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Database\Eloquent\Builder;
 
 class AssignmentAdminResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
+
     protected static ?string $modelLabel = 'Requisición';
+
     protected static ?string $pluralModelLabel = 'Requisiciones';
+
     protected static ?string $navigationLabel = 'Asignaciones';
+
     protected static ?string $slug = 'requisiciones/admin/asignacion';
-    protected static ?string $navigationGroup = 'Requisiciones';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Requisiciones';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 6;
 
     public static function canAccess(): bool
     {
-    return auth()->user()->hasRole('gerente_compras');
+        return auth()->user()->hasRole('gerente_compras');
     }
+
     public static function canCreate(): bool
     {
         return false;
     }
+
+    public static function getCreateAuthorizationResponse(): Response
+    {
+        return Response::deny();
+    }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
             ->readyAssing();
     }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::readyAssingCount();
     }
+
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger';
     }
-    public static function infolist(Infolist $infolist): Infolist
+
+    public static function infolist(Schema $infolist): Schema
     {
         $options = [];
+
         return RequesterResource::infolist($infolist, $options);
     }
 
@@ -86,12 +102,12 @@ class AssignmentAdminResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([])
-            ->actions([
+            ->recordActions([
                 ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\Action::make('Ver pdf')
+                    Actions\ViewAction::make(),
+                    Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                        ->url(fn ($record) => (string) route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
                 ]),
             ]);

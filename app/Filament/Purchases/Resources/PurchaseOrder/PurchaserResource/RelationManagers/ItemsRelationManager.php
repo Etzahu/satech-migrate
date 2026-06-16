@@ -2,32 +2,36 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\RelationManagers;
 
-use Closure;
-use Filament\Forms;
-use Filament\Tables;
-use Brick\Money\Money;
-use App\Models\Product;
-use Filament\Forms\Form;
-use Brick\Math\BigDecimal;
-use Filament\Tables\Table;
-use Livewire\Attributes\On;
-use Illuminate\Support\HtmlString;
 use App\Forms\Components\MoneyInput;
-use Brick\Money\Context\CustomContext;
+use App\Models\Product;
+use Brick\Math\BigDecimal;
+use Brick\Money\Money;
+use Closure;
+use Filament\Actions;
+use Filament\Forms;
 use Filament\Resources\RelationManagers\RelationManager;
-
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
+use Livewire\Attributes\On;
 
 class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'items';
+
     protected static ?string $modelLabel = 'Partida';
+
     protected static ?string $pluralModelLabel = 'Partidas';
+
     protected static ?string $navigationLabel = 'Partidas';
+
     protected static ?string $title = 'Partidas';
 
     #[On('refreshRelationManagerItems')]
     public function refresh(): void {}
-    public function form(Form $form): Form
+
+    public function form(Schema $form): Schema
     {
         return $form
             ->columns(1)
@@ -42,7 +46,7 @@ class ItemsRelationManager extends RelationManager
                     ->helperText(new HtmlString("<p class='p-1 text-white bg-red-500 rounded-md'>La cantidad debe ser un número sin espacios ni comillas y con exactamente 4 decimales (ej: 0.0000).</p>"))
                     ->required()
                     ->rules([
-                        fn(): Closure => function (string $attribute, $value, Closure $fail) {
+                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
                             if (preg_match('/^\d+\.\d{4}$/', $value)) {
                                 return true;
                             } else {
@@ -65,20 +69,24 @@ class ItemsRelationManager extends RelationManager
                 Forms\Components\Textarea::make('observation')
                     ->label('Observaciones')
                     ->default('Sin observaciones')
-                    ->autosize()
+                    ->autosize(),
             ]);
     }
+
     public function table(Table $table): Table
     {
         return $table
             ->recordTitleAttribute('product.name')
+            ->recordClasses(fn ($record): ?string => (int) $record->unit_price === 0
+                ? '!bg-red-200 dark:!bg-red-500/10'
+                : null)
             ->columns([
                 Tables\Columns\TextColumn::make('product.name')
                     ->label('Producto/Servicio'),
                 Tables\Columns\TextColumn::make('product.unit.acronym')
                     ->label('Unidad'),
                 Tables\Columns\TextColumn::make('quantity')
-                ->numeric(decimalPlaces: 2)
+                    ->numeric(decimalPlaces: 2)
                     ->label('Cantidad'),
                 Tables\Columns\TextColumn::make('unit_price')
                     ->label('Precio unitario')
@@ -87,6 +95,7 @@ class ItemsRelationManager extends RelationManager
                             return 0;
                         }
                         $state = BigDecimal::of($state)->dividedBy(10000, 4);
+
                         return (string) $state;
                     }),
                 Tables\Columns\TextColumn::make('sub_total')
@@ -96,6 +105,7 @@ class ItemsRelationManager extends RelationManager
                             return 0;
                         }
                         $state = BigDecimal::of($state)->dividedBy(10000, 4);
+
                         return (string) $state;
                     }),
                 // ->summarize(Sum::make()->label('Subtotal')->money('CLF', divideBy: 100, locale: 'en_US')),
@@ -103,29 +113,31 @@ class ItemsRelationManager extends RelationManager
                     ->label('Observaciones')
                     ->limit(30)
                     ->action(
-                        Tables\Actions\Action::make('Observaciones')
+                        Actions\Action::make('Observaciones')
                             ->modal()
                             ->modalSubmitAction(false)
                             ->modalCancelAction(false)
-                            ->modalContent(fn($record) => view('filament.table.view-observation', ['observation' => $record->observation]))
-                    )
+                            ->modalContent(fn ($record) => view('filament.table.view-observation', ['observation' => $record->observation]))
+                    ),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
+                Actions\CreateAction::make()
+                    ->mutateDataUsing(function (array $data): array {
                         $data['sub_total'] = $data['quantity'] * $data['unit_price'];
+
                         return $data;
                     }),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
-                    ->modalHeading(fn($record) => "Editar partida {$record->product->name}")
-                    ->mutateFormDataUsing(function (array $data): array {
+            ->recordActions([
+                Actions\EditAction::make()
+                    ->modalHeading(fn ($record) => "Editar partida {$record->product->name}")
+                    ->mutateDataUsing(function (array $data): array {
                         // dd($data);
                         $data['sub_total'] = $data['quantity'] * $data['unit_price'];
+
                         return $data;
                     }),
-                Tables\Actions\DeleteAction::make(),
+                Actions\DeleteAction::make(),
             ]);
     }
 }

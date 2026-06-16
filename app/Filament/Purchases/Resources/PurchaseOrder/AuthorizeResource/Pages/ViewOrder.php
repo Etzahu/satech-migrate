@@ -2,24 +2,21 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder\AuthorizeResource\Pages;
 
-use Money\Money;
+use App\Filament\Purchases\Resources\PurchaseOrder\AuthorizeResource;
+use App\Services\OrderCalculationService;
 use Filament\Actions;
-use App\Models\PurchaseOrder;
-use Filament\Infolists\Infolist;
 use Filament\Actions\ActionGroup;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
-use Filament\Support\Enums\ActionSize;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use App\Services\OrderCalculationService;
-use App\Filament\Purchases\Resources\PurchaseOrder\AuthorizeResource;
-
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 
 class ViewOrder extends ViewRecord
 {
     protected static string $resource = AuthorizeResource::class;
+
     protected function getHeaderActions(): array
     {
         return [
@@ -28,11 +25,11 @@ class ViewOrder extends ViewRecord
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(
-                    fn() => ($this->record->status()->canBe('autorizada para proveedor') ||
+                    fn () => ($this->record->status()->canBe('autorizada para proveedor') ||
                         $this->record->status()->canBe('devuelto por DG nivel 2') ||
                         $this->record->status()->canBe('cancelado por DG nivel 2')) && auth()->user()->can('view_approve_level-4_purchase::order::purchaser')
                 )
-                ->form([
+                ->schema([
                     Select::make('response')
                         ->label('Respuesta')
                         ->options([
@@ -51,6 +48,7 @@ class ViewOrder extends ViewRecord
                 ])
                 ->requiresConfirmation()
                 ->action(function (array $data) {
+                    unset($this->record->total); // evitar error de serialización del total calculado
                     $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
                     if ($data['response'] == 'aprobado por DG nivel 1') {
                         $this->record->status()->transitionTo('autorizada para proveedor');
@@ -59,9 +57,9 @@ class ViewOrder extends ViewRecord
                         ->title('Respuesta enviada')
                         ->success()
                         ->send();
+
                     return redirect(AuthorizeResource::getUrl('index'));
                 }),
-
 
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
@@ -73,22 +71,23 @@ class ViewOrder extends ViewRecord
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')
                 ->color('primary')
-                ->dropdownWidth(MaxWidth::Small)
-                ->button()
+                ->dropdownWidth(Width::Small)
+                ->button(),
         ];
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $infolist): Schema
     {
         $service = new OrderCalculationService($this->record->id);
         $this->record->total = [
             'Subtotal' => $service->getSubtotalItems(true),
-            'Descuento' =>  $service->getDiscountProvider(true),
-            'IVA' =>  $service->getTaxIva(true),
-            'Retención de IVA' =>  $service->getRetentionIva(true),
-            'Retención de ISR' =>  $service->getRetentionIsr(true),
-            'Total' =>  $service->getTotal(true),
+            'Descuento' => $service->getDiscountProvider(true),
+            'IVA' => $service->getTaxIva(true),
+            'Retención de IVA' => $service->getRetentionIva(true),
+            'Retención de ISR' => $service->getRetentionIsr(true),
+            'Total' => $service->getTotal(true),
         ];
+
         return static::getResource()::infolist($infolist);
     }
 }

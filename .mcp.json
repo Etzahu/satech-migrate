@@ -1,0 +1,19 @@
+{
+    "mcpServers": {
+        "playwright": {
+            "command": "npx",
+            "args": [
+                "@playwright/mcp@latest",
+                "--viewport-size=1920,1080",
+                "--device-scale-factor=3"
+            ]
+        },
+        "laravel-boost": {
+            "command": "php",
+            "args": [
+                "artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}

@@ -2,27 +2,35 @@
 
 namespace App\Filament\Purchases\Pages;
 
-use App\Models\User;
 use App\Models\PurchaseOrderSheetConfig;
+use App\Models\User;
 use App\Services\GoogleSheetsService;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Pages\Page;
 use Filament\Notifications\Notification;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Pages\Page;
+use Filament\Schemas;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ConfigureGoogleSheetsReport extends Page
 {
-    protected static ?string $navigationIcon = 'si-googlesheets';
     protected static ?string $navigationLabel = 'Configurar Reporte Google Sheets';
+
     protected static ?string $title = 'Configurar Reporte de Google Sheets';
-    protected static string $view = 'filament.purchases.pages.configure-google-sheets-report';
-    protected static ?string $navigationGroup = 'Orden';
+
+    protected string $view = 'filament.purchases.pages.configure-google-sheets-report';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Orden';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 13;
 
     public ?array $data = [];
+
     public ?PurchaseOrderSheetConfig $config = null;
 
     public static function canAccess(): bool
@@ -39,11 +47,11 @@ class ConfigureGoogleSheetsReport extends Page
         $this->form->fill($this->config->toArray());
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $form): Schema
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Configuración de Reporte Automático')
+                Schemas\Components\Section::make('Configuración de Reporte Automático')
                     ->description('Configura qué datos se exportarán automáticamente a Google Sheets cuando se creen o actualicen órdenes de compra.')
                     ->schema([
                         Forms\Components\Toggle::make('is_active')
@@ -91,7 +99,7 @@ class ConfigureGoogleSheetsReport extends Page
                             ->columnSpanFull(),
                     ]),
 
-                Forms\Components\Section::make('Rango de Fechas')
+                Schemas\Components\Section::make('Rango de Fechas')
                     ->description('Define el período de órdenes que se incluirán en el reporte')
                     ->schema([
                         Forms\Components\Radio::make('date_range_type')
@@ -112,17 +120,17 @@ class ConfigureGoogleSheetsReport extends Page
                             ->maxValue(365)
                             ->default(30)
                             ->required()
-                            ->visible(fn(Forms\Get $get) => $get('date_range_type') === 'days'),
+                            ->visible(fn (Get $get) => $get('date_range_type') === 'days'),
 
                         Forms\Components\DatePicker::make('custom_start_date')
                             ->label('Fecha inicio del reporte')
                             ->helperText('El reporte incluirá órdenes desde esta fecha hasta hoy')
-                            ->required(fn(Forms\Get $get) => $get('date_range_type') === 'custom')
-                            ->visible(fn(Forms\Get $get) => $get('date_range_type') === 'custom')
+                            ->required(fn (Get $get) => $get('date_range_type') === 'custom')
+                            ->visible(fn (Get $get) => $get('date_range_type') === 'custom')
                             ->maxDate(now()),
                     ]),
 
-                Forms\Components\Section::make('Filtros Adicionales (Opcional)')
+                Schemas\Components\Section::make('Filtros Adicionales (Opcional)')
                     ->description('Filtra las órdenes que se exportarán')
                     ->collapsed()
                     ->schema([
@@ -161,6 +169,7 @@ class ConfigureGoogleSheetsReport extends Page
                     ->danger()
                     ->body('Debes seleccionar al menos una columna para exportar')
                     ->send();
+
                 return;
             }
 
@@ -172,6 +181,7 @@ class ConfigureGoogleSheetsReport extends Page
                         ->danger()
                         ->body('Debes especificar la fecha de inicio para el rango personalizado')
                         ->send();
+
                     return;
                 }
             }
@@ -192,7 +202,7 @@ class ConfigureGoogleSheetsReport extends Page
             Notification::make()
                 ->title('Error al guardar')
                 ->danger()
-                ->body('Ocurrió un error: ' . $e->getMessage())
+                ->body('Ocurrió un error: '.$e->getMessage())
                 ->persistent()
                 ->send();
         }
@@ -224,33 +234,33 @@ class ConfigureGoogleSheetsReport extends Page
                 'type_purchase' => $this->config->type_purchase ?? [],
             ];
 
-            $sheetsService = new GoogleSheetsService();
+            $sheetsService = new GoogleSheetsService;
             $result = $sheetsService->processOrdersReport($formData);
 
             Log::info('Reporte de Google Sheets actualizado manualmente desde configuración', [
                 'user_id' => Auth::id(),
                 'user_name' => Auth::user()->name,
-                'total_orders' => $result['total_orders'] ?? 0
+                'total_orders' => $result['total_orders'] ?? 0,
             ]);
         } catch (\Exception $e) {
             Log::error('Error al actualizar reporte de Google Sheets desde configuración', [
                 'user_id' => Auth::id(),
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
             // No lanzar excepción para que no interrumpa el guardado de la configuración
             Notification::make()
                 ->title('Advertencia')
                 ->warning()
-                ->body('La configuración se guardó pero hubo un problema al actualizar el reporte: ' . $e->getMessage())
+                ->body('La configuración se guardó pero hubo un problema al actualizar el reporte: '.$e->getMessage())
                 ->send();
         }
     }
 
-    public function getMaxContentWidth(): MaxWidth
+    public function getMaxContentWidth(): Width
     {
-        return MaxWidth::SevenExtraLarge;
+        return Width::SevenExtraLarge;
     }
 
     public function resetToDefaults(): void

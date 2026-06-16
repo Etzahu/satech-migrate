@@ -2,13 +2,13 @@
 
 namespace App\Filament\Purchases\Resources\ManagementResource\RelationManagers;
 
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UsersRelationManager extends RelationManager
 {
@@ -18,7 +18,7 @@ class UsersRelationManager extends RelationManager
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public function form(Form $form): Form
+    public function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -72,16 +72,16 @@ class UsersRelationManager extends RelationManager
             ->filters([
                 Tables\Filters\Filter::make('active')
                     ->label('Solo activos')
-                    ->query(fn(Builder $query): Builder => $query->where('active', true))
+                    ->query(fn (Builder $query): Builder => $query->where('active', true))
                     ->default(),
             ])
             ->headerActions([
-                Tables\Actions\AssociateAction::make()
+                Actions\AssociateAction::make()
                     ->label('Relacionar usuario con gerencia')
                     ->preloadRecordSelect(),
             ])
-            ->actions([
-                Tables\Actions\DissociateAction::make()
+            ->recordActions([
+                Actions\DissociateAction::make()
                     ->label('Remover usuario de gerencia'),
             ]);
     }

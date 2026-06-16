@@ -2,33 +2,30 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Pages;
-use Filament\Panel;
-use Filament\Widgets;
-use Filament\PanelProvider;
-use Filament\Enums\ThemeMode;
-use Filament\Navigation\MenuItem;
-use Filament\Support\Colors\Color;
-use Filament\View\PanelsRenderHook;
-use Illuminate\Contracts\View\View;
-use Filament\Support\Enums\MaxWidth;
-use Illuminate\Support\Facades\Blade;
 use App\Http\Middleware\CompanySession;
-use Filament\Navigation\NavigationItem;
-use Shanerbaner82\PanelRoles\PanelRoles;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\AuthenticateSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Saade\FilamentLaravelLog\FilamentLaravelLogPlugin;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
+use Filament\Panel;
+use Filament\PanelProvider;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
+use Filament\View\PanelsRenderHook;
+use Filament\Widgets;
 use Hugomyb\FilamentErrorMailer\FilamentErrorMailerPlugin;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Vite;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class PurchasesPanelProvider extends PanelProvider
 {
@@ -37,16 +34,16 @@ class PurchasesPanelProvider extends PanelProvider
         return $panel
             ->id('compras')
             ->path('compras')
-               ->defaultThemeMode(ThemeMode::Light)
+            ->defaultThemeMode(ThemeMode::Light)
             // ->databaseNotifications()
-            ->maxContentWidth(MaxWidth::Full)
+            ->maxContentWidth(Width::Full)
             ->sidebarFullyCollapsibleOnDesktop()
             // ->unsavedChangesAlerts()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->spaUrlExceptions([
                 '*/empresa/*',
             ])
-            ->homeUrl("/home")
+            ->homeUrl('/home')
             ->globalSearch(false)
             ->colors([
                 'primary' => Color::Amber,
@@ -54,9 +51,7 @@ class PurchasesPanelProvider extends PanelProvider
             ->bootUsing(function (Panel $panel) {})
             ->discoverResources(in: app_path('Filament/Purchases/Resources'), for: 'App\\Filament\\Purchases\\Resources')
             ->discoverPages(in: app_path('Filament/Purchases/Pages'), for: 'App\\Filament\\Purchases\\Pages')
-            ->pages([
-                Pages\Dashboard::class,
-            ])
+            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Purchases/Widgets'), for: 'App\\Filament\\Purchases\\Widgets')
             ->widgets([
                 // Widgets\AccountWidget::class,
@@ -65,7 +60,7 @@ class PurchasesPanelProvider extends PanelProvider
             ->userMenuItems([
                 'logout' => MenuItem::make()
                     ->label('Salir')
-                    ->url(fn(): string => route('logout'))
+                    ->url(fn (): string => route('logout'))
                     ->icon('heroicon-o-arrow-left-start-on-rectangle'),
             ])
             ->renderHook(
@@ -75,6 +70,10 @@ class PurchasesPanelProvider extends PanelProvider
             ->renderHook(
                 PanelsRenderHook::BODY_START,
                 fn (): View => view('hooks.impersonation-banner'),
+            )
+            ->renderHook(
+                PanelsRenderHook::SCRIPTS_AFTER,
+                fn (): Htmlable => app(Vite::class)('resources/js/progress-approval.js'),
             )
             ->middleware([
                 EncryptCookies::class,
@@ -93,23 +92,7 @@ class PurchasesPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentErrorMailerPlugin::make(),
-                \Okeonline\FilamentArchivable\FilamentArchivablePlugin::make(),
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                PanelRoles::make()
-                    ->restrictedRoles([
-                        'administrador_compras',
-                        'super_admin',
-                        'gerente_compras',
-                        'solicita_requisicion_compra',
-                        'revisa_almacen_requisicion_compra',
-                        'revisa_requisicion_compra',
-                        'aprueba_requisicion_compra',
-                        'autoriza_requisicion_compra',
-                        'comprador',
-                        'gerente_solicitante_orden_compra',
-                        'autoriza_nivel-1-orden_compra',
-                        'autoriza_nivel-2-orden_compra'
-                    ]),
+                FilamentShieldPlugin::make(),
             ]);
     }
 }

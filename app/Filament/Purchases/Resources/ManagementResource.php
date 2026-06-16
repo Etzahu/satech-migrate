@@ -2,43 +2,49 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use App\Models\Management;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Purchases\Resources\ManagementResource\Pages;
 use App\Filament\Purchases\Resources\ManagementResource\RelationManagers;
+use App\Models\Management;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class ManagementResource extends Resource
 {
     protected static ?string $model = Management::class;
-    protected static ?string $modelLabel = 'Gerencia';
-    protected static ?string $pluralModelLabel = 'Gerencias';
-    protected static ?string $navigationLabel = 'Gerencias';
-    protected static ?string $slug = 'gerencias';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 2;
 
+    protected static ?string $modelLabel = 'Gerencia';
+
+    protected static ?string $pluralModelLabel = 'Gerencias';
+
+    protected static ?string $navigationLabel = 'Gerencias';
+
+    protected static ?string $slug = 'gerencias';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
+    protected static ?int $navigationSort = 2;
 
     // public static function canView(Model $ownerRecord): bool
     // {
     //     return false;
     // }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->columns(1)
             ->schema([
-                Forms\Components\Tabs::make('Tabs')
+                Schemas\Components\Tabs::make('Tabs')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Información general')
+                        Schemas\Components\Tabs\Tab::make('Información general')
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->label('Nombre')
@@ -65,10 +71,10 @@ class ManagementResource extends Resource
                                 Forms\Components\Select::make('restriction_requisition')
                                     ->label('Restricción para proyectos')
                                     ->options(['limitar' => 'Limitar', 'excluir' => 'Excluir'])
-                                    ->nullable()
+                                    ->nullable(),
                             ]),
-                    ])
-                // Forms\Components\Section::make('Restricciones')
+                    ]),
+                // Schemas\Components\Section::make('Restricciones')
                 //     ->visible(fn($record, $operation) => filled($record->restriction_requisition) && $operation == 'edit')
                 //     ->schema([
                 //         \Njxqlus\Filament\Components\Forms\RelationManager::make()
@@ -104,10 +110,9 @@ class ManagementResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-        ;
+            ->recordActions([
+                Actions\EditAction::make(),
+            ]);
     }
 
     public static function getRelations(): array

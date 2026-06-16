@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use LaravelArchivable\Archivable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PurchaseRequisitionApprovalChain extends Model
 {
     use HasFactory;
-     use Archivable;
 
     /**
      * The attributes that are mass assignable.
@@ -22,7 +20,7 @@ class PurchaseRequisitionApprovalChain extends Model
         'requester_id',
         'reviewer_id',
         'approver_id',
-        'authorizer_id'
+        'authorizer_id',
     ];
 
     /**
@@ -38,7 +36,6 @@ class PurchaseRequisitionApprovalChain extends Model
         'authorizer_id' => 'integer',
     ];
 
-
     public function requisitions(): HasMany
     {
         return $this->hasMany(PurchaseRequisition::class, 'approval_chain_id');
@@ -48,6 +45,7 @@ class PurchaseRequisitionApprovalChain extends Model
     {
         return $this->belongsTo(User::class, 'requester_id');
     }
+
     public function reviewer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'reviewer_id');
@@ -57,6 +55,7 @@ class PurchaseRequisitionApprovalChain extends Model
     {
         return $this->belongsTo(User::class, 'approver_id');
     }
+
     public function authorizer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'authorizer_id');
@@ -65,19 +64,19 @@ class PurchaseRequisitionApprovalChain extends Model
     /**
      * Actualiza un rol específico en la cadena de aprobación
      *
-     * @param string $role 'reviewer', 'approver', o 'authorizer'
-     * @param int $newUserId ID del nuevo usuario
-     * @return bool
+     * @param  string  $role  'reviewer', 'approver', o 'authorizer'
+     * @param  int  $newUserId  ID del nuevo usuario
      */
     public function updateApprovalRole(string $role, int $newUserId): bool
     {
-        $field = $role . '_id';
+        $field = $role.'_id';
 
-        if (!in_array($field, ['reviewer_id', 'approver_id', 'authorizer_id'])) {
+        if (! in_array($field, ['reviewer_id', 'approver_id', 'authorizer_id'])) {
             return false;
         }
 
         $this->{$field} = $newUserId;
+
         return $this->save();
     }
 
@@ -107,8 +106,6 @@ class PurchaseRequisitionApprovalChain extends Model
 
     /**
      * Cuenta las requisiciones pendientes para esta cadena
-     *
-     * @return int
      */
     public function getPendingRequisitionsCount(): int
     {
@@ -117,7 +114,7 @@ class PurchaseRequisitionApprovalChain extends Model
                 'revisión',
                 'aprobado por revisor',
                 'aprobado por gerencia',
-                'revisión por almacén'
+                'revisión por almacén',
             ])
             ->count();
     }

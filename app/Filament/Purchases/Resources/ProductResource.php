@@ -2,37 +2,41 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Brand;
-use App\Models\Product;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use App\Models\Category;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\CategoryFamily;
-use Filament\Resources\Resource;
-use Illuminate\Support\Collection;
-use Filament\Forms\Components\Textarea;
-use Illuminate\Database\Eloquent\Model;
-use Filament\Notifications\Notification;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Purchases\Resources\ProductResource\Pages;
-use App\Filament\Purchases\Resources\ProductResource\RelationManagers;
+use App\Models\Brand;
+use App\Models\CategoryFamily;
+use App\Models\Product;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Forms\Components\Textarea;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
-    protected static ?string $modelLabel = 'Catálogo';
-    protected static ?string $pluralModelLabel = 'Catálogo';
-    protected static ?string $navigationLabel = 'Catálogo';
-    protected static ?string $slug = 'catálogo';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?int $navigationSort = 4;
 
+    protected static ?string $modelLabel = 'Catálogo';
+
+    protected static ?string $pluralModelLabel = 'Catálogo';
+
+    protected static ?string $navigationLabel = 'Catálogo';
+
+    protected static ?string $slug = 'catálogo';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
+    protected static ?int $navigationSort = 4;
 
     public static function canAccess(): bool
     {
@@ -45,19 +49,21 @@ class ProductResource extends Resource
         return static::getModel()::where('status', 'pendiente')
             ->where('company_id', session()->get('company_id'))->count();
     }
+
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger';
     }
-    public static function form(Form $form): Form
+
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('')
+                Schemas\Components\Section::make('')
                     ->schema([
                         Forms\Components\TextInput::make('code')
                             ->label('Código')
-                            ->visible(fn(string $operation) => $operation == 'edit')
+                            ->visible(fn (string $operation) => $operation == 'edit')
                             ->required(),
                         Forms\Components\Select::make('category_id')
                             ->label('Categoría')
@@ -81,16 +87,17 @@ class ProductResource extends Resource
                             ->options(
                                 function (Get $get) {
                                     $options = [];
-                                    $data =  CategoryFamily::query()
+                                    $data = CategoryFamily::query()
                                         ->where('category_id', $get('category_id'))
                                         ->select('id', 'name', 'type', 'code')
                                         ->get();
                                     if (filled($data)) {
                                         foreach ($data as $value) {
                                             $type = strtoupper($value->type);
-                                            $options[$type][$value->id] = $value->name . ' (' . $value->code . ')';
+                                            $options[$type][$value->id] = $value->name.' ('.$value->code.')';
                                         }
                                     }
+
                                     return $options;
                                 }
                             )
@@ -105,15 +112,15 @@ class ProductResource extends Resource
                             ->preload()
                             ->nullable(),
                     ]),
-                Forms\Components\Section::make('')
-                    ->visible(fn($operation) => $operation == 'view' || $operation == 'create')
+                Schemas\Components\Section::make('')
+                    ->visible(fn ($operation) => $operation == 'view' || $operation == 'create')
                     ->schema([
                         Forms\Components\Checkbox::make('automatic_code')
-                            ->label('Generar código de forma automática')
+                            ->label('Generar código de forma automática'),
                     ]),
-                Forms\Components\Section::make('')
+                Schemas\Components\Section::make('')
                     ->schema([
-                        Forms\Components\Textarea::make('name')
+                        Textarea::make('name')
                             ->label('Nombre del producto/servicio')
                             ->required()
                             ->maxLength(600)
@@ -143,15 +150,15 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus'),
-                 Tables\Columns\TextColumn::make('type_purchase')
+                Tables\Columns\TextColumn::make('type_purchase')
                     ->label('Tipo')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'servicio' => 'info',
                         'proveeduria' => 'success',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'servicio' => 'Servicio',
                         'proveeduria' => 'Producto',
                         default => $state,
@@ -176,13 +183,13 @@ class ProductResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                // Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make()
-                    ->visible(fn($record) => $record->status == 'aprobado' || $record->status == 'pendiente'),
+            ->recordActions([
+                // Actions\ViewAction::make(),
+                Actions\EditAction::make()
+                    ->visible(fn ($record) => $record->status == 'aprobado' || $record->status == 'pendiente'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkAction::make('aceptar')
+            ->toolbarActions([
+                Actions\BulkAction::make('aceptar')
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
                         try {
@@ -200,10 +207,10 @@ class ProductResource extends Resource
                                 ->danger()
                                 ->send();
                         }
-                    })
+                    }),
             ])
             ->checkIfRecordIsSelectableUsing(
-                fn(Model $record): bool => $record->status == 'pendiente',
+                fn (Model $record): bool => $record->status == 'pendiente',
             );
     }
 

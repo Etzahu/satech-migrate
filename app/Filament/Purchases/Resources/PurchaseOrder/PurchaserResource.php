@@ -2,59 +2,64 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
-use Closure;
-use Money\Money;
-use Filament\Forms;
-use Money\Currency;
-use Filament\Tables;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
-use Filament\Forms\Form;
-use Brick\Math\BigDecimal;
-use Filament\Tables\Table;
-use App\Models\PurchaseOrder;
-use App\Models\ProviderContact;
-use App\Models\PurchaseProvider;
-use Filament\Resources\Resource;
-use Illuminate\Support\HtmlString;
-use App\Models\PurchaseRequisition;
-use Filament\Forms\Components\Tabs;
-use Money\Currencies\ISOCurrencies;
-use App\Forms\Components\MoneyInput;
-use Illuminate\Support\Facades\Storage;
-use Money\Formatter\IntlMoneyFormatter;
-use Filament\Notifications\Notification;
-use Filament\Support\Enums\IconPosition;
-use App\Services\OrderCalculationService;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\MediaLibrary\Support\MediaStream;
-use App\Infolists\Components\PRProgressApproval;
-// use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
-use Filament\Infolists\Components\Actions\Action;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\RelationManagers;
+use App\Forms\Components\MoneyInput;
+use App\Models\ProviderContact;
+use App\Models\PurchaseOrder;
+use App\Models\PurchaseProvider;
+use App\Models\PurchaseRequisition;
+use App\Services\OrderCalculationService;
+use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use Brick\Math\BigDecimal;
+use Closure;
+use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Infolists;
+use Filament\Resources\Resource;
+use Filament\Schemas\Components\Actions as SchemaActions;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+// use Pelmered\FilamentMoneyField\Infolists\Components\MoneyEntry;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
+use Filament\Support\Enums\IconPosition;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
+use Njxqlus\Filament\Components\Forms\RelationManager;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\MediaLibrary\Support\MediaStream;
 
-
-class PurchaserResource extends Resource  implements HasShieldPermissions
+class PurchaserResource extends Resource implements HasShieldPermissions
 {
     protected static ?string $model = PurchaseOrder::class;
+
     protected static ?string $modelLabel = 'Orden';
+
     protected static ?string $pluralModelLabel = 'Orden';
+
     protected static ?string $navigationLabel = 'Mis ordenes';
+
     protected static ?string $slug = 'ordenes';
-    protected static ?string $navigationGroup = 'Orden';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Orden';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 2;
 
     public static function canAccess(): bool
     {
         return auth()->user()->hasRole('comprador');
     }
+
     public static function getPermissionPrefixes(): array
     {
         return [
@@ -64,22 +69,24 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
             'update',
             'delete',
             'delete_any',
-            'view_approve-level-1', //Revisar gerente de compras
-            'view_approve_level-2', //Revisar gerente relacionado a la requisicion
-            'view_approve-level-3', //Revisar por direccion (Denisse)
-            'view_approve_level-4', //Si el total de la orden es mayor a X de valor revisa Carlos
+            'view_approve-level-1', // Revisar gerente de compras
+            'view_approve_level-2', // Revisar gerente relacionado a la requisicion
+            'view_approve-level-3', // Revisar por direccion (Denisse)
+            'view_approve_level-4', // Si el total de la orden es mayor a X de valor revisa Carlos
         ];
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->myRequisitions();
     }
-    public static function form(Form $form, array $options = []): Form
+
+    public static function form(Schema $form, array $options = []): Schema
     {
         return $form
             ->columns(1)
             ->schema([
-                Forms\Components\Tabs::make('Tabs')
+                Tabs::make('Tabs')
                     ->tabs([
                         Tabs\Tab::make('Datos generales')
                             ->columns(2)
@@ -104,7 +111,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->label('Forma de pago')
                                     ->options([
                                         'efectivo' => 'Efectivo',
-                                        'transferencia' => 'Transferencia'
+                                        'transferencia' => 'Transferencia',
                                     ])
                                     ->required(),
                                 Forms\Components\TextInput::make('quote_folio')
@@ -112,7 +119,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->required()
                                     ->maxLength(100),
                                 Forms\Components\Select::make('use_cfdi')
-                                    ->label('Uso de CFDI')
+                                    ->label('Uso deÂ CFDI')
                                     ->options([
                                         'G01-Adquisición de mercancías' => 'G01 - Adquisición de mercancías',
                                         'G02-Devoluciones y descuentos sobre compras' => 'G02 - Devoluciones y descuentos sobre compras',
@@ -149,7 +156,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                             ]),
                         Tabs\Tab::make('Partidas')->schema([
                             // Es para que el administrador pueda editar las partidas cuando la orden este liberada
-                            \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true)
+                            RelationManager::make()->manager(RelationManagers\ItemsRelationManager::class)->lazy(true),
                         ])->visible(in_array('show_relation_items', $options)),
                         Tabs\Tab::make('Condiciones de pago')
                             ->schema([
@@ -178,7 +185,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                         $collection = $get('condition_payment');
                                         $sum = 0;
                                         foreach ($collection as $item) {
-                                            $sum += (int)$item['value'];
+                                            $sum += (int) $item['value'];
                                         }
                                         $set('total', $sum);
                                     }),
@@ -199,7 +206,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->required()
                                     ->live()
                                     ->columnSpan('full')
-                                    ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get) {
+                                    ->afterStateUpdated(function (Set $set, Get $get) {
                                         $set('provider_contact_id', null);
                                     }),
                                 Forms\Components\Select::make('provider_contact_id')
@@ -207,7 +214,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->searchable()
                                     ->preload()
                                     ->live()
-                                    ->options(function (Forms\Set $set, Forms\Get $get) {
+                                    ->options(function (Set $set, Get $get) {
                                         return ProviderContact::where('provider_id', $get('provider_id'))->pluck('name', 'id');
                                     })
                                     ->required()
@@ -270,7 +277,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->helperText(new HtmlString("<p class='p-1 text-white bg-red-500 rounded-md'>La cantidad debe ser un número sin espacios ni comillas y con exactamente 4 decimales (ej: 0.0000).</p>"))
                                     ->required()
                                     ->rules([
-                                        fn(): Closure => function (string $attribute, $value, Closure $fail) {
+                                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
                                             if (preg_match('/^\d+\.\d{4}$/', $value)) {
                                                 return true;
                                             } else {
@@ -282,12 +289,14 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                         Tabs\Tab::make('Entrega')
                             ->columns(1)
                             ->schema([
-                                Forms\Components\DatePicker::make('initial_delivery_date') //TODO: falta validar esta logica cuando se edita
-                                    ->label('Inicial')
-                                    ->required(),
-                                Forms\Components\DatePicker::make('final_delivery_date') //TODO: falta validar esta logica cuando se edita
-                                    ->label('Final')
-                                    ->required(),
+                                Forms\Components\TextInput::make('delivery_days')
+                                    ->label('Tiempo de entrega (días)')
+                                    ->required()
+                                    ->numeric()
+                                    ->integer()
+                                    ->minValue(1)
+                                    ->suffixIcon('heroicon-o-calendar-days')
+                                    ->helperText('Días calendario a partir de la fecha de aprobación de la orden.'),
                                 Forms\Components\Textarea::make('delivery_address')
                                     ->label('Dirección de entrega')
                                     ->default('Almacén, Av. Santa Mónica No.33, Col El Mirador, Tlalnepantla de Baz, Estado de México 54080.'),
@@ -300,7 +309,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                         Forms\Components\TextInput::make('name')
                                             ->label('Nombre del documento')
                                             ->required(),
-                                    ])
+                                    ]),
                             ]),
                         Tabs\Tab::make('Observaciones')
                             ->columns(2)
@@ -313,256 +322,169 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                     ->columnSpanFull(),
                             ]),
                     ])
-                    ->activeTab(1)
+                    ->activeTab(1),
             ]);
     }
-    public static function infolist(Infolist $infolist, $options = []): Infolist
+
+    public static function infolist(Schema $infolist, $options = []): Schema
     {
         return $infolist
-            ->columns(1)
+            ->columns(3)
             ->schema([
-                Infolists\Components\Tabs::make('tabs')
-                    ->tabs([
-                        Infolists\Components\Tabs\Tab::make('Orden de compra')
+                // ── Columna principal (izquierda) ─────────────────────────────
+                Group::make()
+                    ->columnSpan(2)
+                    ->schema([
+                        // Header: datos clave siempre visibles
+                        Fieldset::make('')
+                            ->extraAttributes(['class' => 'bg-white dark:bg-gray-800 rounded-xl shadow-sm'])
                             ->schema([
-                                Infolists\Components\Tabs::make('Tabs')
-                                    ->tabs([
-                                        Infolists\Components\Tabs\Tab::make('Datos generales')
-                                            ->columns(3)
-                                            ->schema([
-                                                Infolists\Components\TextEntry::make('folio')
-                                                    ->label('Folio')
-                                                    ->columnSpan('full'),
-                                                Infolists\Components\TextEntry::make('status')
-                                                    ->label('Estatus')
-                                                    ->badge()
-                                                    ->color('success'),
-                                                Infolists\Components\TextEntry::make('currency')
-                                                    ->label('Moneda'),
-                                                Infolists\Components\TextEntry::make('requisition.project.name')
-                                                    ->label('Proyecto de la requisición'),
-                                                Infolists\Components\TextEntry::make('type_payment')
-                                                    ->label('Tipo de pago'),
-                                                Infolists\Components\TextEntry::make('form_payment')
-                                                    ->label('Forma de pago'),
-                                                Infolists\Components\TextEntry::make('quote_folio')
-                                                    ->label('Folio de cotización'),
-                                                Infolists\Components\TextEntry::make('use_cfdi')
-                                                    ->label('Uso de CFDI'),
-                                                Infolists\Components\TextEntry::make('shipping_method')
-                                                    ->label('Método de envío'),
-                                                Infolists\Components\TextEntry::make('tax_iva')
-                                                    ->label('IVA')
-                                                    ->icon('heroicon-o-percent-badge')
-                                                    ->iconPosition(IconPosition::After)
-                                                    ->iconColor('primary'),
-                                                Infolists\Components\TextEntry::make('requisition.folio')
-                                                    ->label('Requisición')
-                                                    ->hidden($options['rq'] ?? false),
-                                                Infolists\Components\TextEntry::make('created_at')
-                                                    ->label('Fecha de creación')
-                                                    ->date(),
-                                            ]),
-                                        Infolists\Components\Tabs\Tab::make('Partidas')
-                                            ->schema([
-                                                Infolists\Components\RepeatableEntry::make('items')
-                                                    ->label('')
-                                                    ->contained(false)
-                                                    ->schema([
-                                                        Infolists\Components\Fieldset::make('')
-                                                            ->extraAttributes(function ($state, $record) {
-                                                                if (auth()->user()->hasRole('comprador')) {
-                                                                    if ($record->unit_price == 0) {
-                                                                        return ['class' => 'border-2 border-red-600 bg-red-100 dark:bg-red-800  dark:border-red-800'];
-                                                                    } else {
-                                                                        return ['class' => 'border-2 border-green-600 bg-green-100 dark:bg-green-800  dark:border-green-800'];
-                                                                    }
-                                                                } else {
-                                                                    return [];
-                                                                }
-                                                            })
-                                                            ->schema([
-                                                                Infolists\Components\TextEntry::make('product.name')
-                                                                    ->label('Producto/Servicio'),
-                                                                Infolists\Components\TextEntry::make('product.unit.acronym')
-                                                                    ->label('Unidad'),
-                                                                Infolists\Components\TextEntry::make('quantity')
-                                                                    ->label('Cantidad')
-                                                                    ->numeric(decimalPlaces: 2),
-                                                                Infolists\Components\TextEntry::make('unit_price')
-                                                                    ->label('Precio unitario')
-                                                                    ->formatStateUsing(function ($state) {
-                                                                        if (blank($state)) {
-                                                                            return '0.0000';
-                                                                        }
-                                                                        $service = new OrderCalculationService();
-                                                                        // $state = BigDecimal::of($state)->dividedBy(10000, 4);
-                                                                        $state = $service->brickFormatter($state);
-                                                                        return  $state;
-                                                                    }),
-                                                                Infolists\Components\TextEntry::make('sub_total')
-                                                                    ->label('Subtotal')
-                                                                    ->formatStateUsing(function ($state) {
-                                                                        if (blank($state)) {
-                                                                            return '0.0000';
-                                                                        }
-                                                                        $service = new OrderCalculationService();
-                                                                        // $state = BigDecimal::of($state)->dividedBy(10000, 4);
-                                                                        $state = $service->brickFormatter($state);
-                                                                        return  $state;
-                                                                    }),
-                                                                Infolists\Components\TextEntry::make('observation')
-                                                                    ->label('Observación')
-                                                                    ->columnSpanFull(),
-                                                            ])
-                                                            ->columns([
-                                                                'xs' => 1,
-                                                                'sm' => 2,
-                                                                'xl' => 4,
-                                                                '2xl' => 6,
-                                                            ])
-                                                    ])
-                                                    ->grid(1)
-                                            ]),
-                                        Infolists\Components\Tabs\Tab::make('Flujo de aprobación')
-                                            ->visible(fn($record) => $record->status !== 'borrador')
-                                            ->schema([
-                                                Infolists\Components\ViewEntry::make('progress')
-                                                    ->view('filament.infolists.entries.progress-approval')
-                                            ])
-                                            ->columns(1),
-                                        Infolists\Components\Tabs\Tab::make('Historial')
-                                            ->schema([
-                                                Infolists\Components\ViewEntry::make('status')
-                                                    ->view('filament.infolists.entries.history'),
-                                            ]),
-                                        Infolists\Components\Tabs\Tab::make('Condiciones de pago')
-                                            ->schema([
-                                                Infolists\Components\RepeatableEntry::make('condition_payment')
-                                                    ->label('')
-                                                    ->columns(2)
-                                                    ->schema([
-                                                        Infolists\Components\TextEntry::make('concept')
-                                                            ->label('Concepto'),
-                                                        Infolists\Components\TextEntry::make('value')
-                                                            ->label('Valor')
-                                                    ])
-                                            ]),
-                                        Infolists\Components\Tabs\Tab::make('Proveedor')
-                                            ->schema([
-                                                Infolists\Components\TextEntry::make('provider.company_name')
-                                                    ->label('Proveedor'),
-                                                Infolists\Components\TextEntry::make('providerContact.name')
-                                                    ->label('Nombre'),
-                                                Infolists\Components\TextEntry::make('providerContact.email')
-                                                    ->label('Correo'),
-                                                Infolists\Components\TextEntry::make('providerContact.cell_phone')
-                                                    ->label('Teléfono'),
-                                            ]),
+                                Infolists\Components\TextEntry::make('folio')
+                                    ->label('Folio')
+                                    ->weight(FontWeight::Bold),
+                                Infolists\Components\TextEntry::make('status')
+                                    ->label('Estatus')
+                                    ->badge()
+                                    ->color('success'),
+                                Infolists\Components\TextEntry::make('currency')
+                                    ->label('Moneda')
+                                    ->badge()
+                                    ->color('gray'),
+                                Infolists\Components\TextEntry::make('provider.company_name')
+                                    ->label('Proveedor'),
+                                Infolists\Components\TextEntry::make('requisition.folio')
+                                    ->label('Requisición')
+                                    ->hidden($options['rq'] ?? false),
+                                Infolists\Components\TextEntry::make('created_at')
+                                    ->label('Creada el')
+                                    ->date('d/m/Y'),
+                            ])
+                            ->columns([
+                                'sm' => 2,
+                                'lg' => 3,
+                                'xl' => 6,
+                            ]),
 
-                                        Infolists\Components\Tabs\Tab::make('Soporte')
+                        // Tabs de un solo nivel
+                        Tabs::make('tabs')
+                            ->tabs([
+                                // 1. Datos generales
+                                Tabs\Tab::make(
+                                    'Datos generales'
+                                )
+                                    ->icon('heroicon-o-document-text')
+                                    ->columns(3)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('type_payment')
+                                            ->label('Tipo de pago'),
+                                        Infolists\Components\TextEntry::make('form_payment')
+                                            ->label('Forma de pago'),
+                                        Infolists\Components\TextEntry::make('quote_folio')
+                                            ->label('Folio de cotización'),
+                                        Infolists\Components\TextEntry::make('use_cfdi')
+                                            ->label('Uso de CFDI'),
+                                        Infolists\Components\TextEntry::make('shipping_method')
+                                            ->label('Método de envío'),
+                                        Infolists\Components\TextEntry::make('tax_iva')
+                                            ->label('IVA')
+                                            ->icon('heroicon-o-percent-badge')
+                                            ->iconPosition(IconPosition::After)
+                                            ->iconColor('primary'),
+                                        Infolists\Components\TextEntry::make('requisition.project.name')
+                                            ->label('Proyecto'),
+                                        Infolists\Components\TextEntry::make('observations')
+                                            ->label('Observaciones')
+                                            ->columnSpanFull()
+                                            ->placeholder('Sin observaciones'),
+                                    ]),
+
+                                // 2. Partidas
+                                Tabs\Tab::make('Partidas')
+                                    ->icon('heroicon-o-list-bullet')
+                                    ->schema([
+                                        Infolists\Components\RepeatableEntry::make('items')
+                                            ->label('')
+                                            ->contained(false)
                                             ->schema([
-                                                Infolists\Components\TextEntry::make('doc_1')
-                                                    // ->label('Justificación')
-                                                    ->label('Tabla comparativa o adjudicación directa en su lugar')
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->id)
-                                                            ->where('collection_name', 'justification')
-                                                            ->first();
-                                                        if (!filled($media)) {
-                                                            return 'Sin documento';
-                                                        }
-                                                        return $media->name;
-                                                    })
-                                                    ->hintActions([
-                                                        Infolists\Components\Actions\Action::make('Ver documento')
-                                                            ->url(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'justification')
-                                                                    ->first();
-                                                                    if (!filled($media)) {
-                                                                        return '#';
-                                                                    }
-                                                                return  route('media.show', ['id' => $media->id]);
-                                                            })
-                                                            ->openUrlInNewTab(),
-                                                        Action::make('Descargar')
-                                                            ->action(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'justification')
-                                                                    ->first();
-                                                                return response()->download($media->getPath(), $media->file_name);
-                                                            }),
-                                                    ]),
-                                                Infolists\Components\TextEntry::make('doc_7')
-                                                    ->label('Cotización')
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->id)
-                                                            ->where('collection_name', 'quote')
-                                                            ->first();
-                                                            if (!filled($media)) {
-                                                                return 'Sin documento';
+                                                Fieldset::make('')
+                                                    ->extraAttributes(function ($state, $record) {
+                                                        if (auth()->user()->hasRole('comprador')) {
+                                                            if ($record->unit_price == 0) {
+                                                                return ['class' => 'border-2 border-red-600 bg-red-100 dark:bg-red-800  dark:border-red-800'];
+                                                            } else {
+                                                                return ['class' => 'border-2 border-green-600 bg-green-100 dark:bg-green-800  dark:border-green-800'];
                                                             }
-                                                        return $media->name;
+                                                        } else {
+                                                            return [];
+                                                        }
                                                     })
-                                                    ->hintActions([
-                                                        Infolists\Components\Actions\Action::make('Ver documento')
-                                                            ->url(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'quote')
-                                                                    ->first();
-                                                                    if (!filled($media)) {
-                                                                        return '#';
-                                                                    }
-                                                                return  route('media.show', ['id' => $media->id]);
-                                                            })
-                                                            ->openUrlInNewTab(),
-                                                        Action::make('Descargar')
-                                                            ->action(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'quote')
-                                                                    ->first();
-                                                                    if (!filled($media)) {
-                                                                        return 'Sin documento';
-                                                                    }
-                                                                return response()->download($media->getPath(), $media->file_name);
-                                                            }),
-                                                    ]),
-                                                // documentacion opcional
-                                                Infolists\Components\TextEntry::make('doc_3')
-                                                    ->label('Certificaciones')
-                                                    ->visible(function ($record) {
-                                                        $media = Media::where('model_id', $record->id)
-                                                            ->where('collection_name', 'certifications')
-                                                            ->first();
-                                                        return filled($media);
-                                                    })
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->id)
-                                                            ->where('collection_name', 'certifications')
-                                                            ->first();
-                                                        return $media->name;
-                                                    })
-                                                    ->hintActions([
-                                                        Infolists\Components\Actions\Action::make('Ver documento')
-                                                            ->url(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'certifications')
-                                                                    ->first();
-                                                                return  route('media.show', ['id' => $media->id]);
-                                                            })
-                                                            ->openUrlInNewTab(),
-                                                        Action::make('Descargar')
-                                                            ->action(function ($record) {
-                                                                $media = Media::where('model_id', $record->id)
-                                                                    ->where('collection_name', 'certifications')
-                                                                    ->first();
-                                                                return response()->download($media->getPath(), $media->file_name);
-                                                            }),
-                                                    ]),
-                                            ]),
+                                                    ->schema([
+                                                        Infolists\Components\TextEntry::make('product.name')
+                                                            ->label('Producto/Servicio'),
+                                                        Infolists\Components\TextEntry::make('product.unit.acronym')
+                                                            ->label('Unidad'),
+                                                        Infolists\Components\TextEntry::make('quantity')
+                                                            ->label('Cantidad')
+                                                            ->numeric(decimalPlaces: 2),
+                                                        Infolists\Components\TextEntry::make('unit_price')
+                                                            ->label('Precio unitario')
+                                                            ->formatStateUsing(function ($state, $record) {
+                                                                if (blank($state)) {
+                                                                    return '0.0000';
+                                                                }
+                                                                $service = new OrderCalculationService;
+                                                                $state = $service->brickFormatter($state, 'MXN');
 
-                                        Infolists\Components\Tabs\Tab::make('Retenciones')
+                                                                return $state;
+                                                            }),
+                                                        Infolists\Components\TextEntry::make('sub_total')
+                                                            ->label('Subtotal')
+                                                            ->formatStateUsing(function ($state, $record) {
+                                                                if (blank($state)) {
+                                                                    return '0.0000';
+                                                                }
+                                                                $service = new OrderCalculationService;
+                                                                $state = $service->brickFormatter($state, 'MXN');
+
+                                                                return $state;
+                                                            }),
+                                                        Infolists\Components\TextEntry::make('observation')
+                                                            ->label('Observación')
+                                                            ->columnSpanFull(),
+                                                    ])
+                                                    ->columns([
+                                                        'xs' => 1,
+                                                        'sm' => 2,
+                                                        'xl' => 4,
+                                                        '2xl' => 6,
+                                                    ]),
+                                            ])
+                                            ->grid(1),
+                                    ]),
+
+                                // 3. Proveedor
+                                Tabs\Tab::make('Proveedor')
+                                    ->icon('heroicon-o-building-storefront')
+                                    ->columns(2)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('provider.company_name')
+                                            ->label('Empresa')
+                                            ->columnSpanFull(),
+                                        Infolists\Components\TextEntry::make('providerContact.name')
+                                            ->label('Contacto'),
+                                        Infolists\Components\TextEntry::make('providerContact.email')
+                                            ->label('Correo')
+                                            ->icon('heroicon-o-envelope'),
+                                        Infolists\Components\TextEntry::make('providerContact.cell_phone')
+                                            ->label('Teléfono')
+                                            ->icon('heroicon-o-phone'),
+                                    ]),
+
+                                // 4. Finanzas
+                                Tabs\Tab::make('Finanzas')
+                                    ->icon('heroicon-o-banknotes')
+                                    ->schema([
+                                        Fieldset::make('Retenciones')
                                             ->columns(3)
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('retention_iva')
@@ -577,14 +499,14 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->iconPosition(IconPosition::After)
                                                     ->iconColor('primary'),
                                                 Infolists\Components\TextEntry::make('retention_another')
-                                                    ->label('OTRO')
+                                                    ->label('Otro')
                                                     ->icon('heroicon-o-percent-badge')
                                                     ->iconPosition(IconPosition::After)
                                                     ->iconColor('primary')
                                                     ->numeric(),
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Descuento del proveedor')
-                                            ->columns(3)
+                                        Fieldset::make('Descuento del proveedor')
+                                            ->columns(1)
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('discount')
                                                     ->label('Descuento')
@@ -593,58 +515,172 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                             return '0.0000';
                                                         }
                                                         $state = BigDecimal::of($state)->dividedBy(10000, 4);
+
                                                         return (string) $state;
-                                                    })
+                                                    }),
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Entrega')
-                                            ->columns(1)
+                                        Fieldset::make('Condiciones de pago')
                                             ->schema([
-                                                Infolists\Components\TextEntry::make('initial_delivery_date')
-                                                    ->label('Inicial')
-                                                    ->date(),
-                                                Infolists\Components\TextEntry::make('final_delivery_date')
-                                                    ->label('Final')
-                                                    ->date(),
-                                                Infolists\Components\Textentry::make('delivery_address')
-                                                    ->label('Dirección de entrega'),
-                                                Infolists\Components\RepeatableEntry::make('documentation_delivery')
-                                                    ->label('Documentación de entrega')
+                                                Infolists\Components\RepeatableEntry::make('condition_payment')
+                                                    ->label('')
+                                                    ->columns(2)
                                                     ->schema([
-                                                        Infolists\Components\TextEntry::make('name')
-                                                            ->label('Nombre del documento'),
+                                                        Infolists\Components\TextEntry::make('concept')
+                                                            ->label('Concepto'),
+                                                        Infolists\Components\TextEntry::make('value')
+                                                            ->label('Valor'),
                                                     ]),
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Observaciones')
-                                            ->columns(1)
+                                    ]),
+
+                                // 5. Entrega
+                                Tabs\Tab::make('Entrega')
+                                    ->icon('heroicon-o-truck')
+                                    ->columns(1)
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('delivery_days')
+                                            ->label('Tiempo de entrega')
+                                            ->suffix(' días'),
+                                        Infolists\Components\TextEntry::make('final_delivery_date')
+                                            ->label('Fecha de entrega (calculada)')
+                                            ->date()
+                                            ->placeholder('Pendiente de aprobación')
+                                            ->visible(fn ($record) => filled($record->final_delivery_date)),
+                                        Infolists\Components\TextEntry::make('delivery_address')
+                                            ->label('Dirección de entrega'),
+                                        Infolists\Components\RepeatableEntry::make('documentation_delivery')
+                                            ->label('Documentación de entrega')
                                             ->schema([
-                                                Infolists\Components\Textentry::make('observations')
-                                                    ->label('Observaciones'),
+                                                Infolists\Components\TextEntry::make('name')
+                                                    ->label('Nombre del documento'),
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Resumen del total')
-                                            ->columns(1)
-                                            ->schema([
-                                                Infolists\Components\KeyValueEntry::make('total')
-                                                    ->keyLabel('Concepto')
-                                                    ->valueLabel('Resultado')
+                                    ]),
+
+                                // 6. Soporte
+                                Tabs\Tab::make('Soporte')
+                                    ->icon('heroicon-o-paper-clip')
+                                    ->schema([
+                                        Infolists\Components\TextEntry::make('doc_1')
+                                            ->label('Tabla comparativa o adjudicación directa')
+                                            ->state(function ($record) {
+                                                $media = Media::where('model_id', $record->id)
+                                                    ->where('collection_name', 'justification')
+                                                    ->first();
+                                                if (! filled($media)) {
+                                                    return 'Sin documento';
+                                                }
+
+                                                return $media->name;
+                                            })
+                                            ->hintActions([
+                                                Action::make('Ver documento')
+                                                    ->url(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'justification')
+                                                            ->first();
+                                                        if (! filled($media)) {
+                                                            return '#';
+                                                        }
+
+                                                        return route('media.show', ['id' => $media->id]);
+                                                    })
+                                                    ->openUrlInNewTab(),
+                                                Action::make('Descargar')
+                                                    ->action(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'justification')
+                                                            ->first();
+
+                                                        return response()->download($media->getPath(), $media->file_name);
+                                                    }),
                                             ]),
-                                    ])
-                                    ->contained(false)
-                                    ->activeTab(1)
-                            ]),
-                        Infolists\Components\Tabs\Tab::make('Requisición')
-                            ->schema([
-                                Infolists\Components\Tabs::make('Tabs')
-                                    // inicio infolist
-                                    ->contained(false)
-                                    ->tabs([
-                                        Infolists\Components\Tabs\Tab::make('Información general')
+                                        Infolists\Components\TextEntry::make('doc_7')
+                                            ->label('Cotización')
+                                            ->state(function ($record) {
+                                                $media = Media::where('model_id', $record->id)
+                                                    ->where('collection_name', 'quote')
+                                                    ->first();
+                                                if (! filled($media)) {
+                                                    return 'Sin documento';
+                                                }
+
+                                                return $media->name;
+                                            })
+                                            ->hintActions([
+                                                Action::make('Ver documento')
+                                                    ->url(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'quote')
+                                                            ->first();
+                                                        if (! filled($media)) {
+                                                            return '#';
+                                                        }
+
+                                                        return route('media.show', ['id' => $media->id]);
+                                                    })
+                                                    ->openUrlInNewTab(),
+                                                Action::make('Descargar')
+                                                    ->action(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'quote')
+                                                            ->first();
+                                                        if (! filled($media)) {
+                                                            return 'Sin documento';
+                                                        }
+
+                                                        return response()->download($media->getPath(), $media->file_name);
+                                                    }),
+                                            ]),
+                                        Infolists\Components\TextEntry::make('doc_3')
+                                            ->label('Certificaciones')
+                                            ->visible(function ($record) {
+                                                $media = Media::where('model_id', $record->id)
+                                                    ->where('collection_name', 'certifications')
+                                                    ->first();
+
+                                                return filled($media);
+                                            })
+                                            ->state(function ($record) {
+                                                $media = Media::where('model_id', $record->id)
+                                                    ->where('collection_name', 'certifications')
+                                                    ->first();
+
+                                                return $media->name;
+                                            })
+                                            ->hintActions([
+                                                Action::make('Ver documento')
+                                                    ->url(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'certifications')
+                                                            ->first();
+
+                                                        return route('media.show', ['id' => $media->id]);
+                                                    })
+                                                    ->openUrlInNewTab(),
+                                                Action::make('Descargar')
+                                                    ->action(function ($record) {
+                                                        $media = Media::where('model_id', $record->id)
+                                                            ->where('collection_name', 'certifications')
+                                                            ->first();
+
+                                                        return response()->download($media->getPath(), $media->file_name);
+                                                    }),
+                                            ]),
+                                    ]),
+
+                                // 7. Requisición
+                                Tabs\Tab::make('Requisición')
+                                    ->icon('heroicon-o-clipboard-document-list')
+                                    ->schema([
+                                        Fieldset::make('Información general')
+                                            ->columns(3)
                                             ->schema([
                                                 Infolists\Components\TextEntry::make('requisition.status')
                                                     ->label('Estatus')
                                                     ->badge()
                                                     ->color('success'),
                                                 Infolists\Components\TextEntry::make('requisition.type')
-                                                    ->label('Tipo de requisición')
+                                                    ->label('Tipo')
                                                     ->badge()
                                                     ->color('success'),
                                                 Infolists\Components\TextEntry::make('requisition.priority')
@@ -652,7 +688,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                     ->badge()
                                                     ->color('success'),
                                                 Infolists\Components\TextEntry::make('requisition.category')
-                                                    ->label('Categoría de requisición')
+                                                    ->label('Categoría')
                                                     ->badge()
                                                     ->color('success'),
                                                 Infolists\Components\TextEntry::make('requisition.approvalChain.requester.name')
@@ -662,18 +698,20 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                 Infolists\Components\TextEntry::make('requisition.folio')
                                                     ->label('Folio'),
                                                 Infolists\Components\TextEntry::make('requisition.date_delivery')
-                                                    ->label('Fecha deseable de entrega')
+                                                    ->label('Fecha deseada de entrega')
                                                     ->date(),
                                                 Infolists\Components\TextEntry::make('requisition.project.name')
                                                     ->label('Proyecto'),
                                                 Infolists\Components\TextEntry::make('requisition.delivery_address')
-                                                    ->label('Dirección de entrega'),
-                                            ])
-                                            ->columns(3),
-                                        Infolists\Components\Tabs\Tab::make('Partidas')
+                                                    ->label('Dirección de entrega')
+                                                    ->columnSpanFull(),
+                                            ]),
+                                        Fieldset::make('Partidas de la requisición')
+                                            ->columns(1)
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('requisition.items')
                                                     ->label('')
+                                                    ->columns(5)
                                                     ->schema([
                                                         Infolists\Components\TextEntry::make('product.code')
                                                             ->label('Código'),
@@ -681,33 +719,21 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                             ->label('Producto'),
                                                         Infolists\Components\TextEntry::make('quantity_warehouse')
                                                             ->numeric(decimalPlaces: 2)
-                                                            ->label('Cantidad en almacén'),
+                                                            ->label('En almacén'),
                                                         Infolists\Components\TextEntry::make('quantity_purchase')
                                                             ->numeric(decimalPlaces: 2)
-                                                            ->label('Cantidad para comprar'),
+                                                            ->label('A comprar'),
                                                         Infolists\Components\TextEntry::make('observation')
-                                                            ->label('Observación')
-                                                            ->columnSpan(2),
-                                                    ])
-                                                    ->columns(5)
+                                                            ->label('Observación'),
+                                                    ]),
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Comprador asignado')
-                                            ->visible(fn($record) => filled($record->requisition->purchaser))
-                                            ->schema([
-                                                Infolists\Components\TextEntry::make('purchaser.name')
-                                                    ->label('Nombre'),
-                                            ]),
-                                        Infolists\Components\Tabs\Tab::make('Observaciones')
-                                            ->schema([
-                                                Infolists\Components\TextEntry::make('observation')
-                                                    ->label('Observaciones'),
-                                            ]),
-                                        Infolists\Components\Tabs\Tab::make('Fichas técnicas')
-                                            ->visible(fn($record) => $record->requisition->getMedia('technical_data_sheets')->count() > 0)
+                                        Fieldset::make('Fichas técnicas')
+                                            ->visible(fn ($record) => $record->requisition->getMedia('technical_data_sheets')->count() > 0)
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('media')
                                                     ->state(function ($record) {
                                                         $record->media = $record->requisition->getMedia('technical_data_sheets');
+
                                                         return $record->media;
                                                     })
                                                     ->label('')
@@ -715,16 +741,17 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         Infolists\Components\TextEntry::make('name')
                                                             ->label('Nombre del archivo'),
                                                     ]),
-                                                Infolists\Components\Actions::make([
-                                                    Infolists\Components\Actions\Action::make('Descargar fichas')
+                                                SchemaActions::make([
+                                                    Action::make('Descargar fichas')
                                                         ->action(function ($record) {
                                                             $downloads = $record->requisition->getMedia('technical_data_sheets');
-                                                            return MediaStream::create($record->requisition->folio . '-fichas-tecnicas.zip')->addMedia($downloads);
+
+                                                            return MediaStream::create($record->requisition->folio.'-fichas-tecnicas.zip')->addMedia($downloads);
                                                         }),
                                                 ]),
                                             ]),
-                                        Infolists\Components\Tabs\Tab::make('Soportes')
-                                            ->visible(fn($record) => $record->requisition->getMedia('supports')->count() > 0)
+                                        Fieldset::make('Soportes')
+                                            ->visible(fn ($record) => $record->requisition->getMedia('supports')->count() > 0)
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('media')
                                                     ->state(function ($record) {
@@ -732,6 +759,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                             ->where('collection_name', 'supports')
                                                             ->get();
                                                         $record->media = $media;
+
                                                         return $record->media;
                                                     })
                                                     ->label('')
@@ -739,22 +767,60 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
                                                         Infolists\Components\TextEntry::make('name')
                                                             ->label('Nombre del archivo'),
                                                     ]),
-                                                Infolists\Components\Actions::make([
-                                                    Infolists\Components\Actions\Action::make('Descargar soportes')
+                                                SchemaActions::make([
+                                                    Action::make('Descargar soportes')
                                                         ->action(function ($record) {
                                                             $downloads = Media::where('model_id', $record->requisition->id)
                                                                 ->where('collection_name', 'supports')
                                                                 ->get();
-                                                            return MediaStream::create($record->requisition->folio . '-soportes.zip')->addMedia($downloads);
+
+                                                            return MediaStream::create($record->requisition->folio.'-soportes.zip')->addMedia($downloads);
                                                         }),
                                                 ]),
                                             ]),
-
-
-                                    ])
+                                        Fieldset::make('Observaciones de la requisición')
+                                            ->schema([
+                                                Infolists\Components\TextEntry::make('observation')
+                                                    ->label('')
+                                                    ->placeholder('Sin observaciones')
+                                                    ->columnSpanFull(),
+                                            ]),
+                                    ]),
 
                             ]),
-                    ])
+                    ]),
+                // ── Columna lateral derecha (siempre visible) ─────────────────
+                Group::make()
+                    // ->columnSpan(1)
+                    ->columns(1)
+                    ->schema([
+                        // Resumen del total
+                        Infolists\Components\ViewEntry::make('total_summary')
+                            ->label('')
+                            ->view('filament.infolists.entries.order-total-summary'),
+
+                        // Flujo de aprobación e Historial en pestañas
+                        Tabs::make('Seguimiento')
+                            ->visible(fn ($record) => $record->status !== 'borrador')
+                            ->extraAttributes(['class' => 'bg-white dark:bg-gray-800 rounded-xl shadow-sm'])
+                            ->schema([
+                                Tabs\Tab::make('Flujo de aprobación')
+                                    ->schema([
+                                        Infolists\Components\ViewEntry::make('progress')
+                                            ->label('')
+                                            ->columnSpanFull()
+                                            ->view('filament.infolists.entries.progress-approval-v2'),
+                                    ]),
+
+                                Tabs\Tab::make('Historial')
+                                    ->schema([
+                                        Infolists\Components\ViewEntry::make('status')
+                                            ->label('')
+                                            ->columnSpanFull()
+                                            ->view('filament.infolists.entries.history'),
+                                    ]),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -790,13 +856,14 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->visible(fn($record) => $record->status == 'borrador'),
+            ->recordActions([
+                Actions\EditAction::make(),
+                Actions\ViewAction::make(),
+                Actions\DeleteAction::make()
+                    ->visible(fn ($record) => $record->status == 'borrador'),
             ]);
     }
+
     public static function getRelations(): array
     {
         return [
@@ -811,7 +878,7 @@ class PurchaserResource extends Resource  implements HasShieldPermissions
             'create' => Pages\CreatePurchaseOrder::route('/create/{requisition?}'),
             'edit' => Pages\EditPurchaseOrder::route('/{record}/edit'),
             'view' => Pages\ViewOrder::route('/{record}/ver'),
-            'add-item' => Pages\AddItemPR::route('/{record}/agregar/partidas')
+            'add-item' => Pages\AddItemPR::route('/{record}/agregar/partidas'),
         ];
     }
 }

@@ -2,25 +2,21 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder\ApproveSpecialResource\Pages;
 
-use Money\Money;
+use App\Filament\Purchases\Resources\PurchaseOrder\ApproveSpecialResource;
+use App\Services\OrderCalculationService;
 use Filament\Actions;
-use Brick\Math\BigDecimal;
-use App\Models\PurchaseOrder;
-use Filament\Infolists\Infolist;
 use Filament\Actions\ActionGroup;
-use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
-use Filament\Support\Enums\ActionSize;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use App\Services\OrderCalculationService;
-use App\Filament\Purchases\Resources\PurchaseOrder\ApproveSpecialResource;
-
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 
 class ViewOrder extends ViewRecord
 {
     protected static string $resource = ApproveSpecialResource::class;
+
     protected function getHeaderActions(): array
     {
 
@@ -30,13 +26,13 @@ class ViewOrder extends ViewRecord
                 ->modalHeading('Enviar respuesta')
                 ->color('success')
                 ->visible(
-                    fn() => (
+                    fn () => (
                         $this->record->status()->canBe('autorizada para proveedor') ||
                         $this->record->status()->canBe('devuelto por dirección general') ||
                         $this->record->status()->canBe('cancelado por dirección general')) &&
                         auth()->user()->can('view_approve-level-3_purchase::order::purchaser')
                 )
-                ->form([
+                ->schema([
                     Select::make('response')
                         ->label('Respuesta')
                         ->options([
@@ -55,15 +51,16 @@ class ViewOrder extends ViewRecord
                 ])
                 ->requiresConfirmation()
                 ->action(function (array $data) {
+                    unset($this->record->total); // evitar error de serialización del total calculado
                     $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
-                    return redirect(ApproveSpecialResource::getUrl('index'));
+
                     Notification::make()
                         ->title('Respuesta enviada')
                         ->success()
                         ->send();
+
+                    return redirect(ApproveSpecialResource::getUrl('index'));
                 }),
-
-
 
             ActionGroup::make([
                 Actions\Action::make('Ver pdf')
@@ -75,22 +72,23 @@ class ViewOrder extends ViewRecord
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')
                 ->color('primary')
-                ->dropdownWidth(MaxWidth::Small)
-                ->button()
+                ->dropdownWidth(Width::Small)
+                ->button(),
         ];
     }
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $infolist): Schema
     {
         $service = new OrderCalculationService($this->record->id);
         $this->record->total = [
             'Subtotal' => $service->getSubtotalItems(true),
-            'Descuento' =>  $service->getDiscountProvider(true),
-            'IVA' =>  $service->getTaxIva(true),
-            'Retención de IVA' =>  $service->getRetentionIva(true),
-            'Retención de ISR' =>  $service->getRetentionIsr(true),
-            'Total' =>  $service->getTotal(true),
+            'Descuento' => $service->getDiscountProvider(true),
+            'IVA' => $service->getTaxIva(true),
+            'Retención de IVA' => $service->getRetentionIva(true),
+            'Retención de ISR' => $service->getRetentionIsr(true),
+            'Total' => $service->getTotal(true),
         ];
+
         return static::getResource()::infolist($infolist);
     }
 }

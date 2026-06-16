@@ -2,48 +2,58 @@
 
 namespace App\Filament\Purchases\Resources\RequestIncorporation;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\PurchaseProvider;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource\Pages;
 use App\Filament\Purchases\Resources\RequestIncorporation\PurchaseProviderResource\RelationManagers;
+use App\Models\PurchaseProvider;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
+use Njxqlus\Filament\Components\Forms\RelationManager;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PurchaseProviderResource extends Resource
 {
     protected static ?string $model = PurchaseProvider::class;
+
     protected static ?string $modelLabel = 'Proveedor';
+
     protected static ?string $pluralModelLabel = 'Proveedores';
+
     protected static ?string $navigationLabel = 'Proveedores';
+
     protected static ?string $slug = 'altas/proveedores';
-    protected static ?string $navigationGroup = 'Altas';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Altas';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 2;
 
     public static function canAccess(): bool
     {
         return auth()->user()->hasRole('comprador');
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery();
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->columns(1)
             ->schema([
-                Forms\Components\Tabs::make('tabs')
+                Schemas\Components\Tabs::make('tabs')
                     ->schema([
-                        Forms\Components\Tabs\Tab::make('Información general')
+                        Schemas\Components\Tabs\Tab::make('Información general')
                             ->columns(2)
                             ->schema([
                                 Forms\Components\TextInput::make('rfc')
@@ -89,7 +99,7 @@ class PurchaseProviderResource extends Resource
                                     ->nullable()
                                     ->maxLength(255),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Cuenta bancaria')
+                        Schemas\Components\Tabs\Tab::make('Cuenta bancaria')
                             ->schema([
                                 Forms\Components\Select::make('bank')
                                     ->label('Banco')
@@ -185,9 +195,9 @@ class PurchaseProviderResource extends Resource
                                 Forms\Components\TextInput::make('bank_account_number')
                                     ->label('Clabe')
                                     ->maxLength(30)
-                                    ->required()
+                                    ->required(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Documentacion')
+                        Schemas\Components\Tabs\Tab::make('Documentacion')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('doc_1')
                                     ->label('Hoja de datos bancarios')
@@ -221,12 +231,12 @@ class PurchaseProviderResource extends Resource
                                         //     ->preload(false),
                                     ]),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Contactos')
-                            ->visible(fn($operation) => $operation !== 'create')
+                        Schemas\Components\Tabs\Tab::make('Contactos')
+                            ->visible(fn ($operation) => $operation !== 'create')
                             ->schema([
-                                \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ContactsRelationManager::class)->lazy(true)
-                            ])
-                    ])
+                                RelationManager::make()->manager(RelationManagers\ContactsRelationManager::class)->lazy(true),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -246,7 +256,7 @@ class PurchaseProviderResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'revisión' => 'warning',
                         'rechazado' => 'danger',
                         'aprobado' => 'success',
@@ -266,11 +276,10 @@ class PurchaseProviderResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-            ])
-        ;
+            ->recordActions([
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

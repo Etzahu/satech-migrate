@@ -1,8 +1,14 @@
 {
     "agents": [
-        "copilot"
+        "claude_code"
     ],
-    "mcp": true,
-    "nightwatch_mcp": false,
-    "sail": false
+    "packages": [
+        "filament/filament"
+    ],
+    "skills": [
+        "laravel-best-practices",
+        "socialite-development",
+        "livewire-development",
+        "tailwindcss-development"
+    ]
 }

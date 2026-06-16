@@ -5,32 +5,39 @@ namespace App\Filament\Purchases\Resources;
 use App\Filament\Purchases\Resources\CategoryResource\Pages;
 use App\Filament\Purchases\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Njxqlus\Filament\Components\Forms\RelationManager;
 
 class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
+
     protected static ?string $modelLabel = 'Categoría';
+
     protected static ?string $pluralModelLabel = 'Categorías';
+
     protected static ?string $navigationLabel = 'Categorías';
+
     protected static ?string $slug = 'categorias';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 6;
 
-
     // TODO: al crear una nueva categoria se debe vincular dependiedo si es una categoria para NP-DN,stock o servicios generales
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('')
+                Schemas\Components\Section::make('')
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label('Nombre')
@@ -43,11 +50,11 @@ class CategoryResource extends Resource
                             ->required()
                             ->maxLength(30),
                     ]),
-                Forms\Components\Section::make('')
-                    ->visible(fn($operation) => $operation == 'view' || $operation == 'edit')
+                Schemas\Components\Section::make('')
+                    ->visible(fn ($operation) => $operation == 'view' || $operation == 'edit')
                     ->schema([
-                        \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\FamiliesRelationManager::class)->lazy(true)
-                    ])
+                        RelationManager::make()->manager(RelationManagers\FamiliesRelationManager::class)->lazy(true),
+                    ]),
             ]);
     }
 
@@ -73,10 +80,9 @@ class CategoryResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-        ;
+            ->recordActions([
+                Actions\EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

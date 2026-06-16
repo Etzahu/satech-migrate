@@ -40,4 +40,8 @@ return [
         'redirect' => env('GOOGLE_REDIRECT'),
     ],
 
+    'rrhh' => [
+        'webhook_secret' => env('RRHH_WEBHOOK_SECRET'),
+    ],
+
 ];

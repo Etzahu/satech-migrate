@@ -2,49 +2,57 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
+use App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
+use App\Models\PurchaseOrder;
+use Filament\Actions;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use App\Models\PurchaseOrder;
-
-
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-
 use Illuminate\Database\Eloquent\Builder;
-
-use App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
-
 
 class ApproveResource extends Resource
 {
     protected static ?string $model = PurchaseOrder::class;
+
     protected static ?string $modelLabel = 'Orden';
+
     protected static ?string $pluralModelLabel = 'Orden';
+
     protected static ?string $navigationLabel = 'Aprobar';
+
     protected static ?string $slug = 'ordenes/aprobar';
-    protected static ?string $navigationGroup = 'Orden';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Orden';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 5;
 
     public static function canAccess(): bool
     {
         return auth()->user()->can('view_approve-level-3_purchase::order::purchaser');
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->approve();
     }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::approve()->count();
     }
+
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger';
     }
-    public static function infolist(Infolist $infolist): Infolist
+
+    public static function infolist(Schema $infolist): Schema
     {
         $options[] = 'show_relation_items';
+
         return PurchaserResource::infolist($infolist, $options);
     }
 
@@ -77,8 +85,8 @@ class ApproveResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                Actions\ViewAction::make(),
             ]);
     }
 

@@ -2,42 +2,44 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use Closure;
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\ProjectPurchase;
-use Filament\Resources\Resource;
-use Illuminate\Support\Collection;
-use Filament\Forms\Components\Actions;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Filament\Notifications\Notification;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\ProjectPurchaseResource\Pages;
-use Joaopaulolndev\FilamentPdfViewer\Forms\Components\PdfViewerField;
-use Joaopaulolndev\FilamentPdfViewer\Infolists\Components\PdfViewerEntry;
-use App\Filament\Purchases\Resources\ProjectPurchaseResource\RelationManagers;
+use App\Models\ProjectPurchase;
+use Closure;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class ProjectPurchaseResource extends Resource
 {
     protected static ?string $model = ProjectPurchase::class;
+
     protected static ?string $modelLabel = 'Proyecto';
+
     protected static ?string $pluralModelLabel = 'Proyectos';
+
     protected static ?string $navigationLabel = 'Proyectos';
+
     protected static ?string $slug = 'proyectos';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 5;
 
     public static function canAccess(): bool
     {
         return auth()->user()->hasRole('gerente_compras') || auth()->user()->hasRole('administrador_compras') || auth()->user()->hasRole('super_admin');
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('company_id', session()->get('company_id'));
@@ -48,29 +50,32 @@ class ProjectPurchaseResource extends Resource
         return static::getModel()::where('status', 'pendiente')
             ->where('company_id', session()->get('company_id'))->count();
     }
+
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger';
     }
-    public static function form(Form $form): Form
+
+    public static function form(Schema $form): Schema
     {
         return $form
+            ->columns(1)
             ->schema([
-                Forms\Components\Section::make('Información general')
+                Schemas\Components\Section::make('Información general')
                     ->schema([
                         Forms\Components\TextInput::make('code')
                             ->label('Código')
-                            ->helperText('Debe empezar con ' . (session()->get('company_id') == 1 ? 'NP,' . ' ejemplo NP-001/25' : 'DN,' . ' ejemplo DN-001/25'))
+                            ->helperText('Debe empezar con '.(session()->get('company_id') == 1 ? 'NP,'.' ejemplo NP-001/25' : 'DN,'.' ejemplo DN-001/25'))
                             ->unique(table: ProjectPurchase::class, ignoreRecord: true)
                             ->rules([
-                                fn(): Closure => function (string $attribute, $value, Closure $fail) {
+                                fn (): Closure => function (string $attribute, $value, Closure $fail) {
                                     if (session()->get('company_id') == 1) {
-                                        if (!str($value)->startsWith('NP-')) {
+                                        if (! str($value)->startsWith('NP-')) {
                                             $fail('El :attribute debe comenzar con NP-');
                                         }
                                     }
                                     if (session()->get('company_id') == 2) {
-                                        if (!str($value)->startsWith('DN-')) {
+                                        if (! str($value)->startsWith('DN-')) {
                                             $fail('El :attribute debe comenzar con DN-');
                                         }
                                     }
@@ -89,6 +94,29 @@ class ProjectPurchaseResource extends Resource
                             ])
                             ->required()
                             ->maxLength(255),
+
+                        Forms\Components\ToggleButtons::make('status')
+                            ->label('Estado')
+                            ->options([
+                                'activo' => 'Activo',
+                                'inactivo' => 'Inactivo',
+                            ])
+                            ->colors([
+                                'activo' => 'success',
+                                'inactivo' => 'danger',
+                            ])
+                            ->icons([
+                                'activo' => 'heroicon-o-check-circle',
+                                'inactivo' => 'heroicon-o-x-circle',
+                            ])
+                            ->visible(fn (?Model $record) => $record && in_array($record->status, ['activo', 'inactivo']))
+                            ->live()
+                            ->afterStateUpdated(function ($state, $old, ?Model $record) {
+                                if ($record && $state !== $old && $record->status()->canBe($state)) {
+                                    $record->status()->transitionTo($state);
+                                }
+                            })
+                            ->dehydrated(false),
                     ]),
             ]);
     }
@@ -116,11 +144,11 @@ class ProjectPurchaseResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkAction::make('aceptar')
+            ->toolbarActions([
+                Actions\BulkAction::make('aceptar')
                     ->requiresConfirmation()
                     ->action(function (Collection $records) {
                         try {
@@ -138,10 +166,10 @@ class ProjectPurchaseResource extends Resource
                                 ->danger()
                                 ->send();
                         }
-                    })
+                    }),
             ])
             ->checkIfRecordIsSelectableUsing(
-                fn(Model $record): bool => $record->status == 'pendiente',
+                fn (Model $record): bool => $record->status == 'pendiente',
             );
     }
 

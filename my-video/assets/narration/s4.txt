@@ -1,0 +1,1 @@
+Ahora define el flujo de aprobación. Selecciona quién revisa y quién aprueba tu requisición. Estas opciones provienen de tu cadena de aprobación.

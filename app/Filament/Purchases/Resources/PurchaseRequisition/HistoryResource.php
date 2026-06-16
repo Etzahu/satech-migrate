@@ -7,15 +7,18 @@ use App\Models\Management;
 use App\Models\PurchaseRequisition;
 use App\Services\GoogleSheetsRequisitionService;
 use Carbon\Carbon;
+use Filament\Actions;
+use Filament\Actions\ActionGroup;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists\Infolist;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Schemas;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Tables;
-use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Table;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
 use Rap2hpoutre\FastExcel\SheetCollection;
 use Tapp\FilamentAuditing\RelationManagers\AuditsRelationManager;
@@ -32,9 +35,9 @@ class HistoryResource extends Resource
 
     protected static ?string $slug = 'requisiciones-historial';
 
-    protected static ?string $navigationGroup = 'Requisiciones';
+    protected static string|\UnitEnum|null $navigationGroup = 'Requisiciones';
 
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
 
     protected static ?int $navigationSort = 12;
 
@@ -57,12 +60,22 @@ class HistoryResource extends Resource
         return false;
     }
 
-    public static function form(Form $form): Form
+    public static function getCreateAuthorizationResponse(): Response
     {
-        return RequesterResource::form($form);
+        return Response::deny();
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function form(Schema $form): Schema
+    {
+        return RequesterResource::form(
+            $form,
+            fn () => Tabs\Tab::make('Flujo de aprobación')
+                ->hidden()
+                ->schema([])
+        );
+    }
+
+    public static function infolist(Schema $infolist): Schema
     {
         $options = [];
 
@@ -114,7 +127,7 @@ class HistoryResource extends Resource
                     ->options(PurchaseRequisition::select('id', 'status')->orderBy('status', 'asc')->get()->pluck('status', 'status')->unique())
                     ->attribute('status'),
                 Tables\Filters\Filter::make('created_at')
-                    ->form([
+                    ->schema([
                         Forms\Components\DatePicker::make('created_from')
                             ->label('Creados desde'),
                         Forms\Components\DatePicker::make('created_until')
@@ -124,15 +137,15 @@ class HistoryResource extends Resource
                         return $query
                             ->when(
                                 $data['created_from'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                             )
                             ->when(
                                 $data['created_until'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     }),
                 Tables\Filters\Filter::make('gerencias')
-                    ->form([
+                    ->schema([
                         Forms\Components\Select::make('management_id')
                             ->label('Gerencia')
                             ->options(Management::all()->pluck('name', 'id')),
@@ -141,7 +154,7 @@ class HistoryResource extends Resource
                         return $query
                             ->when(
                                 $data['management_id'],
-                                fn(Builder $query, $management): Builder => $query
+                                fn (Builder $query, $management): Builder => $query
                                     ->withWhereHas('approvalChain.requester', function ($query) use ($management) {
                                         $query->where('management_id', $management);
                                     })
@@ -150,9 +163,9 @@ class HistoryResource extends Resource
                     }),
             ])
             ->headerActions([
-                Tables\Actions\Action::make('Generar reporte')
+                Actions\Action::make('Generar reporte')
                     ->slideOver()
-                    ->modalWidth(MaxWidth::FiveExtraLarge)
+                    ->modalWidth(Width::FiveExtraLarge)
                     ->visible(
                         auth()->user()->id == 106 ||
                             auth()->user()->hasRole('comprador') ||
@@ -161,7 +174,7 @@ class HistoryResource extends Resource
                             auth()->user()->hasRole('visor_requisiciones') ||
                             auth()->user()->hasRole('administrador_compras')
                     )
-                    ->form(
+                    ->schema(
                         [
                             Forms\Components\ToggleButtons::make('type_save')
                                 ->label('Guardar información en:')
@@ -180,7 +193,7 @@ class HistoryResource extends Resource
                                 ])
                                 ->default('excel')
                                 ->inline()
-                                ->disableOptionWhen(fn(string $value): bool => $value === 'sheets' && ! auth()->user()->hasRole('comprador')),
+                                ->disableOptionWhen(fn (string $value): bool => $value === 'sheets' && ! auth()->user()->hasRole('comprador')),
                             Forms\Components\CheckboxList::make('columns')
                                 ->label('Datos de la requisición')
                                 ->bulkToggleable()
@@ -215,7 +228,7 @@ class HistoryResource extends Resource
                                 ])
                                 ->default(false)
                                 ->inline(),
-                            Forms\Components\Grid::make([
+                            Schemas\Components\Grid::make([
                                 'sm' => 1,
                                 'md' => 2,
                                 'lg' => 2,
@@ -332,13 +345,13 @@ class HistoryResource extends Resource
                         }
                     }),
             ])
-            ->actions([
+            ->recordActions([
                 ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\Action::make('Ver pdf')
+                    Actions\ViewAction::make(),
+                    Actions\EditAction::make(),
+                    Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn($record) => (string) route('requisition.pdf', ['id' => $record->id]))
+                        ->url(fn ($record) => (string) route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
                 ]),
             ]);

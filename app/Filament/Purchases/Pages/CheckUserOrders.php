@@ -2,32 +2,34 @@
 
 namespace App\Filament\Purchases\Pages;
 
-use Filament\Forms;
-use App\Models\User;
-use Filament\Pages\Page;
 use App\Models\PurchaseOrder;
-use Illuminate\Support\Collection;
-use App\Models\PurchaseRequisition;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Actions\Contracts\HasActions;
-use Filament\Forms\Concerns\InteractsWithForms;
 use App\Models\PurchaseRequisitionApprovalChain;
+use App\Models\User;
+use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Forms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Filament\Schemas\Schema;
+use Illuminate\Support\Collection;
 
-class CheckUserOrders extends Page implements HasForms, HasActions
+class CheckUserOrders extends Page implements HasActions, HasForms
 {
-    use InteractsWithForms;
     use InteractsWithActions;
+    use InteractsWithForms;
 
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-shopping-cart';
 
-    protected static string $view = 'filament.purchases.pages.check-user-orders';
+    protected string $view = 'filament.purchases.pages.check-user-orders';
 
     protected static ?string $navigationLabel = 'Verificar órdenes';
 
     protected static ?string $title = 'Verificar órdenes de Compra Bloqueadas';
 
-    protected static ?string $navigationGroup = 'Administración';
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
 
     protected static ?int $navigationSort = 100;
 
@@ -43,6 +45,7 @@ class CheckUserOrders extends Page implements HasForms, HasActions
     ];
 
     public Collection $ordersToApprove;
+
     public Collection $ordersToAuthorize;
 
     public function mount(): void
@@ -52,7 +55,7 @@ class CheckUserOrders extends Page implements HasForms, HasActions
         $this->ordersToAuthorize = collect();
     }
 
-    public function form(Forms\Form $form): Forms\Form
+    public function form(Schema $form): Schema
     {
         return $form
             ->columns(1)
@@ -77,15 +80,17 @@ class CheckUserOrders extends Page implements HasForms, HasActions
 
     public function analyzeUser(): void
     {
-        if (!$this->selectedUserId) {
+        if (! $this->selectedUserId) {
             $this->resetStats();
+
             return;
         }
 
         $user = User::find($this->selectedUserId);
 
-        if (!$user) {
+        if (! $user) {
             $this->resetStats();
+
             return;
         }
 
@@ -153,17 +158,17 @@ class CheckUserOrders extends Page implements HasForms, HasActions
     /**
      * Acción para cambiar la cadena de la requisición relacionada con la orden
      */
-    public function reassignOrderRequisitionChainAction(): \Filament\Actions\Action
+    public function reassignOrderRequisitionChainAction(): Action
     {
-        return \Filament\Actions\Action::make('reassignOrderRequisitionChain')
+        return Action::make('reassignOrderRequisitionChain')
             ->label('Cambiar Cadena')
             ->icon('heroicon-o-arrow-path-rounded-square')
             ->color('warning')
-            ->form(function (\Filament\Actions\Action $action) {
+            ->schema(function (Action $action) {
                 $orderId = $action->getArguments()['order'];
                 $order = PurchaseOrder::find($orderId);
 
-                if (!$order || !$order->requisition) {
+                if (! $order || ! $order->requisition) {
                     return [];
                 }
 
@@ -176,7 +181,7 @@ class CheckUserOrders extends Page implements HasForms, HasActions
                     ->get()
                     ->mapWithKeys(function ($chain) {
                         return [
-                            $chain->id => "Cadena #{$chain->id} - Aprueba: {$chain->approver->name}, Autoriza: {$chain->authorizer->name}"
+                            $chain->id => "Cadena #{$chain->id} - Aprueba: {$chain->approver->name}, Autoriza: {$chain->authorizer->name}",
                         ];
                     })
                     ->toArray();
@@ -203,7 +208,7 @@ class CheckUserOrders extends Page implements HasForms, HasActions
 
                 return $fields;
             })
-            ->action(function (array $data, \Filament\Actions\Action $action) {
+            ->action(function (array $data, Action $action) {
                 $orderId = $action->getArguments()['order'];
                 $order = PurchaseOrder::find($orderId);
 
@@ -220,7 +225,7 @@ class CheckUserOrders extends Page implements HasForms, HasActions
 
                     // Transicionar al nuevo estado 'cadena reasignada' con metadata
                     $order->status()->transitionTo('cadena reasignada', [
-                        'comments' => "Cadena de aprobación cambiada. Anterior: Aprueba {$oldChain?->approver->name}, Autoriza {$oldChain?->authorizer->name}. Nueva: Aprueba {$newChain?->approver->name}, Autoriza {$newChain?->authorizer->name}. Realizado por " . auth()->user()->name,
+                        'comments' => "Cadena de aprobación cambiada. Anterior: Aprueba {$oldChain?->approver->name}, Autoriza {$oldChain?->authorizer->name}. Nueva: Aprueba {$newChain?->approver->name}, Autoriza {$newChain?->authorizer->name}. Realizado por ".auth()->user()->name,
                         'old_chain_id' => $oldChainId,
                         'new_chain_id' => $data['new_chain_id'],
                         'old_approver_id' => $oldChain?->approver_id,
@@ -228,13 +233,13 @@ class CheckUserOrders extends Page implements HasForms, HasActions
                         'new_approver_id' => $newChain?->approver_id,
                         'new_authorizer_id' => $newChain?->authorizer_id,
                         'reassigned_by' => auth()->user()->id,
-                        'reassigned_at' => now()
+                        'reassigned_at' => now(),
                     ]);
 
                     // Transicionar inmediatamente al estado inicial del proceso
                     $order->status()->transitionTo('revisión gerente de compras');
 
-                    \Filament\Notifications\Notification::make()
+                    Notification::make()
                         ->title('Cadena reasignada')
                         ->body("La orden {$order->folio} ha cambiado de cadena y se ha reiniciado el proceso")
                         ->success()
@@ -252,17 +257,17 @@ class CheckUserOrders extends Page implements HasForms, HasActions
     /**
      * Acción para crear nueva cadena y asignarla a la requisición actual
      */
-    public function createChainForOrderAction(): \Filament\Actions\Action
+    public function createChainForOrderAction(): Action
     {
-        return \Filament\Actions\Action::make('createChainForOrder')
+        return Action::make('createChainForOrder')
             ->label('Crear Nueva Cadena')
             ->icon('heroicon-o-plus-circle')
             ->color('success')
-            ->form(function (\Filament\Actions\Action $action) {
+            ->schema(function (Action $action) {
                 $orderId = $action->getArguments()['order'];
                 $order = PurchaseOrder::find($orderId);
 
-                if (!$order || !$order->requisition) {
+                if (! $order || ! $order->requisition) {
                     return [];
                 }
 
@@ -289,11 +294,11 @@ class CheckUserOrders extends Page implements HasForms, HasActions
                         ->content('⚠️ Esta nueva cadena se asignará a la requisición actual y la orden volverá al inicio del proceso.'),
                 ];
             })
-            ->action(function (array $data, \Filament\Actions\Action $action) {
+            ->action(function (array $data, Action $action) {
                 $orderId = $action->getArguments()['order'];
                 $order = PurchaseOrder::find($orderId);
 
-                if (!$order || !$order->requisition) {
+                if (! $order || ! $order->requisition) {
                     return;
                 }
 
@@ -317,7 +322,7 @@ class CheckUserOrders extends Page implements HasForms, HasActions
 
                 // Transicionar al nuevo estado 'cadena reasignada' con metadata
                 $order->status()->transitionTo('cadena reasignada', [
-                    'comments' => "Nueva cadena de aprobación creada y asignada. Anterior: Aprueba {$oldChain?->approver->name}, Autoriza {$oldChain?->authorizer->name}. Nueva: Aprueba {$newChain->approver->name}, Autoriza {$newChain->authorizer->name}. Cadena creada por " . auth()->user()->name,
+                    'comments' => "Nueva cadena de aprobación creada y asignada. Anterior: Aprueba {$oldChain?->approver->name}, Autoriza {$oldChain?->authorizer->name}. Nueva: Aprueba {$newChain->approver->name}, Autoriza {$newChain->authorizer->name}. Cadena creada por ".auth()->user()->name,
                     'old_chain_id' => $oldChainId,
                     'new_chain_id' => $newChain->id,
                     'old_approver_id' => $oldChain?->approver_id,
@@ -326,13 +331,13 @@ class CheckUserOrders extends Page implements HasForms, HasActions
                     'new_authorizer_id' => $newChain->authorizer_id,
                     'reassigned_by' => auth()->user()->id,
                     'reassigned_at' => now(),
-                    'chain_created' => true
+                    'chain_created' => true,
                 ]);
 
                 // Transicionar inmediatamente al estado inicial del proceso
                 $order->status()->transitionTo('revisión gerente de compras');
 
-                \Filament\Notifications\Notification::make()
+                Notification::make()
                     ->title('Cadena creada y asignada')
                     ->body("Nueva cadena #{$newChain->id} creada y asignada a requisición #{$requisition->folio}. Orden {$order->folio} reiniciada")
                     ->success()

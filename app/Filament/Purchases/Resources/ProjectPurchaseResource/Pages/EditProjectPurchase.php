@@ -4,10 +4,10 @@ namespace App\Filament\Purchases\Resources\ProjectPurchaseResource\Pages;
 
 use App\Filament\Purchases\Resources\ProjectPurchaseResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
+use Filament\Resources\Pages\EditRecord;
 
 class EditProjectPurchase extends EditRecord
 {
@@ -19,15 +19,16 @@ class EditProjectPurchase extends EditRecord
             Actions\ViewAction::make(),
         ];
     }
+
     protected function getFormActions(): array
     {
         if ($this->record->status == 'pendiente') {
-            return  [
+            return [
                 Action::make('Capturar respuesta')
                     ->modalHeading('Enviar respuesta')
                     ->color('success')
 
-                    ->form([
+                    ->schema([
                         Select::make('response')
                             ->label('Respuesta')
                             ->options([

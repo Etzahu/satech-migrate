@@ -2,54 +2,57 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\PurchaseOrder;
-use App\Models\PurchaseProvider;
-
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use App\Models\PurchaseRequisition;
-use Filament\Forms\Components\Tabs;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Pelmered\FilamentMoneyField\Tables\Columns\MoneyColumn;
-use Pelmered\FilamentMoneyField\Forms\Components\MoneyInput;
 use App\Filament\Purchases\Resources\PurchaseOrder\ReviewResource\Pages;
-
+use App\Models\PurchaseOrder;
+use Filament\Actions;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ReviewResource extends Resource
 {
     protected static ?string $model = PurchaseOrder::class;
+
     protected static ?string $modelLabel = 'Orden';
+
     protected static ?string $pluralModelLabel = 'Orden';
+
     protected static ?string $navigationLabel = 'Revisar';
+
     protected static ?string $slug = 'ordenes/revisar';
-    protected static ?string $navigationGroup = 'Orden';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Orden';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 3;
 
     public static function canAccess(): bool
     {
         return auth()->user()->can('view_approve_level-2_purchase::order::purchaser');
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->reviewManagement();
     }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::reviewManagement()->count();
     }
+
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger';
     }
-    public static function infolist(Infolist $infolist): Infolist
+
+    public static function infolist(Schema $infolist): Schema
     {
         $options[] = 'show_relation_items';
+
         return PurchaserResource::infolist($infolist, $options);
     }
 
@@ -90,12 +93,10 @@ class ReviewResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                Actions\ViewAction::make(),
             ]);
     }
-
-
 
     public static function getPages(): array
     {

@@ -3,17 +3,14 @@
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
 
 use App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource;
-use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
-use Filament\Resources\Components\Tab;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Actions\Action;
 
 class ManagePR extends ManageRecords
 {
     protected static string $resource = HistoryResource::class;
 
-   
     public function getTabs(): array
     {
         $tabs = [];
@@ -31,7 +28,7 @@ class ManagePR extends ManageRecords
                                 'devuelto por revisor',
                                 'devuelto por gerencia',
                                 'devuelto por DG',
-                                'devuelto por comprador'
+                                'devuelto por comprador',
                             ])
                             ->orderBy('id', 'desc');
                     }
@@ -73,7 +70,7 @@ class ManagePR extends ManageRecords
                 });
         }
         if (auth()->user()->hasRole('autoriza_requisicion_compra')) {
-            $tabs['authorizations'] =  Tab::make('Autorizaciones')
+            $tabs['authorizations'] = Tab::make('Autorizaciones')
                 ->modifyQueryUsing(function (Builder $query) {
                     return $query
                         ->whereIn('approval_chain_id', auth()->user()->authorizerChainsPR->pluck('id')->toArray())
@@ -90,19 +87,19 @@ class ManagePR extends ManageRecords
             auth()->user()->hasRole('visor_requisiciones') ||
             auth()->user()->id == 106 ||
             auth()->user()->hasRole('super_admin')
-            ) {
+        ) {
             $tabs['all'] = Tab::make('Todas')
-            ->modifyQueryUsing(
-                function (Builder $query) {
-                    $query
-                        ->where('company_id', session()->get('company_id'))
-                        ->orderBy('created_at', 'desc');
-                }
-            );
+                ->modifyQueryUsing(
+                    function (Builder $query) {
+                        $query
+                            ->where('company_id', session()->get('company_id'))
+                            ->orderBy('created_at', 'desc');
+                    }
+                );
         }
+
         return $tabs;
     }
 }
-
 
 // comprador

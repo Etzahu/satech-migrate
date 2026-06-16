@@ -2,15 +2,13 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentAdminResource\Pages;
 
+use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentAdminResource;
 use App\Models\User;
-
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
-
 use Filament\Resources\Pages\ViewRecord;
-use App\Filament\Purchases\Resources\PurchaseRequisition\AssignmentAdminResource;
 
 class View extends ViewRecord
 {
@@ -27,12 +25,12 @@ class View extends ViewRecord
                 ->modalDescription(function ($record) {
                     $quantity = $record->orders->count();
                     if ($quantity > 0) {
-                        return "¿Estás seguro de hacer esto?. La requisición contiene ordenes, las cuales se borrarán.";
+                        return '¿Estás seguro de hacer esto?. La requisición contiene ordenes, las cuales se borrarán.';
                     } else {
-                        return "¿Estás seguro de hacer?";
+                        return '¿Estás seguro de hacer?';
                     }
                 })
-                ->form([
+                ->schema([
                     Textarea::make('observation')
                         ->label('Motivo')
                         ->required(),
@@ -55,15 +53,18 @@ class View extends ViewRecord
                 }),
             Action::make('Asignar comprador')
                 ->visible($this->record->status()->canBe('comprador asignado') && blank($this->record->responsiblePurchaseOrder) && $this->record->status !== 'cerrada')
-                ->form([
+                ->schema([
                     Select::make('responsible')
                         ->label('Responsable')
                         ->options(User::role('comprador')->pluck('name', 'id'))
                         ->required(),
                 ])
                 ->action(function (array $data): void {
-                    // dd($data,$record);
+                    // dd($data,$this->record->toArray());
                     $this->record->assign_user_id = $data['responsible'];
+
+                    unset($this->record->media);
+
                     $this->record->save();
                     $this->record->status()->transitionTo('comprador asignado');
                     Notification::make()
@@ -73,7 +74,7 @@ class View extends ViewRecord
                 }),
             Action::make('Reasignar comprador')
                 ->visible(filled($this->record->responsiblePurchaseOrder) && $this->record->status !== 'cerrada')
-                ->form([
+                ->schema([
                     Select::make('responsible')
                         ->label('Responsable')
                         ->options((User::whereNot('id', $this->record->purchaser?->id)->role('comprador')->pluck('name', 'id')))
@@ -88,6 +89,8 @@ class View extends ViewRecord
                             $order->save();
                         }
                     }
+
+                    unset($this->record->media);
                     $this->record->save();
                     $this->record->status()->transitionTo('comprador reasignado');
                     Notification::make()
@@ -99,7 +102,7 @@ class View extends ViewRecord
                 ->color('danger')
                 ->url(route('requisition.pdf', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
-                ->openUrlInNewTab()
+                ->openUrlInNewTab(),
         ];
     }
 }

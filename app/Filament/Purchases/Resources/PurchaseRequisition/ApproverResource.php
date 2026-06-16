@@ -2,36 +2,48 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
-
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use App\Models\PurchaseRequisition;
-use Filament\Tables\Actions\ActionGroup;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ApproverResource\Pages;
+use App\Models\PurchaseRequisition;
+use Filament\Actions;
+use Filament\Actions\ActionGroup;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Database\Eloquent\Builder;
 
 class ApproverResource extends Resource
 {
     protected static ?string $model = PurchaseRequisition::class;
+
     protected static ?string $modelLabel = 'Requisición';
+
     protected static ?string $pluralModelLabel = 'Requisiciones';
+
     protected static ?string $navigationLabel = 'Aprobar';
+
     protected static ?string $slug = 'requisiciones-aprobar';
-    protected static ?string $navigationGroup = 'Requisiciones';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Requisiciones';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 4;
 
     public static function canAccess(): bool
     {
         return auth()->user()->can('view_approve_purchase::requisition::requester');
     }
+
     public static function canCreate(): bool
     {
         return false;
+    }
+
+    public static function getCreateAuthorizationResponse(): Response
+    {
+        return Response::deny();
     }
 
     public static function getEloquentQuery(): Builder
@@ -39,6 +51,7 @@ class ApproverResource extends Resource
         return parent::getEloquentQuery()
             ->approve();
     }
+
     public static function getNavigationBadge(): ?string
     {
         return static::getModel()::approve()->count();
@@ -84,20 +97,21 @@ class ApproverResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
                 ActionGroup::make([
-                    Tables\Actions\ViewAction::make(),
-                    Tables\Actions\Action::make('Ver pdf')
+                    Actions\ViewAction::make(),
+                    Actions\Action::make('Ver pdf')
                         ->icon('heroicon-m-document')
-                        ->url(fn($record) => (string)route('requisition.pdf', ['id' => $record->id]))
+                        ->url(fn ($record) => (string) route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
                 ]),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $infolist): Schema
     {
         $options = [];
+
         return RequesterResource::infolist($infolist, $options);
     }
 

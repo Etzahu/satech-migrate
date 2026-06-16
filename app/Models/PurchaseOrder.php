@@ -2,23 +2,23 @@
 
 namespace App\Models;
 
-use Spatie\MediaLibrary\HasMedia;
-use Illuminate\Database\Eloquent\Model;
-use OwenIt\Auditing\Contracts\Auditable;
 use App\Services\OrderCalculationService;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\StateMachines\PurchaseOrderStateMachine;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class PurchaseOrder extends Model implements HasMedia, Auditable
+class PurchaseOrder extends Model implements Auditable, HasMedia
 {
-    use \OwenIt\Auditing\Auditable;
     use HasStateMachines;
     use InteractsWithMedia;
+    use \OwenIt\Auditing\Auditable;
     use SoftDeletes;
 
     protected $fillable = [
@@ -35,6 +35,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         'retention_iva',
         'retention_isr',
         'retention_another',
+        'delivery_days',
         'initial_delivery_date',
         'final_delivery_date',
         'delivery_address',
@@ -45,8 +46,9 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         'purchaser_user_id',
         'company_id',
         'requisition_id',
-        'status'
+        'status',
     ];
+
     protected $auditInclude = [
         'folio',
         'currency',
@@ -62,6 +64,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         'retention_iva',
         'retention_isr',
         'retention_another',
+        'delivery_days',
         'initial_delivery_date',
         'final_delivery_date',
         'delivery_address',
@@ -72,10 +75,11 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
         'purchaser_user_id',
         'company_id',
         'requisition_id',
-        'status'
+        'status',
     ];
+
     public $stateMachines = [
-        'status' => PurchaseOrderStateMachine::class
+        'status' => PurchaseOrderStateMachine::class,
     ];
 
     protected $casts = [
@@ -84,17 +88,15 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
 
     ];
 
-
-
-
     public static function boot()
     {
         parent::boot();
 
         static::creating(function ($ticket) {
-            $ticket->folio = session()->get('company_acronym') . self::generateFolioNumber() . '/' . now()->format('y');
+            $ticket->folio = session()->get('company_acronym').self::generateFolioNumber().'/'.now()->format('y');
         });
     }
+
     private static function generateFolioNumber()
     {
         $count = self::withTrashed()
@@ -107,30 +109,37 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             return '01';
         }
     }
+
     public function requisition(): BelongsTo
     {
         return $this->belongsTo(PurchaseRequisition::class, 'requisition_id');
     }
+
     public function provider(): BelongsTo
     {
         return $this->belongsTo(PurchaseProvider::class, 'provider_id');
     }
+
     public function company(): BelongsTo
     {
         return $this->belongsTo(Company::class, 'company_id');
     }
+
     public function providerContact(): BelongsTo
     {
         return $this->belongsTo(ProviderContact::class, 'provider_contact_id', 'id');
     }
+
     public function items(): HasMany
     {
         return $this->hasMany(PurchaseOrderItem::class, 'purchase_order_id');
     }
+
     public function purchaser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'purchaser_user_id');
     }
+
     public function scopeMyRequisitions(Builder $query)
     {
         if (auth()->user()) {
@@ -140,6 +149,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
                 ->orderBy('id', 'desc');
         }
     }
+
     public function scopeReviewManagement(Builder $query)
     {
         if (auth()->user()) {
@@ -151,6 +161,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
                 ->orderBy('id', 'desc');
         }
     }
+
     public function scopeApprove(Builder $query)
     {
         return $query
@@ -161,6 +172,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
+
     public function scopeApproveSpecial(Builder $query)
     {
         return $query
@@ -168,6 +180,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             ->where('company_id', session()->get('company_id'))
             ->orderBy('id', 'desc');
     }
+
     public function scopeAuthorize(Builder $query)
     {
         return $query
@@ -201,7 +214,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
                 'devuelto por administrador', // Estado que reinicia el ciclo cuando admin devuelve la orden
                 'reabierta para edición',
                 'requisición reasignada', // Estado que reinicia el ciclo al cambiar de requisición
-                'cadena reasignada' // Nuevo estado que reinicia el ciclo al cambiar de cadena
+                'cadena reasignada', // Nuevo estado que reinicia el ciclo al cambiar de cadena
             ])
             ->orderBy('created_at', 'desc')
             ->first();
@@ -221,13 +234,15 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             $registro = $query->first();
             $fechas[$revision] = $registro ? $registro->created_at : null;
         }
+
         return $fechas;
     }
+
     public function getProgressAttribute()
     {
 
-        $purchaseManager =  User::role('gerente_compras')->first()->name;
-        $dgLevel2 =  User::role('autoriza_nivel-2-orden_compra')->first()->name;
+        $purchaseManager = User::role('gerente_compras')->first()->name;
+        $dgLevel2 = User::role('autoriza_nivel-2-orden_compra')->first()->name;
 
         $data = $this->getRevisionDates();
 
@@ -239,7 +254,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             'reviewer' => ['title' => 'Revisa', 'name' => $purchaseManager, 'job-pdf' => 'Gerente de compras', 'date' => $data['aprobado por gerente de compras']],
             'approver' => ['title' => 'Aprueba', 'name' => $this->requisition->approvalChain->approver->name, 'job-pdf' => 'Gerente solicitante', 'date' => $data['aprobado por gerente solicitante']],
             'authorizer-1' => ['title' => 'Autoriza', 'name' => $this->requisition->approvalChain->authorizer->name, 'job-pdf' => 'Dirección general', 'date' => $data['aprobado por DG nivel 1']],
-            'authorizer-2' => ['title' => 'Autoriza', 'name' => $dgLevel2, 'job-pdf' => 'Dirección general CA', 'date' => $data['aprobado por DG nivel 2']]
+            'authorizer-2' => ['title' => 'Autoriza', 'name' => $dgLevel2, 'job-pdf' => 'Dirección general CA', 'date' => $data['aprobado por DG nivel 2']],
         ];
         if ($service->isOrderTotalBetweenLimits()) {
             unset($progress['authorizer-2']);
@@ -249,6 +264,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             unset($progress['authorizer-2']);
         }
         $test = ['uno' => 1, 'dos' => 2];
+
         return $progress;
     }
 
@@ -256,7 +272,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
     {
         $revisions = [
             'revision por dirección general',
-            'autorizada para proveedor'
+            'autorizada para proveedor',
         ];
 
         $service = new OrderCalculationService($this->id);
@@ -266,7 +282,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             ->whereIn('to', [
                 'devuelto por dirección general',
                 'devuelto por administrador', // Estado que reinicia el ciclo cuando admin devuelve la orden
-                'reabierta para edición'
+                'reabierta para edición',
             ])
             ->orderBy('created_at', 'desc')
             ->first();
@@ -286,28 +302,30 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
             $registro = $query->first();
             $fechas[$revision] = $registro ? $registro : null;
         }
+
         return $fechas;
     }
+
     public function getProgressSpecialAttribute()
     {
 
         $data = $this->getRevisionSpecialDates();
         $progress = [];
         $progress = [
-            'purchaser' =>
-            [
+            'purchaser' => [
                 'title' => 'Comprador',
                 'name' => isset($data['revision por dirección general']) ? $data['revision por dirección general']->responsible->name : null,
                 'job-pdf' => 'Comprador',
-                'date' => isset($data['revision por dirección general']) ? $data['revision por dirección general']->created_at : null
+                'date' => isset($data['revision por dirección general']) ? $data['revision por dirección general']->created_at : null,
             ],
             'authorizer' => [
                 'title' => 'Autoriza',
                 'name' => 'Denise Marisol Reyes Ramírez',
                 'job-pdf' => 'Dirección general',
-                'date' => isset($data['autorizada para proveedor']) ? $data['autorizada para proveedor']->created_at : null
+                'date' => isset($data['autorizada para proveedor']) ? $data['autorizada para proveedor']->created_at : null,
             ],
         ];
+
         return $progress;
     }
 
@@ -315,8 +333,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
      * Reasignar la orden a una nueva requisición (cambiando la cadena de aprobación)
      * y regresar al estado inicial del flujo de aprobación
      *
-     * @param int $newRequisitionId ID de la nueva requisición
-     * @return void
+     * @param  int  $newRequisitionId  ID de la nueva requisición
      */
     public function reassignRequisition(int $newRequisitionId): void
     {
@@ -324,7 +341,7 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
 
         // Actualizar la requisición
         $this->update([
-            'requisition_id' => $newRequisitionId
+            'requisition_id' => $newRequisitionId,
         ]);
 
         // Resetear al estado inicial
@@ -334,23 +351,19 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
     /**
      * Resetear la orden al estado inicial del flujo
      *
-     * @param int|null $oldRequisitionId ID de la requisición anterior (para auditoría)
-     * @return void
+     * @param  int|null  $oldRequisitionId  ID de la requisición anterior (para auditoría)
      */
     protected function resetToInitialState(?int $oldRequisitionId = null): void
     {
         // Transicionar a un estado que indica el cambio de requisición
         $this->status()->transitionTo('requisición reasignada', [
             'old_requisition_id' => $oldRequisitionId,
-            'new_requisition_id' => $this->requisition_id
+            'new_requisition_id' => $this->requisition_id,
         ]);
     }
 
     /**
      * Método de conveniencia que combina reasignar y resetear
-     *
-     * @param int $newRequisitionId
-     * @return void
      */
     public function reassignAndReset(int $newRequisitionId): void
     {
@@ -359,36 +372,34 @@ class PurchaseOrder extends Model implements HasMedia, Auditable
 
     /**
      * Verificar si la orden está bloqueada por un usuario inactivo en la cadena
-     *
-     * @return array
      */
     public function checkForInactiveUsers(): array
     {
         $issues = [];
 
-        if (!$this->requisition || !$this->requisition->approvalChain) {
+        if (! $this->requisition || ! $this->requisition->approvalChain) {
             return ['error' => 'No tiene requisición o cadena de aprobación asignada'];
         }
 
         $chain = $this->requisition->approvalChain;
 
         // Verificar aprobador (gerente solicitante)
-        if ($chain->approver && !$chain->approver->is_active) {
+        if ($chain->approver && ! $chain->approver->is_active) {
             $issues['approver'] = [
                 'user_id' => $chain->approver->id,
                 'user_name' => $chain->approver->name,
                 'role' => 'Aprobador (Gerente Solicitante)',
-                'status' => $this->status
+                'status' => $this->status,
             ];
         }
 
         // Verificar autorizador (DG)
-        if ($chain->authorizer && !$chain->authorizer->is_active) {
+        if ($chain->authorizer && ! $chain->authorizer->is_active) {
             $issues['authorizer'] = [
                 'user_id' => $chain->authorizer->id,
                 'user_name' => $chain->authorizer->name,
                 'role' => 'Autorizador (Dirección General)',
-                'status' => $this->status
+                'status' => $this->status,
             ];
         }
 

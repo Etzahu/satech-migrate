@@ -2,18 +2,14 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\Pages;
 
-
-use App\Models\Company;
+use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
 use Filament\Actions\Action;
-use Filament\Actions\EditAction;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
-use Filament\Forms\Components\Select;
-use Filament\Support\Enums\ActionSize;
+use Filament\Actions\EditAction;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
-
+use Filament\Support\Enums\Size;
 
 class ViewPurchaseRequisition extends ViewRecord
 {
@@ -22,27 +18,37 @@ class ViewPurchaseRequisition extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
+            // Botón principal, fuera del grupo → siempre visible
+            Action::make('enviarRevision')
+                ->label('Enviar a revisión')
+                ->icon('heroicon-m-paper-airplane')
+                ->color('success')
+                ->button()
+                ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
+                ->requiresConfirmation()
+                ->modalHeading('Enviar requisición a revisión')
+                ->modalDescription('Una vez enviada, la requisición entrará al flujo de aprobación y ya no podrás editarla.')
+                ->modalSubmitActionLabel('Sí, enviar')
+                ->visible(
+                    $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 && filled($this->record->category)
+                )
+                ->action(function () {
+                    if (session()->get('company_id') == 1) { // ID 1:GPT IM
+                        $this->record->status()->transitionTo('revisión por almacén');
+                    }
+                    if ($this->record->category == 'servicio') {
+                        $this->record->status()->transitionTo('revisión');
+                    } else {
+                        $this->record->status()->transitionTo('revisión por almacén');
+                    }
+                    Notification::make()
+                        ->title('Requisición enviada')
+                        ->success()
+                        ->send();
+                }),
+
+            // Acciones secundarias agrupadas
             ActionGroup::make([
-                Action::make('Enviar requisición')
-                    ->color('success')
-                    ->requiresConfirmation()
-                    ->visible(
-                        $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 && filled($this->record->category)
-                    )
-                    ->action(function () {
-                        if (session()->get('company_id') == 1) { //ID 1:GPT IM
-                             $this->record->status()->transitionTo('revisión por almacén');
-                        }
-                        if ($this->record->category == 'servicio') {
-                             $this->record->status()->transitionTo('revisión');
-                        } else {
-                             $this->record->status()->transitionTo('revisión por almacén');
-                        }
-                        Notification::make()
-                            ->title('Requisición enviada')
-                            ->success()
-                            ->send();
-                    }),
                 EditAction::make(),
                 DeleteAction::make(),
                 Action::make('Ver pdf')
@@ -53,8 +59,8 @@ class ViewPurchaseRequisition extends ViewRecord
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')
-                ->size(ActionSize::Small)
-                ->color('primary')
+                ->size(Size::Small)
+                ->color('gray')
                 ->button(),
         ];
     }

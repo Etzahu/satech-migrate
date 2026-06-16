@@ -1,52 +1,45 @@
 <?php
 
-use Money\Money;
-use Carbon\Carbon;
-use Money\Currency;
-use App\Models\User;
+use App\Mail\PurchaseOrder\Notification as NotificationOrder;
 use App\Models\Brand;
-use App\Models\Company;
-use App\Models\Product;
 use App\Models\Category;
-use App\Models\Management;
-use Brick\Math\BigDecimal;
-use App\Models\MeasureUnit;
-use Brick\Math\RoundingMode;
-use Illuminate\Http\Request;
-use App\Models\PurchaseOrder;
 use App\Models\CategoryFamily;
-use Filament\Facades\Filament;
-use App\Models\ProjectPurchase;
+use App\Models\Company;
+use App\Models\MeasureUnit;
+use App\Models\Product;
 use App\Models\ProviderContact;
-
-use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\PurchaseProvider;
-use Brick\Money\Money as BMoney;
+use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
-use Illuminate\Support\Facades\DB;
+use App\Models\PurchaseProvider;
 use App\Models\PurchaseRequisition;
-use App\Services\PRInfolistService;
+use App\Models\PurchaseRequisitionApprovalChain;
+use App\Models\User;
+use App\Services\GoogleSheetsService;
+use App\Services\OrderCalculationService;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Brick\Math\BigDecimal;
+use Carbon\Carbon;
+use Filament\Facades\Filament;
+use Filament\Notifications\Notification;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+use LaraZeus\QrCode\Facades\QrCode;
 use Money\Currencies\ISOCurrencies;
+use Money\Currency;
+use Money\Money;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Rap2hpoutre\FastExcel\SheetCollection;
+use Revolution\Google\Sheets\Facades\Sheets;
 use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Enums\Format;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use Rap2hpoutre\FastExcel\FastExcel;
-use Illuminate\Support\Facades\Route;
-use Brick\Money\Context\CustomContext;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Session;
-use Filament\Notifications\Notification;
-use App\Services\OrderCalculationService;
-use Money\Formatter\DecimalMoneyFormatter;
-use Rap2hpoutre\FastExcel\SheetCollection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 use function Spatie\LaravelPdf\Support\pdf;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Revolution\Google\Sheets\Facades\Sheets;
-use App\Models\PurchaseRequisitionApprovalChain;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use App\Mail\PurchaseOrder\Notification as NotificationOrder;
 
 Route::get('tablas', function () {
 
@@ -55,7 +48,7 @@ Route::get('tablas', function () {
     $tablas = array_map('current', json_decode(json_encode($tablas), true));
     // return ($tablas);
 
-    //array con el nombre de las tablas
+    // array con el nombre de las tablas
     // $tablas = [
     //     "epp_equipo_entregados",
     //     "equipos",
@@ -90,12 +83,12 @@ Route::get('tablas', function () {
     // ];
     try {
         foreach ($tablas as $tabla) {
-            $comando = 'iseed ' . $tabla . ' --force';
+            $comando = 'iseed '.$tabla.' --force';
             $exitCode = Artisan::call($comando);
             echo '<br>';
             echo $exitCode;
         }
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         throw $e;
     }
     // php artisan iseed users --force
@@ -119,7 +112,7 @@ Route::get('procesos', function () {
         ['Soldadura', 'ISW'],
         ['Servicios Complementarios', 'SC'],
         ['Servicios Técnicos', 'ST'],
-        ['Informática', 'IT']
+        ['Informática', 'IT'],
     ];
 
     foreach ($procesos as $key => $proceso) {
@@ -135,54 +128,54 @@ Route::get('procesos', function () {
 });
 
 Route::get('um', function () {
-    $unidades_de_medida = array(
-        "metros" => "m",
-        "centímetros" => "cm",
-        "milímetros" => "mm",
-        "kilómetros" => "km",
-        "gramos" => "g",
-        "kilogramos" => "kg",
-        "toneladas" => "t",
-        "litros" => "L",
-        "mililitros" => "mL",
-        "pulgadas" => "in",
-        "pies" => "ft",
-        "yardas" => "yd",
-        "millas" => "mi",
-        "millas náuticas" => "nmi",
-        "segundos" => "s",
-        "minutos" => "min",
-        "horas" => "h",
-        "días" => "d",
-        "semanas" => "wk",
-        "años" => "y",
-        "julios" => "J",
-        "calorías" => "cal",
-        "vatios" => "W",
-        "kilovatios" => "kW",
-        "voltios" => "V",
-        "amperios" => "A",
-        "ohmios" => "Ω",
-        "newtons" => "N",
-        "pascales" => "Pa",
-        "barras" => "bar",
-        "atmósferas" => "atm",
-        "hectáreas" => "ha",
-        "acres" => "ac",
-        "litros por kilómetro" => "L/km",
-        "kilómetros por hora" => "km/h",
-        "metros por segundo" => "m/s",
-        "grados Celsius" => "°C",
-        "grados Fahrenheit" => "°F",
-        "kelvin" => "K",
-        "radianes" => "rad",
-        "hercios" => "Hz",
-        "lúmenes" => "lm",
-        "lux" => "lx",
-        "becquerel" => "Bq",
-        "grays" => "Gy",
-        "sieverts" => "Sv",
-    );
+    $unidades_de_medida = [
+        'metros' => 'm',
+        'centímetros' => 'cm',
+        'milímetros' => 'mm',
+        'kilómetros' => 'km',
+        'gramos' => 'g',
+        'kilogramos' => 'kg',
+        'toneladas' => 't',
+        'litros' => 'L',
+        'mililitros' => 'mL',
+        'pulgadas' => 'in',
+        'pies' => 'ft',
+        'yardas' => 'yd',
+        'millas' => 'mi',
+        'millas náuticas' => 'nmi',
+        'segundos' => 's',
+        'minutos' => 'min',
+        'horas' => 'h',
+        'días' => 'd',
+        'semanas' => 'wk',
+        'años' => 'y',
+        'julios' => 'J',
+        'calorías' => 'cal',
+        'vatios' => 'W',
+        'kilovatios' => 'kW',
+        'voltios' => 'V',
+        'amperios' => 'A',
+        'ohmios' => 'Ω',
+        'newtons' => 'N',
+        'pascales' => 'Pa',
+        'barras' => 'bar',
+        'atmósferas' => 'atm',
+        'hectáreas' => 'ha',
+        'acres' => 'ac',
+        'litros por kilómetro' => 'L/km',
+        'kilómetros por hora' => 'km/h',
+        'metros por segundo' => 'm/s',
+        'grados Celsius' => '°C',
+        'grados Fahrenheit' => '°F',
+        'kelvin' => 'K',
+        'radianes' => 'rad',
+        'hercios' => 'Hz',
+        'lúmenes' => 'lm',
+        'lux' => 'lx',
+        'becquerel' => 'Bq',
+        'grays' => 'Gy',
+        'sieverts' => 'Sv',
+    ];
 
     foreach ($unidades_de_medida as $key => $um) {
         DB::table('measure_units')->insert([
@@ -194,14 +187,13 @@ Route::get('um', function () {
     }
 });
 
-
 Route::get('id/{id}', function (Request $request, $id) {
     $user = User::findOrFail($id);
     Auth::login($user, $remember = true);
+
     return redirect('/');
     // return redirect()->route('filament.compras.pages.dashboard');
 });
-
 
 function setCompany($id, $redirect = true)
 {
@@ -210,14 +202,14 @@ function setCompany($id, $redirect = true)
         session([
             'company_id' => 1,
             'company_name' => 'GPT INGENIERIA Y MANUFACTURA',
-            'logo' => 'https://lh3.googleusercontent.com/oMpAslP5lCZ8ufvC4sIGfsaIR2BrZu6ee-ekhSmOEtYPSgXGqFYpRBBN99VcFN4zAXVKD6Tv4WQi4kgWHee38Ttm7uwm8j31zNZqgHVHpx4PeZpgIhmt_fySFS5S60rZz-aYnr8OiA'
+            'logo' => 'https://lh3.googleusercontent.com/oMpAslP5lCZ8ufvC4sIGfsaIR2BrZu6ee-ekhSmOEtYPSgXGqFYpRBBN99VcFN4zAXVKD6Tv4WQi4kgWHee38Ttm7uwm8j31zNZqgHVHpx4PeZpgIhmt_fySFS5S60rZz-aYnr8OiA',
         ]);
     }
     if ($id == 2) {
         session([
             'company_id' => 2,
             'company_name' => 'TECH ENERGY CONTROL',
-            'logo' => 'https://lh3.googleusercontent.com/693EmbDOU1QkzkumTJgTeRKUtuVD93wX_u_YrIzJlHra0qqgEebRqAaLSUtl3sUppJs7jGL6-sfvTjHizjojMdR9Q4MVFaps5F4H7xiBEjUB6xBhDwdvlXUsLFgkM5OdcwC71LImfw'
+            'logo' => 'https://lh3.googleusercontent.com/693EmbDOU1QkzkumTJgTeRKUtuVD93wX_u_YrIzJlHra0qqgEebRqAaLSUtl3sUppJs7jGL6-sfvTjHizjojMdR9Q4MVFaps5F4H7xiBEjUB6xBhDwdvlXUsLFgkM5OdcwC71LImfw',
         ]);
     }
     if ($redirect) {
@@ -237,7 +229,7 @@ Route::get('excel', function () {
     $type = 'Servicios generales';
     $collection = fastexcel()->import('clasificacion.xlsx');
     // $collection =  $collection->groupBy('CATEGORÍAS');
-    $collection =  $collection->groupBy('CATEGORIAS');
+    $collection = $collection->groupBy('CATEGORIAS');
     // return $collection;
 
     $array = [];
@@ -263,12 +255,13 @@ Route::get('excel', function () {
     DB::beginTransaction();
     try {
         DB::table('category_families')->insert($collec->toArray());
-        DB::afterCommit(function () use ($collec) {
+        DB::afterCommit(function () {
             echo 'Se insertaron familias';
         });
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollback();
+
         return $e->getMessage();
     }
 });
@@ -282,12 +275,11 @@ Route::get('change-category', function () {
     }
 });
 
-
 Route::get('media-test', function () {
     $collection_name = 'technical_data_sheets';
     $rq = PurchaseRequisition::find(1);
     dd($rq->getMedia('supports'));
-    $media =  Media::where('model_id', 2)
+    $media = Media::where('model_id', 2)
         ->where('collection_name', $collection_name)->count();
 
     return $media;
@@ -297,6 +289,7 @@ Route::get('media-test', function () {
 Route::get('history', function () {
     // $model = PurchaseProvider::find(1);
     $model = PurchaseRequisition::find(1394);
+
     return $model->status()->history()->get()->toArray();
     $afterTransitionHooks = $model->status()->stateMachine()->transitions();
 
@@ -328,6 +321,7 @@ Route::get('management-user', function () {
 
     $collection = $collection->map(function ($item) {
         $item = collect($item);
+
         return $item->only(['Solicita', 'Revisa', 'Aprueba']);
     });
     $flatten = $collection->flatten()->unique();
@@ -339,18 +333,11 @@ Route::get('management-user', function () {
             $user->save();
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
 
-
-    return;
-
-
-
-
-    return;
 });
 
 Route::get('chains', function () {
@@ -362,7 +349,7 @@ Route::get('chains', function () {
                 ->title('Revisar existencias de requisicion')
                 ->toDatabase()
         );
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         dd($e->getMessage());
     }
 });
@@ -373,6 +360,7 @@ Route::get('flatMap', function () {
         $flattened = $rq->orders->flatMap(function ($values) {
             return $values->items;
         });
+
         return $flattened->pluck('product_id');
     } else {
         return null;
@@ -381,11 +369,12 @@ Route::get('flatMap', function () {
 
 Route::get('rq-order', function () {
     $rq = PurchaseRequisition::find(1);
+
     return $rq->orders;
 });
 
 Route::get('money', function () {
-    $currencies = new ISOCurrencies();
+    $currencies = new ISOCurrencies;
     foreach ($currencies as $currency) {
         echo '<br>';
         echo $currency->getCode(); // prints an available currency code within the repository
@@ -405,33 +394,32 @@ Route::get('pdf-order', function () {
     $media[] = $data->getMedia('quote')->first();
 
     $itemsFormatted = $items->map(function ($item) use ($data, $service) {
-        $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
-        $subTotal =  new Money($item->sub_total, new Currency($data->currency));
+        $unitPrice = new Money($item->unit_price, new Currency($data->currency));
+        $subTotal = new Money($item->sub_total, new Currency($data->currency));
+
         return [
             'code' => $item->product->code,
             'name' => $item->product->name,
             'brand' => $item->product->brand?->name,
             'unit' => $item->product->unit->acronym,
-            "quantity" => $item->quantity,
-            "unit_price" => $service->moneyFormatter($unitPrice),
-            "sub_total" => $service->moneyFormatter($subTotal),
-            "observation" => $item->observation,
+            'quantity' => $item->quantity,
+            'unit_price' => $service->moneyFormatter($unitPrice),
+            'sub_total' => $service->moneyFormatter($subTotal),
+            'observation' => $item->observation,
         ];
     });
     $total = [
-        'Subtotal' =>  $service->getSubtotalItems(true),
-        'Descuento' =>  $service->getDiscountProvider(true),
-        'IVA' =>  $service->getTaxIva(true),
-        'Retención de IVA' =>  $service->getRetentionIva(true),
-        'Retención de ISR' =>  $service->getRetentionIsr(true),
-        'Total' =>  $service->getTotal(true),
+        'Subtotal' => $service->getSubtotalItems(true),
+        'Descuento' => $service->getDiscountProvider(true),
+        'IVA' => $service->getTaxIva(true),
+        'Retención de IVA' => $service->getRetentionIva(true),
+        'Retención de ISR' => $service->getRetentionIsr(true),
+        'Total' => $service->getTotal(true),
     ];
-
 
     $data['total'] = $total;
     $data['media'] = $media;
     $data['itemsFormatted'] = $itemsFormatted;
-
 
     // return $data;
     // Mail::to('ahernandezm@gptservices.com')->send(new NotificationOrder($data));
@@ -468,7 +456,6 @@ Route::get('res', function () {
         ->where('status', 'aprobado por gerente de compras')
         ->get();
 
-
     return $orders;
 });
 
@@ -483,7 +470,6 @@ Route::get('mana', function () {
     $user = User::with('management')->find(199);
     dd($user->toArray());
 });
-
 
 Route::get('credencial', function () {
     // return view('pdf.purchase-order.content');
@@ -508,7 +494,8 @@ Route::get('credencial', function () {
     // $m2= $rq->getMedia('technical_data_sheets');
     // dd($m1->toArray(),$m2->toArray());
     $pdf = Pdf::loadView('pdf.purchase-order', compact('rq'));
-    return $pdf->stream($rq->folio . '.pdf');
+
+    return $pdf->stream($rq->folio.'.pdf');
 });
 
 Route::get('test-rq', function () {
@@ -526,106 +513,106 @@ Route::get('migraciones', function () {
         foreach ($collection as $item) {
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollback();
-        throw new \Exception($e->getMessage());
+        throw new Exception($e->getMessage());
     }
 });
 
 Route::get('users-migrate', function () {
-    $users = array(
-        array('id' => '13', 'nombre' => 'Benjamín Alcántara Bautista', 'email' => 'balcantarab@gptservices.com', 'phone' => '(+52) 55 8096 0795', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692116993/fotos/13.png', 'active' => '1', 'name' => 'Ayudante Especializado'),
-        array('id' => '14', 'nombre' => 'Jesús Becerra Yebra', 'email' => 'jbecerray@gptservices.com', 'phone' => '(+52) 55 3034 8643', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912320/fotos/14.jpg', 'active' => '1', 'name' => 'Técnico Soldador Master'),
-        array('id' => '18', 'nombre' => 'Ana Lilia López Arreola', 'email' => 'alopeza@gptservices.com', 'phone' => '(+52) 55 8108 6378', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117013/fotos/18.png', 'active' => '1', 'name' => 'Encargada Administrativa'),
-        array('id' => '19', 'nombre' => 'Rafael García Arroyo', 'email' => 'rgarciaa@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117036/fotos/19.png', 'active' => '1', 'name' => 'Gerencia de Ingeniería y Manufactura'),
-        array('id' => '22', 'nombre' => 'Iván Ponce Reyes', 'email' => 'iponcer@gptservices.com', 'phone' => '(+52) 55 8103 0124', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695745668/fotos/22.jpg', 'active' => '1', 'name' => 'Técnico Especialista en HT & LS Nivel III'),
-        array('id' => '26', 'nombre' => 'Sinhue Ulloa Tello', 'email' => 'sulloat@gptservices.com', 'phone' => '(+52) 55 5953 7883', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117102/fotos/26.png', 'active' => '1', 'name' => 'Técnico Especialista en Soldadura'),
-        array('id' => '36', 'nombre' => 'Guillermo Gutiérrez Melo', 'email' => 'ggutierrezm@gptservices.com', 'phone' => '(+52) 55 8097 1226', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1696437610/fotos/36.jpg', 'active' => '1', 'name' => 'Gerencia Técnica'),
-        array('id' => '37', 'nombre' => 'Luis Reyes Yáñez', 'email' => 'lreyesy@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912252/fotos/37.png', 'active' => '1', 'name' => 'Mecánico Tornero'),
-        array('id' => '40', 'nombre' => 'Fernando Basave Arce', 'email' => 'febasavea@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694462739/fotos/40.png', 'active' => '1', 'name' => 'Ingeniero de proyectos'),
-        array('id' => '46', 'nombre' => 'Aquiles Gonzalo García Montiel', 'email' => 'agarciam@gptservices.com', 'phone' => '(+52) 55 5965 6833', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912357/fotos/46.jpg', 'active' => '1', 'name' => 'Jefatura de Contratos Gobierno'),
-        array('id' => '50', 'nombre' => 'Aurelio Cruz Báez', 'email' => 'acruzb@gptservices.com', 'phone' => '(+52) 55 7667 3044', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694462819/fotos/50.png', 'active' => '1', 'name' => 'Técnico Especialista en HT & LS Nivel I'),
-        array('id' => '53', 'nombre' => 'Adriana González Huitrón', 'email' => 'agonzalezh@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117203/fotos/53.png', 'active' => '1', 'name' => 'Ingeniería'),
-        array('id' => '64', 'nombre' => 'Luis Sandoval Cabello', 'email' => 'lsandovalc@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690998806/fotos/64.jpg', 'active' => '1', 'name' => 'Mecánico Especialista'),
-        array('id' => '89', 'nombre' => 'Juan Jiménez Camacho', 'email' => 'jjimenezc@gptservices.com', 'phone' => '(+52) 4721 270293', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117241/fotos/89.png', 'active' => '1', 'name' => 'Técnico Soldador'),
-        array('id' => '92', 'nombre' => 'Néstor Adair Acosta Arroyo', 'email' => 'naacostaa@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117274/fotos/92.png', 'active' => '1', 'name' => 'Técnico Especialista en HT & LS Nivel II'),
-        array('id' => '99', 'nombre' => 'Raúl Rodríguez Guzmán', 'email' => 'rrodriguezg@gptservices.com', 'phone' => '(+52) 55 3513 4163', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690998881/fotos/99.jpg', 'active' => '1', 'name' => 'Técnico Soldador'),
-        array('id' => '106', 'nombre' => 'Denise Marisol Reyes Ramírez', 'email' => 'dmreyesr@gptservices.com', 'phone' => '(+52) 55 8097 1232', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117322/fotos/106.png', 'active' => '1', 'name' => 'Dirección General'),
-        array('id' => '114', 'nombre' => 'Manuel Antonio Ríos Cuautitla', 'email' => 'mariosc@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117344/fotos/114.png', 'active' => '1', 'name' => 'Diseñador'),
-        array('id' => '120', 'nombre' => 'Roberto González Muñoz', 'email' => 'rgonzalezm@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117370/fotos/120.jpg', 'active' => '1', 'name' => 'Manufactura'),
-        array('id' => '123', 'nombre' => 'Angélica Salgado Zúñiga', 'email' => 'asalgadoz@gptservices.com', 'phone' => '(+52) 55 6703 9366', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912375/fotos/123.jpg', 'active' => '1', 'name' => 'Recursos Humanos Sr'),
-        array('id' => '131', 'nombre' => 'Axel Javier Martínez Segura', 'email' => 'ajmartinezs@gptservices.com', 'phone' => '(+52) 55 5188 2957', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694462914/fotos/131.png', 'active' => '1', 'name' => 'Técnico Soldador'),
-        array('id' => '132', 'nombre' => 'Martín Paes Santillán', 'email' => 'mpaess@gptservices.com', 'phone' => '(+52) 55 7786 2987', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117394/fotos/132.png', 'active' => '1', 'name' => 'Ayudante de Soldador'),
-        array('id' => '137', 'nombre' => 'Luis Jesús Godínez Rivera', 'email' => 'lgodinez@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695745751/fotos/137.jpg', 'active' => '1', 'name' => 'Mecánico Especialista'),
-        array('id' => '152', 'nombre' => 'Edgar David Meza Rivera', 'email' => 'emeza@gptservices.com', 'phone' => '(+52) 55 2280 0751', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117471/fotos/152.png', 'active' => '1', 'name' => 'Soporte Técnico IT'),
-        array('id' => '157', 'nombre' => 'Claudio Magdaleno Pérez Hernández', 'email' => 'cperez@gptservices.com', 'phone' => '(+52) 55 8531 7147', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690390682/fotos/157.jpg', 'active' => '1', 'name' => 'Trainee HT & LS'),
-        array('id' => '158', 'nombre' => 'Yanet Rosario Colín Antonio', 'email' => 'yrcolina@gptservices.com', 'phone' => '(+52) 55 2283 7096', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117491/fotos/158.png', 'active' => '1', 'name' => 'Contador Sr'),
-        array('id' => '166', 'nombre' => 'Rafael Alejandro Jiménez Ávila', 'email' => 'rajimeneza@gptservices.com', 'phone' => '(+52) 55 5953 0834', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117532/fotos/166.png', 'active' => '1', 'name' => 'Contador Sr'),
-        array('id' => '168', 'nombre' => 'Sergio Antonio Ordaz Espinoza', 'email' => 'santonio@gptservices.com', 'phone' => '(+52) 55 5103 5335', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691686850/fotos/168.png', 'active' => '1', 'name' => 'Gerencia de Contratos'),
-        array('id' => '180', 'nombre' => 'Jorge Eduardo García Ojeda', 'email' => 'jegarciao@gptservices.com', 'phone' => '(+52) 55 30 40 90 54', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117581/fotos/180.png', 'active' => '1', 'name' => 'Jefatura de Compras'),
-        array('id' => '187', 'nombre' => 'Alejandro Aldair Ramírez Pérez', 'email' => 'aramirezp@gptservices.com', 'phone' => '(+52) 55 83 59 05 08', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912089/fotos/187.jpg', 'active' => '1', 'name' => 'Ingeniero de Costos Jr'),
-        array('id' => '191', 'nombre' => 'Jennifer Martínez Jarquín', 'email' => 'jmartinezj@gptservices.com', 'phone' => '(+52) 55 74 99 89 47', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117629/fotos/191.png', 'active' => '1', 'name' => 'Diseñador'),
-        array('id' => '193', 'nombre' => 'Martín Alejandro Martínez Hernández', 'email' => 'mmartinez@gptservices.com', 'phone' => '(+52) 56 19 43 95 09', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117672/fotos/193.png', 'active' => '1', 'name' => 'Servicios Generales Sr'),
-        array('id' => '199', 'nombre' => 'Alan Etzahu Hernández Mendoza', 'email' => 'ahernandezm@gptservices.com', 'phone' => '(+52) 5540756374', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695311792/fotos/199.png', 'active' => '1', 'name' => 'Trainee de IT'),
-        array('id' => '200', 'nombre' => 'Rocío Rojas González', 'email' => 'rrojasg@gptservices.com', 'phone' => '(+52) 5591862465', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691706348/fotos/200.png', 'active' => '1', 'name' => 'Ingeniero de Calidad Jr.'),
-        array('id' => '202', 'nombre' => 'Daniel González García', 'email' => '', 'phone' => '(+52) 55 11 79 61 70', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117694/fotos/202.png', 'active' => '1', 'name' => 'Limpieza'),
-        array('id' => '205', 'nombre' => 'Erik David López Olvera', 'email' => 'edlopezo@gptservices.com', 'phone' => '(+52) 55 81 29 09 74', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690390600/fotos/205.jpg', 'active' => '1', 'name' => 'Trainee HT & LS'),
-        array('id' => '212', 'nombre' => 'Enrique Villafranca García', 'email' => 'evillafranca@gptservices.com', 'phone' => '(+52) 55 45 94 36 60', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690999117/fotos/212.jpg', 'active' => '1', 'name' => 'Trainee HT & LS'),
-        array('id' => '223', 'nombre' => 'José Héctor Avilés Nieto', 'email' => 'haviles@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117793/fotos/223.png', 'active' => '1', 'name' => 'Servicios Generales Jr'),
-        array('id' => '227', 'nombre' => 'Kevin Hazael Pérez Rodríguez', 'email' => 'kperez@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117814/fotos/227.jpg', 'active' => '1', 'name' => 'Jefatura de Proyectos'),
-        array('id' => '230', 'nombre' => 'Ernesto Bautista Cruz', 'email' => 'ebautista@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690911999/fotos/230.jpg', 'active' => '1', 'name' => 'Servicios Generales Jr'),
-        array('id' => '233', 'nombre' => 'Israel Correa Cruz', 'email' => 'icorrea@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690911929/fotos/233.jpg', 'active' => '1', 'name' => 'Ingeniero de Contratos Gobierno'),
-        array('id' => '235', 'nombre' => 'Giovanni Lugardo Aguilar', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118006/fotos/235.png', 'active' => '1', 'name' => 'Mecánico Tornero'),
-        array('id' => '240', 'nombre' => 'Mónica Jazmín Pimentel García', 'email' => 'mpimentel@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1725902591/fotos/240.png', 'active' => '1', 'name' => 'Trainee de Marketing'),
-        array('id' => '247', 'nombre' => 'Juan Carlos Prado Hernández', 'email' => 'jprado@gptservices.com', 'phone' => '(55)45570447', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691422743/fotos/247.png', 'active' => '1', 'name' => 'Trainee de Contabilidad'),
-        array('id' => '249', 'nombre' => 'Rocío Salgado Rangel', 'email' => 'rsalgado@gptservices.com', 'phone' => '(+52) 55 8404 3368', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691706388/fotos/249.png', 'active' => '1', 'name' => 'Ayudante de manufactura'),
-        array('id' => '250', 'nombre' => 'José Carlos Martínez Amador', 'email' => 'jmartinez@gptservices.com', 'phone' => '(+52) 56 2102 933', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118109/fotos/250.png', 'active' => '1', 'name' => 'Encargado de Almacén'),
-        array('id' => '251', 'nombre' => 'Alejandro Rodríguez Vázquez', 'email' => 'arodriguez@gptservices.com', 'phone' => '5544645133', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118129/fotos/251.png', 'active' => '1', 'name' => 'Chofer'),
-        array('id' => '252', 'nombre' => 'Israel Omar Mora Barrios', 'email' => 'imora@gptservices.com', 'phone' => '5586019168', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118157/fotos/252.png', 'active' => '1', 'name' => 'Ayudante de Soldador'),
-        array('id' => '253', 'nombre' => 'Daniel Nuñez Cruz', 'email' => '', 'phone' => '5613041196', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118182/fotos/253.png', 'active' => '1', 'name' => 'Ayudante de Mantenimiento'),
-        array('id' => '256', 'nombre' => 'Rosa Maria Mendoza Gutierrez', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118204/fotos/256.png', 'active' => '1', 'name' => 'Limpieza'),
-        array('id' => '257', 'nombre' => 'Sergio Martín Ramírez Jaimes', 'email' => 'sramirez@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691177963/fotos/257.jpg', 'active' => '1', 'name' => 'Maniobrista'),
-        array('id' => '258', 'nombre' => 'Julia  Flores Valenzuela ', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1693500601/fotos/258.png', 'active' => '1', 'name' => 'Limpieza'),
-        array('id' => '260', 'nombre' => 'José de Jesús Lázaro Juárez', 'email' => 'jlazaro@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690395269/fotos/260.jpg', 'active' => '1', 'name' => 'Ingeniero de Producto'),
-        array('id' => '263', 'nombre' => 'Elizabeth García Real Joya', 'email' => 'egarcia@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386700/fotos/263.jpg', 'active' => '1', 'name' => 'Recursos Humanos Jr'),
-        array('id' => '264', 'nombre' => 'Juan Carlos López Hernández', 'email' => 'jhernandez@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386756/fotos/264.jpg', 'active' => '1', 'name' => 'Servicios Generales Jr'),
-        array('id' => '265', 'nombre' => 'Alfonso  Gómez López ', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386819/fotos/265.jpg', 'active' => '1', 'name' => 'Pintor industrial'),
-        array('id' => '266', 'nombre' => 'Omar Alvarado Bailey', 'email' => 'oalvarado@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386883/fotos/266.jpg', 'active' => '1', 'name' => 'Ingeniero de Desarrollo (Mejora Continua)'),
-        array('id' => '268', 'nombre' => 'Carlos Ivan Carbajal Cerezo', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386946/fotos/268.jpg', 'active' => '1', 'name' => 'Mecánico Especialista'),
-        array('id' => '269', 'nombre' => 'Javier Mozart Santos Cruces', 'email' => 'jsantos@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692115988/fotos/269.jpg', 'active' => '1', 'name' => 'Ingeniero de proyectos'),
-        array('id' => '270', 'nombre' => 'Miguel Eduardo Orduña Álvarez', 'email' => 'eorduna@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690389064/fotos/270.png', 'active' => '1', 'name' => 'Técnico Especialista en HT & LS Nivel II'),
-        array('id' => '271', 'nombre' => 'José Manuel Cardona Salinas', 'email' => 'jcardona@gptservices.com', 'phone' => '5610040567', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690389168/fotos/271.jpg', 'active' => '1', 'name' => 'Operador de Grúa'),
-        array('id' => '274', 'nombre' => 'María Fernanda López Muñóz', 'email' => 'mlopez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692111512/fotos/274.png', 'active' => '1', 'name' => 'Comprador'),
-        array('id' => '275', 'nombre' => 'Agustín Quechol Millán', 'email' => 'NA', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694463391/fotos/275.png', 'active' => '1', 'name' => 'Mecánico Tornero'),
-        array('id' => '276', 'nombre' => 'Leonardo Paredes Chávez', 'email' => 'lparedes@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694702406/fotos/276.jpg', 'active' => '1', 'name' => 'Ingeniero de Producto'),
-        array('id' => '277', 'nombre' => 'Antonio  Guevara Galán ', 'email' => 'guevaraantonio376@gmail.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695311280/fotos/277.jpg', 'active' => '1', 'name' => 'Guardia de seguridad'),
-        array('id' => '282', 'nombre' => 'Diana Martínez Dolores', 'email' => 'dmartinez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1696962174/fotos/282.jpg', 'active' => '1', 'name' => 'Trainee de Contabilidad'),
-        array('id' => '285', 'nombre' => 'Juan Gabriel Castañeda Martínez', 'email' => 'NA', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1704318005/fotos/285.jpg', 'active' => '1', 'name' => 'Guardia de seguridad'),
-        array('id' => '286', 'nombre' => 'Luis Enrique Pardo Sánchez', 'email' => 'NA', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1705692775/fotos/286.jpg', 'active' => '1', 'name' => 'Mecánico Tornero'),
-        array('id' => '287', 'nombre' => 'Eduardo Moreno Carmona', 'email' => 'emoreno@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1705692816/fotos/287.jpg', 'active' => '1', 'name' => 'Ingeniero de Producto'),
-        array('id' => '289', 'nombre' => 'Miguel Ángel Raya Espino', 'email' => 'NA', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1706109509/fotos/289.jpg', 'active' => '1', 'name' => 'Mecánico Tornero'),
-        array('id' => '290', 'nombre' => 'Mariana Karina Jiménez Ortega', 'email' => 'mjimenez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1706811058/fotos/290.jpg', 'active' => '1', 'name' => 'Trainee de Contabilidad'),
-        array('id' => '292', 'nombre' => 'Fernando Zamora González', 'email' => 'fzamora@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1707416401/fotos/292.jpg', 'active' => '1', 'name' => 'Almacenista'),
-        array('id' => '293', 'nombre' => 'Jatziri Yamile Alejo Osorio', 'email' => 'jalejo@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1708365641/fotos/293.jpg', 'active' => '1', 'name' => 'Trainee de HSE'),
-        array('id' => '296', 'nombre' => 'Paola Chávez Huerta', 'email' => 'pchavez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1711135809/fotos/296.jpg', 'active' => '1', 'name' => 'Recursos Humanos Jr'),
-        array('id' => '298', 'nombre' => 'Ingrid Danae González Cisneros', 'email' => 'igonzalez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1713211874/fotos/298.jpg', 'active' => '1', 'name' => 'Comprador'),
-        array('id' => '299', 'nombre' => 'Christian Alberto Gómez Matilde', 'email' => 'NA', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1714071483/fotos/299.jpg', 'active' => '1', 'name' => 'Técnico Soldador'),
-        array('id' => '301', 'nombre' => 'Pablo Angel Vazquez Hernández', 'email' => 'pvazquez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1707416065/fotos/12001.jpg', 'active' => '1', 'name' => 'Trainee de Sistema de Gestión Integral (SGI)'),
-        array('id' => '302', 'nombre' => 'Monica Esthela Padilla Gónzalez', 'email' => 'mpadilla@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1718040767/fotos/302.jpg', 'active' => '1', 'name' => 'Trainee de Recursos Humanos'),
-        array('id' => '303', 'nombre' => 'Luis Adrián Sánchez González', 'email' => 'lsanchez@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1720551561/fotos/303.jpg', 'active' => '1', 'name' => 'Ingeniero de Ventas'),
-        array('id' => '304', 'nombre' => 'Francisco Alejandro Contreras García', 'email' => 'fcontreras@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1720467861/fotos/304.jpg', 'active' => '1', 'name' => 'Jefatura de Ventas'),
-        array('id' => '305', 'nombre' => 'María de los Ángeles Quintanar Pérez', 'email' => 'mquintanar@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1722614803/fotos/305.jpg', 'active' => '1', 'name' => 'Comprador'),
-        array('id' => '306', 'nombre' => 'Bruno Cruz Montes', 'email' => 'bcruz@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1722520442/fotos/306.jpg', 'active' => '1', 'name' => 'Analista de administración y presupuestos'),
-        array('id' => '307', 'nombre' => 'Francisco Luna García', 'email' => 'fluna@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1724179736/fotos/307.jpg', 'active' => '1', 'name' => 'Almacenista'),
-        array('id' => '309', 'nombre' => 'Fernando Butrón González', 'email' => 'fbutron@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1725388145/fotos/309.jpg', 'active' => '1', 'name' => 'Inspector de control de calidad'),
-        array('id' => '310', 'nombre' => 'Daniel Iriarte Pérez', 'email' => 'diriarte@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1725904595/fotos/310.jpg', 'active' => '1', 'name' => 'Ingeniero de proyectos'),
-        array('id' => '311', 'nombre' => 'Miguel Ángel Guerrero Cruz', 'email' => 'vigilanciagpt@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1727975908/fotos/311.jpg', 'active' => '1', 'name' => 'Guardia de seguridad'),
-        array('id' => '313', 'nombre' => 'María Guadalupe Osorio Rodríguez', 'email' => 'mosorio@gptservices.com', 'phone' => '5612941921', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1730144309/fotos/313.jpg', 'active' => '1', 'name' => 'Ingeniero de Ventas'),
-        array('id' => '314', 'nombre' => 'Edgar Domínguez Espinosa', 'email' => 'edominguez@gptservices.com', 'phone' => '5612940661', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1730830846/fotos/314.jpg', 'active' => '1', 'name' => 'Residente de Obra (OMA)'),
-        array('id' => '315', 'nombre' => 'Carlos Alonso Pérez', 'email' => 'calonso@gptservices.com', 'phone' => '(+1) 832 270 8700', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118250/fotos/315.jpg', 'active' => '1', 'name' => 'Dirección General'),
-        array('id' => '316', 'nombre' => 'Daniel Eduardo Serrano González', 'email' => 'dserrano@gptservices.com', 'phone' => NULL, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1736276111/fotos/316.jpg', 'active' => '1', 'name' => 'Responsable del Sistema de Gestión Integral (SGI)'),
-        array('id' => '331', 'nombre' => 'José Carmen Rodríguez Lara', 'email' => 'jrlara@gptservices.com', 'phone' => '(+52) 81 8473 8500', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118265/fotos/331.png', 'active' => '1', 'name' => 'Gerencia de servicios generales y almacén')
-    );
+    $users = [
+        ['id' => '13', 'nombre' => 'Benjamín Alcántara Bautista', 'email' => 'balcantarab@gptservices.com', 'phone' => '(+52) 55 8096 0795', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692116993/fotos/13.png', 'active' => '1', 'name' => 'Ayudante Especializado'],
+        ['id' => '14', 'nombre' => 'Jesús Becerra Yebra', 'email' => 'jbecerray@gptservices.com', 'phone' => '(+52) 55 3034 8643', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912320/fotos/14.jpg', 'active' => '1', 'name' => 'Técnico Soldador Master'],
+        ['id' => '18', 'nombre' => 'Ana Lilia López Arreola', 'email' => 'alopeza@gptservices.com', 'phone' => '(+52) 55 8108 6378', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117013/fotos/18.png', 'active' => '1', 'name' => 'Encargada Administrativa'],
+        ['id' => '19', 'nombre' => 'Rafael García Arroyo', 'email' => 'rgarciaa@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117036/fotos/19.png', 'active' => '1', 'name' => 'Gerencia de Ingeniería y Manufactura'],
+        ['id' => '22', 'nombre' => 'Iván Ponce Reyes', 'email' => 'iponcer@gptservices.com', 'phone' => '(+52) 55 8103 0124', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695745668/fotos/22.jpg', 'active' => '1', 'name' => 'Técnico Especialista en HT & LS Nivel III'],
+        ['id' => '26', 'nombre' => 'Sinhue Ulloa Tello', 'email' => 'sulloat@gptservices.com', 'phone' => '(+52) 55 5953 7883', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117102/fotos/26.png', 'active' => '1', 'name' => 'Técnico Especialista en Soldadura'],
+        ['id' => '36', 'nombre' => 'Guillermo Gutiérrez Melo', 'email' => 'ggutierrezm@gptservices.com', 'phone' => '(+52) 55 8097 1226', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1696437610/fotos/36.jpg', 'active' => '1', 'name' => 'Gerencia Técnica'],
+        ['id' => '37', 'nombre' => 'Luis Reyes Yáñez', 'email' => 'lreyesy@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912252/fotos/37.png', 'active' => '1', 'name' => 'Mecánico Tornero'],
+        ['id' => '40', 'nombre' => 'Fernando Basave Arce', 'email' => 'febasavea@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694462739/fotos/40.png', 'active' => '1', 'name' => 'Ingeniero de proyectos'],
+        ['id' => '46', 'nombre' => 'Aquiles Gonzalo García Montiel', 'email' => 'agarciam@gptservices.com', 'phone' => '(+52) 55 5965 6833', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912357/fotos/46.jpg', 'active' => '1', 'name' => 'Jefatura de Contratos Gobierno'],
+        ['id' => '50', 'nombre' => 'Aurelio Cruz Báez', 'email' => 'acruzb@gptservices.com', 'phone' => '(+52) 55 7667 3044', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694462819/fotos/50.png', 'active' => '1', 'name' => 'Técnico Especialista en HT & LS Nivel I'],
+        ['id' => '53', 'nombre' => 'Adriana González Huitrón', 'email' => 'agonzalezh@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117203/fotos/53.png', 'active' => '1', 'name' => 'Ingeniería'],
+        ['id' => '64', 'nombre' => 'Luis Sandoval Cabello', 'email' => 'lsandovalc@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690998806/fotos/64.jpg', 'active' => '1', 'name' => 'Mecánico Especialista'],
+        ['id' => '89', 'nombre' => 'Juan Jiménez Camacho', 'email' => 'jjimenezc@gptservices.com', 'phone' => '(+52) 4721 270293', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117241/fotos/89.png', 'active' => '1', 'name' => 'Técnico Soldador'],
+        ['id' => '92', 'nombre' => 'Néstor Adair Acosta Arroyo', 'email' => 'naacostaa@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117274/fotos/92.png', 'active' => '1', 'name' => 'Técnico Especialista en HT & LS Nivel II'],
+        ['id' => '99', 'nombre' => 'Raúl Rodríguez Guzmán', 'email' => 'rrodriguezg@gptservices.com', 'phone' => '(+52) 55 3513 4163', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690998881/fotos/99.jpg', 'active' => '1', 'name' => 'Técnico Soldador'],
+        ['id' => '106', 'nombre' => 'Denise Marisol Reyes Ramírez', 'email' => 'dmreyesr@gptservices.com', 'phone' => '(+52) 55 8097 1232', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117322/fotos/106.png', 'active' => '1', 'name' => 'Dirección General'],
+        ['id' => '114', 'nombre' => 'Manuel Antonio Ríos Cuautitla', 'email' => 'mariosc@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117344/fotos/114.png', 'active' => '1', 'name' => 'Diseñador'],
+        ['id' => '120', 'nombre' => 'Roberto González Muñoz', 'email' => 'rgonzalezm@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117370/fotos/120.jpg', 'active' => '1', 'name' => 'Manufactura'],
+        ['id' => '123', 'nombre' => 'Angélica Salgado Zúñiga', 'email' => 'asalgadoz@gptservices.com', 'phone' => '(+52) 55 6703 9366', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912375/fotos/123.jpg', 'active' => '1', 'name' => 'Recursos Humanos Sr'],
+        ['id' => '131', 'nombre' => 'Axel Javier Martínez Segura', 'email' => 'ajmartinezs@gptservices.com', 'phone' => '(+52) 55 5188 2957', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694462914/fotos/131.png', 'active' => '1', 'name' => 'Técnico Soldador'],
+        ['id' => '132', 'nombre' => 'Martín Paes Santillán', 'email' => 'mpaess@gptservices.com', 'phone' => '(+52) 55 7786 2987', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117394/fotos/132.png', 'active' => '1', 'name' => 'Ayudante de Soldador'],
+        ['id' => '137', 'nombre' => 'Luis Jesús Godínez Rivera', 'email' => 'lgodinez@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695745751/fotos/137.jpg', 'active' => '1', 'name' => 'Mecánico Especialista'],
+        ['id' => '152', 'nombre' => 'Edgar David Meza Rivera', 'email' => 'emeza@gptservices.com', 'phone' => '(+52) 55 2280 0751', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117471/fotos/152.png', 'active' => '1', 'name' => 'Soporte Técnico IT'],
+        ['id' => '157', 'nombre' => 'Claudio Magdaleno Pérez Hernández', 'email' => 'cperez@gptservices.com', 'phone' => '(+52) 55 8531 7147', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690390682/fotos/157.jpg', 'active' => '1', 'name' => 'Trainee HT & LS'],
+        ['id' => '158', 'nombre' => 'Yanet Rosario Colín Antonio', 'email' => 'yrcolina@gptservices.com', 'phone' => '(+52) 55 2283 7096', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117491/fotos/158.png', 'active' => '1', 'name' => 'Contador Sr'],
+        ['id' => '166', 'nombre' => 'Rafael Alejandro Jiménez Ávila', 'email' => 'rajimeneza@gptservices.com', 'phone' => '(+52) 55 5953 0834', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117532/fotos/166.png', 'active' => '1', 'name' => 'Contador Sr'],
+        ['id' => '168', 'nombre' => 'Sergio Antonio Ordaz Espinoza', 'email' => 'santonio@gptservices.com', 'phone' => '(+52) 55 5103 5335', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691686850/fotos/168.png', 'active' => '1', 'name' => 'Gerencia de Contratos'],
+        ['id' => '180', 'nombre' => 'Jorge Eduardo García Ojeda', 'email' => 'jegarciao@gptservices.com', 'phone' => '(+52) 55 30 40 90 54', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117581/fotos/180.png', 'active' => '1', 'name' => 'Jefatura de Compras'],
+        ['id' => '187', 'nombre' => 'Alejandro Aldair Ramírez Pérez', 'email' => 'aramirezp@gptservices.com', 'phone' => '(+52) 55 83 59 05 08', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690912089/fotos/187.jpg', 'active' => '1', 'name' => 'Ingeniero de Costos Jr'],
+        ['id' => '191', 'nombre' => 'Jennifer Martínez Jarquín', 'email' => 'jmartinezj@gptservices.com', 'phone' => '(+52) 55 74 99 89 47', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117629/fotos/191.png', 'active' => '1', 'name' => 'Diseñador'],
+        ['id' => '193', 'nombre' => 'Martín Alejandro Martínez Hernández', 'email' => 'mmartinez@gptservices.com', 'phone' => '(+52) 56 19 43 95 09', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117672/fotos/193.png', 'active' => '1', 'name' => 'Servicios Generales Sr'],
+        ['id' => '199', 'nombre' => 'Alan Etzahu Hernández Mendoza', 'email' => 'ahernandezm@gptservices.com', 'phone' => '(+52) 5540756374', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695311792/fotos/199.png', 'active' => '1', 'name' => 'Trainee de IT'],
+        ['id' => '200', 'nombre' => 'Rocío Rojas González', 'email' => 'rrojasg@gptservices.com', 'phone' => '(+52) 5591862465', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691706348/fotos/200.png', 'active' => '1', 'name' => 'Ingeniero de Calidad Jr.'],
+        ['id' => '202', 'nombre' => 'Daniel González García', 'email' => '', 'phone' => '(+52) 55 11 79 61 70', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117694/fotos/202.png', 'active' => '1', 'name' => 'Limpieza'],
+        ['id' => '205', 'nombre' => 'Erik David López Olvera', 'email' => 'edlopezo@gptservices.com', 'phone' => '(+52) 55 81 29 09 74', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690390600/fotos/205.jpg', 'active' => '1', 'name' => 'Trainee HT & LS'],
+        ['id' => '212', 'nombre' => 'Enrique Villafranca García', 'email' => 'evillafranca@gptservices.com', 'phone' => '(+52) 55 45 94 36 60', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690999117/fotos/212.jpg', 'active' => '1', 'name' => 'Trainee HT & LS'],
+        ['id' => '223', 'nombre' => 'José Héctor Avilés Nieto', 'email' => 'haviles@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117793/fotos/223.png', 'active' => '1', 'name' => 'Servicios Generales Jr'],
+        ['id' => '227', 'nombre' => 'Kevin Hazael Pérez Rodríguez', 'email' => 'kperez@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692117814/fotos/227.jpg', 'active' => '1', 'name' => 'Jefatura de Proyectos'],
+        ['id' => '230', 'nombre' => 'Ernesto Bautista Cruz', 'email' => 'ebautista@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690911999/fotos/230.jpg', 'active' => '1', 'name' => 'Servicios Generales Jr'],
+        ['id' => '233', 'nombre' => 'Israel Correa Cruz', 'email' => 'icorrea@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690911929/fotos/233.jpg', 'active' => '1', 'name' => 'Ingeniero de Contratos Gobierno'],
+        ['id' => '235', 'nombre' => 'Giovanni Lugardo Aguilar', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118006/fotos/235.png', 'active' => '1', 'name' => 'Mecánico Tornero'],
+        ['id' => '240', 'nombre' => 'Mónica Jazmín Pimentel García', 'email' => 'mpimentel@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1725902591/fotos/240.png', 'active' => '1', 'name' => 'Trainee de Marketing'],
+        ['id' => '247', 'nombre' => 'Juan Carlos Prado Hernández', 'email' => 'jprado@gptservices.com', 'phone' => '(55)45570447', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691422743/fotos/247.png', 'active' => '1', 'name' => 'Trainee de Contabilidad'],
+        ['id' => '249', 'nombre' => 'Rocío Salgado Rangel', 'email' => 'rsalgado@gptservices.com', 'phone' => '(+52) 55 8404 3368', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691706388/fotos/249.png', 'active' => '1', 'name' => 'Ayudante de manufactura'],
+        ['id' => '250', 'nombre' => 'José Carlos Martínez Amador', 'email' => 'jmartinez@gptservices.com', 'phone' => '(+52) 56 2102 933', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118109/fotos/250.png', 'active' => '1', 'name' => 'Encargado de Almacén'],
+        ['id' => '251', 'nombre' => 'Alejandro Rodríguez Vázquez', 'email' => 'arodriguez@gptservices.com', 'phone' => '5544645133', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118129/fotos/251.png', 'active' => '1', 'name' => 'Chofer'],
+        ['id' => '252', 'nombre' => 'Israel Omar Mora Barrios', 'email' => 'imora@gptservices.com', 'phone' => '5586019168', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118157/fotos/252.png', 'active' => '1', 'name' => 'Ayudante de Soldador'],
+        ['id' => '253', 'nombre' => 'Daniel Nuñez Cruz', 'email' => '', 'phone' => '5613041196', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118182/fotos/253.png', 'active' => '1', 'name' => 'Ayudante de Mantenimiento'],
+        ['id' => '256', 'nombre' => 'Rosa Maria Mendoza Gutierrez', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118204/fotos/256.png', 'active' => '1', 'name' => 'Limpieza'],
+        ['id' => '257', 'nombre' => 'Sergio Martín Ramírez Jaimes', 'email' => 'sramirez@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1691177963/fotos/257.jpg', 'active' => '1', 'name' => 'Maniobrista'],
+        ['id' => '258', 'nombre' => 'Julia  Flores Valenzuela ', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1693500601/fotos/258.png', 'active' => '1', 'name' => 'Limpieza'],
+        ['id' => '260', 'nombre' => 'José de Jesús Lázaro Juárez', 'email' => 'jlazaro@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690395269/fotos/260.jpg', 'active' => '1', 'name' => 'Ingeniero de Producto'],
+        ['id' => '263', 'nombre' => 'Elizabeth García Real Joya', 'email' => 'egarcia@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386700/fotos/263.jpg', 'active' => '1', 'name' => 'Recursos Humanos Jr'],
+        ['id' => '264', 'nombre' => 'Juan Carlos López Hernández', 'email' => 'jhernandez@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386756/fotos/264.jpg', 'active' => '1', 'name' => 'Servicios Generales Jr'],
+        ['id' => '265', 'nombre' => 'Alfonso  Gómez López ', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386819/fotos/265.jpg', 'active' => '1', 'name' => 'Pintor industrial'],
+        ['id' => '266', 'nombre' => 'Omar Alvarado Bailey', 'email' => 'oalvarado@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386883/fotos/266.jpg', 'active' => '1', 'name' => 'Ingeniero de Desarrollo (Mejora Continua)'],
+        ['id' => '268', 'nombre' => 'Carlos Ivan Carbajal Cerezo', 'email' => '', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690386946/fotos/268.jpg', 'active' => '1', 'name' => 'Mecánico Especialista'],
+        ['id' => '269', 'nombre' => 'Javier Mozart Santos Cruces', 'email' => 'jsantos@gptservices.com', 'phone' => '', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692115988/fotos/269.jpg', 'active' => '1', 'name' => 'Ingeniero de proyectos'],
+        ['id' => '270', 'nombre' => 'Miguel Eduardo Orduña Álvarez', 'email' => 'eorduna@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690389064/fotos/270.png', 'active' => '1', 'name' => 'Técnico Especialista en HT & LS Nivel II'],
+        ['id' => '271', 'nombre' => 'José Manuel Cardona Salinas', 'email' => 'jcardona@gptservices.com', 'phone' => '5610040567', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1690389168/fotos/271.jpg', 'active' => '1', 'name' => 'Operador de Grúa'],
+        ['id' => '274', 'nombre' => 'María Fernanda López Muñóz', 'email' => 'mlopez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692111512/fotos/274.png', 'active' => '1', 'name' => 'Comprador'],
+        ['id' => '275', 'nombre' => 'Agustín Quechol Millán', 'email' => 'NA', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694463391/fotos/275.png', 'active' => '1', 'name' => 'Mecánico Tornero'],
+        ['id' => '276', 'nombre' => 'Leonardo Paredes Chávez', 'email' => 'lparedes@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1694702406/fotos/276.jpg', 'active' => '1', 'name' => 'Ingeniero de Producto'],
+        ['id' => '277', 'nombre' => 'Antonio  Guevara Galán ', 'email' => 'guevaraantonio376@gmail.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1695311280/fotos/277.jpg', 'active' => '1', 'name' => 'Guardia de seguridad'],
+        ['id' => '282', 'nombre' => 'Diana Martínez Dolores', 'email' => 'dmartinez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1696962174/fotos/282.jpg', 'active' => '1', 'name' => 'Trainee de Contabilidad'],
+        ['id' => '285', 'nombre' => 'Juan Gabriel Castañeda Martínez', 'email' => 'NA', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1704318005/fotos/285.jpg', 'active' => '1', 'name' => 'Guardia de seguridad'],
+        ['id' => '286', 'nombre' => 'Luis Enrique Pardo Sánchez', 'email' => 'NA', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1705692775/fotos/286.jpg', 'active' => '1', 'name' => 'Mecánico Tornero'],
+        ['id' => '287', 'nombre' => 'Eduardo Moreno Carmona', 'email' => 'emoreno@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1705692816/fotos/287.jpg', 'active' => '1', 'name' => 'Ingeniero de Producto'],
+        ['id' => '289', 'nombre' => 'Miguel Ángel Raya Espino', 'email' => 'NA', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1706109509/fotos/289.jpg', 'active' => '1', 'name' => 'Mecánico Tornero'],
+        ['id' => '290', 'nombre' => 'Mariana Karina Jiménez Ortega', 'email' => 'mjimenez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1706811058/fotos/290.jpg', 'active' => '1', 'name' => 'Trainee de Contabilidad'],
+        ['id' => '292', 'nombre' => 'Fernando Zamora González', 'email' => 'fzamora@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1707416401/fotos/292.jpg', 'active' => '1', 'name' => 'Almacenista'],
+        ['id' => '293', 'nombre' => 'Jatziri Yamile Alejo Osorio', 'email' => 'jalejo@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1708365641/fotos/293.jpg', 'active' => '1', 'name' => 'Trainee de HSE'],
+        ['id' => '296', 'nombre' => 'Paola Chávez Huerta', 'email' => 'pchavez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1711135809/fotos/296.jpg', 'active' => '1', 'name' => 'Recursos Humanos Jr'],
+        ['id' => '298', 'nombre' => 'Ingrid Danae González Cisneros', 'email' => 'igonzalez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1713211874/fotos/298.jpg', 'active' => '1', 'name' => 'Comprador'],
+        ['id' => '299', 'nombre' => 'Christian Alberto Gómez Matilde', 'email' => 'NA', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1714071483/fotos/299.jpg', 'active' => '1', 'name' => 'Técnico Soldador'],
+        ['id' => '301', 'nombre' => 'Pablo Angel Vazquez Hernández', 'email' => 'pvazquez@gptservices.com', 'phone' => 'NA', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1707416065/fotos/12001.jpg', 'active' => '1', 'name' => 'Trainee de Sistema de Gestión Integral (SGI)'],
+        ['id' => '302', 'nombre' => 'Monica Esthela Padilla Gónzalez', 'email' => 'mpadilla@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1718040767/fotos/302.jpg', 'active' => '1', 'name' => 'Trainee de Recursos Humanos'],
+        ['id' => '303', 'nombre' => 'Luis Adrián Sánchez González', 'email' => 'lsanchez@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1720551561/fotos/303.jpg', 'active' => '1', 'name' => 'Ingeniero de Ventas'],
+        ['id' => '304', 'nombre' => 'Francisco Alejandro Contreras García', 'email' => 'fcontreras@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1720467861/fotos/304.jpg', 'active' => '1', 'name' => 'Jefatura de Ventas'],
+        ['id' => '305', 'nombre' => 'María de los Ángeles Quintanar Pérez', 'email' => 'mquintanar@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1722614803/fotos/305.jpg', 'active' => '1', 'name' => 'Comprador'],
+        ['id' => '306', 'nombre' => 'Bruno Cruz Montes', 'email' => 'bcruz@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1722520442/fotos/306.jpg', 'active' => '1', 'name' => 'Analista de administración y presupuestos'],
+        ['id' => '307', 'nombre' => 'Francisco Luna García', 'email' => 'fluna@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1724179736/fotos/307.jpg', 'active' => '1', 'name' => 'Almacenista'],
+        ['id' => '309', 'nombre' => 'Fernando Butrón González', 'email' => 'fbutron@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1725388145/fotos/309.jpg', 'active' => '1', 'name' => 'Inspector de control de calidad'],
+        ['id' => '310', 'nombre' => 'Daniel Iriarte Pérez', 'email' => 'diriarte@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1725904595/fotos/310.jpg', 'active' => '1', 'name' => 'Ingeniero de proyectos'],
+        ['id' => '311', 'nombre' => 'Miguel Ángel Guerrero Cruz', 'email' => 'vigilanciagpt@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1727975908/fotos/311.jpg', 'active' => '1', 'name' => 'Guardia de seguridad'],
+        ['id' => '313', 'nombre' => 'María Guadalupe Osorio Rodríguez', 'email' => 'mosorio@gptservices.com', 'phone' => '5612941921', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1730144309/fotos/313.jpg', 'active' => '1', 'name' => 'Ingeniero de Ventas'],
+        ['id' => '314', 'nombre' => 'Edgar Domínguez Espinosa', 'email' => 'edominguez@gptservices.com', 'phone' => '5612940661', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1730830846/fotos/314.jpg', 'active' => '1', 'name' => 'Residente de Obra (OMA)'],
+        ['id' => '315', 'nombre' => 'Carlos Alonso Pérez', 'email' => 'calonso@gptservices.com', 'phone' => '(+1) 832 270 8700', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118250/fotos/315.jpg', 'active' => '1', 'name' => 'Dirección General'],
+        ['id' => '316', 'nombre' => 'Daniel Eduardo Serrano González', 'email' => 'dserrano@gptservices.com', 'phone' => null, 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1736276111/fotos/316.jpg', 'active' => '1', 'name' => 'Responsable del Sistema de Gestión Integral (SGI)'],
+        ['id' => '331', 'nombre' => 'José Carmen Rodríguez Lara', 'email' => 'jrlara@gptservices.com', 'phone' => '(+52) 81 8473 8500', 'profile_image' => 'https://res.cloudinary.com/gpt-services/image/upload/v1692118265/fotos/331.png', 'active' => '1', 'name' => 'Gerencia de servicios generales y almacén'],
+    ];
     //   return $users;
     try {
         DB::beginTransaction();
@@ -640,9 +627,9 @@ Route::get('users-migrate', function () {
             ]);
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollback();
-        throw new \Exception($e->getMessage());
+        throw new Exception($e->getMessage());
     }
 });
 
@@ -678,93 +665,93 @@ Route::get('cadenas-migrar', function () {
             $record->approver->assignRole('aprueba_requisicion_compra');
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw ($e);
     }
 });
 
 Route::get('correos', function () {
-    $users = array(
-        array('id' => '13', 'name' => 'Benjamín Alcántara Bautista', 'email' => 'balcantarab@gptservices.com'),
-        array('id' => '14', 'name' => 'Jesús Becerra Yebra', 'email' => 'jbecerray@gptservices.com'),
-        array('id' => '18', 'name' => 'Ana Lilia López Arreola', 'email' => 'alopeza@gptservices.com'),
-        array('id' => '19', 'name' => 'Rafael García Arroyo', 'email' => 'rgarciaa@gptservices.com'),
-        array('id' => '22', 'name' => 'Iván Ponce Reyes', 'email' => 'iponcer@gptservices.com'),
-        array('id' => '26', 'name' => 'Sinhue Ulloa Tello', 'email' => 'sulloat@gptservices.com'),
-        array('id' => '36', 'name' => 'Guillermo Gutiérrez Melo', 'email' => 'ggutierrezm@gptservices.com'),
-        array('id' => '37', 'name' => 'Luis Reyes Yáñez', 'email' => 'lreyesy@gptservices.com'),
-        array('id' => '40', 'name' => 'Fernando Basave Arce', 'email' => 'febasavea@gptservices.com'),
-        array('id' => '46', 'name' => 'Aquiles Gonzalo García Montiel', 'email' => 'agarciam@gptservices.com'),
-        array('id' => '50', 'name' => 'Aurelio Cruz Báez', 'email' => 'acruzb@gptservices.com'),
-        array('id' => '53', 'name' => 'Adriana González Huitrón', 'email' => 'agonzalezh@gptservices.com'),
-        array('id' => '64', 'name' => 'Luis Sandoval Cabello', 'email' => 'lsandovalc@gptservices.com'),
-        array('id' => '89', 'name' => 'Juan Jiménez Camacho', 'email' => 'jjimenezc@gptservices.com'),
-        array('id' => '92', 'name' => 'Néstor Adair Acosta Arroyo', 'email' => 'naacostaa@gptservices.com'),
-        array('id' => '99', 'name' => 'Raúl Rodríguez Guzmán', 'email' => 'rrodriguezg@gptservices.com'),
-        array('id' => '106', 'name' => 'Denise Marisol Reyes Ramírez', 'email' => 'dmreyesr@gptservices.com'),
-        array('id' => '114', 'name' => 'Manuel Antonio Ríos Cuautitla', 'email' => 'mariosc@gptservices.com'),
-        array('id' => '120', 'name' => 'Roberto González Muñoz', 'email' => 'rgonzalezm@gptservices.com'),
-        array('id' => '123', 'name' => 'Angélica Salgado Zúñiga', 'email' => 'asalgadoz@gptservices.com'),
-        array('id' => '131', 'name' => 'Axel Javier Martínez Segura', 'email' => 'ajmartinezs@gptservices.com'),
-        array('id' => '132', 'name' => 'Martín Paes Santillán', 'email' => 'mpaess@gptservices.com'),
-        array('id' => '137', 'name' => 'Luis Jesús Godínez Rivera', 'email' => 'lgodinez@gptservices.com'),
-        array('id' => '152', 'name' => 'Edgar David Meza Rivera', 'email' => 'emeza@gptservices.com'),
-        array('id' => '157', 'name' => 'Claudio Magdaleno Pérez Hernández', 'email' => 'cperez@gptservices.com'),
-        array('id' => '158', 'name' => 'Yanet Rosario Colín Antonio', 'email' => 'yrcolina@gptservices.com'),
-        array('id' => '166', 'name' => 'Rafael Alejandro Jiménez Ávila', 'email' => 'rajimeneza@gptservices.com'),
-        array('id' => '168', 'name' => 'Sergio Antonio Ordaz Espinoza', 'email' => 'santonio@gptservices.com'),
-        array('id' => '180', 'name' => 'Jorge Eduardo García Ojeda', 'email' => 'jegarciao@gptservices.com'),
-        array('id' => '187', 'name' => 'Alejandro Aldair Ramírez Pérez', 'email' => 'aramirezp@gptservices.com'),
-        array('id' => '191', 'name' => 'Jennifer Martínez Jarquín', 'email' => 'jmartinezj@gptservices.com'),
-        array('id' => '193', 'name' => 'Martín Alejandro Martínez Hernández', 'email' => 'mmartinez@gptservices.com'),
-        array('id' => '199', 'name' => 'Alan Etzahu Hernández Mendoza', 'email' => 'ahernandezm@gptservices.com'),
-        array('id' => '200', 'name' => 'Rocío Rojas González', 'email' => 'rrojasg@gptservices.com'),
-        array('id' => '205', 'name' => 'Erik David López Olvera', 'email' => 'edlopezo@gptservices.com'),
-        array('id' => '212', 'name' => 'Enrique Villafranca García', 'email' => 'evillafranca@gptservices.com'),
-        array('id' => '223', 'name' => 'José Héctor Avilés Nieto', 'email' => 'haviles@gptservices.com'),
-        array('id' => '227', 'name' => 'Kevin Hazael Pérez Rodríguez', 'email' => 'kperez@gptservices.com'),
-        array('id' => '230', 'name' => 'Ernesto Bautista Cruz', 'email' => 'ebautista@gptservices.com'),
-        array('id' => '233', 'name' => 'Israel Correa Cruz', 'email' => 'icorrea@gptservices.com'),
-        array('id' => '240', 'name' => 'Mónica Jazmín Pimentel García', 'email' => 'mpimentel@gptservices.com'),
-        array('id' => '247', 'name' => 'Juan Carlos Prado Hernández', 'email' => 'jprado@gptservices.com'),
-        array('id' => '249', 'name' => 'Rocío Salgado Rangel', 'email' => 'rsalgado@gptservices.com'),
-        array('id' => '250', 'name' => 'José Carlos Martínez Amador', 'email' => 'jmartinez@gptservices.com'),
-        array('id' => '251', 'name' => 'Alejandro Rodríguez Vázquez', 'email' => 'arodriguez@gptservices.com'),
-        array('id' => '252', 'name' => 'Israel Omar Mora Barrios', 'email' => 'imora@gptservices.com'),
-        array('id' => '257', 'name' => 'Sergio Martín Ramírez Jaimes', 'email' => 'sramirez@gptservices.com'),
-        array('id' => '260', 'name' => 'José de Jesús Lázaro Juárez', 'email' => 'jlazaro@gptservices.com'),
-        array('id' => '263', 'name' => 'Elizabeth García Real Joya', 'email' => 'egarcia@gptservices.com'),
-        array('id' => '264', 'name' => 'Juan Carlos López Hernández', 'email' => 'jhernandez@gptservices.com'),
-        array('id' => '266', 'name' => 'Omar Alvarado Bailey', 'email' => 'oalvarado@gptservices.com'),
-        array('id' => '269', 'name' => 'Javier Mozart Santos Cruces', 'email' => 'jsantos@gptservices.com'),
-        array('id' => '270', 'name' => 'Miguel Eduardo Orduña Álvarez', 'email' => 'eorduna@gptservices.com'),
-        array('id' => '271', 'name' => 'José Manuel Cardona Salinas', 'email' => 'jcardona@gptservices.com'),
-        array('id' => '274', 'name' => 'María Fernanda López Muñóz', 'email' => 'mlopez@gptservices.com'),
-        array('id' => '276', 'name' => 'Leonardo Paredes Chávez', 'email' => 'lparedes@gptservices.com'),
-        array('id' => '277', 'name' => 'Antonio  Guevara Galán ', 'email' => 'guevaraantonio376@gmail.com'),
-        array('id' => '282', 'name' => 'Diana Martínez Dolores', 'email' => 'dmartinez@gptservices.com'),
-        array('id' => '287', 'name' => 'Eduardo Moreno Carmona', 'email' => 'emoreno@gptservices.com'),
-        array('id' => '290', 'name' => 'Mariana Karina Jiménez Ortega', 'email' => 'mjimenez@gptservices.com'),
-        array('id' => '292', 'name' => 'Fernando Zamora González', 'email' => 'fzamora@gptservices.com'),
-        array('id' => '293', 'name' => 'Jatziri Yamile Alejo Osorio', 'email' => 'jalejo@gptservices.com'),
-        array('id' => '296', 'name' => 'Paola Chávez Huerta', 'email' => 'pchavez@gptservices.com'),
-        array('id' => '298', 'name' => 'Ingrid Danae González Cisneros', 'email' => 'igonzalez@gptservices.com'),
-        array('id' => '301', 'name' => 'Pablo Angel Vazquez Hernández', 'email' => 'pvazquez@gptservices.com'),
-        array('id' => '302', 'name' => 'Monica Esthela Padilla Gónzalez', 'email' => 'mpadilla@gptservices.com'),
-        array('id' => '303', 'name' => 'Luis Adrián Sánchez González', 'email' => 'lsanchez@gptservices.com'),
-        array('id' => '304', 'name' => 'Francisco Alejandro Contreras García', 'email' => 'fcontreras@gptservices.com'),
-        array('id' => '305', 'name' => 'María de los Ángeles Quintanar Pérez', 'email' => 'mquintanar@gptservices.com'),
-        array('id' => '306', 'name' => 'Bruno Cruz Montes', 'email' => 'bcruz@gptservices.com'),
-        array('id' => '307', 'name' => 'Francisco Luna García', 'email' => 'fluna@gptservices.com'),
-        array('id' => '309', 'name' => 'Fernando Butrón González', 'email' => 'fbutron@gptservices.com'),
-        array('id' => '310', 'name' => 'Daniel Iriarte Pérez', 'email' => 'diriarte@gptservices.com'),
-        array('id' => '311', 'name' => 'Miguel Ángel Guerrero Cruz', 'email' => 'vigilanciagpt@gptservices.com'),
-        array('id' => '313', 'name' => 'María Guadalupe Osorio Rodríguez', 'email' => 'mosorio@gptservices.com'),
-        array('id' => '314', 'name' => 'Edgar Domínguez Espinosa', 'email' => 'edominguez@gptservices.com'),
-        array('id' => '316', 'name' => 'Daniel Eduardo Serrano González', 'email' => 'dserrano@gptservices.com'),
-        array('id' => '331', 'name' => 'José Carmen Rodríguez Lara', 'email' => 'jrlara@gptservices.com')
-    );
+    $users = [
+        ['id' => '13', 'name' => 'Benjamín Alcántara Bautista', 'email' => 'balcantarab@gptservices.com'],
+        ['id' => '14', 'name' => 'Jesús Becerra Yebra', 'email' => 'jbecerray@gptservices.com'],
+        ['id' => '18', 'name' => 'Ana Lilia López Arreola', 'email' => 'alopeza@gptservices.com'],
+        ['id' => '19', 'name' => 'Rafael García Arroyo', 'email' => 'rgarciaa@gptservices.com'],
+        ['id' => '22', 'name' => 'Iván Ponce Reyes', 'email' => 'iponcer@gptservices.com'],
+        ['id' => '26', 'name' => 'Sinhue Ulloa Tello', 'email' => 'sulloat@gptservices.com'],
+        ['id' => '36', 'name' => 'Guillermo Gutiérrez Melo', 'email' => 'ggutierrezm@gptservices.com'],
+        ['id' => '37', 'name' => 'Luis Reyes Yáñez', 'email' => 'lreyesy@gptservices.com'],
+        ['id' => '40', 'name' => 'Fernando Basave Arce', 'email' => 'febasavea@gptservices.com'],
+        ['id' => '46', 'name' => 'Aquiles Gonzalo García Montiel', 'email' => 'agarciam@gptservices.com'],
+        ['id' => '50', 'name' => 'Aurelio Cruz Báez', 'email' => 'acruzb@gptservices.com'],
+        ['id' => '53', 'name' => 'Adriana González Huitrón', 'email' => 'agonzalezh@gptservices.com'],
+        ['id' => '64', 'name' => 'Luis Sandoval Cabello', 'email' => 'lsandovalc@gptservices.com'],
+        ['id' => '89', 'name' => 'Juan Jiménez Camacho', 'email' => 'jjimenezc@gptservices.com'],
+        ['id' => '92', 'name' => 'Néstor Adair Acosta Arroyo', 'email' => 'naacostaa@gptservices.com'],
+        ['id' => '99', 'name' => 'Raúl Rodríguez Guzmán', 'email' => 'rrodriguezg@gptservices.com'],
+        ['id' => '106', 'name' => 'Denise Marisol Reyes Ramírez', 'email' => 'dmreyesr@gptservices.com'],
+        ['id' => '114', 'name' => 'Manuel Antonio Ríos Cuautitla', 'email' => 'mariosc@gptservices.com'],
+        ['id' => '120', 'name' => 'Roberto González Muñoz', 'email' => 'rgonzalezm@gptservices.com'],
+        ['id' => '123', 'name' => 'Angélica Salgado Zúñiga', 'email' => 'asalgadoz@gptservices.com'],
+        ['id' => '131', 'name' => 'Axel Javier Martínez Segura', 'email' => 'ajmartinezs@gptservices.com'],
+        ['id' => '132', 'name' => 'Martín Paes Santillán', 'email' => 'mpaess@gptservices.com'],
+        ['id' => '137', 'name' => 'Luis Jesús Godínez Rivera', 'email' => 'lgodinez@gptservices.com'],
+        ['id' => '152', 'name' => 'Edgar David Meza Rivera', 'email' => 'emeza@gptservices.com'],
+        ['id' => '157', 'name' => 'Claudio Magdaleno Pérez Hernández', 'email' => 'cperez@gptservices.com'],
+        ['id' => '158', 'name' => 'Yanet Rosario Colín Antonio', 'email' => 'yrcolina@gptservices.com'],
+        ['id' => '166', 'name' => 'Rafael Alejandro Jiménez Ávila', 'email' => 'rajimeneza@gptservices.com'],
+        ['id' => '168', 'name' => 'Sergio Antonio Ordaz Espinoza', 'email' => 'santonio@gptservices.com'],
+        ['id' => '180', 'name' => 'Jorge Eduardo García Ojeda', 'email' => 'jegarciao@gptservices.com'],
+        ['id' => '187', 'name' => 'Alejandro Aldair Ramírez Pérez', 'email' => 'aramirezp@gptservices.com'],
+        ['id' => '191', 'name' => 'Jennifer Martínez Jarquín', 'email' => 'jmartinezj@gptservices.com'],
+        ['id' => '193', 'name' => 'Martín Alejandro Martínez Hernández', 'email' => 'mmartinez@gptservices.com'],
+        ['id' => '199', 'name' => 'Alan Etzahu Hernández Mendoza', 'email' => 'ahernandezm@gptservices.com'],
+        ['id' => '200', 'name' => 'Rocío Rojas González', 'email' => 'rrojasg@gptservices.com'],
+        ['id' => '205', 'name' => 'Erik David López Olvera', 'email' => 'edlopezo@gptservices.com'],
+        ['id' => '212', 'name' => 'Enrique Villafranca García', 'email' => 'evillafranca@gptservices.com'],
+        ['id' => '223', 'name' => 'José Héctor Avilés Nieto', 'email' => 'haviles@gptservices.com'],
+        ['id' => '227', 'name' => 'Kevin Hazael Pérez Rodríguez', 'email' => 'kperez@gptservices.com'],
+        ['id' => '230', 'name' => 'Ernesto Bautista Cruz', 'email' => 'ebautista@gptservices.com'],
+        ['id' => '233', 'name' => 'Israel Correa Cruz', 'email' => 'icorrea@gptservices.com'],
+        ['id' => '240', 'name' => 'Mónica Jazmín Pimentel García', 'email' => 'mpimentel@gptservices.com'],
+        ['id' => '247', 'name' => 'Juan Carlos Prado Hernández', 'email' => 'jprado@gptservices.com'],
+        ['id' => '249', 'name' => 'Rocío Salgado Rangel', 'email' => 'rsalgado@gptservices.com'],
+        ['id' => '250', 'name' => 'José Carlos Martínez Amador', 'email' => 'jmartinez@gptservices.com'],
+        ['id' => '251', 'name' => 'Alejandro Rodríguez Vázquez', 'email' => 'arodriguez@gptservices.com'],
+        ['id' => '252', 'name' => 'Israel Omar Mora Barrios', 'email' => 'imora@gptservices.com'],
+        ['id' => '257', 'name' => 'Sergio Martín Ramírez Jaimes', 'email' => 'sramirez@gptservices.com'],
+        ['id' => '260', 'name' => 'José de Jesús Lázaro Juárez', 'email' => 'jlazaro@gptservices.com'],
+        ['id' => '263', 'name' => 'Elizabeth García Real Joya', 'email' => 'egarcia@gptservices.com'],
+        ['id' => '264', 'name' => 'Juan Carlos López Hernández', 'email' => 'jhernandez@gptservices.com'],
+        ['id' => '266', 'name' => 'Omar Alvarado Bailey', 'email' => 'oalvarado@gptservices.com'],
+        ['id' => '269', 'name' => 'Javier Mozart Santos Cruces', 'email' => 'jsantos@gptservices.com'],
+        ['id' => '270', 'name' => 'Miguel Eduardo Orduña Álvarez', 'email' => 'eorduna@gptservices.com'],
+        ['id' => '271', 'name' => 'José Manuel Cardona Salinas', 'email' => 'jcardona@gptservices.com'],
+        ['id' => '274', 'name' => 'María Fernanda López Muñóz', 'email' => 'mlopez@gptservices.com'],
+        ['id' => '276', 'name' => 'Leonardo Paredes Chávez', 'email' => 'lparedes@gptservices.com'],
+        ['id' => '277', 'name' => 'Antonio  Guevara Galán ', 'email' => 'guevaraantonio376@gmail.com'],
+        ['id' => '282', 'name' => 'Diana Martínez Dolores', 'email' => 'dmartinez@gptservices.com'],
+        ['id' => '287', 'name' => 'Eduardo Moreno Carmona', 'email' => 'emoreno@gptservices.com'],
+        ['id' => '290', 'name' => 'Mariana Karina Jiménez Ortega', 'email' => 'mjimenez@gptservices.com'],
+        ['id' => '292', 'name' => 'Fernando Zamora González', 'email' => 'fzamora@gptservices.com'],
+        ['id' => '293', 'name' => 'Jatziri Yamile Alejo Osorio', 'email' => 'jalejo@gptservices.com'],
+        ['id' => '296', 'name' => 'Paola Chávez Huerta', 'email' => 'pchavez@gptservices.com'],
+        ['id' => '298', 'name' => 'Ingrid Danae González Cisneros', 'email' => 'igonzalez@gptservices.com'],
+        ['id' => '301', 'name' => 'Pablo Angel Vazquez Hernández', 'email' => 'pvazquez@gptservices.com'],
+        ['id' => '302', 'name' => 'Monica Esthela Padilla Gónzalez', 'email' => 'mpadilla@gptservices.com'],
+        ['id' => '303', 'name' => 'Luis Adrián Sánchez González', 'email' => 'lsanchez@gptservices.com'],
+        ['id' => '304', 'name' => 'Francisco Alejandro Contreras García', 'email' => 'fcontreras@gptservices.com'],
+        ['id' => '305', 'name' => 'María de los Ángeles Quintanar Pérez', 'email' => 'mquintanar@gptservices.com'],
+        ['id' => '306', 'name' => 'Bruno Cruz Montes', 'email' => 'bcruz@gptservices.com'],
+        ['id' => '307', 'name' => 'Francisco Luna García', 'email' => 'fluna@gptservices.com'],
+        ['id' => '309', 'name' => 'Fernando Butrón González', 'email' => 'fbutron@gptservices.com'],
+        ['id' => '310', 'name' => 'Daniel Iriarte Pérez', 'email' => 'diriarte@gptservices.com'],
+        ['id' => '311', 'name' => 'Miguel Ángel Guerrero Cruz', 'email' => 'vigilanciagpt@gptservices.com'],
+        ['id' => '313', 'name' => 'María Guadalupe Osorio Rodríguez', 'email' => 'mosorio@gptservices.com'],
+        ['id' => '314', 'name' => 'Edgar Domínguez Espinosa', 'email' => 'edominguez@gptservices.com'],
+        ['id' => '316', 'name' => 'Daniel Eduardo Serrano González', 'email' => 'dserrano@gptservices.com'],
+        ['id' => '331', 'name' => 'José Carmen Rodríguez Lara', 'email' => 'jrlara@gptservices.com'],
+    ];
     $users = collect($users);
     $correos = $users->pluck('email')->values()->all();
 
@@ -843,82 +830,86 @@ Route::get('correos', function () {
         $falta = $users->where('email', $item)->first();
         $usersFaltantes[] = $falta;
     }
+
     return fastexcel($usersFaltantes)->download('file.xlsx');
+
     return $usersFaltantes;
+
     return $diff;
 });
 
 Route::get('sin-correo', function () {
-    $users = array(
-        array('id' => '202', 'nombre' => 'Daniel González García', 'email' => ''),
-        array('id' => '235', 'nombre' => 'Giovanni Lugardo Aguilar', 'email' => ''),
-        array('id' => '253', 'nombre' => 'Daniel Nuñez Cruz', 'email' => ''),
-        array('id' => '256', 'nombre' => 'Rosa Maria Mendoza Gutierrez', 'email' => ''),
-        array('id' => '258', 'nombre' => 'Julia  Flores Valenzuela ', 'email' => ''),
-        array('id' => '265', 'nombre' => 'Alfonso  Gómez López ', 'email' => ''),
-        array('id' => '268', 'nombre' => 'Carlos Ivan Carbajal Cerezo', 'email' => ''),
-        array('id' => '275', 'nombre' => 'Agustín Quechol Millán', 'email' => NULL),
-        array('id' => '277', 'nombre' => 'Antonio  Guevara Galán ', 'email' => NULL),
-        array('id' => '285', 'nombre' => 'Juan Gabriel Castañeda Martínez', 'email' => 'NA'),
-        array('id' => '286', 'nombre' => 'Luis Enrique Pardo Sánchez', 'email' => 'NA'),
-        array('id' => '289', 'nombre' => 'Miguel Ángel Raya Espino', 'email' => 'NA'),
-        array('id' => '299', 'nombre' => 'Christian Alberto Gómez Matilde', 'email' => 'NA'),
-    );
+    $users = [
+        ['id' => '202', 'nombre' => 'Daniel González García', 'email' => ''],
+        ['id' => '235', 'nombre' => 'Giovanni Lugardo Aguilar', 'email' => ''],
+        ['id' => '253', 'nombre' => 'Daniel Nuñez Cruz', 'email' => ''],
+        ['id' => '256', 'nombre' => 'Rosa Maria Mendoza Gutierrez', 'email' => ''],
+        ['id' => '258', 'nombre' => 'Julia  Flores Valenzuela ', 'email' => ''],
+        ['id' => '265', 'nombre' => 'Alfonso  Gómez López ', 'email' => ''],
+        ['id' => '268', 'nombre' => 'Carlos Ivan Carbajal Cerezo', 'email' => ''],
+        ['id' => '275', 'nombre' => 'Agustín Quechol Millán', 'email' => null],
+        ['id' => '277', 'nombre' => 'Antonio  Guevara Galán ', 'email' => null],
+        ['id' => '285', 'nombre' => 'Juan Gabriel Castañeda Martínez', 'email' => 'NA'],
+        ['id' => '286', 'nombre' => 'Luis Enrique Pardo Sánchez', 'email' => 'NA'],
+        ['id' => '289', 'nombre' => 'Miguel Ángel Raya Espino', 'email' => 'NA'],
+        ['id' => '299', 'nombre' => 'Christian Alberto Gómez Matilde', 'email' => 'NA'],
+    ];
+
     return fastexcel($users)->download('file.xlsx');
 });
 
 Route::get('encuestas-migrate', function () {
-    $tickets_it = array(
-        array('folio' => 'TI2024-001', 'calificacion_servicio' => '0'),
-        array('folio' => 'TI2024-002', 'calificacion_servicio' => '0'),
-        array('folio' => 'TI2024-003', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-004', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-005', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-006', 'calificacion_servicio' => '0'),
-        array('folio' => 'TI2024-010', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-011', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-013', 'calificacion_servicio' => '3'),
-        array('folio' => 'TI2024-014', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-015', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-016', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-017', 'calificacion_servicio' => '4'),
-        array('folio' => 'TI2024-018', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-019', 'calificacion_servicio' => '3'),
-        array('folio' => 'TI2024-021', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-022', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-024', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-025', 'calificacion_servicio' => '1'),
-        array('folio' => 'TI2024-026', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-028', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-029', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-030', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-032', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-033', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-034', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-037', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-039', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-042', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-043', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-046', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-048', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-049', 'calificacion_servicio' => '4'),
-        array('folio' => 'TI2024-050', 'calificacion_servicio' => '4'),
-        array('folio' => 'TI2024-053', 'calificacion_servicio' => '1'),
-        array('folio' => 'TI2024-056', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-057', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-060', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-064', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-065', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-066', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-067', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-068', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-071', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-072', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-076', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-077', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-078', 'calificacion_servicio' => '5'),
-        array('folio' => 'TI2024-079', 'calificacion_servicio' => '5')
-    );
+    $tickets_it = [
+        ['folio' => 'TI2024-001', 'calificacion_servicio' => '0'],
+        ['folio' => 'TI2024-002', 'calificacion_servicio' => '0'],
+        ['folio' => 'TI2024-003', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-004', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-005', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-006', 'calificacion_servicio' => '0'],
+        ['folio' => 'TI2024-010', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-011', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-013', 'calificacion_servicio' => '3'],
+        ['folio' => 'TI2024-014', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-015', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-016', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-017', 'calificacion_servicio' => '4'],
+        ['folio' => 'TI2024-018', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-019', 'calificacion_servicio' => '3'],
+        ['folio' => 'TI2024-021', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-022', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-024', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-025', 'calificacion_servicio' => '1'],
+        ['folio' => 'TI2024-026', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-028', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-029', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-030', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-032', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-033', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-034', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-037', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-039', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-042', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-043', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-046', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-048', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-049', 'calificacion_servicio' => '4'],
+        ['folio' => 'TI2024-050', 'calificacion_servicio' => '4'],
+        ['folio' => 'TI2024-053', 'calificacion_servicio' => '1'],
+        ['folio' => 'TI2024-056', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-057', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-060', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-064', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-065', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-066', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-067', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-068', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-071', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-072', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-076', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-077', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-078', 'calificacion_servicio' => '5'],
+        ['folio' => 'TI2024-079', 'calificacion_servicio' => '5'],
+    ];
 
     return fastexcel($tickets_it)->download('tickets_it.xlsx');
 });
@@ -957,7 +948,7 @@ Route::get('concentrado', function () {
         }
         DB::table('products')->insert($array);
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
@@ -983,7 +974,7 @@ Route::get('cat', function () {
             );
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
@@ -1018,19 +1009,19 @@ Route::get('history-filter', function () {
     // return $rq->status()->history()->get();
     // dd($rq->status()->timesWas('aprobado por gerencia'));
     $stages = [];
-    $stages[1] =  $rq->status()->snapshotWhen('revisión');
-    $stages[2] =  $rq->status()->snapshotsWhen('revisión');
+    $stages[1] = $rq->status()->snapshotWhen('revisión');
+    $stages[2] = $rq->status()->snapshotsWhen('revisión');
+
     // $stages[2] =  $rq->status()->snapshotWhen('aprobado por revisor');
     // $stages[3] =  $rq->status()->snapshotWhen('aprobado por gerencia');
     // $stages[4] =  $rq->status()->snapshotWhen('aprobado por DG');
     return $stages;
     $revisions = $rq->status()->timesWas('aprobado por gerencia');
     $pdf = Pdf::loadView('pdf.purchase-requisition', compact('rq', 'revisions', 'stages'))->setPaper('a4', 'landscape');
-    return $pdf->stream($rq->folio . '.pdf');
 
-    return;
+    return $pdf->stream($rq->folio.'.pdf');
+
 });
-
 
 Route::get('migrar-catalogo', function () {
     // $unidades = MeasureUnit::all();
@@ -1084,7 +1075,7 @@ Route::get('migrar-catalogo', function () {
         DB::beginTransaction();
         DB::table('products')->insert($data);
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
@@ -1096,9 +1087,9 @@ Route::get('cadenas-email', function () {
     $cadenas = collect($cadenas);
     $cadenas = $cadenas->flatten()->unique();
 
-
     $email = User::whereIn('id', $cadenas)->get()->pluck('email');
-    return ($email);
+
+    return $email;
 });
 
 Route::get('update-catalog', function () {
@@ -1135,7 +1126,7 @@ Route::get('uptade-products', function () {
         DB::beginTransaction();
         foreach ($products as $key => $product) {
             echo '<br>';
-            echo 'DB ' . $product->id . '-Cal' . $key + 1;
+            echo 'DB '.$product->id.'-Cal'.$key + 1;
             echo '<br>';
             $product->id = $key + 1;
             $product->save();
@@ -1155,17 +1146,19 @@ Route::get('excel-provider', function () {
     $contacts = $contacts->flatten();
     $sheets = new SheetCollection([
         'proveedores' => $collection,
-        'contactos' => $contacts
+        'contactos' => $contacts,
     ]);
+
     return (new FastExcel($sheets))->download('file.xlsx');
+
     return fastexcel($collection, $contacts)->download('file.xlsx');
 });
 
 Route::get('folio', function () {
 
     phpinfo();
-    $term = Company::find(session()->get('company_id'))->acronym . '-' . auth()->user()->management->acronym . '-' . now()->year;
-    $rq = PurchaseRequisition::where('folio', 'LIKE', $term . '%')->latest('created_at')->first();
+    $term = Company::find(session()->get('company_id'))->acronym.'-'.auth()->user()->management->acronym.'-'.now()->year;
+    $rq = PurchaseRequisition::where('folio', 'LIKE', $term.'%')->latest('created_at')->first();
 
     // Dividir el string por el guion
     $partes = explode('-', $rq->folio);
@@ -1173,24 +1166,25 @@ Route::get('folio', function () {
     // Obtener la última parte
     $numString = end($partes);
     // Convertir a entero
-    $numInt = ((int)$numString + 1);
+    $numInt = ((int) $numString + 1);
+
     return str($numInt)->padLeft(4, '0');
 });
 Route::get('up', function () {
-    $model =   new CreateAuditsTable();
+    $model = new CreateAuditsTable;
     $model->up();
 });
 
 Route::get('qr-generate', function () {
     // Texto o URL que quieres codificar en el QR
-    $data = "https://forms.gle/wzUjou2GCxVUFL5z9";
+    $data = 'https://forms.gle/wzUjou2GCxVUFL5z9';
     // Generar el código QR
     $qrCode = QrCode::format('png')->size(300)->generate($data);
+
     // Devolver la imagen del QR como una respuesta de descarga
     return response($qrCode)->header('Content-Type', 'image/png')
         ->header('Content-Disposition', 'attachment; filename="qr-code.png"');
 });
-
 
 Route::get('mana', function () {
     $user = User::find(274);
@@ -1204,7 +1198,7 @@ Route::get('delete', function () {
         $model = PurchaseRequisition::find(19);
         $model->delete();
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
@@ -1216,6 +1210,7 @@ Route::get('asing', function () {
     // })->get()
     //     ->myAssing()->get();
     $models = PurchaseRequisition::doesntHave('orders')->myAssing()->get();
+
     return $models;
 });
 
@@ -1255,15 +1250,15 @@ Route::get('change-folio', function () {
     try {
         DB::beginTransaction();
         foreach ($modelsG as $index => $model) {
-            $model->folio = 'G' . str($index + 1)->padLeft(2, '0')  . '/' . now()->format('y');
+            $model->folio = 'G'.str($index + 1)->padLeft(2, '0').'/'.now()->format('y');
             $model->save();
         }
         foreach ($modelsT as $index => $model) {
-            $model->folio = 'T' . str($index + 1)->padLeft(2, '0')  . '/' . now()->format('y');
+            $model->folio = 'T'.str($index + 1)->padLeft(2, '0').'/'.now()->format('y');
             $model->save();
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
@@ -1284,6 +1279,7 @@ Route::get('encuestas', function () {
     $diff = array_diff($correos, $avance);
     // dd($diff);
     $correos = fastexcel()->import('correos.xlsx');
+
     return $correos->whereIn('CORREO', $diff)->pluck('NOMBRE COMPLETO');
 });
 Route::get('excel-orders', function () {
@@ -1330,8 +1326,10 @@ Route::get('excel-orders', function () {
 
 Route::get('filter-orders', function () {
     $models = PurchaseRequisition::select('id', 'status')->get()->pluck('status', 'id')->unique();
+
     return $models;
     $orders = PurchaseRequisition::readyAssing()->get();
+
     return $orders->count();
 });
 Route::get('order-resumen', function () {
@@ -1377,7 +1375,7 @@ Route::get('order-resumen', function () {
                 }
             }
             DB::commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             DB::rollBack();
             throw $e;
         }
@@ -1406,7 +1404,7 @@ Route::get('reorder-products', function () {
             $index++;
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         throw $e;
         DB::rollBack();
     }
@@ -1415,7 +1413,9 @@ Route::get('reorder-products', function () {
 Route::get('history-service', function () {
 
     $model = PurchaseOrder::find(402);
+
     return $model->progress;
+
     return;
     // function validarCantidad($input)
     // {
@@ -1479,7 +1479,7 @@ Route::get('history-service', function () {
             $item->save();
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
         logger()->error($e->getMessage());
@@ -1493,7 +1493,7 @@ Route::get('history-service', function () {
             $order->save();
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
         logger()->error($e->getMessage());
@@ -1541,6 +1541,7 @@ Route::get('lineas', function () {
         }
     }
     $data = collect($data)->sortByDesc('Plan');
+
     return fastexcel($data)->download('lineas.xlsx');
 });
 
@@ -1560,7 +1561,6 @@ Route::get('chain-special', function () {
 
     // return $values;
 
-
     $spreadsheetId = '1ha_45TdVN7odz-64yKlXlvjXD66O5zfXG7HKeamFJfU';
     $sheetName = 'test';
 
@@ -1569,7 +1569,7 @@ Route::get('chain-special', function () {
         'name' => 'Nombre Completo',
         'email' => 'Correo Electrónico',
         'phone' => 'Teléfono de Contacto',
-        'created_at' => 'Fecha de Creación'
+        'created_at' => 'Fecha de Creación',
     ];
 
     try {
@@ -1577,7 +1577,7 @@ Route::get('chain-special', function () {
         $allData = $sheet->get();
 
         if ($allData->isEmpty()) {
-            return "La hoja está vacía";
+            return 'La hoja está vacía';
         }
 
         $dataArray = $allData->toArray();
@@ -1596,19 +1596,19 @@ Route::get('chain-special', function () {
         // Actualizar toda la hoja
         $sheet->update($dataArray);
 
-        return "Columnas específicas renombradas exitosamente";
-    } catch (\Exception $e) {
-        return "Error: " . $e->getMessage();
+        return 'Columnas específicas renombradas exitosamente';
+    } catch (Exception $e) {
+        return 'Error: '.$e->getMessage();
     }
 });
 
 // Ruta de prueba para el GoogleSheetsService
 Route::get('test-sheets-service', function () {
-    $service = new \App\Services\GoogleSheetsService();
+    $service = new GoogleSheetsService;
 
     try {
         // Ejemplo 1: Generar iniciales
-        $buyerName = "Alan Mendoza";
+        $buyerName = 'Alan Mendoza';
         $initials = $service->generateBuyerInitials($buyerName);
 
         // Ejemplo 2: Crear hoja para el comprador
@@ -1623,7 +1623,7 @@ Route::get('test-sheets-service', function () {
             'total' => '$15,000.00',
             'moneda' => 'MXN',
             'estado' => 'Aprobada',
-            'observaciones' => 'Orden procesada correctamente'
+            'observaciones' => 'Orden procesada correctamente',
         ];
 
         $service->logPurchaseOrder($buyerName, $orderData);
@@ -1634,19 +1634,19 @@ Route::get('test-sheets-service', function () {
             'initials' => $initials,
             'sheet_name' => $sheetName,
             'message' => 'Hoja creada y datos registrados exitosamente',
-            'spreadsheet_id' => $service->getSpreadsheetId()
+            'spreadsheet_id' => $service->getSpreadsheetId(),
         ]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json([
             'success' => false,
-            'error' => $e->getMessage()
+            'error' => $e->getMessage(),
         ]);
     }
 });
 
 // Ruta para listar todas las hojas
 Route::get('list-sheets', function () {
-    $service = new \App\Services\GoogleSheetsService();
+    $service = new GoogleSheetsService;
 
     try {
         $sheets = $service->getSheetList();
@@ -1654,12 +1654,12 @@ Route::get('list-sheets', function () {
         return response()->json([
             'success' => true,
             'sheets' => $sheets,
-            'total_sheets' => count($sheets)
+            'total_sheets' => count($sheets),
         ]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json([
             'success' => false,
-            'error' => $e->getMessage()
+            'error' => $e->getMessage(),
         ]);
     }
 });
@@ -1667,7 +1667,7 @@ Route::get('list-sheets', function () {
 // Ruta para probar el trait LogsToGoogleSheets con una orden específica
 Route::get('test-order-sheets/{orderId}', function ($orderId) {
     try {
-        $order = \App\Models\PurchaseOrder::findOrFail($orderId);
+        $order = PurchaseOrder::findOrFail($orderId);
 
         // Simular el registro manual en Google Sheets
         $result = $order->syncToGoogleSheets();
@@ -1681,12 +1681,12 @@ Route::get('test-order-sheets/{orderId}', function ($orderId) {
             'buyer_name' => $order->purchaser->name ?? 'Sin comprador',
             'sheet_name' => $sheetName,
             'sync_result' => $result,
-            'message' => 'Orden sincronizada con Google Sheets'
+            'message' => 'Orden sincronizada con Google Sheets',
         ]);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json([
             'success' => false,
-            'error' => $e->getMessage()
+            'error' => $e->getMessage(),
         ]);
     }
 });
@@ -1704,7 +1704,7 @@ Route::get('reporte-proveedores-324-669', function () {
         if ($orders->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'No se encontraron órdenes para los proveedores ' . implode(', ', $providerIds)
+                'message' => 'No se encontraron órdenes para los proveedores '.implode(', ', $providerIds),
             ]);
         }
 
@@ -1744,14 +1744,14 @@ Route::get('reporte-proveedores-324-669', function () {
         }
 
         // Generar archivo Excel
-        $fileName = 'reporte_proveedores_324_669_' . now()->format('Y-m-d_His') . '.xlsx';
+        $fileName = 'reporte_proveedores_324_669_'.now()->format('Y-m-d_His').'.xlsx';
 
         return (new FastExcel($data))->download($fileName);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json([
             'success' => false,
             'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
+            'trace' => $e->getTraceAsString(),
         ]);
     }
 });
@@ -1771,7 +1771,7 @@ Route::get('reporte-proveedor-324-liberadas', function () {
         if ($orders->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'No se encontraron órdenes liberadas para el proveedor ' . $providerId
+                'message' => 'No se encontraron órdenes liberadas para el proveedor '.$providerId,
             ]);
         }
 
@@ -1781,7 +1781,7 @@ Route::get('reporte-proveedor-324-liberadas', function () {
             $service = new OrderCalculationService($order->id);
             foreach ($order->items as $item) {
                 echo '<br>';
-                echo  $service->brickFormatter($item->unit_price);
+                echo $service->brickFormatter($item->unit_price);
                 echo '<br>';
                 $data[] = [
                     'Folio OC' => $order->folio,
@@ -1813,25 +1813,23 @@ Route::get('reporte-proveedor-324-liberadas', function () {
         }
 
         // Generar archivo Excel
-        $fileName = 'reporte_proveedor_324_liberadas_' . now()->format('Y-m-d_His') . '.xlsx';
+        $fileName = 'reporte_proveedor_324_liberadas_'.now()->format('Y-m-d_His').'.xlsx';
 
         return (new FastExcel($data))->download($fileName);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json([
             'success' => false,
             'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
+            'trace' => $e->getTraceAsString(),
         ]);
     }
 });
 
-
 Route::get('excel-orders-rqs', function () {
-
 
     // $history =PurchaseOrder::find(1315);
     // return $history->status()->history()->get();
-    $sheets =  fastexcel()->importSheets('facturas.xlsx');
+    $sheets = fastexcel()->importSheets('facturas.xlsx');
 
     $ordersExcel = collect($sheets[0]);
     $productos = $ordersExcel->pluck('DESCRIPCION');
@@ -1844,9 +1842,8 @@ Route::get('excel-orders-rqs', function () {
             echo "<p style='color:green;margin:0;padding:0;font-weight: bold;'>{$producto}</p>";
         }
     }
+
     return;
-
-
 
     $foliosOrdersExcel = $ordersExcel->pluck('OC');
     $ordersDB = PurchaseOrder::with(['requisition'])
@@ -1897,11 +1894,10 @@ Route::get('excel-orders-rqs', function () {
             $order->provider_contact_id = 49;
             $order->requisition_id = $rq->id;
 
-
             $order->save();
         }
         DB::commit();
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         DB::rollBack();
         throw $e;
     }
@@ -1920,7 +1916,7 @@ Route::get('audits/purchase-order/analysis', function () {
         if ($audits->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'No se encontraron audits para PurchaseOrder'
+                'message' => 'No se encontraron audits para PurchaseOrder',
             ]);
         }
 
@@ -1958,7 +1954,7 @@ Route::get('audits/purchase-order/analysis', function () {
 
                 $changedFields = [];
                 foreach ($newValues as $key => $value) {
-                    if (!isset($oldValues[$key]) || $oldValues[$key] != $value) {
+                    if (! isset($oldValues[$key]) || $oldValues[$key] != $value) {
                         $changedFields[] = $key;
                     }
                 }
@@ -1968,12 +1964,12 @@ Route::get('audits/purchase-order/analysis', function () {
                     'time_diff_minutes' => $diffInMinutes,
                     'time_diff_human' => formatMinutesToHuman($diffInMinutes),
                     'changed_fields' => $changedFields,
-                    'timestamp' => $currentTime->format('Y-m-d H:i:s')
+                    'timestamp' => $currentTime->format('Y-m-d H:i:s'),
                 ];
             }
 
             // Estadísticas por orden
-            if (!empty($timeDifferences)) {
+            if (! empty($timeDifferences)) {
                 $ordersAnalysis[] = [
                     'order_id' => $orderId,
                     'total_changes' => count($timeDifferences),
@@ -1987,7 +1983,7 @@ Route::get('audits/purchase-order/analysis', function () {
 
         // Estadísticas globales
         $globalStats = [];
-        if (!empty($allTimeDifferences)) {
+        if (! empty($allTimeDifferences)) {
             $totalChanges = count($allTimeDifferences);
             $avgTime = array_sum($allTimeDifferences) / $totalChanges;
 
@@ -2010,7 +2006,7 @@ Route::get('audits/purchase-order/analysis', function () {
             return [
                 'event' => $event,
                 'count' => $group->count(),
-                'percentage' => round(($group->count() / $totalAudits) * 100, 2) . '%'
+                'percentage' => round(($group->count() / $totalAudits) * 100, 2).'%',
             ];
         })->values();
 
@@ -2039,13 +2035,13 @@ Route::get('audits/purchase-order/analysis', function () {
             'top_orders_by_changes' => $topOrders,
             'fastest_changing_orders' => $fastestChanges,
             'slowest_changing_orders' => $slowestChanges,
-            'detailed_analysis_sample' => collect($ordersAnalysis)->take(5)->toArray()
+            'detailed_analysis_sample' => collect($ordersAnalysis)->take(5)->toArray(),
         ], 200, [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
         return response()->json([
             'success' => false,
             'error' => $e->getMessage(),
-            'trace' => $e->getTraceAsString()
+            'trace' => $e->getTraceAsString(),
         ], 500);
     }
 })->name('audits.purchase-order.analysis');
@@ -2058,9 +2054,15 @@ function formatMinutesToHuman($minutes)
     $mins = $minutes % 60;
 
     $parts = [];
-    if ($days > 0) $parts[] = "{$days}d";
-    if ($hours > 0) $parts[] = "{$hours}h";
-    if ($mins > 0) $parts[] = round($mins) . "m";
+    if ($days > 0) {
+        $parts[] = "{$days}d";
+    }
+    if ($hours > 0) {
+        $parts[] = "{$hours}h";
+    }
+    if ($mins > 0) {
+        $parts[] = round($mins).'m';
+    }
 
     return empty($parts) ? '0m' : implode(' ', $parts);
 }
@@ -2094,29 +2096,30 @@ Route::get('test-view', function () {
         $media[] = $data->getMedia('certifications')->first();
     }
 
-    $itemsFormatted = $items->map(function ($item) use ($data, $service) {
+    $itemsFormatted = $items->map(function ($item) use ($service) {
         // $unitPrice =  new Money($item->unit_price, new Currency($data->currency));
         // $subTotal =  new Money($item->sub_total, new Currency($data->currency));
-        $unitPrice =  $item->unit_price;
+        $unitPrice = $item->unit_price;
         $subTotal = $item->sub_total;
+
         return [
             'code' => $item->product->code,
             'name' => $item->product->name,
             'brand' => $item->product->brand?->name,
             'unit' => $item->product->unit->acronym,
-            "quantity" => $item->quantity,
-            "unit_price" => $service->brickFormatter($unitPrice),
-            "sub_total" => $service->brickFormatter($subTotal),
-            "observation" => $item->observation,
+            'quantity' => $item->quantity,
+            'unit_price' => $service->brickFormatter($unitPrice),
+            'sub_total' => $service->brickFormatter($subTotal),
+            'observation' => $item->observation,
         ];
     });
     $total = [
-        'Subtotal' =>  $service->getSubtotalItems(true),
-        'Descuento' =>  $service->getDiscountProvider(true),
-        'IVA' =>  $service->getTaxIva(true),
-        'Retención de IVA' =>  $service->getRetentionIva(true),
-        'Retención de ISR' =>  $service->getRetentionIsr(true),
-        'Total' =>  $service->getTotal(true),
+        'Subtotal' => $service->getSubtotalItems(true),
+        'Descuento' => $service->getDiscountProvider(true),
+        'IVA' => $service->getTaxIva(true),
+        'Retención de IVA' => $service->getRetentionIva(true),
+        'Retención de ISR' => $service->getRetentionIsr(true),
+        'Total' => $service->getTotal(true),
     ];
 
     $data['total'] = $total;
@@ -2128,17 +2131,18 @@ Route::get('test-view', function () {
     $revisions = $data->status()->timesWas('autorizada para proveedor');
 
     $stages = [];
-    $stages[1] =  $data->status()->snapshotWhen('revisión gerente de compras');
-    $stages[2] =  $data->status()->snapshotWhen('aprobado por gerente de compras');
-    $stages[3] =  $data->status()->snapshotWhen('aprobado por gerente solicitante');
-    $stages[4] =  $data->status()->snapshotWhen('aprobado por DG nivel 1'); //
-    $stages[5] =  $data->status()->snapshotWhen('aprobado por DG nivel 2'); //
+    $stages[1] = $data->status()->snapshotWhen('revisión gerente de compras');
+    $stages[2] = $data->status()->snapshotWhen('aprobado por gerente de compras');
+    $stages[3] = $data->status()->snapshotWhen('aprobado por gerente solicitante');
+    $stages[4] = $data->status()->snapshotWhen('aprobado por DG nivel 1'); //
+    $stages[5] = $data->status()->snapshotWhen('aprobado por DG nivel 2'); //
 
     // Determinar qué anexos incluir
     $includeSupplier = in_array($data->requisition->category, ['proveeduria', 'servicio']) || $data->requisition->company_id == 1;
     $includeService = $data->requisition->category == 'servicio' || $data->requisition->company_id == 1;
     // $includeTerms = $this->getTermsAndConditionsByCompany($data->company_id) !== null;
     $includeTerms = null;
+
     return view('pdf.purchase-order.complete', [
         'data' => $data,
         'stages' => $stages,
@@ -2157,9 +2161,9 @@ Route::get('orders-total', function () {
         $total = $service->getTotal(); // BigDecimal
 
         return [
-            'folio'    => $model->folio,
-            'moneda'   => $model->currency,
-            'total'    => $service->getTotal(true), // formateado para mostrar
+            'folio' => $model->folio,
+            'moneda' => $model->currency,
+            'total' => $service->getTotal(true), // formateado para mostrar
             'total_sort' => (float) $total->__toString(), // para ordenar
         ];
     })

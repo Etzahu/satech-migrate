@@ -2,12 +2,10 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages;
 
-use Filament\Actions;
-use App\Models\PurchaseRequisition;
-use Filament\Resources\Components\Tab;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Resources\Pages\ManageRecords;
 use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource;
+use Filament\Resources\Pages\ManageRecords;
+use Filament\Schemas\Components\Tabs\Tab;
+use Illuminate\Database\Eloquent\Builder;
 
 class ManagePR extends ManageRecords
 {
@@ -44,7 +42,7 @@ class ManagePR extends ManageRecords
                 });
         }
         if (auth()->user()->hasRole('autoriza_nivel-1-orden_compra')) {
-            $tabs['authorizations'] =  Tab::make('Autorizaciones')
+            $tabs['authorizations'] = Tab::make('Autorizaciones')
                 ->modifyQueryUsing(function (Builder $query) {
                     return $query
                         ->withWhereHas('requisition', function ($query) {
@@ -60,7 +58,7 @@ class ManagePR extends ManageRecords
                 });
         }
         if (auth()->user()->hasRole('autoriza_nivel-2-orden_compra')) {
-            $tabs['authorizations'] =  Tab::make('Autorizaciones')
+            $tabs['authorizations'] = Tab::make('Autorizaciones')
                 ->modifyQueryUsing(function (Builder $query) {
                     return $query
                         ->where('company_id', session()->get('company_id'))
@@ -87,6 +85,7 @@ class ManagePR extends ManageRecords
                     }
                 );
         }
+
         return $tabs;
     }
 }

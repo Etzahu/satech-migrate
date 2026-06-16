@@ -1,0 +1,1 @@
+Guarda la requisición. Se creará como borrador y el sistema le asignará un folio automáticamente.

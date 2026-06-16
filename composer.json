@@ -2,42 +2,43 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
         "asantibanez/laravel-eloquent-state-machines": "^6.0",
-        "aymanalhattami/filament-slim-scrollbar": "^2.0",
+        "backstage/mails": "^3.0",
         "barryvdh/laravel-dompdf": "^3.0",
-        "bezhansalleh/filament-shield": "^3.2",
+        "bezhansalleh/filament-shield": "^4.0",
         "brick/money": "^0.10.1",
         "calebporzio/sushi": "^2.5",
         "codeat3/blade-file-icons": "^1.10",
         "codeat3/blade-simple-icons": "^7.16",
         "dyrynda/laravel-cascade-soft-deletes": "^4.5",
-        "filament/filament": "^3.3.33",
-        "filament/spatie-laravel-media-library-plugin": "^3.2",
-        "hugomyb/filament-error-mailer": "v3.2.0.3",
-        "joaopaulolndev/filament-pdf-viewer": "^1.0",
-        "lara-zeus/qr": "^1.1",
+        "filament/filament": "^5.0",
+        "filament/spatie-laravel-media-library-plugin": "^5.0",
+        "hugomyb/filament-error-mailer": "^5.1",
+        "joaopaulolndev/filament-pdf-viewer": "^3.0",
+        "lara-zeus/qr": "^3.0",
+        "lara-zeus/simple-qrcode": "^5.0",
         "laravel/framework": "^11.9",
         "laravel/octane": "^2.13",
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
-        "livewire/livewire": "^3.5",
+        "livewire/livewire": "^4.0",
         "moneyphp/money": "^4.7",
-        "njxqlus/filament-relation-manager-component": "^1.0",
-        "okeonline/filament-archivable": "^1.2",
+        "njxqlus/filament-relation-manager-component": "^2.0",
         "opcodesio/log-viewer": "^3.15",
         "orangehill/iseed": "^3.0",
         "rap2hpoutre/fast-excel": "^5.5",
         "revolution/laravel-google-sheets": "^7.1",
-        "shanerbaner82/panel-roles": "*",
-        "simplesoftwareio/simple-qrcode": "^4.2",
+        "secondnetwork/blade-tabler-icons": "^3.41",
         "spatie/laravel-pdf": "^1.5",
-        "stechstudio/filament-impersonate": "^3.15",
-        "tapp/filament-auditing": "^3.0",
-        "vormkracht10/filament-mails": "^2.3"
+        "stechstudio/filament-impersonate": "^5.0",
+        "tapp/filament-auditing": "^4.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -55,7 +56,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         },
-         "files": [
+        "files": [
             "app/Helpers/helpers_money.php"
         ]
     },
@@ -94,6 +95,15 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "audit": {
+            "ignore": {
+                "PKSA-mdq4-51ck-6kdq": "XSS en modo debug / sin parche disponible; mitigado con APP_DEBUG=false en produccion",
+                "PKSA-8qx3-n5y5-vvnd": "XSS en modo debug / sin parche disponible; mitigado con APP_DEBUG=false en produccion",
+                "PKSA-q46n-4fdk-zjr4": "SBA-ADV-20241209-02 Reflected XSS via Route Parameter en pagina de error de debug; requiere APP_DEBUG=true",
+                "PKSA-qzrn-rnz3-85w1": "SBA-ADV-20241209-01 Reflected XSS via Request Parameter en pagina de error de debug; requiere APP_DEBUG=true",
+                "PKSA-w7xr-vk7n-rstm": "XSS en modo debug / sin parche disponible; mitigado con APP_DEBUG=false en produccion"
+            }
         }
     },
     "minimum-stability": "beta",

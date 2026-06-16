@@ -2,22 +2,18 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\ApproverResource\Pages;
 
+use App\Filament\Purchases\Resources\PurchaseRequisition\ApproverResource;
 use Filament\Actions\Action;
-use Filament\Infolists\Infolist;
-use App\Services\PRInfolistService;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use Filament\Infolists\Concerns\InteractsWithInfolists;
-use App\Filament\Purchases\Resources\PurchaseRequisition\ApproverResource;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 
 class ViewPR extends ViewRecord
 {
     protected static string $resource = ApproverResource::class;
 
-    public function mount(int | string $record): void
+    public function mount(int|string $record): void
     {
         $this->record = $this->resolveRecord($record);
     }
@@ -27,9 +23,9 @@ class ViewPR extends ViewRecord
         return [
             Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
-                ->visible(fn() => $this->record->status()->canBe('aprobado por gerencia') || $this->record->status()->canBe('devuelto por gerencia') || $this->record->status()->canBe('cancelado por gerencia'))
+                ->visible(fn () => $this->record->status()->canBe('aprobado por gerencia') || $this->record->status()->canBe('devuelto por gerencia') || $this->record->status()->canBe('cancelado por gerencia'))
                 ->color('success')
-                ->form([
+                ->schema([
                     Select::make('response')
                         ->label('Respuesta')
                         ->options([
@@ -60,8 +56,7 @@ class ViewPR extends ViewRecord
                 ->color('danger')
                 ->url(route('requisition.pdf', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
-                ->openUrlInNewTab()
+                ->openUrlInNewTab(),
         ];
     }
-
 }

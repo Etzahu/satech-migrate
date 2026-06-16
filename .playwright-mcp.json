@@ -1,0 +1,31 @@
+{
+  "browser": {
+    "launchOptions": {
+      "args": [
+        "--force-device-scale-factor=3",
+        "--high-dpi-support=1",
+        "--disable-gpu-vsync",
+        "--enable-gpu-rasterization",
+        "--enable-zero-copy"
+      ]
+    },
+    "contextOptions": {
+      "deviceScaleFactor": 3,
+      "viewport": {
+        "width": 2560,
+        "height": 1440
+      },
+      "colorScheme": "light",
+      "reducedMotion": "no-preference"
+    },
+    "screenshotOptions": {
+      "type": "png",
+      "fullPage": true,
+      "scale": "device",
+      "animations": "disabled",
+      "caret": "hide",
+      "clip": null
+    }
+  },
+  "outputDir": ".playwright-output"
+}

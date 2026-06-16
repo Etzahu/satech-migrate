@@ -2,30 +2,27 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Pages;
-use Filament\Panel;
-use Filament\Widgets;
-use Filament\PanelProvider;
+use Backstage\Mails\MailsPlugin;
+use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Enums\ThemeMode;
-use Hexters\HexaLite\HexaLite;
-use Filament\Support\Colors\Color;
-use Filament\Support\Enums\MaxWidth;
-use Filament\Navigation\NavigationItem;
-use Shanerbaner82\PanelRoles\PanelRoles;
 use Filament\Http\Middleware\Authenticate;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Vormkracht10\FilamentMails\FilamentMailsPlugin;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Vormkracht10\FilamentMails\Facades\FilamentMails;
-use Illuminate\Session\Middleware\AuthenticateSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
+use Filament\Pages;
+use Filament\Panel;
+use Filament\PanelProvider;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\Width;
+use Filament\Widgets;
 use Hugomyb\FilamentErrorMailer\FilamentErrorMailerPlugin;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Tobiasla78\FilamentSimplePages\FilamentSimplePagesPlugin;
+use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -38,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->favicon(asset('images/favicon.png'))
             ->spa()
             ->defaultThemeMode(ThemeMode::Light)
-            ->maxContentWidth(MaxWidth::Full)
+            ->maxContentWidth(Width::Full)
             ->sidebarFullyCollapsibleOnDesktop()
             ->colors([
                 'primary' => Color::Amber,
@@ -55,9 +52,9 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->navigationItems([
                 NavigationItem::make('LogViewer')
-                    ->visible(fn(): bool =>  auth()->user()->hasRole('super_admin'))
+                    ->visible(fn (): bool => auth()->user()->hasRole('super_admin'))
                     ->label('Log viewer')
-                    ->url(fn(): string => route('log-viewer.index'))
+                    ->url(fn (): string => route('log-viewer.index'))
                     ->icon('heroicon-o-archive-box'),
             ])
             ->middleware([
@@ -74,13 +71,10 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->routes(fn() => FilamentMails::routes())
             ->plugins([
-                \BezhanSalleh\FilamentShield\FilamentShieldPlugin::make(),
-                FilamentMailsPlugin::make(),
+                FilamentShieldPlugin::make(),
+                MailsPlugin::make(),
                 FilamentErrorMailerPlugin::make(),
-                PanelRoles::make()
-                    ->restrictedRoles(['super_admin']),
             ]);
     }
 }

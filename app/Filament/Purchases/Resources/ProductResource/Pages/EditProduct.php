@@ -2,15 +2,15 @@
 
 namespace App\Filament\Purchases\Resources\ProductResource\Pages;
 
-use Filament\Actions;
-use App\Models\Product;
-use Illuminate\Support\Str;
-use Filament\Actions\Action;
+use App\Filament\Purchases\Resources\ProductResource;
 use App\Models\CategoryFamily;
+use App\Models\Product;
+use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use App\Filament\Purchases\Resources\ProductResource;
+use Illuminate\Support\Str;
 
 class EditProduct extends EditRecord
 {
@@ -26,12 +26,12 @@ class EditProduct extends EditRecord
     protected function getFormActions(): array
     {
         if ($this->record->status == 'pendiente') {
-            return  [
+            return [
                 Action::make('Capturar respuesta')
                     ->modalHeading('Enviar respuesta')
                     ->color('success')
 
-                    ->form([
+                    ->schema([
                         Select::make('response')
                             ->label('Respuesta')
                             ->options([
@@ -75,6 +75,7 @@ class EditProduct extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $data['registered_user_id'] = auth()->user()->id;
+
         return $data;
     }
 

@@ -2,69 +2,77 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
-
-use Filament\Forms;
-use App\Models\User;
-use Filament\Tables;
-use Filament\Forms\Form;
-use App\Models\Management;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use App\Models\PurchaseRequisition;
-use Filament\Support\Enums\MaxWidth;
-use Filament\Forms\Components\Actions;
-use Filament\Notifications\Notification;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\Actions\Action;
-use App\Models\PurchaseRequisitionApprovalChain;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Okeonline\FilamentArchivable\Tables\Actions\ArchiveAction;
-use Okeonline\FilamentArchivable\Tables\Filters\ArchivedFilter;
-use Okeonline\FilamentArchivable\Tables\Actions\UnArchiveAction;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ChainResource\Pages;
-use App\Filament\Purchases\Resources\PurchaseRequisition\ChainResource\RelationManagers;
+use App\Models\PurchaseRequisition;
+use App\Models\PurchaseRequisitionApprovalChain;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Notifications\Notification;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ChainResource extends Resource
 {
     protected static ?string $model = PurchaseRequisitionApprovalChain::class;
+
     protected static ?string $modelLabel = 'Cadena requisición';
+
     protected static ?string $pluralModelLabel = 'Cadena requisición';
+
     protected static ?string $navigationLabel = 'Cadena requisición';
+
     protected static ?string $slug = 'cadena-requisicion';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 8;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('requester_id')
                     ->label('Solicita')
-                    ->relationship('requester', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
+                    ->relationship('requester', 'name', modifyQueryUsing: fn (Builder $query, string $operation) => $operation === 'create'
+                        ? $query->where('active', 1)->where('email', 'like', '%@gptservices.com')
+                        : $query->where('email', 'like', '%@gptservices.com'))
                     ->searchable()
                     ->preload()
                     ->required(),
                 Forms\Components\Select::make('reviewer_id')
                     ->label('Revisa')
-                    ->relationship('reviewer', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
+                    ->relationship('reviewer', 'name', modifyQueryUsing: fn (Builder $query, string $operation) => $operation === 'create'
+                        ? $query->where('active', 1)->where('email', 'like', '%@gptservices.com')
+                        : $query->where('email', 'like', '%@gptservices.com'))
                     ->searchable()
                     ->preload()
                     ->required(),
                 Forms\Components\Select::make('approver_id')
                     ->label('Aprueba')
-                    ->options(User::role('aprueba_requisicion_compra')->pluck('name', 'id'))
+                    ->relationship('approver', 'name', modifyQueryUsing: fn (Builder $query, string $operation) => $operation === 'create'
+                        ? $query->where('active', 1)->whereHas('roles', fn (Builder $q) => $q->where('name', 'aprueba_requisicion_compra'))
+                        : $query->whereHas('roles', fn (Builder $q) => $q->where('name', 'aprueba_requisicion_compra')))
                     ->searchable()
                     ->preload()
                     ->required(),
                 Forms\Components\Select::make('authorizer_id')
                     ->label('Autoriza')
-                    ->options(User::role('autoriza_requisicion_compra')->pluck('name', 'id'))
+                    ->relationship('authorizer', 'name', modifyQueryUsing: fn (Builder $query, string $operation) => $operation === 'create'
+                        ? $query->where('active', 1)->whereHas('roles', fn (Builder $q) => $q->where('name', 'autoriza_requisicion_compra'))
+                        : $query->whereHas('roles', fn (Builder $q) => $q->where('name', 'autoriza_requisicion_compra')))
                     ->searchable()
                     ->preload()
                     ->required(),
             ]);
     }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -103,12 +111,12 @@ class ChainResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('requester_id')
                     ->label('Solicita')
-                    ->relationship('requester', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
+                    ->relationship('requester', 'name', modifyQueryUsing: fn (Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
                     ->searchable()
                     ->preload(),
                 Tables\Filters\SelectFilter::make('reviewer_id')
                     ->label('Revisa')
-                    ->relationship('reviewer', 'name', modifyQueryUsing: fn(Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
+                    ->relationship('reviewer', 'name', modifyQueryUsing: fn (Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
                     ->searchable()
                     ->preload(),
                 Tables\Filters\SelectFilter::make('approver_id')
@@ -121,25 +129,24 @@ class ChainResource extends Resource
                     ->relationship('authorizer', 'name')
                     ->searchable()
                     ->preload(),
-                ArchivedFilter::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make()
-                    ->visible(fn($record) => $record->requisitions()->withTrashed()->count() == 0),
-                Tables\Actions\Action::make('Borrar')
-                    ->visible(fn($record) => $record->requisitions()->withTrashed()->count() > 0)
+            ->recordActions([
+                Actions\EditAction::make(),
+                Actions\DeleteAction::make()
+                    ->visible(fn ($record) => $record->requisitions()->withTrashed()->count() == 0),
+                Actions\Action::make('Borrar')
+                    ->visible(fn ($record) => $record->requisitions()->withTrashed()->count() > 0)
                     ->color('danger')
                     ->requiresConfirmation()
                     ->icon('heroicon-m-trash')
-                    ->modalWidth(MaxWidth::FiveExtraLarge)
+                    ->modalWidth(Width::FiveExtraLarge)
                     ->slideOver()
-                    ->form([
-                        Forms\Components\Section::make('Requisiciones relacionadas')
+                    ->schema([
+                        Schemas\Components\Section::make('Requisiciones relacionadas')
                             ->schema([
                                 Forms\Components\TextInput::make('quantity')
                                     ->label('Cantidad')
-                                    ->default(fn($record) => $record->requisitions()->withTrashed()->count())
+                                    ->default(fn ($record) => $record->requisitions()->withTrashed()->count())
                                     ->numeric()
                                     ->readOnly(),
                                 Forms\Components\Select::make('chain_replaced')
@@ -147,10 +154,10 @@ class ChainResource extends Resource
                                     ->required()
                                     ->options(function (): array {
                                         return PurchaseRequisitionApprovalChain::all()->mapWithKeys(function ($model) {
-                                            return [$model->id => '(Revisa)' . $model->reviewer->name . ' (Aprueba)' . $model->approver->name . ' (Autoriza)' . $model->authorizer->name];
+                                            return [$model->id => '(Revisa)'.$model->reviewer->name.' (Aprueba)'.$model->approver->name.' (Autoriza)'.$model->authorizer->name];
                                         })->toArray();
-                                    })
-                            ])
+                                    }),
+                            ]),
                     ])
                     ->action(function (array $data, $record) {
                         if ($record->requisitions()->withTrashed()->count() <= 0) {
@@ -159,6 +166,7 @@ class ChainResource extends Resource
                                 ->title('Borrado')
                                 ->success()
                                 ->send();
+
                             return;
                         }
                         try {
@@ -185,10 +193,7 @@ class ChainResource extends Resource
                                 ->send();
                         }
                     }),
-                ArchiveAction::make(),
-                UnArchiveAction::make(),
-            ])
-        ;
+            ]);
     }
 
     public static function getPages(): array

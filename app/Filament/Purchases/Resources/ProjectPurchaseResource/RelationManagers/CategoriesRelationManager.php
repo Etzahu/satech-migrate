@@ -2,20 +2,20 @@
 
 namespace App\Filament\Purchases\Resources\ProjectPurchaseResource\RelationManagers;
 
+use Filament\Actions;
 use Filament\Forms;
-use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CategoriesRelationManager extends RelationManager
 {
     protected static string $relationship = 'categories';
+
     protected static ?string $title = 'Categorías';
 
-    public function form(Form $form): Form
+    public function form(Schema $form): Schema
     {
         return $form
             ->schema([
@@ -39,18 +39,18 @@ class CategoriesRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make()
-                ->preloadRecordSelect()
-                ->multiple(),
+                Actions\AttachAction::make()
+                    ->preloadRecordSelect()
+                    ->multiple(),
             ])
-            ->actions([
-                Tables\Actions\DetachAction::make(),
+            ->recordActions([
+                Actions\DetachAction::make(),
 
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DetachBulkAction::make(),
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                Actions\BulkActionGroup::make([
+                    Actions\DetachBulkAction::make(),
+                    Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

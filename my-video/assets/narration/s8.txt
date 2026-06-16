@@ -1,0 +1,1 @@
+Cuando tengas al menos una partida, presiona Enviar a revisión. La requisición entrará al flujo de aprobación y ya no podrás editarla, así que revísala bien.

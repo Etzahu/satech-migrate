@@ -2,58 +2,68 @@
 
 namespace App\Filament\Purchases\Resources\RequestIncorporation;
 
-use Closure;
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\ProjectPurchase;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\RequestIncorporation\ProjectPurchaseResource\Pages;
-
+use App\Models\ProjectPurchase;
+use Closure;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class ProjectPurchaseResource extends Resource
 {
     protected static ?string $model = ProjectPurchase::class;
+
     protected static ?string $modelLabel = 'Proyecto';
+
     protected static ?string $pluralModelLabel = 'Proyectos';
+
     protected static ?string $navigationLabel = 'Proyectos';
+
     protected static ?string $slug = 'altas/proyectos';
-    protected static ?string $navigationGroup = 'Altas';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Altas';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 3;
 
     public static function canAccess(): bool
     {
         return auth()->user()->hasRole('solicita_requisicion_compra');
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('company_id', session()->get('company_id'))->where('requester_id', auth()->user()->id);
     }
-    public static function form(Form $form): Form
+
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Información general')
+                Schemas\Components\Section::make('Información general')
                     ->schema([
                         Forms\Components\TextInput::make('code')
                             ->label('Código')
-                            ->helperText('Debe empezar con ' . (session()->get('company_id') == 1 ? 'NP,' . ' ejemplo NP-001/25' : 'DN,' . ' ejemplo DN-001/25'))
+                            ->helperText('Debe empezar con '.(session()->get('company_id') == 1 ? 'NP,'.' ejemplo NP-001/25' : 'DN,'.' ejemplo DN-001/25'))
                             ->unique(table: ProjectPurchase::class, ignoreRecord: true)
                             ->rules([
-                                fn(): Closure => function (string $attribute, $value, Closure $fail) {
+                                fn (): Closure => function (string $attribute, $value, Closure $fail) {
                                     if (session()->get('company_id') == 1) {
-                                        if (!str($value)->startsWith('NP-')) {
+                                        if (! str($value)->startsWith('NP-')) {
                                             $fail('El :attribute debe comenzar con NP-');
                                         }
                                     }
                                     if (session()->get('company_id') == 2) {
-                                        if (!str($value)->startsWith('DN-')) {
+                                        if (! str($value)->startsWith('DN-')) {
                                             $fail('El :attribute debe comenzar con DN-');
                                         }
                                     }
@@ -74,10 +84,10 @@ class ProjectPurchaseResource extends Resource
                             ->maxLength(255),
                         Forms\Components\Toggle::make('status')
                             ->label('Activo')
-                            ->visible(fn($operation) => $operation === 'edit' || $operation === 'view')
+                            ->visible(fn ($operation) => $operation === 'edit' || $operation === 'view')
                             ->required(),
                     ]),
-                Forms\Components\Section::make('Documentacion para aprobacion por DG')
+                Schemas\Components\Section::make('Documentacion para aprobacion por DG')
                     // ->visible(fn($operation) => $operation == 'edit')
                     ->schema([
 
@@ -155,11 +165,10 @@ class ProjectPurchaseResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                // Tables\Actions\EditAction::make(),
-            ])
-        ;
+            ->recordActions([
+                Actions\ViewAction::make(),
+                // Actions\EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

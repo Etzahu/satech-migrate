@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Cómo crear una requisición — SATECH</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg1: #faf8f5;
+        --bg2: #efe9df;
+        --ink: #1f2937;
+        --ink-soft: #6b7280;
+        --amber: #f59e0b;
+        --amber-600: #d97706;
+        --amber-700: #b45309;
+        --amber-800: #92400e;
+        --amber-50: #fef3c7;
+        --card: #ffffff;
+        --line: #e7e2d8;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg1);
+        font-family: "Segoe UI", system-ui, Roboto, sans-serif;
+        color: var(--ink);
+      }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+
+      /* ---- Fondo ---- */
+      #bg {
+        position: absolute; inset: 0;
+        background: radial-gradient(1200px 700px at 80% -10%, #fff7e6 0%, rgba(255,255,255,0) 55%),
+                    linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 100%);
+      }
+      .blob {
+        position: absolute; border-radius: 50%;
+        filter: blur(60px); opacity: .5;
+      }
+      #blob1 { width: 520px; height: 520px; left: -120px; top: 540px; background: #fcd9a0; }
+      #blob2 { width: 460px; height: 460px; right: -100px; top: -120px; background: #ffe9bf; }
+
+      /* ---- Barra superior ---- */
+      #topbar {
+        position: absolute; top: 0; left: 0; right: 0; height: 96px;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 64px; z-index: 5;
+      }
+      .brand { display: flex; align-items: center; gap: 16px; }
+      .brand .dot { width: 18px; height: 18px; border-radius: 5px; background: var(--amber); box-shadow: 0 4px 12px rgba(245,158,11,.45); }
+      .brand .name { font-size: 30px; font-weight: 800; letter-spacing: 2px; }
+      .brand .name span { color: var(--amber-700); }
+      #topbar .ctx { font-size: 24px; color: var(--ink-soft); font-weight: 600; }
+
+      /* ---- Barra de progreso ---- */
+      #progress-track {
+        position: absolute; left: 64px; right: 64px; bottom: 32px; height: 8px;
+        background: rgba(31,41,55,.10); border-radius: 99px; overflow: hidden; z-index: 5;
+      }
+      #progress-fill {
+        width: 100%; height: 100%; border-radius: 99px;
+        background: linear-gradient(90deg, var(--amber) 0%, var(--amber-600) 100%);
+        transform-origin: left center;
+      }
+
+      /* ---- Escenas ---- */
+      .scene { position: absolute; inset: 0; }
+
+      /* Escena de captura: encabezado compacto + ventana de navegador */
+      .shot-scene {
+        padding: 126px 160px 64px;
+        display: flex; flex-direction: column; justify-content: flex-start; gap: 24px;
+      }
+      .shot-head { display: flex; align-items: center; gap: 24px; }
+      .step-chip {
+        display: inline-flex; align-items: center; gap: 12px;
+        background: var(--amber-50); color: var(--amber-600);
+        font-size: 22px; font-weight: 800; letter-spacing: 2px;
+        padding: 11px 20px; border-radius: 99px; border: 1px solid #f6e0a8; white-space: nowrap;
+      }
+      .step-chip .n {
+        background: var(--amber); color: #3b2606; width: 32px; height: 32px;
+        border-radius: 50%; display: grid; place-items: center; font-size: 19px;
+      }
+      .shot-head .heading2 { font-size: 48px; font-weight: 800; line-height: 1.05; }
+
+      /* ---- Ventana de navegador ---- */
+      .browser {
+        position: relative; width: 1340px; margin: 0 auto;
+        border-radius: 16px; overflow: hidden; background: #fff;
+        border: 1px solid var(--line);
+        box-shadow: 0 40px 90px rgba(31,41,55,.28);
+      }
+      .browser .bar {
+        height: 46px; background: #f1ece3; border-bottom: 1px solid var(--line);
+        display: flex; align-items: center; gap: 9px; padding: 0 20px;
+      }
+      .browser .tl { width: 13px; height: 13px; border-radius: 50%; }
+      .browser .url {
+        margin-left: 18px; flex: 1; max-width: 640px;
+        background: #fff; border: 1px solid var(--line); border-radius: 9px;
+        padding: 7px 16px; font-size: 17px; color: #4b5563;
+        font-family: "Consolas", monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      }
+      .shotimg { position: relative; overflow: hidden; }
+      .shotimg img { display: block; width: 100%; height: auto; }
+
+      /* Resaltado sobre la pantalla (porcentajes del área de imagen) */
+      .hl {
+        position: absolute; border: 4px solid var(--amber); border-radius: 10px;
+        box-shadow: 0 0 0 4px rgba(245,158,11,.25), 0 0 26px 6px rgba(245,158,11,.45);
+        background: rgba(245,158,11,.06);
+      }
+
+      /* ---- Intro / Outro ---- */
+      .center { padding: 150px 160px 120px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+      .kicker { font-size: 30px; font-weight: 700; letter-spacing: 4px; color: var(--amber-600); text-transform: uppercase; }
+      .big-title { font-size: 110px; font-weight: 800; line-height: 1.02; margin-top: 18px; }
+      .subtitle { font-size: 38px; color: var(--ink-soft); margin-top: 26px; }
+      .seal {
+        width: 170px; height: 170px; border-radius: 50%; margin: 0 auto 10px;
+        background: linear-gradient(135deg, var(--amber) 0%, var(--amber-600) 100%);
+        display: grid; place-items: center; color: #fff; font-size: 92px;
+        box-shadow: 0 22px 50px rgba(217,119,6,.40);
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-ptar" id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="85.2">
+      <!-- Fondo persistente -->
+      <div data-hf-id="hf-f1ed" id="bg" class="clip" data-start="0" data-duration="85.2" data-track-index="0" data-layout-ignore="">
+        <div data-hf-id="hf-rpjr" id="blob1" class="blob"></div>
+        <div data-hf-id="hf-gu24" id="blob2" class="blob"></div>
+      </div>
+
+      <!-- Escena 1 · Intro -->
+      <section data-hf-id="hf-a6fg" id="s1" class="scene center clip" data-start="0" data-duration="6.0" data-track-index="1">
+        <div data-hf-id="hf-34gt" class="kicker anim">SATECH · Guía para solicitantes</div>
+        <h1 data-hf-id="hf-x3zu" class="big-title anim">Cómo crear<br data-hf-id="hf-x5px">una requisición</h1>
+        <p data-hf-id="hf-b9xw" class="subtitle anim">Con las pantallas reales del sistema, paso a paso.</p>
+      </section>
+
+      <!-- Escena 2 · Paso 1 -->
+      <section data-hf-id="hf-ty7v" id="s2" class="scene shot-scene clip" data-start="6.0" data-duration="8.6" data-track-index="1">
+        <div data-hf-id="hf-xq9b" class="shot-head">
+          <div data-hf-id="hf-lomk" class="step-chip anim"><span data-hf-id="hf-e3y0" class="n">1</span> PASO 1 DE 7</div>
+          <h2 data-hf-id="hf-ylc9" class="heading2 anim">Entra a «Mis requisiciones» y crea</h2>
+        </div>
+        <div data-hf-id="hf-0ugn" class="browser anim">
+          <div data-hf-id="hf-ufsv" class="bar"><span data-hf-id="hf-s7bj" class="tl" style="background:#ff5f57"></span><span data-hf-id="hf-3zer" class="tl" style="background:#febc2e"></span><span data-hf-id="hf-55a5" class="tl" style="background:#28c840"></span><span data-hf-id="hf-2bqy" class="url">satech-migrate.org/compras/mis-requisiciones</span></div>
+          <div data-hf-id="hf-yl7d" class="shotimg" data-layout-allow-overflow="" style="transform-origin:92% 12%">
+            <img data-hf-id="hf-oa8e" src="assets/screens/02-lista.png" alt="Lista Mis requisiciones">
+            <div data-hf-id="hf-zuqx" class="hl anim" style="left:89%; top:9%; width:10.2%; height:6.3%"></div>
+            <div data-hf-id="hf-aui8" class="hl anim" style="left:0.4%; top:57.3%; width:16%; height:3.6%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Escena 3 · Paso 2 -->
+      <section data-hf-id="hf-5xas" id="s3" class="scene shot-scene clip" data-start="14.6" data-duration="16.2" data-track-index="1">
+        <div data-hf-id="hf-gnkf" class="shot-head">
+          <div data-hf-id="hf-g6zn" class="step-chip anim"><span data-hf-id="hf-cx0x" class="n">2</span> PASO 2 DE 7</div>
+          <h2 data-hf-id="hf-k852" class="heading2 anim">Llena la información general</h2>
+        </div>
+        <div data-hf-id="hf-dwl3" class="browser anim">
+          <div data-hf-id="hf-c51b" class="bar"><span data-hf-id="hf-ou27" class="tl" style="background:#ff5f57"></span><span data-hf-id="hf-lldv" class="tl" style="background:#febc2e"></span><span data-hf-id="hf-b1n5" class="tl" style="background:#28c840"></span><span data-hf-id="hf-cwl3" class="url">satech-migrate.org/compras/mis-requisiciones/create</span></div>
+          <div data-hf-id="hf-l9l5" class="shotimg" data-layout-allow-overflow="" style="transform-origin:50% 32%">
+            <img data-hf-id="hf-k4pd" src="assets/screens/03-form-general.png" alt="Formulario información general">
+            <div data-hf-id="hf-7dwt" class="hl anim" style="left:18%; top:26.3%; width:61%; height:5.2%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Escena 4 · Paso 3 -->
+      <section data-hf-id="hf-8ubw" id="s4" class="scene shot-scene clip" data-start="30.8" data-duration="9.9" data-track-index="1">
+        <div data-hf-id="hf-g99e" class="shot-head">
+          <div data-hf-id="hf-pv2e" class="step-chip anim"><span data-hf-id="hf-dbby" class="n">3</span> PASO 3 DE 7</div>
+          <h2 data-hf-id="hf-9tf3" class="heading2 anim">Define el flujo de aprobación</h2>
+        </div>
+        <div data-hf-id="hf-dia2" class="browser anim">
+          <div data-hf-id="hf-bqqa" class="bar"><span data-hf-id="hf-ofr6" class="tl" style="background:#ff5f57"></span><span data-hf-id="hf-l72u" class="tl" style="background:#febc2e"></span><span data-hf-id="hf-c8k8" class="tl" style="background:#28c840"></span><span data-hf-id="hf-gwdz" class="url">satech-migrate.org/compras/mis-requisiciones/create</span></div>
+          <div data-hf-id="hf-may7" class="shotimg" data-layout-allow-overflow="" style="transform-origin:50% 30%">
+            <img data-hf-id="hf-dyhd" src="assets/screens/04-form-flujo.png" alt="Pestaña flujo de aprobación">
+            <div data-hf-id="hf-20xy" class="hl anim" style="left:18%; top:25.3%; width:79%; height:6.2%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Escena 5 · Paso 4 -->
+      <section data-hf-id="hf-ab8r" id="s5" class="scene shot-scene clip" data-start="40.7" data-duration="10.5" data-track-index="1">
+        <div data-hf-id="hf-fuyd" class="shot-head">
+          <div data-hf-id="hf-k5wl" class="step-chip anim"><span data-hf-id="hf-c4ev" class="n">4</span> PASO 4 DE 7</div>
+          <h2 data-hf-id="hf-4h86" class="heading2 anim">Adjunta documentos <span data-hf-id="hf-o6ru" style="color:var(--ink-soft);font-weight:700">(opcional)</span></h2>
+        </div>
+        <div data-hf-id="hf-d3z1" class="browser anim">
+          <div data-hf-id="hf-bcf9" class="bar"><span data-hf-id="hf-o1g5" class="tl" style="background:#ff5f57"></span><span data-hf-id="hf-ksrt" class="tl" style="background:#febc2e"></span><span data-hf-id="hf-bu97" class="tl" style="background:#28c840"></span><span data-hf-id="hf-gi2y" class="url">satech-migrate.org/compras/mis-requisiciones/create</span></div>
+          <div data-hf-id="hf-d1vu" class="shotimg" data-layout-allow-overflow="" style="transform-origin:30% 22%">
+            <img data-hf-id="hf-xjjb" src="assets/screens/05-form-fichas.png" alt="Pestaña fichas técnicas">
+            <div data-hf-id="hf-ckgn" class="hl anim" style="left:17.5%; top:18%; width:36%; height:5.6%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Escena 6 · Paso 5 -->
+      <section data-hf-id="hf-dqkh" id="s6" class="scene shot-scene clip" data-start="51.3" data-duration="7.2" data-track-index="1">
+        <div data-hf-id="hf-in3k" class="shot-head">
+          <div data-hf-id="hf-0vow" class="step-chip anim"><span data-hf-id="hf-cipw" class="n">5</span> PASO 5 DE 7</div>
+          <h2 data-hf-id="hf-f3ti" class="heading2 anim">Guárdala: se crea el folio</h2>
+        </div>
+        <div data-hf-id="hf-fw48" class="browser anim">
+          <div data-hf-id="hf-e4kg" class="bar"><span data-hf-id="hf-qtlc" class="tl" style="background:#ff5f57"></span><span data-hf-id="hf-kegs" class="tl" style="background:#febc2e"></span><span data-hf-id="hf-9uq2" class="tl" style="background:#28c840"></span><span data-hf-id="hf-yumq" class="url">satech-migrate.org/compras/mis-requisiciones/T-SG-2025-0067</span></div>
+          <div data-hf-id="hf-0dx3" class="shotimg" data-layout-allow-overflow="" style="transform-origin:35% 24%">
+            <img data-hf-id="hf-0926" src="assets/screens/07-ver-folio.png" alt="Requisición con folio">
+            <div data-hf-id="hf-pxwe" class="hl anim" style="left:17.5%; top:17%; width:61%; height:12%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Escena 7 · Paso 6 -->
+      <section data-hf-id="hf-ybe6" id="s7" class="scene shot-scene clip" data-start="58.5" data-duration="8.4" data-track-index="1">
+        <div data-hf-id="hf-i8sj" class="shot-head">
+          <div data-hf-id="hf-u5on" class="step-chip anim"><span data-hf-id="hf-bbst" class="n">6</span> PASO 6 DE 7</div>
+          <h2 data-hf-id="hf-9r45" class="heading2 anim">Agrega las partidas</h2>
+        </div>
+        <div data-hf-id="hf-fht7" class="browser anim">
+          <div data-hf-id="hf-dq9f" class="bar"><span data-hf-id="hf-qfab" class="tl" style="background:#ff5f57"></span><span data-hf-id="hf-k05r" class="tl" style="background:#febc2e"></span><span data-hf-id="hf-9gf1" class="tl" style="background:#28c840"></span><span data-hf-id="hf-4tr6" class="url">satech-migrate.org/compras/mis-requisiciones/927/edit</span></div>
+          <div data-hf-id="hf-l960" class="shotimg" data-layout-allow-overflow="" style="transform-origin:72% 80%">
+            <img data-hf-id="hf-zpy0" src="assets/screens/09-partidas.png" alt="Tabla de partidas">
+            <div data-hf-id="hf-v7rm" class="hl anim" style="left:89.3%; top:73.5%; width:9.3%; height:6.4%"></div>
+            <div data-hf-id="hf-ujq7" class="hl anim" style="left:18%; top:83.5%; width:79%; height:7%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Escena 8 · Paso 7 -->
+      <section data-hf-id="hf-i3f7" id="s8" class="scene shot-scene clip" data-start="66.9" data-duration="10.8" data-track-index="1">
+        <div data-hf-id="hf-huhi" class="shot-head">
+          <div data-hf-id="hf-3e5m" class="step-chip anim"><span data-hf-id="hf-bq3u" class="n">7</span> PASO 7 DE 7</div>
+          <h2 data-hf-id="hf-wae9" class="heading2 anim">Envía a revisión</h2>
+        </div>
+        <div data-hf-id="hf-f3i6" class="browser anim">
+          <div data-hf-id="hf-dbye" class="bar"><span data-hf-id="hf-q0za" class="tl" style="background:#ff5f57"></span><span data-hf-id="hf-jluq" class="tl" style="background:#febc2e"></span><span data-hf-id="hf-anc4" class="tl" style="background:#28c840"></span><span data-hf-id="hf-eefa" class="url">satech-migrate.org/compras/mis-requisiciones/927/edit</span></div>
+          <div data-hf-id="hf-0nu2" class="shotimg" data-layout-allow-overflow="" style="transform-origin:88% 12%">
+            <img data-hf-id="hf-c94k" src="assets/screens/08-editar.png" alt="Botón enviar a revisión">
+            <div data-hf-id="hf-lcxk" class="hl anim" style="left:82.8%; top:9.2%; width:11.4%; height:6.8%"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Escena 9 · Cierre -->
+      <section data-hf-id="hf-rfhp" id="s9" class="scene center clip" data-start="77.8" data-duration="7.4" data-track-index="1">
+        <div data-hf-id="hf-xcxj" class="seal anim">✓</div>
+        <h1 data-hf-id="hf-aiv7" class="big-title anim">¡Listo!</h1>
+        <p data-hf-id="hf-9kpr" class="subtitle anim">Tu requisición está en proceso de aprobación.<br data-hf-id="hf-rsrt">Sigue su estatus desde «Mis requisiciones».</p>
+      </section>
+
+      <!-- Barra superior persistente -->
+      <div data-hf-id="hf-kz9l" id="topbar" class="clip" data-start="0" data-duration="85.2" data-track-index="8">
+        <div data-hf-id="hf-oojr" class="brand"><div data-hf-id="hf-lu65" class="dot"></div><div data-hf-id="hf-72tx" class="name">SA<span data-hf-id="hf-j2d9">TECH</span></div></div>
+        <div data-hf-id="hf-m9gu" class="ctx">Guía · Crear una requisición</div>
+      </div>
+
+      <!-- Barra de progreso persistente -->
+      <div data-hf-id="hf-qrpz" id="progress-track" class="clip" data-start="0" data-duration="85.2" data-track-index="9">
+        <div data-hf-id="hf-c4bu" id="progress-fill"></div>
+      </div>
+
+      <!-- Narración por voz (hijos directos del root) -->
+      <audio data-hf-id="hf-8m2s" id="vo1" src="assets/audio/s1.wav" data-start="0.5" data-duration="4.8" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-kuny" id="vo2" src="assets/audio/s2.wav" data-start="6.5" data-duration="7.3" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-2xrs" id="vo3" src="assets/audio/s3.wav" data-start="15.1" data-duration="15.0" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-3re8" id="vo4" src="assets/audio/s4.wav" data-start="31.3" data-duration="8.6" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-nm4w" id="vo5" src="assets/audio/s5.wav" data-start="41.2" data-duration="9.3" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-p6zr" id="vo6" src="assets/audio/s6.wav" data-start="51.8" data-duration="6.0" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-iqej" id="vo7" src="assets/audio/s7.wav" data-start="59.0" data-duration="7.1" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-ye91" id="vo8" src="assets/audio/s8.wav" data-start="67.4" data-duration="9.6" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-2qwd" id="vo9" src="assets/audio/s9.wav" data-start="78.3" data-duration="6.2" data-track-index="20" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      const TOTAL = 85.2;
+
+      // Barra de progreso (lineal a lo largo de todo el video)
+      tl.fromTo("#progress-fill", { scaleX: 0 }, { scaleX: 1, ease: "none", duration: TOTAL }, 0);
+
+      // Movimiento sutil del fondo (repeticiones finitas y deterministas)
+      tl.to("#blob1", { x: 90, y: -70, duration: 9, ease: "sine.inOut", yoyo: true, repeat: Math.max(0, Math.floor(TOTAL / 9) - 1) }, 0);
+      tl.to("#blob2", { x: -110, y: 60, duration: 11, ease: "sine.inOut", yoyo: true, repeat: Math.max(0, Math.floor(TOTAL / 11) - 1) }, 0);
+
+      // Entrada del logo (una sola vez al inicio)
+      tl.from("#topbar .brand", { x: -30, opacity: 0, duration: 0.8, ease: "power3.out", overwrite: "auto" }, 0.2);
+
+      // Escenas: [id, start, duration]
+      const scenes = [
+        ["#s1", 0,    6.0],
+        ["#s2", 6.0,  8.6],
+        ["#s3", 14.6, 16.2],
+        ["#s4", 30.8, 9.9],
+        ["#s5", 40.7, 10.5],
+        ["#s6", 51.3, 7.2],
+        ["#s7", 58.5, 8.4],
+        ["#s8", 66.9, 10.8],
+        ["#s9", 77.8, 7.4],
+      ];
+
+      scenes.forEach(([id, start, dur], i) => {
+        // Entrada escalonada de los elementos de la escena
+        tl.from(
+          id + " .anim",
+          { y: 28, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power3.out", overwrite: "auto" },
+          start + 0.15
+        );
+        // Zoom suave (Ken Burns) sobre la captura, hacia el área resaltada
+        if (document.querySelector(id + " .shotimg")) {
+          tl.fromTo(
+            id + " .shotimg",
+            { scale: 1.0 },
+            { scale: 1.06, duration: dur, ease: "none", overwrite: "auto" },
+            start
+          );
+        }
+        // Salida suave (excepto la última escena, que se queda en pantalla)
+        if (i < scenes.length - 1) {
+          tl.to(id, { opacity: 0, duration: 0.4, ease: "power2.in" }, start + dur - 0.4);
+        }
+      });
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

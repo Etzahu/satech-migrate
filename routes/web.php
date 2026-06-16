@@ -1,16 +1,13 @@
 <?php
 
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\PurchaseOrderController;
+use App\Http\Controllers\PurchaseRequisitionController;
 use App\Livewire\HomeMenu;
-use App\Livewire\TestEditItemOrder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\MediaController;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use App\Http\Controllers\PurchaseOrderController;
-use Vormkracht10\FilamentMails\Facades\FilamentMails;
-use App\Http\Controllers\PurchaseRequisitionController;
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::get('/login/google', [LoginController::class, 'redirectToProvider'])->name('login.redirect');
@@ -20,9 +17,9 @@ Route::get('/login/google/callback', [LoginController::class, 'handleProviderCal
 Route::get('home', HomeMenu::class)->name('home');
 
 if ((config('app.env') === 'local' && config('app.debug') === true)) {
-    @include_once('pruebas.php');
+    @include_once 'pruebas.php';
 }
-@include_once('purchase-requisition.php');
+@include_once 'purchase-requisition.php';
 
 Route::get('empresa/{id}', [LoginController::class, 'setCompany'])
     ->name('company')
@@ -35,6 +32,7 @@ Route::get('media/{id}', [MediaController::class, 'show'])
 Route::post('/logout', function () {
     Session::flush();
     Auth::logout();
+
     return redirect()->to('/');
 })->name('logout');
 

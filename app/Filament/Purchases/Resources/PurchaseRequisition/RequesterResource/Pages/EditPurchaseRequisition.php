@@ -2,17 +2,16 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\Pages;
 
+use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
+use App\Models\PurchaseRequisitionApprovalChain;
 use Filament\Actions;
-use Livewire\Attributes\On;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
-use Filament\Support\Enums\ActionSize;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\Size;
 use Illuminate\Validation\ValidationException;
-use App\Models\PurchaseRequisitionApprovalChain;
-use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
-
+use Livewire\Attributes\On;
 
 #[On('refreshOwner')]
 class EditPurchaseRequisition extends EditRecord
@@ -22,36 +21,48 @@ class EditPurchaseRequisition extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            ActionGroup::make([
-                Action::make('Enviar requisición')
-                    ->color('success')
-                    ->requiresConfirmation()
-                    ->visible(
-                        $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 && filled($this->record->category)
-                    )
-                    ->action(function () {
-                        if (session()->get('company_id') == 1) { //ID 1:GPT IM
-                             $this->record->status()->transitionTo('revisión por almacén');
-                        }
-                        if ($this->record->category == 'servicio') {
-                             $this->record->status()->transitionTo('revisión');
-                        } else {
-                             $this->record->status()->transitionTo('revisión por almacén');
-                        }
+            // Botón principal, fuera del grupo → siempre visible
+            Action::make('enviarRevision')
+                ->label('Enviar a revisión')
+                ->icon('heroicon-m-paper-airplane')
+                ->color('success')
 
-                        Notification::make()
-                            ->title('Requisición enviada')
-                            ->success()
-                            ->send();
-                        return redirect(RequesterResource::getUrl('view', ['record' => $this->record]));
-                    }),
+                ->button()
+                ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
+                ->requiresConfirmation()
+                ->modalHeading('Enviar requisición a revisión')
+                ->modalDescription('Una vez enviada, la requisición entrará al flujo de aprobación y ya no podrás editarla.')
+                ->modalSubmitActionLabel('Sí, enviar')
+                ->visible(
+                    $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 && filled($this->record->category)
+                )
+                ->action(function () {
+                    if (session()->get('company_id') == 1) { // ID 1:GPT IM
+                        $this->record->status()->transitionTo('revisión por almacén');
+                    }
+                    if ($this->record->category == 'servicio') {
+                        $this->record->status()->transitionTo('revisión');
+                    } else {
+                        $this->record->status()->transitionTo('revisión por almacén');
+                    }
+
+                    Notification::make()
+                        ->title('Requisición enviada')
+                        ->success()
+                        ->send();
+
+                    return redirect(RequesterResource::getUrl('view', ['record' => $this->record]));
+                }),
+
+            // Acciones secundarias agrupadas
+            ActionGroup::make([
                 Actions\ViewAction::make(),
                 Actions\DeleteAction::make(),
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')
-                ->size(ActionSize::Small)
-                ->color('primary')
+                ->size(Size::Small)
+                ->color('gray')
                 ->button(),
         ];
     }
@@ -72,6 +83,7 @@ class EditPurchaseRequisition extends EditRecord
         $chain = PurchaseRequisitionApprovalChain::find($data['approval_chain_id']);
         $data['reviewer_id'] = $chain->reviewer_id;
         $data['approver_id'] = $chain->approver_id;
+
         return $data;
     }
 }

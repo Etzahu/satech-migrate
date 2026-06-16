@@ -2,11 +2,11 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseProviderResource\Pages;
 
-use Filament\Resources\Components\Tab;
 use App\Filament\Purchases\Resources\PurchaseProviderResource;
 use App\Models\PurchaseProvider;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListPurchaseProviders extends ListRecords
@@ -19,19 +19,20 @@ class ListPurchaseProviders extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
     public function getTabs(): array
     {
         return [
             'Todo' => Tab::make('Todo')
-            ->modifyQueryUsing(fn(Builder $query) => $query->orderBy('company_name','asc')),
+                ->modifyQueryUsing(fn (Builder $query) => $query->orderBy('company_name', 'asc')),
             'revisar' => Tab::make('Revisión')
                 ->badge(PurchaseProvider::query()->where('status', 'revisión')->count())
                 ->badgeColor('danger')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'revisión')->orderBy('company_name','asc')),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'revisión')->orderBy('company_name', 'asc')),
             'mis-proveedores' => Tab::make('Mis proveedores')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('user_request_id', auth()->user()->id)->orderBy('company_name','asc')),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('user_request_id', auth()->user()->id)->orderBy('company_name', 'asc')),
             'rechazados' => Tab::make('Rechazados')
-                ->modifyQueryUsing(fn(Builder $query) => $query->where('status', 'rechazado')->orderBy('company_name','asc')),
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'rechazado')->orderBy('company_name', 'asc')),
 
         ];
     }

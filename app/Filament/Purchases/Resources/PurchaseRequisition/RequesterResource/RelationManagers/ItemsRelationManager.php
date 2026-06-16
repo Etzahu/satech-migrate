@@ -2,26 +2,32 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Tables;
 use App\Models\Product;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
+use Filament\Actions;
+use Filament\Forms;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Livewire\Attributes\On;
 
 class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'items';
+
     protected static ?string $modelLabel = 'Partida';
+
     protected static ?string $pluralModelLabel = 'Partidas';
+
     protected static ?string $navigationLabel = 'Partidas';
+
     protected static ?string $title = 'Partida';
 
     #[On('refreshRelationManagerItemsPurchaseRequisition')]
-    public function form(Form $form): Form
+    public function form(Schema $form): Schema
     {
         return $form
             ->columns(1)
@@ -36,7 +42,7 @@ class ItemsRelationManager extends RelationManager
                     ->label('Producto')
                     ->options(function () {
                         $type = $this->getOwnerRecord()->category;
-                        if (session()->get('company_id') == 1) { //ID 1:GPT IM
+                        if (session()->get('company_id') == 1) { // ID 1:GPT IM
                             return Product::where('status', 'aprobado')
                                 ->where('company_id', session()->get('company_id'))
                                 ->pluck('name', 'id');
@@ -48,7 +54,7 @@ class ItemsRelationManager extends RelationManager
                                 ->where('type_purchase', $type)
                                 ->pluck('name', 'id');
                         } else {
-                              return Product::where('status', 'aprobado')
+                            return Product::where('status', 'aprobado')
                                 ->where('company_id', session()->get('company_id'))
                                 ->pluck('name', 'id');
                         }
@@ -68,7 +74,7 @@ class ItemsRelationManager extends RelationManager
                             $set('selectedUm', '');
                         }
                     }),
-                Forms\Components\Fieldset::make('Seleccionado')
+                Schemas\Components\Fieldset::make('Seleccionado')
                     ->columns(1)
                     ->schema([
                         Forms\Components\TextInput::make('selectedCode')
@@ -79,7 +85,7 @@ class ItemsRelationManager extends RelationManager
                             ->label('Descripción'),
                         Forms\Components\TextInput::make('selectedUm')
                             ->disabled()
-                            ->label('Unidad de Medida')
+                            ->label('Unidad de Medida'),
                     ]),
                 Forms\Components\Textarea::make('observation')
                     ->label('Observación')
@@ -122,9 +128,11 @@ class ItemsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
+                Actions\CreateAction::make()
+                    ->slideOver()
+                    ->mutateDataUsing(function (array $data): array {
                         $data['quantity_purchase'] = $data['quantity_requested'];
+
                         return $data;
                     })
                     ->after(function () {
@@ -132,13 +140,14 @@ class ItemsRelationManager extends RelationManager
                     })
                     ->createAnother(false),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
+            ->recordActions([
+                Actions\EditAction::make()
+                    ->mutateDataUsing(function (array $data): array {
                         $data['quantity_purchase'] = $data['quantity_requested'];
+
                         return $data;
                     }),
-                Tables\Actions\DeleteAction::make(),
+                Actions\DeleteAction::make(),
             ]);
     }
 }

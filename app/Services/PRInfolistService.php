@@ -2,18 +2,17 @@
 
 namespace App\Services;
 
+use App\Filament\Purchases\Resources\PRAssingResource\RelationManagers;
 use App\Models\PurchaseRequisition;
-use Filament\Infolists\Components\Tabs;
-use Filament\Infolists\Components\Actions;
+use Filament\Actions\Action;
 use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
-use Spatie\MediaLibrary\Support\MediaStream;
-use Filament\Infolists\Components\Actions\Action;
-use Filament\Infolists\Components\RepeatableEntry;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Tabs;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use App\Filament\Purchases\Resources\PRAssingResource\RelationManagers;
-
+use Spatie\MediaLibrary\Support\MediaStream;
 
 class PRInfolistService
 {
@@ -78,7 +77,7 @@ class PRInfolistService
                                             ->label('Observación')
                                             ->columnSpan(2),
                                     ])
-                                    ->columns(5)
+                                    ->columns(5),
                             ]),
                         Tabs\Tab::make('Flujo de aprobación')
                             ->schema([
@@ -99,6 +98,7 @@ class PRInfolistService
                                     ->state(function ($record) {
                                         // $record->media = $this->getMediaInfo($record->id, 'technical_data_sheets');
                                         $record->media = $record->getMedia('technical_data_sheets');
+
                                         return $record->media;
                                     })
                                     ->label('')
@@ -111,7 +111,8 @@ class PRInfolistService
                                         ->action(function () use ($record) {
                                             // $downloads = $this->getMedia($record->id, 'technical_data_sheets');
                                             $downloads = $record->getMedia('technical_data_sheets');
-                                            return MediaStream::create($record->folio . '-fichas-tecnicas.zip')->addMedia($downloads);
+
+                                            return MediaStream::create($record->folio.'-fichas-tecnicas.zip')->addMedia($downloads);
                                         }),
                                 ]),
                             ]),
@@ -127,6 +128,7 @@ class PRInfolistService
                                             ->where('collection_name', 'supports')
                                             ->get();
                                         $record->media = $media;
+
                                         return $record->media;
                                     })
                                     ->label('')
@@ -141,7 +143,8 @@ class PRInfolistService
                                             $downloads = Media::where('model_id', $record->id)
                                                 ->where('collection_name', 'supports')
                                                 ->get();
-                                            return MediaStream::create($record->folio . '-soportes.zip')->addMedia($downloads);
+
+                                            return MediaStream::create($record->folio.'-soportes.zip')->addMedia($downloads);
                                         }),
                                 ]),
                             ]),
@@ -157,7 +160,7 @@ class PRInfolistService
                                     ->view('filament.infolists.entries.history'),
                             ]),
                         Tabs\Tab::make('Comprador')
-                            ->visible(fn($record) => filled($record->purchaser))
+                            ->visible(fn ($record) => filled($record->purchaser))
                             ->schema([
                                 TextEntry::make('purchaser.name')
                                     ->label('Asignado'),
@@ -188,22 +191,22 @@ class PRInfolistService
         // }
         // return;
 
-        //140 tres revisiones
-        //435 cero revisiones
-        //120 una revision
+        // 140 tres revisiones
+        // 435 cero revisiones
+        // 120 una revision
         $model = PurchaseRequisition::find($id);
 
         $progress = [];
         // dd($model->status()->history()->get()->toArray());
 
-        if (session()->get('company_id') == 2) { //ID 1:GPT IM
+        if (session()->get('company_id') == 2) { // ID 1:GPT IM
             if ($model->category == 'servicio') {
                 $progress = [
                     'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => 'revisión'],
                     'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
                     'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
                     'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
-                    'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado']
+                    'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado'],
                 ];
             }
             if ($model->category == 'proveeduria') {
@@ -213,28 +216,30 @@ class PRInfolistService
                     'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
                     'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
                     'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
-                    'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado']
+                    'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado'],
                 ];
             }
         }
-        if (session()->get('company_id') == 1) { //ID 1:GPT IM
+        if (session()->get('company_id') == 1) { // ID 1:GPT IM
             $progress = [
                 'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => 'revisión por almacén'],
                 'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'statusTo' => 'revisión'],
                 'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
                 'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
                 'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
-                'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado']
+                'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado'],
             ];
         }
         $progress = collect($progress);
         $revisions = $model->status()->timesWas('aprobado por DG');
 
         if (str($model->status)->contains('devuelto')) {
-            $progress = $progress->map(function ($item, $key) use ($revisions, $model) {
+            $progress = $progress->map(function ($item, $key) {
                 unset($item['date']);
+
                 return $item;
             });
+
             return $progress->toArray();
         }
 
@@ -247,6 +252,7 @@ class PRInfolistService
                     }
                     $item['date'] = $snapshot->created_at->format('d-m-Y');
                 }
+
                 return $item;
             }
 
@@ -260,6 +266,7 @@ class PRInfolistService
                 $snapshots = $model->status()->snapshotsWhen(['comprador asignado', 'comprador reasignado'])->last();
                 if (filled($snapshots)) {
                     $item['date'] = $snapshots->created_at->format('d-m-Y');
+
                     return $item;
                 }
             }
@@ -272,9 +279,11 @@ class PRInfolistService
                 }
                 $item['date'] = $value->created_at->format('d-m-Y');
             }
+
             // dump($item);
             return $item;
         });
+
         return $progress->toArray();
     }
 }

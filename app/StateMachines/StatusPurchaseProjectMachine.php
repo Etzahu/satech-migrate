@@ -2,10 +2,10 @@
 
 namespace App\StateMachines;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ProjectPurchaseNotification;
+use App\Models\User;
 use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
+use Illuminate\Support\Facades\Mail;
 
 class StatusPurchaseProjectMachine extends StateMachine
 {
@@ -20,7 +20,8 @@ class StatusPurchaseProjectMachine extends StateMachine
             'borrador' => ['pendiente'],
             'pendiente' => ['activo', 'rechazado'],
             'rechazado' => ['pendiente'],
-            'activo' => ['inactivo']
+            'activo' => ['inactivo'],
+            'inactivo' => ['activo'],
         ];
     }
 
@@ -28,6 +29,7 @@ class StatusPurchaseProjectMachine extends StateMachine
     {
         return 'borrador';
     }
+
     public function afterTransitionHooks(): array
     {
         return [
@@ -47,7 +49,7 @@ class StatusPurchaseProjectMachine extends StateMachine
                     if ($model->requester_id !== $model->registered_user_id) {
                         Mail::to($recipients)->send(new ProjectPurchaseNotification($model));
                     }
-                }
+                },
             ],
             'activo' => [
                 function ($to, $model) {
@@ -56,14 +58,14 @@ class StatusPurchaseProjectMachine extends StateMachine
                         $recipient = $model->requester->email;
                         Mail::to($recipient)->send(new ProjectPurchaseNotification($model));
                     }
-                }
+                },
             ],
             'rechazado' => [
                 function ($to, $model) {
                     $model->load('company', 'requester');
                     $recipient = $model->requester->email;
                     Mail::to($recipient)->send(new ProjectPurchaseNotification($model));
-                }
+                },
             ],
         ];
     }

@@ -1,15 +1,55 @@
-@import '/vendor/filament/filament/resources/css/theme.css';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
 
-@config 'tailwind.config.js';
+@import 'tailwind-animations';
+
+/*
+ | Filament v5 + Tailwind v4: el tema del paquete se importa con "source(none)",
+ | así que hay que declarar explícitamente dónde buscar clases de utilidad
+ | (vistas Blade y clases usadas en PHP, p. ej. ->extraAttributes(['class' => ...])).
+ */
+@source '../../../../app/Filament';
+@source '../../../../resources/views';
+
+/*
+ | "tada" en bucle CON pausa entre ciclos.
+ | CSS no permite delay entre repeticiones, así que la pausa va dentro de
+ | los keyframes: el movimiento ocurre en el primer 50% del tiempo y el
+ | 50% restante se queda quieto. Con animate-duration-2000 → 1s tada + 1s pausa.
+ | Para más/menos pausa: mueve el punto "50%" (más abajo = pausa más larga).
+ */
+@theme {
+    --animate-tada-loop: tada-loop 4s ease-in-out infinite;
+}
+
+@keyframes tada-loop {
+    0%  { transform: scale(1); }
+    5%  { transform: scale(0.9) rotate(-3deg); }
+    10% { transform: scale(0.9) rotate(-3deg); }
+    15% { transform: scale(1.1) rotate(3deg); }
+    20% { transform: scale(1.1) rotate(-3deg); }
+    25% { transform: scale(1.1) rotate(3deg); }
+    30% { transform: scale(1.1) rotate(-3deg); }
+    35% { transform: scale(1.1) rotate(3deg); }
+    40% { transform: scale(1.1) rotate(3deg); }
+    45% { transform: scale(1.1) rotate(3deg); }
+    50% { transform: scale(1) rotate(0); }
+    /* 50% → 100%: sin cambios = pausa */
+    100% { transform: scale(1) rotate(0); }
+}
+
+/* Personalizaciones */
 .fi-body {
-    @apply bg-red-50 dark:bg-gray-900 dark:border-gray-700;
+    @apply bg-gray-100 dark:bg-gray-900 dark:border-gray-700;
 }
+
 .fi-sidebar {
-    @apply bg-white dark:bg-transparent !important;
+    @apply !bg-white dark:!bg-transparent;
 }
-.fi-header-heading{
-    @apply  lowercase !important;
+
+.fi-header-heading {
+    @apply lowercase;
 }
-.fi-header-heading::first-letter{
+
+.fi-header-heading::first-letter {
     text-transform: uppercase !important;
 }

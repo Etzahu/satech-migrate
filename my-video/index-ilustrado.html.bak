@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, height=1080">
+    <title>Cómo crear una requisición — SATECH</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --bg1: #faf8f5;
+        --bg2: #efe9df;
+        --ink: #1f2937;
+        --ink-soft: #6b7280;
+        --amber: #f59e0b;
+        --amber-600: #d97706;
+        --amber-700: #b45309;
+        --amber-800: #92400e;
+        --amber-50: #fef3c7;
+        --card: #ffffff;
+        --line: #e7e2d8;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg1);
+        font-family: "Segoe UI", system-ui, Roboto, sans-serif;
+        color: var(--ink);
+      }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; }
+
+      /* ---- Fondo ---- */
+      #bg {
+        position: absolute; inset: 0;
+        background: radial-gradient(1200px 700px at 80% -10%, #fff7e6 0%, rgba(255,255,255,0) 55%),
+                    linear-gradient(160deg, var(--bg1) 0%, var(--bg2) 100%);
+      }
+      .blob {
+        position: absolute; border-radius: 50%;
+        filter: blur(60px); opacity: .5;
+      }
+      #blob1 { width: 520px; height: 520px; left: -120px; top: 540px; background: #fcd9a0; }
+      #blob2 { width: 460px; height: 460px; right: -100px; top: -120px; background: #ffe9bf; }
+
+      /* ---- Barra superior ---- */
+      #topbar {
+        position: absolute; top: 0; left: 0; right: 0; height: 96px;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0 64px;
+      }
+      .brand { display: flex; align-items: center; gap: 16px; }
+      .brand .dot { width: 18px; height: 18px; border-radius: 5px; background: var(--amber); box-shadow: 0 4px 12px rgba(245,158,11,.45); }
+      .brand .name { font-size: 30px; font-weight: 800; letter-spacing: 2px; }
+      .brand .name span { color: var(--amber-700); }
+      #topbar .ctx { font-size: 24px; color: var(--ink-soft); font-weight: 600; }
+
+      /* ---- Barra de progreso ---- */
+      #progress-track {
+        position: absolute; left: 64px; right: 64px; bottom: 54px; height: 8px;
+        background: rgba(31,41,55,.10); border-radius: 99px; overflow: hidden;
+      }
+      #progress-fill {
+        width: 100%; height: 100%; border-radius: 99px;
+        background: linear-gradient(90deg, var(--amber) 0%, var(--amber-600) 100%);
+        transform-origin: left center;
+      }
+
+      /* ---- Escenas ---- */
+      .scene {
+        position: absolute; inset: 0;
+        padding: 150px 160px 120px;
+        display: flex; flex-direction: column; justify-content: center;
+      }
+      .step-chip {
+        display: inline-flex; align-items: center; gap: 12px; align-self: flex-start;
+        background: var(--amber-50); color: var(--amber-600);
+        font-size: 24px; font-weight: 800; letter-spacing: 2px;
+        padding: 12px 22px; border-radius: 99px; border: 1px solid #f6e0a8;
+      }
+      .step-chip .n {
+        background: var(--amber); color: #3b2606; width: 34px; height: 34px;
+        border-radius: 50%; display: grid; place-items: center; font-size: 20px;
+      }
+      .heading { font-size: 76px; font-weight: 800; line-height: 1.05; margin-top: 26px; max-width: 1400px; }
+      .body { font-size: 34px; line-height: 1.5; color: var(--ink-soft); margin-top: 24px; max-width: 1180px; }
+      .note {
+        display: inline-flex; align-items: center; gap: 14px; align-self: flex-start;
+        margin-top: 36px; background: #fff; border: 1px solid var(--line);
+        border-left: 6px solid var(--amber); border-radius: 14px;
+        padding: 18px 26px; font-size: 26px; color: var(--ink);
+        box-shadow: 0 10px 30px rgba(31,41,55,.06); max-width: 1180px;
+      }
+      .note b { color: var(--amber-700); }
+
+      /* ---- Tarjetas de campos ---- */
+      .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 40px; max-width: 1420px; }
+      .field {
+        background: var(--card); border: 1px solid var(--line); border-radius: 18px;
+        padding: 24px 28px; box-shadow: 0 8px 22px rgba(31,41,55,.05);
+        display: flex; align-items: center; gap: 20px;
+      }
+      .field .ic {
+        width: 56px; height: 56px; border-radius: 14px; flex: 0 0 56px;
+        background: var(--amber-50); color: var(--amber-800);
+        display: grid; place-items: center; font-size: 28px; font-weight: 800;
+      }
+      .field .txt .lbl { font-size: 28px; font-weight: 700; }
+      .field .txt .val { font-size: 23px; color: #4b5563; margin-top: 2px; }
+
+      /* ---- Flujo de aprobación ---- */
+      .flow { display: flex; align-items: center; gap: 40px; margin-top: 50px; }
+      .flow-card {
+        background: var(--card); border: 1px solid var(--line); border-radius: 22px;
+        padding: 38px 56px; box-shadow: 0 14px 34px rgba(31,41,55,.08); text-align: center;
+      }
+      .flow-card .role { font-size: 26px; color: var(--ink-soft); font-weight: 700; letter-spacing: 1px; }
+      .flow-card .who { font-size: 40px; font-weight: 800; margin-top: 8px; }
+      .flow .arrow { font-size: 60px; color: var(--amber); font-weight: 800; }
+
+      /* ---- Pasos con check ---- */
+      .checklist { margin-top: 44px; display: flex; flex-direction: column; gap: 22px; }
+      .check-item { display: flex; align-items: center; gap: 22px; font-size: 34px; font-weight: 600; }
+      .check-item .ck {
+        width: 50px; height: 50px; border-radius: 50%; flex: 0 0 50px;
+        background: var(--amber); color: #3b2606; display: grid; place-items: center; font-size: 28px;
+      }
+      .check-item small { display: block; font-size: 24px; color: var(--ink-soft); font-weight: 500; }
+
+      /* ---- Folio / badges ---- */
+      .badges { display: flex; align-items: center; gap: 26px; margin-top: 50px; }
+      .folio {
+        font-family: "Consolas", "JetBrains Mono", monospace; font-size: 44px; font-weight: 700;
+        background: #fff; border: 2px dashed var(--amber); color: var(--amber-600);
+        padding: 18px 34px; border-radius: 16px;
+      }
+      .badge {
+        font-size: 30px; font-weight: 800; padding: 16px 28px; border-radius: 99px;
+        background: #fef3c7; color: #92660b; letter-spacing: 1px;
+      }
+
+      /* ---- Mini tabla de partidas ---- */
+      .table { margin-top: 44px; background: #fff; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; max-width: 1300px; box-shadow: 0 12px 30px rgba(31,41,55,.06); }
+      .trow { display: grid; grid-template-columns: 1.6fr .8fr .9fr .6fr; align-items: center; }
+      .trow > div { padding: 22px 28px; font-size: 28px; }
+      .thead { background: #faf6ee; font-weight: 800; color: var(--ink); }
+      .tbody { border-top: 1px solid var(--line); font-size: 30px; }
+      .tbody .muted { color: var(--ink-soft); font-style: italic; font-size: 25px; }
+
+      /* ---- Botón enviar ---- */
+      .send-btn {
+        align-self: flex-start; margin-top: 48px; display: inline-flex; align-items: center; gap: 18px;
+        background: linear-gradient(90deg, var(--amber) 0%, var(--amber-600) 100%); color: #fff;
+        font-size: 40px; font-weight: 800; padding: 26px 52px; border-radius: 18px;
+        box-shadow: 0 18px 40px rgba(217,119,6,.40);
+      }
+
+      /* ---- Intro / Outro ---- */
+      .center { align-items: center; text-align: center; }
+      .center .step-chip, .center .note { align-self: center; }
+      .kicker { font-size: 30px; font-weight: 700; letter-spacing: 4px; color: var(--amber-600); text-transform: uppercase; }
+      .big-title { font-size: 110px; font-weight: 800; line-height: 1.02; margin-top: 18px; }
+      .subtitle { font-size: 38px; color: var(--ink-soft); margin-top: 26px; }
+      .seal {
+        width: 170px; height: 170px; border-radius: 50%; margin: 0 auto 10px;
+        background: linear-gradient(135deg, var(--amber) 0%, var(--amber-600) 100%);
+        display: grid; place-items: center; color: #fff; font-size: 92px;
+        box-shadow: 0 22px 50px rgba(217,119,6,.40);
+      }
+    </style>
+  </head>
+  <body>
+    <div data-hf-id="hf-ptar" id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="85.2">
+      <!-- Fondo persistente -->
+      <div data-hf-id="hf-f1ed" id="bg" class="clip" data-start="0" data-duration="85.2" data-track-index="0" data-layout-ignore="">
+        <div data-hf-id="hf-rpjr" id="blob1" class="blob"></div>
+        <div data-hf-id="hf-gu24" id="blob2" class="blob"></div>
+      </div>
+
+      <!-- Escena 1 · Intro -->
+      <section data-hf-id="hf-a6fg" id="s1" class="scene center clip" data-start="0" data-duration="6.0" data-track-index="1">
+        <div data-hf-id="hf-34gt" class="kicker anim">SATECH · Guía para solicitantes</div>
+        <h1 data-hf-id="hf-x3zu" class="big-title anim">Cómo crear<br data-hf-id="hf-x5px">una requisición</h1>
+        <p data-hf-id="hf-lmoq" class="subtitle anim">En 7 pasos sencillos, desde el panel de Compras.</p>
+      </section>
+
+      <!-- Escena 2 · Paso 1 -->
+      <section data-hf-id="hf-dpa2" id="s2" class="scene clip" data-start="6.0" data-duration="8.6" data-track-index="1">
+        <div data-hf-id="hf-lomk" class="step-chip anim"><span data-hf-id="hf-e3y0" class="n">1</span> PASO 1 DE 7</div>
+        <h2 data-hf-id="hf-38yp" class="heading anim">Entra a «Mis requisiciones»</h2>
+        <p data-hf-id="hf-jec4" class="body anim">En el panel de <b data-hf-id="hf-bi3s">Compras</b>, abre el grupo <b data-hf-id="hf-wmme">Requisiciones → Mis requisiciones</b> y haz clic en el botón <b data-hf-id="hf-sxbs">Crear</b>.</p>
+        <div data-hf-id="hf-sxkc" class="note anim">📋 El contador rojo del menú te muestra cuántos borradores tienes pendientes.</div>
+      </section>
+
+      <!-- Escena 3 · Paso 2 -->
+      <section data-hf-id="hf-c5h5" id="s3" class="scene clip" data-start="14.6" data-duration="16.2" data-track-index="1">
+        <div data-hf-id="hf-g6zn" class="step-chip anim"><span data-hf-id="hf-cx0x" class="n">2</span> PASO 2 DE 7</div>
+        <h2 data-hf-id="hf-koku" class="heading anim">Llena la información general</h2>
+        <div data-hf-id="hf-k42n" class="fields">
+          <div data-hf-id="hf-ypsb" class="field anim"><div data-hf-id="hf-g9rf" class="ic">1</div><div data-hf-id="hf-kvio" class="txt"><div data-hf-id="hf-xvy9" class="lbl">Categoría</div><div data-hf-id="hf-6u1i" class="val">Servicio o Proveeduría</div></div></div>
+          <div data-hf-id="hf-56jv" class="field anim"><div data-hf-id="hf-fvge" class="ic">2</div><div data-hf-id="hf-gju0" class="txt"><div data-hf-id="hf-fndu" class="lbl">Referencia</div><div data-hf-id="hf-c318" class="val">El motivo de la compra</div></div></div>
+          <div data-hf-id="hf-4s8u" class="field anim"><div data-hf-id="hf-fh5d" class="ic">3</div><div data-hf-id="hf-fcwx" class="txt"><div data-hf-id="hf-se2q" class="lbl">Prioridad</div><div data-hf-id="hf-6dsh" class="val">Baja · Media · Alta</div></div></div>
+          <div data-hf-id="hf-4dxt" class="field anim"><div data-hf-id="hf-f2uc" class="ic">4</div><div data-hf-id="hf-fr7y" class="txt"><div data-hf-id="hf-zzqw" class="lbl">Tipo</div><div data-hf-id="hf-f0cz" class="val">Compra o Cotización</div></div></div>
+          <div data-hf-id="hf-3zms" class="field anim"><div data-hf-id="hf-eojb" class="ic">5</div><div data-hf-id="hf-ekav" class="txt"><div data-hf-id="hf-zoy2" class="lbl">Fecha y dirección</div><div data-hf-id="hf-3jur" class="val">Cuándo y a dónde se entrega</div></div></div>
+          <div data-hf-id="hf-3lbr" class="field anim"><div data-hf-id="hf-ea8a" class="ic">6</div><div data-hf-id="hf-eylw" class="txt"><div data-hf-id="hf-ph7l" class="lbl">Proyecto</div><div data-hf-id="hf-zhpi" class="val">Al que se carga el gasto</div></div></div>
+        </div>
+        <div data-hf-id="hf-hqvd" class="note anim">⚠️ La <b data-hf-id="hf-vfd0">categoría</b> define qué partidas podrás cargar después y no se puede cambiar fácilmente.</div>
+      </section>
+
+      <!-- Escena 4 · Paso 3 -->
+      <section data-hf-id="hf-4d9c" id="s4" class="scene center clip" data-start="30.8" data-duration="9.9" data-track-index="1">
+        <div data-hf-id="hf-pv2e" class="step-chip anim"><span data-hf-id="hf-dbby" class="n">3</span> PASO 3 DE 7</div>
+        <h2 data-hf-id="hf-535z" class="heading anim">Define el flujo de aprobación</h2>
+        <div data-hf-id="hf-ck2w" class="flow">
+          <div data-hf-id="hf-ttdy" class="flow-card anim"><div data-hf-id="hf-vnos" class="role">REVISA</div><div data-hf-id="hf-fn1j" class="who">Tu revisor</div></div>
+          <div data-hf-id="hf-x4lo" class="arrow anim">→</div>
+          <div data-hf-id="hf-rle2" class="flow-card anim"><div data-hf-id="hf-9hae" class="role">APRUEBA</div><div data-hf-id="hf-w6gj" class="who">Tu aprobador</div></div>
+        </div>
+        <div data-hf-id="hf-466s" class="note anim">Las opciones provienen de tu <b data-hf-id="hf-ogac">cadena de aprobación</b> asignada. Primero eliges quién revisa.</div>
+      </section>
+
+      <!-- Escena 5 · Paso 4 -->
+      <section data-hf-id="hf-al3i" id="s5" class="scene clip" data-start="40.7" data-duration="10.5" data-track-index="1">
+        <div data-hf-id="hf-k5wl" class="step-chip anim"><span data-hf-id="hf-c4ev" class="n">4</span> PASO 4 DE 7</div>
+        <h2 data-hf-id="hf-6r3i" class="heading anim">Adjunta documentos <span data-hf-id="hf-o6ru" style="color:var(--ink-soft);font-weight:700">(opcional)</span></h2>
+        <div data-hf-id="hf-g1yo" class="checklist">
+          <div data-hf-id="hf-ouwf" class="check-item anim"><span data-hf-id="hf-51x0" class="ck">✓</span><div data-hf-id="hf-wrxc">Fichas técnicas<small data-hf-id="hf-vsf1">Archivos PDF del producto o servicio</small></div></div>
+          <div data-hf-id="hf-1wgf" class="check-item anim"><span data-hf-id="hf-juh8" class="ck">✓</span><div data-hf-id="hf-kbi9">Soportes<small data-hf-id="hf-7ysp">Cotizaciones, correos u otros respaldos</small></div></div>
+          <div data-hf-id="hf-1i5e" class="check-item anim"><span data-hf-id="hf-ink5" class="ck">✓</span><div data-hf-id="hf-r7tx">Observaciones<small data-hf-id="hf-hlo2">Cualquier detalle adicional para el comprador</small></div></div>
+        </div>
+      </section>
+
+      <!-- Escena 6 · Paso 5 -->
+      <section data-hf-id="hf-tmga" id="s6" class="scene clip" data-start="51.3" data-duration="7.2" data-track-index="1">
+        <div data-hf-id="hf-0vow" class="step-chip anim"><span data-hf-id="hf-cipw" class="n">5</span> PASO 5 DE 7</div>
+        <h2 data-hf-id="hf-kpvy" class="heading anim">Guarda la requisición</h2>
+        <p data-hf-id="hf-04va" class="body anim">Al guardar se crea como <b data-hf-id="hf-2mpq">borrador</b> y el sistema le asigna un <b data-hf-id="hf-0xoi">folio</b> automáticamente.</p>
+        <div data-hf-id="hf-1bhc" class="badges">
+          <div data-hf-id="hf-6qhe" class="folio anim">REQ-2026-000123</div>
+          <div data-hf-id="hf-rnwf" class="badge anim">BORRADOR</div>
+        </div>
+      </section>
+
+      <!-- Escena 7 · Paso 6 -->
+      <section data-hf-id="hf-wcwp" id="s7" class="scene clip" data-start="58.5" data-duration="8.4" data-track-index="1">
+        <div data-hf-id="hf-u5on" class="step-chip anim"><span data-hf-id="hf-bbst" class="n">6</span> PASO 6 DE 7</div>
+        <h2 data-hf-id="hf-nsst" class="heading anim">Agrega las partidas</h2>
+        <p data-hf-id="hf-jhbt" class="body anim">Dentro de la requisición, agrega cada producto con su cantidad. El código y la unidad se completan solos.</p>
+        <div data-hf-id="hf-5g4b" class="table anim">
+          <div data-hf-id="hf-6r1m" class="trow thead"><div data-hf-id="hf-u9wg">Producto</div><div data-hf-id="hf-92wq">Cantidad</div><div data-hf-id="hf-sgvf">Código</div><div data-hf-id="hf-4qh2">UM</div></div>
+          <div data-hf-id="hf-9gf4" class="trow tbody"><div data-hf-id="hf-h17t">Cable THW cal. 12</div><div data-hf-id="hf-gdt9">50</div><div data-hf-id="hf-chhq" class="muted">auto</div><div data-hf-id="hf-p4hs" class="muted">m</div></div>
+        </div>
+      </section>
+
+      <!-- Escena 8 · Paso 7 -->
+      <section data-hf-id="hf-odu2" id="s8" class="scene clip" data-start="66.9" data-duration="10.8" data-track-index="1">
+        <div data-hf-id="hf-3e5m" class="step-chip anim"><span data-hf-id="hf-bq3u" class="n">7</span> PASO 7 DE 7</div>
+        <h2 data-hf-id="hf-inl5" class="heading anim">Envía a revisión</h2>
+        <p data-hf-id="hf-d0pg" class="body anim">Con al menos una partida cargada, presiona el botón para iniciar el flujo de aprobación.</p>
+        <div data-hf-id="hf-i8wz" class="send-btn anim">✈ Enviar a revisión</div>
+        <div data-hf-id="hf-y2ka" class="note anim">Una vez enviada, la requisición <b data-hf-id="hf-5e5i">ya no se puede editar</b>. Revísala bien antes de enviar.</div>
+      </section>
+
+      <!-- Escena 9 · Cierre -->
+      <section data-hf-id="hf-rfhp" id="s9" class="scene center clip" data-start="77.8" data-duration="7.4" data-track-index="1">
+        <div data-hf-id="hf-xcxj" class="seal anim">✓</div>
+        <h1 data-hf-id="hf-aiv7" class="big-title anim">¡Listo!</h1>
+        <p data-hf-id="hf-9kpr" class="subtitle anim">Tu requisición está en proceso de aprobación.<br data-hf-id="hf-rsrt">Sigue su estatus desde «Mis requisiciones».</p>
+      </section>
+
+      <!-- Barra superior persistente -->
+      <div data-hf-id="hf-kz9l" id="topbar" class="clip" data-start="0" data-duration="85.2" data-track-index="8">
+        <div data-hf-id="hf-oojr" class="brand"><div data-hf-id="hf-lu65" class="dot"></div><div data-hf-id="hf-72tx" class="name">SA<span data-hf-id="hf-j2d9">TECH</span></div></div>
+        <div data-hf-id="hf-m9gu" class="ctx">Guía · Crear una requisición</div>
+      </div>
+
+      <!-- Barra de progreso persistente -->
+      <div data-hf-id="hf-qrpz" id="progress-track" class="clip" data-start="0" data-duration="85.2" data-track-index="9">
+        <div data-hf-id="hf-c4bu" id="progress-fill"></div>
+      </div>
+
+      <!-- Narración por voz (hijos directos del root) -->
+      <audio data-hf-id="hf-8m2s" id="vo1" src="assets/audio/s1.wav" data-start="0.5" data-duration="4.8" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-kuny" id="vo2" src="assets/audio/s2.wav" data-start="6.5" data-duration="7.3" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-2xrs" id="vo3" src="assets/audio/s3.wav" data-start="15.1" data-duration="15.0" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-3re8" id="vo4" src="assets/audio/s4.wav" data-start="31.3" data-duration="8.6" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-nm4w" id="vo5" src="assets/audio/s5.wav" data-start="41.2" data-duration="9.3" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-p6zr" id="vo6" src="assets/audio/s6.wav" data-start="51.8" data-duration="6.0" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-iqej" id="vo7" src="assets/audio/s7.wav" data-start="59.0" data-duration="7.1" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-ye91" id="vo8" src="assets/audio/s8.wav" data-start="67.4" data-duration="9.6" data-track-index="20" data-volume="1"></audio>
+      <audio data-hf-id="hf-2qwd" id="vo9" src="assets/audio/s9.wav" data-start="78.3" data-duration="6.2" data-track-index="20" data-volume="1"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      const TOTAL = 85.2;
+
+      // Barra de progreso (lineal a lo largo de todo el video)
+      tl.fromTo("#progress-fill", { scaleX: 0 }, { scaleX: 1, ease: "none", duration: TOTAL }, 0);
+
+      // Movimiento sutil del fondo (repeticiones finitas y deterministas)
+      tl.to("#blob1", { x: 90, y: -70, duration: 9, ease: "sine.inOut", yoyo: true, repeat: Math.max(0, Math.floor(TOTAL / 9) - 1) }, 0);
+      tl.to("#blob2", { x: -110, y: 60, duration: 11, ease: "sine.inOut", yoyo: true, repeat: Math.max(0, Math.floor(TOTAL / 11) - 1) }, 0);
+
+      // Entrada del logo (una sola vez al inicio)
+      tl.from("#topbar .brand", { x: -30, opacity: 0, duration: 0.8, ease: "power3.out", overwrite: "auto" }, 0.2);
+
+      // Escenas: [id, start, duration]
+      const scenes = [
+        ["#s1", 0,    6.0],
+        ["#s2", 6.0,  8.6],
+        ["#s3", 14.6, 16.2],
+        ["#s4", 30.8, 9.9],
+        ["#s5", 40.7, 10.5],
+        ["#s6", 51.3, 7.2],
+        ["#s7", 58.5, 8.4],
+        ["#s8", 66.9, 10.8],
+        ["#s9", 77.8, 7.4],
+      ];
+
+      scenes.forEach(([id, start, dur], i) => {
+        // Entrada escalonada de los elementos de la escena
+        tl.from(
+          id + " .anim",
+          { y: 28, opacity: 0, duration: 0.6, stagger: 0.12, ease: "power3.out", overwrite: "auto" },
+          start + 0.15
+        );
+        // Salida suave (excepto la última escena, que se queda en pantalla)
+        if (i < scenes.length - 1) {
+          tl.to(id, { opacity: 0, duration: 0.4, ease: "power2.in" }, start + dur - 0.4);
+        }
+      });
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

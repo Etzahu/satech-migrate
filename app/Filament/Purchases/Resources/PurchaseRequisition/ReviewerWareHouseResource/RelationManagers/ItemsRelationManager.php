@@ -2,30 +2,33 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResource\RelationManagers;
 
-use Filament\Forms;
-use Filament\Tables;
 use App\Models\Product;
-use Filament\Forms\Get;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\PurchaseRequisitionItem;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Actions;
+use Filament\Forms;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
 
 class ItemsRelationManager extends RelationManager
 {
     protected static string $relationship = 'items';
+
     protected static ?string $modelLabel = 'Partida';
+
     protected static ?string $pluralModelLabel = 'Partidas';
+
     protected static ?string $navigationLabel = 'Partidas';
+
     protected static ?string $title = 'Partida';
+
     public function isReadOnly(): bool
     {
         return false;
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $form): Schema
     {
         return $form
             ->columns(1)
@@ -34,7 +37,7 @@ class ItemsRelationManager extends RelationManager
                     ->label('Producto')
                     ->options(function () {
                         $type = $this->getOwnerRecord()->category;
-                        if (session()->get('company_id') == 1) { //ID 1:GPT IM
+                        if (session()->get('company_id') == 1) { // ID 1:GPT IM
                             return Product::where('status', 'aprobado')
                                 ->where('company_id', session()->get('company_id'))
                                 ->pluck('name', 'id');
@@ -68,7 +71,7 @@ class ItemsRelationManager extends RelationManager
                     ->inputMode('decimal')
                     ->required()
                     ->default(0)
-                    ->maxValue(fn(Get $get) => $get('quantity_requested'))
+                    ->maxValue(fn (Get $get) => $get('quantity_requested'))
                     ->minValue(0),
             ]);
     }
@@ -98,14 +101,15 @@ class ItemsRelationManager extends RelationManager
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
+            ->recordActions([
+                Actions\EditAction::make()
                     ->label('Editar cantidad')
-                    ->mutateFormDataUsing(function (array $data): array {
+                    ->mutateDataUsing(function (array $data): array {
                         if ($data['quantity_warehouse'] > 0) {
                             $data['quantity_purchase'] = $data['quantity_requested'] - $data['quantity_warehouse'];
                         }
                         $data['user_warehouse_id'] = auth()->id();
+
                         return $data;
                     })
                     ->successNotificationTitle('Cantidad actualizada correctamente'),

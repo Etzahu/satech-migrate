@@ -2,38 +2,44 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use Filament\Forms;
-use Filament\Forms\Form;
-use App\Models\User;
-use Filament\Tables;
-use App\Models\Management;
-use Filament\Tables\Table;
-use Filament\Resources\Resource;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use STS\FilamentImpersonate\Tables\Actions\Impersonate;
 use App\Filament\Purchases\Resources\UserResource\Pages;
-use App\Filament\Purchases\Resources\UserResource\RelationManagers;
+use App\Models\Management;
+use App\Models\User;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use STS\FilamentImpersonate\Actions\Impersonate;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
+
     protected static ?string $modelLabel = 'Usuario';
+
     protected static ?string $pluralModelLabel = 'Usuarios';
+
     protected static ?string $navigationLabel = 'Usuarios';
+
     protected static ?string $slug = 'usuarios';
-    protected static ?string $navigationGroup = 'Administración';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->columns(1)
             ->schema([
-                Forms\Components\Tabs::make('Tabs')
+                Schemas\Components\Tabs::make('Tabs')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('General')
+                        Schemas\Components\Tabs\Tab::make('General')
                             ->schema([
                                 Forms\Components\TextInput::make('name')
                                     ->label('Nombre')
@@ -51,7 +57,7 @@ class UserResource extends Resource
                                     ->maxLength(20),
                                 Forms\Components\Select::make('management_id')
                                     ->label('Gerencia')
-                                    ->options(Management::pluck('name','id'))
+                                    ->options(Management::pluck('name', 'id'))
                                     ->searchable()
                                     ->preload()
                                     ->required(),
@@ -63,7 +69,7 @@ class UserResource extends Resource
                                     ->required(),
 
                             ]),
-                        Forms\Components\Tabs\Tab::make('Roles')
+                        Schemas\Components\Tabs\Tab::make('Roles')
                             ->schema([
                                 // Forms\Components\Select::make('roles')
                                 //     ->relationship('roles', 'name')
@@ -73,7 +79,7 @@ class UserResource extends Resource
                                 Forms\Components\CheckboxList::make('roles')
                                     ->relationship('roles', 'name')
                                     ->searchable(),
-                            ])
+                            ]),
                     ]),
             ]);
     }
@@ -105,12 +111,11 @@ class UserResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                Actions\EditAction::make(),
                 Impersonate::make()
                     ->visible(auth()->user()->hasRole('super_admin')),
-            ])
-        ;
+            ]);
     }
 
     public static function getRelations(): array

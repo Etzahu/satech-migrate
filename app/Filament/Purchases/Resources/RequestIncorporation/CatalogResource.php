@@ -2,34 +2,36 @@
 
 namespace App\Filament\Purchases\Resources\RequestIncorporation;
 
-use Filament\Forms;
-use Filament\Tables;
-use App\Models\Brand;
+use App\Filament\Purchases\Resources\RequestIncorporation\CatalogResource\Pages;
 use App\Models\Product;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Infolists;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\CategoryFamily;
-use Filament\Infolists\Infolist;
-
 use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\MediaLibrary\Support\MediaStream;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
-use App\Filament\Purchases\Resources\RequestIncorporation\CatalogResource\Pages;
 
-
-class CatalogResource  extends Resource
+class CatalogResource extends Resource
 {
     protected static ?string $model = Product::class;
+
     protected static ?string $modelLabel = 'Producto/Servicio';
+
     protected static ?string $pluralModelLabel = 'Productos/Servicios';
+
     protected static ?string $navigationLabel = 'Producto/Servicio';
+
     protected static ?string $slug = 'altas/catalogo';
-    protected static ?string $navigationGroup = 'Altas';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Altas';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
     protected static ?int $navigationSort = 1;
 
     public static function canAccess(): bool
@@ -43,11 +45,12 @@ class CatalogResource  extends Resource
             ->where('company_id', session()->get('company_id'))
             ->where('requester_id', auth()->user()->id);
     }
-    public static function form(Form $form): Form
+
+    public static function form(Schema $form): Schema
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Información general')
+                Schemas\Components\Section::make('Información general')
                     ->schema([
                         Forms\Components\Textarea::make('name')
                             ->label('Descripción del producto/servicio')
@@ -69,7 +72,7 @@ class CatalogResource  extends Resource
                             ])
                             ->required(),
                     ]),
-                Forms\Components\Section::make('Documentación')
+                Schemas\Components\Section::make('Documentación')
                     ->schema([
                         SpatieMediaLibraryFileUpload::make('documents')
                             ->label('Ficha técnica, etc')
@@ -78,14 +81,15 @@ class CatalogResource  extends Resource
                             ->acceptedFileTypes(['application/pdf'])
                             ->collection('documents')
                             ->multiple(),
-                    ])
+                    ]),
             ]);
     }
-    public static function infolist(Infolist $infolist): Infolist
+
+    public static function infolist(Schema $infolist): Schema
     {
         return $infolist
             ->schema([
-                Infolists\Components\Section::make('Información general')
+                Schemas\Components\Section::make('Información general')
                     ->schema([
                         Infolists\Components\TextEntry::make('name')
                             ->label('Descripción del producto/servicio'),
@@ -94,23 +98,24 @@ class CatalogResource  extends Resource
                         Infolists\Components\TextEntry::make('type_purchase')
                             ->label('Tipo')
                             ->badge()
-                            ->color(fn(string $state): string => match ($state) {
+                            ->color(fn (string $state): string => match ($state) {
                                 'servicio' => 'info',
                                 'proveeduria' => 'success',
                                 default => 'gray',
                             })
-                            ->formatStateUsing(fn(string $state): string => match ($state) {
+                            ->formatStateUsing(fn (string $state): string => match ($state) {
                                 'servicio' => 'Servicio',
                                 'proveeduria' => 'Producto',
                                 default => $state,
-                            })
+                            }),
                     ]),
-                Infolists\Components\Section::make('Documentación')
-                    ->visible(fn($record) => $record->getMedia('documents')->count() > 0)
+                Schemas\Components\Section::make('Documentación')
+                    ->visible(fn ($record) => $record->getMedia('documents')->count() > 0)
                     ->schema([
                         Infolists\Components\RepeatableEntry::make('media')
                             ->state(function ($record) {
                                 $record->media = $record->getMedia('documents');
+
                                 return $record->media;
                             })
                             ->label('')
@@ -118,16 +123,18 @@ class CatalogResource  extends Resource
                                 Infolists\Components\TextEntry::make('name')
                                     ->label('Nombre del archivo'),
                             ]),
-                        Infolists\Components\Actions::make([
-                            Infolists\Components\Actions\Action::make('Descargar')
+                        Schemas\Components\Actions::make([
+                            Actions\Action::make('Descargar')
                                 ->action(function ($record) {
                                     $downloads = $record->getMedia('documents');
-                                    return MediaStream::create($record->code . '-documentos.zip')->addMedia($downloads);
+
+                                    return MediaStream::create($record->code.'-documentos.zip')->addMedia($downloads);
                                 }),
                         ]),
                     ]),
             ]);
     }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -143,12 +150,12 @@ class CatalogResource  extends Resource
                 Tables\Columns\TextColumn::make('type_purchase')
                     ->label('Tipo')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'servicio' => 'info',
                         'proveeduria' => 'success',
                         default => 'gray',
                     })
-                    ->formatStateUsing(fn(string $state): string => match ($state) {
+                    ->formatStateUsing(fn (string $state): string => match ($state) {
                         'servicio' => 'Servicio',
                         'proveeduria' => 'Producto',
                         default => $state,
@@ -169,13 +176,11 @@ class CatalogResource  extends Resource
             ->filters([
                 //
             ])
-            ->actions([
+            ->recordActions([
 
-                Tables\Actions\ViewAction::make(),
-            ])
-        ;
+                Actions\ViewAction::make(),
+            ]);
     }
-
 
     public static function getPages(): array
     {

@@ -2,13 +2,13 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseProviderResource\Pages;
 
+use App\Filament\Purchases\Resources\PurchaseProviderResource;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
-use App\Filament\Purchases\Resources\PurchaseProviderResource;
 
 class ViewPurchaseProvider extends ViewRecord
 {
@@ -18,10 +18,10 @@ class ViewPurchaseProvider extends ViewRecord
     {
         return [
             Actions\EditAction::make(),
-            Actions\Action::make('responder')
+            Action::make('responder')
                 ->visible(($this->record->status()->canBe('aprobado') || $this->record->status()->canBe('rechazado')))
                 ->requiresConfirmation()
-                ->form([
+                ->schema([
                     Select::make('response')
                         ->label('Respuesta')
                         ->options([
@@ -30,7 +30,7 @@ class ViewPurchaseProvider extends ViewRecord
                         ])
                         ->default('aprobado')
                         ->required(),
-                        Textarea::make('observation')
+                    Textarea::make('observation')
                         ->requiredUnless('response', 'aprobado')
                         ->validationMessages([
                             'required_unless' => 'El campo :attribute es obligatorio.',
@@ -44,7 +44,7 @@ class ViewPurchaseProvider extends ViewRecord
                         ->success()
                         ->send();
                 })
-                ->color('success')
+                ->color('success'),
         ];
     }
 }

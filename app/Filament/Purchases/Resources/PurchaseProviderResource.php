@@ -2,29 +2,37 @@
 
 namespace App\Filament\Purchases\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use App\Models\PurchaseProvider;
-use Filament\Resources\Resource;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use App\Filament\Purchases\Resources\PurchaseProviderResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseProviderResource\RelationManagers;
+use App\Models\PurchaseProvider;
+use Filament\Actions;
+use Filament\Forms;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
+use Filament\Resources\Resource;
+use Filament\Schemas;
+use Filament\Schemas\Schema;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
+use Njxqlus\Filament\Components\Forms\RelationManager;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class PurchaseProviderResource extends Resource
 {
     protected static ?string $model = PurchaseProvider::class;
+
     protected static ?string $modelLabel = 'Proveedor';
+
     protected static ?string $pluralModelLabel = 'Proveedores';
+
     protected static ?string $navigationLabel = 'Proveedores';
+
     protected static ?string $slug = 'proveedores';
-    protected static ?string $navigationIcon = 'heroicon-o-minus';
-    protected static ?string $navigationGroup = 'Administración';
+
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración';
+
     protected static ?int $navigationSort = 11;
 
     public static function canAccess(): bool
@@ -36,19 +44,20 @@ class PurchaseProviderResource extends Resource
     {
         return static::getModel()::where('status', 'revisión')->count();
     }
+
     public static function getNavigationBadgeColor(): ?string
     {
         return 'danger';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $form): Schema
     {
         return $form
             ->columns(1)
             ->schema([
-                Forms\Components\Tabs::make('tabs')
+                Schemas\Components\Tabs::make('tabs')
                     ->schema([
-                        Forms\Components\Tabs\Tab::make('Información general')
+                        Schemas\Components\Tabs\Tab::make('Información general')
                             ->columns(2)
                             ->schema([
                                 Forms\Components\TextInput::make('rfc')
@@ -95,7 +104,7 @@ class PurchaseProviderResource extends Resource
                                     ->nullable()
                                     ->maxLength(255),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Cuenta bancaria')
+                        Schemas\Components\Tabs\Tab::make('Cuenta bancaria')
                             ->schema([
                                 Forms\Components\Select::make('bank')
                                     ->label('Banco')
@@ -195,9 +204,9 @@ class PurchaseProviderResource extends Resource
                                     ->label('Clabe')
                                     ->maxLength(30)
                                     ->default('')
-                                    ->nullable()
+                                    ->nullable(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Documentacion')
+                        Schemas\Components\Tabs\Tab::make('Documentacion')
                             ->schema([
                                 SpatieMediaLibraryFileUpload::make('doc_1')
                                     ->label('Hoja de datos bancarios')
@@ -231,12 +240,12 @@ class PurchaseProviderResource extends Resource
                                         //     ->preload(false),
                                     ]),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Contactos')
-                            ->visible(fn($operation) => $operation !== 'create')
+                        Schemas\Components\Tabs\Tab::make('Contactos')
+                            ->visible(fn ($operation) => $operation !== 'create')
                             ->schema([
-                                \Njxqlus\Filament\Components\Forms\RelationManager::make()->manager(RelationManagers\ContactsRelationManager::class)->lazy(true)
+                                RelationManager::make()->manager(RelationManagers\ContactsRelationManager::class)->lazy(true),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Cadena de aprobación')
+                        Schemas\Components\Tabs\Tab::make('Cadena de aprobación')
                             ->visible(auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('gerente_compras'))
                             ->columns(1)
                             ->schema([
@@ -246,10 +255,11 @@ class PurchaseProviderResource extends Resource
                                     ->searchable()
                                     ->options(['normal' => 'Normal', 'especial' => 'Especial'])
                                     ->helperText('Selecciona la cadena de aprobación que se utilizará para este proveedor.'),
-                            ])
-                    ])
+                            ]),
+                    ]),
             ]);
     }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -267,7 +277,7 @@ class PurchaseProviderResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
                     ->badge()
-                    ->color(fn(string $state): string => match ($state) {
+                    ->color(fn (string $state): string => match ($state) {
                         'revisión' => 'warning',
                         'rechazado' => 'danger',
                         'aprobado' => 'success',
@@ -287,11 +297,10 @@ class PurchaseProviderResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-            ])
-        ;
+            ->recordActions([
+                Actions\ViewAction::make(),
+                Actions\EditAction::make(),
+            ]);
     }
 
     public static function getPages(): array

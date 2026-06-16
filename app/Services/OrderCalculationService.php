@@ -11,6 +11,8 @@ class OrderCalculationService
 {
     public $order;
 
+    public $currency;
+
     public $localeOptions = ['MXN' => 'es_MX', 'USD' => 'en_US'];
 
     public $locale;
@@ -18,8 +20,16 @@ class OrderCalculationService
     public function __construct($id = null)
     {
         if (filled($id)) {
-            $this->order = PurchaseOrder::with(['items'])->find($id);
-            $this->locale = $this->localeOptions[$this->order->currency];
+            $this->order = PurchaseOrder::withTrashed()->with(['items'])->find($id);
+
+            // Guarda: si el id no corresponde a ninguna orden, salimos antes
+            // de leer propiedades sobre null (evita "property on null").
+            if (! $this->order) {
+                return;
+            }
+
+            $this->currency = $this->order->currency;
+            $this->locale = $this->localeOptions[$this->currency];
         }
     }
 
@@ -28,16 +38,19 @@ class OrderCalculationService
      * Internamente los montos se almacenan con 4 decimales (entero × 10000).
      * Este método convierte y muestra con 2 decimales.
      */
-    public function brickFormatter($value)
+    public function brickFormatter($value, ?string $currency = null)
     {
         if (! $value instanceof BigDecimal) {
             $value = BigDecimal::of($value)->dividedBy(10000, 4);
             $value = $value->toScale(2, RoundingMode::CEILING);
         }
 
-        $amount = BrickMoney::of($value->__toString(), $this->order->currency);
+        $currency = $currency ?? $this->currency;
+        // $locale = $this->localeOptions[$this->currency];
+        $locale = 'es_MX';
+        $amount = BrickMoney::of($value->__toString(), $currency);
 
-        return $amount->formatTo($this->locale);
+        return $amount->formatTo($locale);
     }
 
     public function getSubtotalItems($formatter = false)
@@ -104,7 +117,7 @@ class OrderCalculationService
 
     public function isOrderTotalBetweenLimits(): bool
     {
-        [$minAmount, $maxAmount] = match ($this->order->currency) {
+        [$minAmount, $maxAmount] = match ($this->currency) {
             'USD' => [1, 15000],
             'MXN' => [1, 300000],
             default => [0, 0],
