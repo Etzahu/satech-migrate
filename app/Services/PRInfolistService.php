@@ -95,12 +95,7 @@ class PRInfolistService
                             ->visible($record->getMedia('technical_data_sheets')->count() > 0)
                             ->schema([
                                 RepeatableEntry::make('media')
-                                    ->state(function ($record) {
-                                        // $record->media = $this->getMediaInfo($record->id, 'technical_data_sheets');
-                                        $record->media = $record->getMedia('technical_data_sheets');
-
-                                        return $record->media;
-                                    })
+                                    ->state(fn ($record) => $record->getMedia('technical_data_sheets'))
                                     ->label('')
                                     ->schema([
                                         TextEntry::make('file_name')
@@ -121,16 +116,9 @@ class PRInfolistService
                             ->visible($record->getMedia('supports')->count() > 0)
                             ->schema([
                                 RepeatableEntry::make('media')
-                                    ->state(function ($record) {
-                                        // $record->media = $this->getMediaInfo($record->id, 'supports');
-                                        // return $record->media;
-                                        $media = Media::where('model_id', $record->id)
-                                            ->where('collection_name', 'supports')
-                                            ->get();
-                                        $record->media = $media;
-
-                                        return $record->media;
-                                    })
+                                    ->state(fn ($record) => Media::where('model_id', $record->id)
+                                        ->where('collection_name', 'supports')
+                                        ->get())
                                     ->label('')
                                     ->schema([
                                         TextEntry::make('name')

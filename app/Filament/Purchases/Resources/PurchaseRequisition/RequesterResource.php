@@ -433,11 +433,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                             ->visible(fn ($record) => $record->getMedia('technical_data_sheets')->count() > 0)
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('media')
-                                                    ->state(function ($record) {
-                                                        $record->media = $record->getMedia('technical_data_sheets');
-
-                                                        return $record->media;
-                                                    })
+                                                    ->state(fn ($record) => $record->getMedia('technical_data_sheets'))
                                                     ->label('')
                                                     ->schema([
                                                         Infolists\Components\TextEntry::make('name')
@@ -461,14 +457,9 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                             ->visible(fn ($record) => $record->getMedia('supports')->count() > 0)
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('media')
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->id)
-                                                            ->where('collection_name', 'supports')
-                                                            ->get();
-                                                        $record->media = $media;
-
-                                                        return $record->media;
-                                                    })
+                                                    ->state(fn ($record) => Media::where('model_id', $record->id)
+                                                        ->where('collection_name', 'supports')
+                                                        ->get())
                                                     ->label('')
                                                     ->schema([
                                                         Infolists\Components\TextEntry::make('name')

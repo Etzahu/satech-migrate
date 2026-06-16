@@ -119,7 +119,7 @@ class PurchaserResource extends Resource implements HasShieldPermissions
                                     ->required()
                                     ->maxLength(100),
                                 Forms\Components\Select::make('use_cfdi')
-                                    ->label('Uso deÂ CFDI')
+                                    ->label('Uso de CFDI')
                                     ->options([
                                         'G01-Adquisición de mercancías' => 'G01 - Adquisición de mercancías',
                                         'G02-Devoluciones y descuentos sobre compras' => 'G02 - Devoluciones y descuentos sobre compras',
@@ -731,11 +731,7 @@ class PurchaserResource extends Resource implements HasShieldPermissions
                                             ->visible(fn ($record) => $record->requisition->getMedia('technical_data_sheets')->count() > 0)
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('media')
-                                                    ->state(function ($record) {
-                                                        $record->media = $record->requisition->getMedia('technical_data_sheets');
-
-                                                        return $record->media;
-                                                    })
+                                                    ->state(fn ($record) => $record->requisition->getMedia('technical_data_sheets'))
                                                     ->label('')
                                                     ->schema([
                                                         Infolists\Components\TextEntry::make('name')
@@ -754,14 +750,9 @@ class PurchaserResource extends Resource implements HasShieldPermissions
                                             ->visible(fn ($record) => $record->requisition->getMedia('supports')->count() > 0)
                                             ->schema([
                                                 Infolists\Components\RepeatableEntry::make('media')
-                                                    ->state(function ($record) {
-                                                        $media = Media::where('model_id', $record->requisition->id)
-                                                            ->where('collection_name', 'supports')
-                                                            ->get();
-                                                        $record->media = $media;
-
-                                                        return $record->media;
-                                                    })
+                                                    ->state(fn ($record) => Media::where('model_id', $record->requisition->id)
+                                                        ->where('collection_name', 'supports')
+                                                        ->get())
                                                     ->label('')
                                                     ->schema([
                                                         Infolists\Components\TextEntry::make('name')

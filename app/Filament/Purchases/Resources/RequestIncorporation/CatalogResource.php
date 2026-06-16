@@ -113,11 +113,7 @@ class CatalogResource extends Resource
                     ->visible(fn ($record) => $record->getMedia('documents')->count() > 0)
                     ->schema([
                         Infolists\Components\RepeatableEntry::make('media')
-                            ->state(function ($record) {
-                                $record->media = $record->getMedia('documents');
-
-                                return $record->media;
-                            })
+                            ->state(fn ($record) => $record->getMedia('documents'))
                             ->label('')
                             ->schema([
                                 Infolists\Components\TextEntry::make('name')

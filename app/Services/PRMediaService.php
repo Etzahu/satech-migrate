@@ -109,11 +109,7 @@ class PRMediaService
                             ->visible($this->getMediaCount($record->id, 'technical_data_sheets') > 0)
                             ->schema([
                                 RepeatableEntry::make('media')
-                                    ->state(function ($record) {
-                                        $record->media = $this->getMediaInfo($record->id, 'technical_data_sheets');
-
-                                        return $record->media;
-                                    })
+                                    ->state(fn ($record) => $this->getMediaInfo($record->id, 'technical_data_sheets'))
                                     ->label('')
                                     ->schema([
                                         TextEntry::make('file_name')
@@ -132,11 +128,7 @@ class PRMediaService
                             ->visible($this->getMediaCount($record->id, 'supports') > 0)
                             ->schema([
                                 RepeatableEntry::make('media')
-                                    ->state(function ($record) {
-                                        $record->media = $this->getMediaInfo($record->id, 'supports');
-
-                                        return $record->media;
-                                    })
+                                    ->state(fn ($record) => $this->getMediaInfo($record->id, 'supports'))
                                     ->label('')
                                     ->schema([
                                         TextEntry::make('name')
