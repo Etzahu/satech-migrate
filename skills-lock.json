@@ -7,6 +7,12 @@
       "skillPath": "skills/embedded-captions/SKILL.md",
       "computedHash": "ae75bbf848019ae09db25c4d6d6020aad98b1994f9f83cee8bbe0c782199ed2e"
     },
+    "emil-design-eng": {
+      "source": "emilkowalski/skill",
+      "sourceType": "github",
+      "skillPath": "skills/emil-design-eng/SKILL.md",
+      "computedHash": "ac3fc5b4e206488ffc408a2806f829bb2e5eaf518fded09be34790685c2b3a0d"
+    },
     "faceless-explainer": {
       "source": "heygen-com/hyperframes",
       "sourceType": "github",
@@ -90,6 +96,12 @@
       "sourceType": "github",
       "skillPath": "skills/remotion-to-hyperframes/SKILL.md",
       "computedHash": "ee04c5eca6113d5a3a8aeee9e78792451da57f06450bd034486950142ee05766"
+    },
+    "review-animations": {
+      "source": "emilkowalski/skill",
+      "sourceType": "github",
+      "skillPath": "skills/review-animations/SKILL.md",
+      "computedHash": "57c681344448379fbec8c11b45e355b70799998427240662318d017f292571bd"
     },
     "website-to-video": {
       "source": "heygen-com/hyperframes",

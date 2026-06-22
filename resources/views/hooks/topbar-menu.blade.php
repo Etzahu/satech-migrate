@@ -4,7 +4,7 @@
     $currentCompany = $companies->firstWhere('id', $currentCompanyId);
 @endphp
 
-<x-filament::dropdown placement="bottom-start" width="xs">
+<x-filament::dropdown placement="bottom-end" :flip="false" width="xs">
     <x-slot name="trigger">
         <button
             type="button"
@@ -12,7 +12,7 @@
         >
             @if ($currentCompany)
                 <span class="relative flex h-2.5 w-2.5 shrink-0">
-                    <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-500 opacity-75"></span>
+                    <span class="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-violet-500"></span>
                     <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-violet-600"></span>
                 </span>
             @endif
@@ -26,7 +26,7 @@
 
             <x-filament::icon
                 icon="heroicon-m-chevron-down"
-                class="h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500"
+                class="w-4 h-4 text-gray-400 shrink-0 dark:text-gray-500"
             />
         </button>
     </x-slot>

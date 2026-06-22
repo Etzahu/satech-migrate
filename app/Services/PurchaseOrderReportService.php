@@ -177,12 +177,13 @@ class PurchaseOrderReportService
     $dataItems = [];
 
     foreach ($items as $item) {
+      $currency = $item->purchase->currency;
       $dataItems[] = [
         'Orden' => $item->purchase->folio,
         'Requisicion' => $item->purchase->requisition->folio,
         'Cantidad' => $item->quantity,
-        'Precio unitario' => $this->calculationService->brickFormatter($item->unit_price),
-        'Subtotal' => $this->calculationService->brickFormatter($item->sub_total),
+        'Precio unitario' => $this->calculationService->brickFormatter($item->unit_price, $currency),
+        'Subtotal' => $this->calculationService->brickFormatter($item->sub_total, $currency),
         'Producto-Servicio' => $item->product->name,
         'Tipo' => $item->product->type_purchase,
         'Observaciones' => $item->observation
