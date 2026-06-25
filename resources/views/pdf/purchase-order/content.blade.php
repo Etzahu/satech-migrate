@@ -185,10 +185,15 @@
                 </thead>
                 <tbody>
                     @foreach ($data['itemsFormatted'] as $item)
-                        <tr>
-                            <td class="w-16 px-1 text-xs text-left text-black">Partida {{ $loop->iteration }}:</td>
-                            <td class="px-1 text-xs text-left text-black ">{{ $item['observation'] }}</td>
-                        </tr>
+                        @php
+                            $obs = trim((string) ($item['observation'] ?? ''));
+                        @endphp
+                        @if ($obs !== '' && $obs !== '.')
+                            <tr>
+                                <td class="w-16 px-1 text-xs text-left text-black">Partida {{ $loop->iteration }}:</td>
+                                <td class="px-1 text-xs text-left text-black ">{{ $item['observation'] }}</td>
+                            </tr>
+                        @endif
                     @endforeach
                     <tr>
                         <td colspan="2" class="px-1 text-xs text-justify text-black"></td>
