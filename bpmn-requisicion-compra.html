@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BPMN · Proceso de Requisición de Compra</title>
+<style>
+  :root{
+    --bg:#f4f5f7; --panel:#ffffff; --ink:#1f2933; --ink-soft:#52606d; --line:#cbd2d9;
+    --lane-a:#ffffff; --lane-b:#fafaf7; --lane-label:#eef1f4;
+    --main:#1d4ed8; --main-fill:#eef4ff;
+    --gate:#b45309; --gate-fill:#fdf3e3;
+    --start:#15803d; --start-fill:#e8f6ec;
+    --end:#0f766e; --end-fill:#e3f4f1;
+    --cancel:#b91c1c; --cancel-fill:#fdeced;
+    --return:#c2410c; --return-fill:#fdeee4;
+    --special:#7c3aed; --special-fill:#f3eefe;
+    --flow:#475569;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+  header{padding:14px 20px 10px;border-bottom:1px solid var(--line);background:var(--panel)}
+  header h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.015em}
+  header p{margin:3px 0 0;font-size:12.5px;color:var(--ink-soft)}
+  header code{background:#eef1f4;padding:1px 5px;border-radius:4px;font-size:11px}
+
+  .toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;padding:9px 20px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .toolgroup{display:flex;align-items:center;gap:9px}
+  .toolgroup .gl{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#9aa5b1;font-weight:600}
+  .chk{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;cursor:pointer;user-select:none;padding:2px 4px;border-radius:5px}
+  .chk input{accent-color:var(--main);width:14px;height:14px;cursor:pointer}
+  .chk .dot{width:11px;height:11px;border-radius:3px;display:inline-block;border:1.5px solid}
+  .dot.r-return{background:var(--return-fill);border-color:var(--return)}
+  .dot.r-cancel{background:var(--cancel-fill);border-color:var(--cancel)}
+  .dot.r-special{background:var(--special-fill);border-color:var(--special)}
+  .dot.r-notify{background:#e8eefc;border-color:var(--main)}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:5px 10px;font-size:12.5px;cursor:pointer;line-height:1}
+  .btn:hover{background:#f0f2f5}
+  .btn.sq{width:30px;height:28px;padding:0;font-size:15px;font-weight:600}
+
+  .stage{position:relative;flex:1;overflow:hidden;background:
+    radial-gradient(circle at 1px 1px,#e2e6eb 1px,transparent 0);background-size:26px 26px}
+  svg.diagram{width:100%;height:100%;display:block;cursor:grab}
+  svg.diagram.panning{cursor:grabbing}
+
+  /* nodos */
+  .nd{cursor:pointer}
+  .nd .card{stroke-width:1.5}
+  .nd .lbl{font-size:13px;font-weight:600;fill:var(--ink)}
+  .nd .sub{font-size:11px;fill:var(--ink-soft)}
+  .nd.task .card{fill:var(--main-fill);stroke:var(--main)}
+  .nd.start .card{fill:var(--start-fill);stroke:var(--start);stroke-width:2.5}
+  .nd.end .card{fill:var(--end-fill);stroke:var(--end);stroke-width:3.5}
+  .nd.gateway .card{fill:var(--gate-fill);stroke:var(--gate)}
+  .nd.gateway .glyph{stroke:var(--gate);stroke-width:2;stroke-linecap:round}
+  .nd.cancel .card{fill:var(--cancel-fill);stroke:var(--cancel);stroke-width:2.5}
+  .nd.cancel .glyph{stroke:var(--cancel);stroke-width:2;stroke-linecap:round}
+  .nd.return .card{fill:var(--return-fill);stroke:var(--return);stroke-dasharray:5 3}
+  .nd.return .lbl{fill:var(--return)}
+  .nd.special .card{fill:var(--special-fill);stroke:var(--special);stroke-dasharray:5 3}
+  .nd.special .lbl{fill:var(--special)}
+  .nd .notify{display:none}
+  .show-notify .nd .notify{display:block}
+  .nd .badge{font-size:10px;font-weight:700;fill:#fff}
+  .nd:hover .card{filter:brightness(.97)}
+  .nd.dim{opacity:.22}
+  .edge.dim{opacity:.12}
+  .nd.sel .card{stroke-width:3.2}
+
+  /* edges */
+  .edge{fill:none;stroke:var(--flow);stroke-width:1.6}
+  .edge.e-forward{stroke:var(--flow)}
+  .edge.e-alt{stroke:var(--flow);stroke-dasharray:7 4}
+  .edge.e-return{stroke:var(--return);stroke-width:1.5}
+  .edge.e-cancel{stroke:var(--cancel);stroke-width:1.5}
+  .edge.e-special{stroke:var(--special);stroke-width:1.5;stroke-dasharray:7 4}
+  .elabel{font-size:11px;font-weight:600;fill:#36414c;paint-order:stroke;stroke:#f7f8fa;stroke-width:3.5px;stroke-linejoin:round}
+  .elabel.l-return{fill:var(--return)}
+  .elabel.l-cancel{fill:var(--cancel)}
+  .elabel.l-special{fill:var(--special)}
+  .buslabel{font-size:11.5px;font-weight:600;fill:var(--return);paint-order:stroke;stroke:#f7f8fa;stroke-width:3.5px}
+
+  .laneband{stroke:#e3e7eb;stroke-width:1}
+  .lanesep{stroke:#d7dce1;stroke-width:1}
+  .lanelabel{font-size:12.5px;font-weight:600;fill:#3e4c59}
+  .lanesublabel{font-size:10px;fill:#9aa5b1}
+  .poolborder{fill:none;stroke:#b8c0c9;stroke-width:1.4}
+  .stagetitle{font-size:11px;font-weight:700;fill:#7b8794;letter-spacing:.04em}
+
+  /* tooltip */
+  .tip{position:absolute;pointer-events:none;z-index:30;max-width:288px;background:#fff;border:1px solid var(--line);
+    border-radius:10px;box-shadow:0 8px 26px rgba(15,23,42,.16);padding:11px 13px;opacity:0;transition:opacity .12s;font-size:12.5px}
+  .tip h4{margin:0 0 6px;font-size:13px;display:flex;align-items:center;gap:7px}
+  .tip .chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em}
+  .tip .row{margin-top:5px;color:var(--ink-soft);line-height:1.45}
+  .tip .row b{color:var(--ink)}
+
+  /* panel detalle */
+  .detail{position:absolute;top:12px;right:12px;width:300px;z-index:20;background:var(--panel);border:1px solid var(--line);
+    border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,.12);padding:0;overflow:hidden;transition:transform .2s,opacity .2s}
+  .detail .dhead{padding:13px 15px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start}
+  .detail .dico{width:34px;height:34px;border-radius:9px;flex:none;display:grid;place-items:center;font-size:17px;font-weight:700}
+  .detail h3{margin:0;font-size:15.5px;font-weight:650}
+  .detail .chip{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;text-transform:uppercase;display:inline-block;margin-top:4px}
+  .detail .dbody{padding:13px 15px;font-size:12.5px;line-height:1.5;max-height:46vh;overflow:auto}
+  .detail .meta{margin:9px 0;padding:9px 11px;background:#f7f8fa;border-radius:8px}
+  .detail .meta div{margin:3px 0}
+  .detail .meta b{color:var(--ink)}
+  .detail .nexts{margin-top:10px}
+  .detail .nexts ul{margin:6px 0 0;padding-left:2px;list-style:none}
+  .detail .nexts li{padding:5px 0;border-top:1px dashed #e1e5ea;font-size:12px}
+  .detail .nexts em{font-style:normal;color:#6b7280}
+  .detail .close{position:absolute;top:10px;right:11px;border:none;background:transparent;font-size:19px;color:#9aa5b1;cursor:pointer;line-height:1}
+  .detail.hidden{opacity:0;transform:translateX(12px);pointer-events:none}
+  .detail .placeholder{padding:24px 16px;color:#9aa5b1;font-size:12.5px;text-align:center;line-height:1.5}
+
+  .legend{position:absolute;left:12px;bottom:12px;z-index:15;background:rgba(255,255,255,.95);border:1px solid var(--line);
+    border-radius:11px;padding:10px 13px;font-size:11.5px;box-shadow:0 6px 18px rgba(15,23,42,.08);max-width:340px}
+  .legend .lt{font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#7b8794;margin-bottom:6px}
+  .legend .grid{display:grid;grid-template-columns:1fr 1fr;gap:5px 16px}
+  .legend .it{display:flex;align-items:center;gap:7px;color:var(--ink-soft)}
+  .legend svg{flex:none}
+
+  .hint{position:absolute;right:12px;bottom:12px;z-index:14;font-size:11px;color:#9aa5b1;background:rgba(255,255,255,.85);
+    border:1px solid var(--line);border-radius:8px;padding:5px 9px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Proceso de Requisición de Compra — Diagrama BPMN</h1>
+  <p>Carriles por actor · estados, compuertas, devoluciones, cancelaciones y casos especiales. Generado desde <code>PurchaseRequisitionStateMachine</code>. Pasa el cursor por un nodo para ver el detalle; haz clic para fijarlo.</p>
+</header>
+
+<div class="toolbar">
+  <div class="toolgroup">
+    <span class="gl">Capas</span>
+    <label class="chk"><input type="checkbox" id="lyr-return" checked><span class="dot r-return"></span>Devoluciones</label>
+    <label class="chk"><input type="checkbox" id="lyr-cancel" checked><span class="dot r-cancel"></span>Cancelaciones</label>
+    <label class="chk"><input type="checkbox" id="lyr-special" checked><span class="dot r-special"></span>Casos especiales</label>
+    <label class="chk"><input type="checkbox" id="lyr-notify"><span class="dot r-notify"></span>Notificaciones</label>
+  </div>
+  <div class="toolgroup">
+    <span class="gl">Vista</span>
+    <button class="btn sq" id="zin" title="Acercar">+</button>
+    <button class="btn sq" id="zout" title="Alejar">−</button>
+    <button class="btn" id="zfit">Ajustar</button>
+    <button class="btn" id="zreset">100%</button>
+  </div>
+</div>
+
+<div class="stage" id="stage">
+  <svg class="diagram" id="svg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+  <div class="tip" id="tip"></div>
+
+  <aside class="detail hidden" id="detail">
+    <button class="close" id="dclose">×</button>
+    <div id="dcontent">
+      <div class="placeholder">Selecciona un nodo del diagrama para ver su descripción completa, actor responsable, notificaciones y transiciones posibles.</div>
+    </div>
+  </aside>
+
+  <div class="legend">
+    <div class="lt">Notación</div>
+    <div class="grid">
+      <span class="it"><svg width="22" height="14"><circle cx="11" cy="7" r="6" fill="var(--start-fill)" stroke="var(--start)" stroke-width="2"/></svg>Inicio</span>
+      <span class="it"><svg width="22" height="14"><circle cx="11" cy="7" r="6" fill="var(--end-fill)" stroke="var(--end)" stroke-width="3"/></svg>Fin (cerrada)</span>
+      <span class="it"><svg width="22" height="14"><rect x="2" y="1" width="18" height="12" rx="3" fill="var(--main-fill)" stroke="var(--main)" stroke-width="1.5"/></svg>Estado / tarea</span>
+      <span class="it"><svg width="22" height="14"><path d="M11 1 L19 7 L11 13 L3 7 Z" fill="var(--gate-fill)" stroke="var(--gate)" stroke-width="1.5"/></svg>Decisión</span>
+      <span class="it"><svg width="22" height="14"><circle cx="11" cy="7" r="6" fill="var(--cancel-fill)" stroke="var(--cancel)" stroke-width="2"/><path d="M8 4 L14 10 M14 4 L8 10" stroke="var(--cancel)" stroke-width="1.4"/></svg>Cancelación (fin)</span>
+      <span class="it"><svg width="22" height="14"><rect x="2" y="1" width="18" height="12" rx="3" fill="var(--return-fill)" stroke="var(--return)" stroke-width="1.5" stroke-dasharray="4 2"/></svg>Devolución</span>
+      <span class="it"><svg width="26" height="12"><line x1="1" y1="6" x2="25" y2="6" stroke="var(--flow)" stroke-width="1.6"/></svg>Avanza</span>
+      <span class="it"><svg width="26" height="12"><line x1="1" y1="6" x2="25" y2="6" stroke="var(--return)" stroke-width="1.6"/></svg>Devuelve / corrige</span>
+      <span class="it"><svg width="26" height="12"><line x1="1" y1="6" x2="25" y2="6" stroke="var(--special)" stroke-width="1.6" stroke-dasharray="6 3"/></svg>Caso especial</span>
+      <span class="it"><svg width="26" height="12"><line x1="1" y1="6" x2="25" y2="6" stroke="var(--flow)" stroke-width="1.6" stroke-dasharray="6 3"/></svg>Ruta alterna</span>
+    </div>
+  </div>
+  <div class="hint">Rueda = zoom · arrastrar = mover</div>
+</div>
+
+<script>
+"use strict";
+/* ============================================================
+   Definición del proceso — fiel a PurchaseRequisitionStateMachine
+   y a App\Filament\Purchases\Pages\ProcessFlow::getRequisitionFlow()
+   ============================================================ */
+
+const LANES = [
+  { id:"admin",      label:"Administrador",       sub:"Casos especiales" },
+  { id:"solicitante",label:"Solicitante",         sub:"Crea y corrige" },
+  { id:"almacen",    label:"Almacén",             sub:"Existencias" },
+  { id:"revisor",    label:"Revisor",             sub:"Cadena de aprobación" },
+  { id:"gsolic",     label:"Gerente solicitante", sub:"Aprobador" },
+  { id:"dg",         label:"Dirección General",   sub:"Autorizador" },
+  { id:"gcompras",   label:"Gerente de compras",  sub:"Asignación" },
+  { id:"comprador",  label:"Comprador",           sub:"Órdenes de compra" },
+];
+
+// Geometría de la cuadrícula
+const LANE_H = 230, LANE_TOP0 = 70, POOL_X = 40, POOL_W = 2860;
+const SLOT = { top:45, mid:115, bot:192 };
+const laneIndex = Object.fromEntries(LANES.map((l,i)=>[l.id,i]));
+const laneTop = id => LANE_TOP0 + laneIndex[id]*LANE_H;
+const yOf = (lane, slot) => laneTop(lane) + SLOT[slot];
+
+const NODES = [
+  // ── Camino principal ───────────────────────────────────────
+  { id:"start", type:"start", lane:"solicitante", slot:"top", x:300,
+    label:"Inicio", actor:"Solicitante", progress:null,
+    desc:"El solicitante inicia una nueva requisición de compra en el sistema." },
+
+  { id:"borrador", type:"task", lane:"solicitante", slot:"mid", x:415,
+    label:"Borrador", actor:"Solicitante", progress:0, notify:null,
+    desc:"El solicitante captura la requisición: partidas, proyecto, prioridad, fecha y dirección de entrega, y adjunta archivos de soporte. Al enviarla inicia el flujo de aprobación." },
+
+  { id:"g_tipo", type:"gateway", lane:"solicitante", slot:"mid", x:600,
+    label:"¿Tipo de requisición?", actor:"Sistema", progress:null,
+    desc:"Compuerta exclusiva. Bifurca según el tipo de requisición: de proveeduría (pasa por almacén), de servicio (omite almacén) o, si el propio solicitante es el revisor de la cadena, salta directo a la aprobación." },
+
+  { id:"rev_almacen", type:"task", lane:"almacen", slot:"mid", x:765,
+    label:"Revisión por almacén", actor:"Almacén", progress:20, notify:"Correo al equipo de almacén",
+    desc:"Almacén verifica la existencia de las partidas solicitadas: puede surtir desde inventario, ajustar cantidades o devolver la requisición. Las requisiciones de servicio omiten este paso." },
+
+  { id:"g_almacen", type:"gateway", lane:"almacen", slot:"mid", x:945,
+    label:"¿Surte o devuelve?", actor:"Almacén", progress:null,
+    desc:"Compuerta exclusiva. Almacén valida y envía a revisión, o devuelve la requisición al solicitante con observaciones." },
+
+  { id:"revision", type:"task", lane:"revisor", slot:"mid", x:1110,
+    label:"Revisión", actor:"Revisor de la cadena", progress:40,
+    notify:"Correo al revisor; aviso al solicitante si almacén editó partidas",
+    desc:"El revisor valida que la requisición sea correcta y esté completa. Si almacén modificó alguna partida, el solicitante recibe un aviso con los cambios. Puede aprobar, devolver o cancelar." },
+
+  { id:"g_revision", type:"gateway", lane:"revisor", slot:"mid", x:1290,
+    label:"Decisión del revisor", actor:"Revisor de la cadena", progress:null,
+    desc:"Compuerta exclusiva con tres salidas: aprobar (pasa al gerente solicitante), devolver al solicitante o cancelar definitivamente." },
+
+  { id:"apr_revisor", type:"task", lane:"gsolic", slot:"mid", x:1455,
+    label:"Aprobado por revisor", actor:"Gerente solicitante (aprobador)", progress:60,
+    notify:"Correo al gerente aprobador",
+    desc:"El revisor aprobó la requisición. Queda en espera del gerente del área solicitante, quien puede aprobar, devolver o cancelar." },
+
+  { id:"g_aprob", type:"gateway", lane:"gsolic", slot:"mid", x:1635,
+    label:"Decisión del gerente", actor:"Gerente solicitante", progress:null,
+    desc:"Compuerta exclusiva: aprobar (pasa a Dirección General), devolver al solicitante o cancelar." },
+
+  { id:"apr_gerencia", type:"task", lane:"dg", slot:"mid", x:1800,
+    label:"Aprobado por gerencia", actor:"Dirección General (autorizador)", progress:80,
+    notify:"Correo al autorizador de Dirección General",
+    desc:"El gerente aprobó la requisición. Queda en espera de la autorización final de Dirección General, que puede autorizar, devolver o cancelar." },
+
+  { id:"g_gerencia", type:"gateway", lane:"dg", slot:"mid", x:1980,
+    label:"Decisión de Dirección General", actor:"Dirección General", progress:null,
+    desc:"Compuerta exclusiva: autorizar (pasa al gerente de compras), devolver al solicitante o cancelar." },
+
+  { id:"apr_dg", type:"task", lane:"gcompras", slot:"mid", x:2145,
+    label:"Aprobado por DG", actor:"Gerente de compras", progress:90,
+    notify:"Correo al solicitante con copia a los involucrados",
+    desc:"Dirección General autorizó la requisición. El gerente de compras asigna al comprador responsable de colocar las órdenes de compra, o puede devolverla." },
+
+  { id:"g_dg", type:"gateway", lane:"gcompras", slot:"mid", x:2325,
+    label:"¿Asigna o devuelve?", actor:"Gerente de compras", progress:null,
+    desc:"Compuerta exclusiva: asignar comprador (avanza el flujo) o devolver al solicitante (libera además al comprador)." },
+
+  { id:"comprador", type:"task", lane:"comprador", slot:"mid", x:2490,
+    label:"Comprador asignado", actor:"Comprador", progress:95,
+    notify:"Correo al comprador asignado con copia al gerente de compras",
+    desc:"El comprador genera las órdenes de compra necesarias para surtir las partidas de la requisición. Si detecta un problema puede devolverla al solicitante." },
+
+  { id:"g_comprador", type:"gateway", lane:"comprador", slot:"mid", x:2670,
+    label:"¿Concluye o devuelve?", actor:"Comprador", progress:null,
+    desc:"Compuerta exclusiva: concluir (todas las partidas atendidas) o devolver al solicitante (libera la asignación)." },
+
+  { id:"cerrada", type:"end", lane:"comprador", slot:"mid", x:2800,
+    label:"Cerrada", actor:"Sistema / Gerente de compras", progress:100,
+    notify:"Correo al solicitante con copia al gerente de compras",
+    desc:"Proceso concluido: todas las partidas fueron atendidas con órdenes de compra autorizadas o surtidas por almacén. Estado final." },
+
+  // ── Devoluciones (regresan al solicitante) ─────────────────
+  { id:"dev_almacen", type:"return", lane:"almacen", slot:"bot", x:945, layer:"return",
+    label:"Devuelto por almacén", actor:"Solicitante (corrige)", notify:"Correo al solicitante",
+    desc:"Almacén devolvió la requisición con observaciones. El solicitante la corrige y la reenvía al flujo." },
+  { id:"dev_revisor", type:"return", lane:"revisor", slot:"bot", x:1290, layer:"return",
+    label:"Devuelto por revisor", actor:"Solicitante (corrige)", notify:"Correo al solicitante",
+    desc:"El revisor devolvió la requisición con observaciones. El solicitante la corrige y la reenvía al flujo." },
+  { id:"dev_gerencia", type:"return", lane:"gsolic", slot:"bot", x:1635, layer:"return",
+    label:"Devuelto por gerencia", actor:"Solicitante (corrige)", notify:"Correo al solicitante",
+    desc:"El gerente devolvió la requisición con observaciones. El solicitante la corrige y la reenvía al flujo." },
+  { id:"dev_dg", type:"return", lane:"dg", slot:"bot", x:1980, layer:"return",
+    label:"Devuelto por DG", actor:"Solicitante (corrige)", notify:"Correo al solicitante",
+    desc:"Dirección General devolvió la requisición con observaciones. El solicitante la corrige y la reenvía al flujo." },
+  { id:"dev_gcompras", type:"return", lane:"gcompras", slot:"bot", x:2325, layer:"return",
+    label:"Devuelto por gte. de compras", actor:"Solicitante (corrige)", notify:"Correo al solicitante",
+    desc:"El gerente de compras devolvió la requisición; además se libera el comprador asignado. El solicitante la corrige y la reenvía al flujo." },
+  { id:"dev_comprador", type:"return", lane:"comprador", slot:"bot", x:2670, layer:"return",
+    label:"Devuelto por comprador", actor:"Solicitante (corrige)", notify:"Correo al solicitante",
+    desc:"El comprador devolvió la requisición; se libera su asignación. El solicitante la corrige y la reenvía al flujo." },
+
+  // ── Cancelaciones (estados finales) ────────────────────────
+  { id:"can_revisor", type:"cancel", lane:"revisor", slot:"top", x:1290, layer:"cancel",
+    label:"Cancelado por revisor", actor:"Revisor de la cadena", notify:"Correo al solicitante",
+    desc:"El revisor canceló definitivamente la requisición. Es un estado final: no puede reactivarse." },
+  { id:"can_gerencia", type:"cancel", lane:"gsolic", slot:"top", x:1635, layer:"cancel",
+    label:"Cancelado por gerencia", actor:"Gerente solicitante", notify:"Correo al solicitante",
+    desc:"El gerente canceló definitivamente la requisición. Es un estado final: no puede reactivarse." },
+  { id:"can_dg", type:"cancel", lane:"dg", slot:"top", x:1980, layer:"cancel",
+    label:"Cancelado por DG", actor:"Dirección General", notify:"Correo al solicitante",
+    desc:"Dirección General canceló definitivamente la requisición. Es un estado final: no puede reactivarse." },
+
+  // ── Casos especiales (desde cualquier estado) ──────────────
+  { id:"cadena_reasignada", type:"special", lane:"admin", slot:"mid", x:765, layer:"special",
+    label:"Cadena reasignada", actor:"Administrador", notify:"Correo al solicitante con el detalle del cambio",
+    desc:"Puede ocurrir desde cualquier estado: un administrador cambia la cadena de aprobación (por ejemplo, por un usuario inactivo) y la requisición vuelve a iniciar el flujo de revisión." },
+  { id:"comprador_reasignado", type:"special", lane:"gcompras", slot:"top", x:2490, layer:"special",
+    label:"Comprador reasignado", actor:"Gerente de compras", notify:"Correo al nuevo comprador con copia al gerente de compras",
+    desc:"Puede ocurrir en cualquier momento: el gerente de compras asigna la requisición a un comprador distinto, quien continúa generando las órdenes de compra." },
+];
+
+const EDGES = [
+  // Camino principal
+  { from:"start", to:"borrador", type:"forward", enter:"top" },
+  { from:"borrador", to:"g_tipo", type:"forward", label:"Envía" },
+  { from:"g_tipo", to:"rev_almacen", type:"forward", label:"Proveeduría" },
+  { from:"rev_almacen", to:"g_almacen", type:"forward" },
+  { from:"g_almacen", to:"revision", type:"forward", label:"Surte / valida" },
+  { from:"revision", to:"g_revision", type:"forward" },
+  { from:"g_revision", to:"apr_revisor", type:"forward", label:"Aprueba" },
+  { from:"apr_revisor", to:"g_aprob", type:"forward" },
+  { from:"g_aprob", to:"apr_gerencia", type:"forward", label:"Aprueba" },
+  { from:"apr_gerencia", to:"g_gerencia", type:"forward" },
+  { from:"g_gerencia", to:"apr_dg", type:"forward", label:"Autoriza" },
+  { from:"apr_dg", to:"g_dg", type:"forward" },
+  { from:"g_dg", to:"comprador", type:"forward", label:"Asigna" },
+  { from:"comprador", to:"g_comprador", type:"forward" },
+  { from:"g_comprador", to:"cerrada", type:"forward", label:"Concluye" },
+
+  // Rutas alternas desde el borrador
+  { from:"g_tipo", to:"revision", type:"alt", label:"Servicio (omite almacén)",
+    via:[[600,755],[1020,755]] },
+  { from:"g_tipo", to:"apr_revisor", type:"alt", label:"El solicitante es el revisor",
+    via:[[575,1000],[1365,1000]] },
+
+  // Devoluciones (compuerta → estado devuelto)
+  { from:"g_almacen", to:"dev_almacen", type:"return", label:"Devuelve" },
+  { from:"g_revision", to:"dev_revisor", type:"return", label:"Devuelve" },
+  { from:"g_aprob", to:"dev_gerencia", type:"return", label:"Devuelve" },
+  { from:"g_gerencia", to:"dev_dg", type:"return", label:"Devuelve" },
+  { from:"g_dg", to:"dev_gcompras", type:"return", label:"Devuelve" },
+  { from:"g_comprador", to:"dev_comprador", type:"return", label:"Devuelve" },
+
+  // Reingreso al flujo (bus de devoluciones → borrador)
+  { from:"dev_almacen", to:"borrador", type:"bus" },
+  { from:"dev_revisor", to:"borrador", type:"bus" },
+  { from:"dev_gerencia", to:"borrador", type:"bus" },
+  { from:"dev_dg", to:"borrador", type:"bus" },
+  { from:"dev_gcompras", to:"borrador", type:"bus" },
+  { from:"dev_comprador", to:"borrador", type:"bus" },
+
+  // Cancelaciones (compuerta → estado cancelado)
+  { from:"g_revision", to:"can_revisor", type:"cancel", label:"Cancela" },
+  { from:"g_aprob", to:"can_gerencia", type:"cancel", label:"Cancela" },
+  { from:"g_gerencia", to:"can_dg", type:"cancel", label:"Cancela" },
+
+  // Casos especiales
+  { from:"cadena_reasignada", to:"rev_almacen", type:"special", label:"Reinicia el flujo", enter:"top" },
+  { from:"comprador_reasignado", to:"comprador", type:"special", label:"Reasigna", enter:"top" },
+];
+
+/* ============================================================
+   Render
+   ============================================================ */
+const SVG_NS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById("svg");
+const stage = document.getElementById("stage");
+const tip = document.getElementById("tip");
+const detail = document.getElementById("detail");
+const dcontent = document.getElementById("dcontent");
+
+const nodeById = Object.fromEntries(NODES.map(n=>[n.id,n]));
+const TASK_W = 182, TASK_H = 56, RET_W = 176, RET_H = 50, GATE = 50, EV_R = 24, CAN_R = 23;
+
+function dims(n){
+  if(n.type==="gateway") return {w:GATE,h:GATE};
+  if(n.type==="start")   return {w:EV_R*2,h:EV_R*2};
+  if(n.type==="end")     return {w:EV_R*2,h:EV_R*2};
+  if(n.type==="cancel")  return {w:CAN_R*2,h:CAN_R*2};
+  if(n.type==="return"||n.type==="special") return {w:RET_W,h:RET_H};
+  return {w:TASK_W,h:TASK_H};
+}
+NODES.forEach(n=>{ n.cy = yOf(n.lane,n.slot); const d=dims(n); n.w=d.w; n.h=d.h; });
+
+const TYPE_LABEL = {
+  start:"Inicio", task:"Estado", gateway:"Decisión", end:"Estado final",
+  cancel:"Cancelación", return:"Devolución", special:"Caso especial"
+};
+const TYPE_COLOR = {
+  start:"var(--start)", task:"var(--main)", gateway:"var(--gate)", end:"var(--end)",
+  cancel:"var(--cancel)", return:"var(--return)", special:"var(--special)"
+};
+const TYPE_FILL = {
+  start:"var(--start-fill)", task:"var(--main-fill)", gateway:"var(--gate-fill)", end:"var(--end-fill)",
+  cancel:"var(--cancel-fill)", return:"var(--return-fill)", special:"var(--special-fill)"
+};
+
+const BUS_Y = LANE_TOP0 + LANES.length*LANE_H + 40;   // riel de devoluciones
+const CONTENT_W = POOL_X + POOL_W;
+const CONTENT_H = BUS_Y + 70;
+svg.setAttribute("viewBox", `0 0 ${CONTENT_W} ${CONTENT_H}`);
+svg.setAttribute("preserveAspectRatio","xMidYMid meet");
+
+function el(name, attrs, parent){
+  const e = document.createElementNS(SVG_NS, name);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+function anchor(n, side){
+  const x=n.x, y=n.cy, hw=n.w/2, hh=n.h/2;
+  if(n.type==="gateway"){ // rombo
+    if(side==="left")  return [x-hw,y];
+    if(side==="right") return [x+hw,y];
+    if(side==="top")   return [x,y-hh];
+    if(side==="bottom")return [x,y+hh];
+  }
+  if(side==="left")  return [x-hw,y];
+  if(side==="right") return [x+hw,y];
+  if(side==="top")   return [x,y-hh];
+  if(side==="bottom")return [x,y+hh];
+  return [x,y];
+}
+function roundPath(pts, r=14){
+  if(pts.length===2) return `M ${pts[0][0]} ${pts[0][1]} L ${pts[1][0]} ${pts[1][1]}`;
+  let d = `M ${pts[0][0]} ${pts[0][1]}`;
+  for(let i=1;i<pts.length-1;i++){
+    const [x0,y0]=pts[i-1],[x1,y1]=pts[i],[x2,y2]=pts[i+1];
+    const d1=Math.hypot(x1-x0,y1-y0), d2=Math.hypot(x2-x1,y2-y1);
+    const rr=Math.min(r,d1/2,d2/2);
+    const xa=x1-(x1-x0)/d1*rr, ya=y1-(y1-y0)/d1*rr;
+    const xb=x1+(x2-x1)/d2*rr, yb=y1+(y2-y1)/d2*rr;
+    d+=` L ${xa} ${ya} Q ${x1} ${y1} ${xb} ${yb}`;
+  }
+  const last=pts[pts.length-1];
+  return d+` L ${last[0]} ${last[1]}`;
+}
+function forwardPath(s,t,enter){
+  const [sx,sy]=anchor(s,"right");
+  let tp = enter==="top" ? anchor(t,"top") : anchor(t,"left");
+  const [tx,ty]=tp;
+  if(Math.abs(sy-ty)<2) return roundPath([[sx,sy],[tx,ty]]);
+  if(enter==="top"){
+    const my=(sy+ty)/2;
+    return roundPath([[sx,sy],[sx+18,sy],[sx+18,my],[tx,my],[tx,ty]]);
+  }
+  const mx=(sx+tx)/2;
+  return roundPath([[sx,sy],[mx,sy],[mx,ty],[tx,ty]]);
+}
+
+// capas para alternar visibilidad
+const gPool   = el("g",{},svg);
+const gBus    = el("g",{},svg);
+const gEdges  = el("g",{},svg);
+const gNodes  = el("g",{},svg);
+const gELabels= el("g",{},svg);
+
+/* ----- carriles (swimlanes) ----- */
+LANES.forEach((lane,i)=>{
+  const top = LANE_TOP0 + i*LANE_H;
+  el("rect",{class:"laneband", x:POOL_X, y:top, width:POOL_W, height:LANE_H,
+    fill: i%2 ? "var(--lane-b)" : "var(--lane-a)"}, gPool);
+  el("rect",{x:POOL_X, y:top, width:150, height:LANE_H, fill:"var(--lane-label)", stroke:"#e3e7eb"}, gPool);
+  const cx = POOL_X+75, cy = top+LANE_H/2;
+  const words = lane.label.split(" ");
+  let lines=[lane.label];
+  if(lane.label.length>13){
+    lines=[]; let cur="";
+    for(const w of words){ if((cur+" "+w).trim().length>13){ lines.push(cur); cur=w; } else cur=(cur+" "+w).trim(); }
+    if(cur) lines.push(cur);
+  }
+  const t = el("text",{class:"lanelabel","text-anchor":"middle", x:cx, y:cy-(lines.length-1)*8-4}, gPool);
+  lines.forEach((ln,k)=>{ const ts=el("tspan",{x:cx, dy:k?16:0},t); ts.textContent=ln; });
+  const st = el("text",{class:"lanesublabel","text-anchor":"middle", x:cx, y:cy+(lines.length-1)*8+14}, gPool);
+  st.textContent = lane.sub;
+  if(i>0) el("line",{class:"lanesep", x1:POOL_X, y1:top, x2:POOL_X+POOL_W, y2:top}, gPool);
+});
+el("rect",{class:"poolborder", x:POOL_X, y:LANE_TOP0, width:POOL_W, height:LANES.length*LANE_H, rx:4}, gPool);
+el("line",{class:"lanesep", x1:POOL_X+150, y1:LANE_TOP0, x2:POOL_X+150, y2:LANE_TOP0+LANES.length*LANE_H}, gPool);
+
+/* ----- marcadores de flecha ----- */
+const defs = el("defs",{},svg);
+[["forward","var(--flow)"],["return","var(--return)"],["cancel","var(--cancel)"],["special","var(--special)"]].forEach(([k,c])=>{
+  const m = el("marker",{id:"ar-"+k, viewBox:"0 0 10 10", refX:8.5, refY:5, markerWidth:7, markerHeight:7, orient:"auto-start-reverse"}, defs);
+  el("path",{d:"M1 1 L9 5 L1 9", fill:"none", stroke:c, "stroke-width":1.6, "stroke-linecap":"round", "stroke-linejoin":"round"}, m);
+});
+const markerFor = t => t==="return"?"ar-return": t==="cancel"?"ar-cancel": t==="special"?"ar-special":"ar-forward";
+
+/* ----- bus de devoluciones ----- */
+const busDrops = EDGES.filter(e=>e.type==="bus").map(e=>nodeById[e.from]);
+const borrador = nodeById["borrador"];
+const riserX = 250;
+const railEntryY = borrador.cy;
+if(busDrops.length){
+  const railStartX = Math.max(...busDrops.map(n=>n.x));
+  busDrops.forEach(n=>{
+    el("path",{class:"edge e-return busseg", d:`M ${n.x} ${n.cy+n.h/2} L ${n.x} ${BUS_Y}`}, gBus);
+    el("circle",{class:"busseg", cx:n.x, cy:BUS_Y, r:3.5, fill:"var(--return)"}, gBus);
+  });
+  el("path",{class:"edge e-return busseg", "marker-end":"url(#ar-return)",
+    d: roundPath([[railStartX,BUS_Y],[riserX,BUS_Y],[riserX,railEntryY],[borrador.x-borrador.w/2,railEntryY]],18)}, gBus);
+  const bl = el("text",{class:"buslabel", x:(riserX+railStartX)/2, y:BUS_Y-9, "text-anchor":"middle"}, gBus);
+  bl.textContent = "El solicitante corrige y reenvía al flujo";
+}
+
+/* ----- aristas ----- */
+function edgeKey(e){ return e.from+"→"+e.to; }
+EDGES.filter(e=>e.type!=="bus").forEach(e=>{
+  const s=nodeById[e.from], t=nodeById[e.to];
+  let d;
+  if(e.type==="forward"){ d=forwardPath(s,t,e.enter); }
+  else if(e.type==="alt"||e.type==="special"){
+    const start = anchor(s, e.type==="special" ? "bottom":"bottom");
+    const end   = e.enter==="top" ? anchor(t,"top") : anchor(t,"left");
+    const via = (e.via||[]).slice();
+    d = roundPath([start, ...via, end], 16);
+  }
+  else if(e.type==="return"){ // compuerta (mid) hacia abajo al estado devuelto (bot), mismo x
+    const [sx,sy]=anchor(s,"bottom"); const [tx,ty]=anchor(t,"top");
+    d = roundPath([[sx,sy],[tx,ty]]);
+  }
+  else if(e.type==="cancel"){ // compuerta (mid) hacia arriba al estado cancelado (top), mismo x
+    const [sx,sy]=anchor(s,"top"); const [tx,ty]=anchor(t,"bottom");
+    d = roundPath([[sx,sy],[tx,ty]]);
+  }
+  const cls = "edge e-"+e.type+(e.layer?" lyr-"+e.layer:(e.type==="return"?" lyr-return":e.type==="cancel"?" lyr-cancel":e.type==="special"?" lyr-special":""));
+  const path = el("path",{class:cls, d, "marker-end":"url(#"+markerFor(e.type)+")",
+    "data-from":e.from, "data-to":e.to}, gEdges);
+  e._path = path;
+  if(e.label){
+    const len = path.getTotalLength();
+    const p = path.getPointAtLength(len*0.5);
+    const lc = e.type==="return"?"l-return":e.type==="cancel"?"l-cancel":e.type==="special"?"l-special":"";
+    const lyr = e.type==="return"?"lyr-return":e.type==="cancel"?"lyr-cancel":e.type==="special"?"lyr-special":(e.layer?"lyr-"+e.layer:"");
+    const tx = el("text",{class:"elabel "+lc+" "+lyr, x:p.x, y:p.y-6, "text-anchor":"middle"}, gELabels);
+    tx.textContent = e.label;
+    e._label = tx;
+  }
+});
+
+/* ----- nodos ----- */
+function wrap(str, max){
+  const words=String(str).split(" "); const lines=[""];
+  for(const w of words){ const cur=lines[lines.length-1];
+    if(cur && (cur+" "+w).length>max) lines.push(w);
+    else lines[lines.length-1]=(cur+" "+w).trim();
+  }
+  return lines.slice(0,2);
+}
+NODES.forEach(n=>{
+  const g = el("g",{class:"nd "+n.type+(n.layer?" lyr-"+n.layer:""), "data-id":n.id}, gNodes);
+  n._g = g;
+  const hw=n.w/2, hh=n.h/2;
+  if(n.type==="gateway"){
+    el("path",{class:"card", d:`M ${n.x} ${n.cy-hh} L ${n.x+hw} ${n.cy} L ${n.x} ${n.cy+hh} L ${n.x-hw} ${n.cy} Z`}, g);
+    el("path",{class:"glyph", d:`M ${n.x-7} ${n.cy-7} L ${n.x+7} ${n.cy+7} M ${n.x+7} ${n.cy-7} L ${n.x-7} ${n.cy+7}`, fill:"none"}, g);
+  } else if(n.type==="start"||n.type==="end"){
+    el("circle",{class:"card", cx:n.x, cy:n.cy, r:EV_R}, g);
+    if(n.type==="end") el("circle",{cx:n.x, cy:n.cy, r:EV_R-5, fill:"none", stroke:"var(--end)", "stroke-width":2}, g);
+    const tg=el("text",{class:"lbl", x:n.x, y:n.cy+ (n.type==="end"?4:4), "text-anchor":"middle", "font-size":n.type==="end"?12:11}, g);
+    tg.textContent = n.type==="end" ? "FIN" : "INICIO";
+  } else if(n.type==="cancel"){
+    el("circle",{class:"card", cx:n.x, cy:n.cy, r:CAN_R}, g);
+    el("path",{class:"glyph", d:`M ${n.x-8} ${n.cy-8} L ${n.x+8} ${n.cy+8} M ${n.x+8} ${n.cy-8} L ${n.x-8} ${n.cy+8}`, fill:"none"}, g);
+  } else {
+    el("rect",{class:"card", x:n.x-hw, y:n.cy-hh, width:n.w, height:n.h, rx:9}, g);
+    const lines = wrap(n.label, n.type==="return"?22:20);
+    const t=el("text",{class:"lbl", x:n.x, "text-anchor":"middle"}, g);
+    const baseY = n.cy - (lines.length>1?5:0) - (n.actor?3:-3);
+    lines.forEach((ln,k)=>{ const ts=el("tspan",{x:n.x, y:baseY + k*14},t); ts.textContent=ln; });
+    if(n.actor){
+      const a=el("text",{class:"sub", x:n.x, y:n.cy+hh-9, "text-anchor":"middle"}, g);
+      a.textContent = (n.actor.length>26? n.actor.slice(0,25)+"…" : n.actor);
+    }
+    if(typeof n.progress==="number"){
+      el("rect",{x:n.x+hw-34, y:n.cy-hh-9, width:32, height:17, rx:8.5, fill:TYPE_COLOR[n.type]}, g);
+      const pt=el("text",{class:"badge", x:n.x+hw-18, y:n.cy-hh+3, "text-anchor":"middle"}, g);
+      pt.textContent = n.progress+"%";
+    }
+    if(n.notify){
+      const nb = el("g",{class:"notify"}, g);
+      el("circle",{cx:n.x-hw+13, cy:n.cy-hh-7, r:9, fill:"#fff", stroke:"var(--main)", "stroke-width":1.3}, nb);
+      const ic=el("text",{x:n.x-hw+13, y:n.cy-hh-3, "text-anchor":"middle", "font-size":10, fill:"var(--main)"}, nb);
+      ic.textContent="✉";
+    }
+  }
+});
+
+/* ============================================================
+   Interacción: tooltip, panel, resaltado
+   ============================================================ */
+function tipHTML(n){
+  let h = `<h4>${n.label} <span class="chip" style="background:${TYPE_FILL[n.type]};color:${TYPE_COLOR[n.type]}">${TYPE_LABEL[n.type]}</span></h4>`;
+  if(n.actor) h += `<div class="row"><b>Actúa:</b> ${n.actor}</div>`;
+  h += `<div class="row">${n.desc}</div>`;
+  if(n.notify) h += `<div class="row">✉️ ${n.notify}</div>`;
+  if(typeof n.progress==="number") h += `<div class="row">📊 Avance: <b>${n.progress}%</b></div>`;
+  return h;
+}
+function outgoing(id){ return EDGES.filter(e=>e.from===id && e.type!=="bus"); }
+function detailHTML(n){
+  let h = `<div class="dhead">
+      <div class="dico" style="background:${TYPE_FILL[n.type]};color:${TYPE_COLOR[n.type]}">${n.type==="gateway"?"◇":n.type==="cancel"?"⊗":n.type==="end"?"◉":n.type==="start"?"▶":n.type==="return"?"↩":n.type==="special"?"✦":"●"}</div>
+      <div><h3>${n.label}</h3>
+      <span class="chip" style="background:${TYPE_FILL[n.type]};color:${TYPE_COLOR[n.type]}">${TYPE_LABEL[n.type]}</span>
+      ${typeof n.progress==="number"?`<span class="chip" style="background:#eef1f4;color:#52606d">Avance ${n.progress}%</span>`:""}</div></div>
+    <div class="dbody">
+      <div>${n.desc}</div>
+      <div class="meta">
+        ${n.actor?`<div><b>👤 Quién actúa:</b> ${n.actor}</div>`:""}
+        ${n.notify?`<div><b>✉️ Notificación:</b> ${n.notify}</div>`:`<div style="color:#9aa5b1">Sin notificación por correo</div>`}
+      </div>`;
+  const outs = outgoing(n.id);
+  if(outs.length){
+    h += `<div class="nexts"><b>Transiciones posibles</b><ul>`;
+    outs.forEach(e=>{ const tgt=nodeById[e.to];
+      h += `<li>${e.label?`<em>${e.label}</em> → `:"→ "}<b>${tgt.label}</b></li>`; });
+    h += `</ul></div>`;
+  } else {
+    h += `<div class="nexts"><b>Estado final</b> — no tiene transiciones de salida.</div>`;
+  }
+  h += `</div>`;
+  return h;
+}
+
+let selected=null;
+function connected(id, other){
+  return EDGES.some(e=>(e.from===id&&e.to===other)||(e.to===id&&e.from===other));
+}
+function applyHighlight(){
+  NODES.forEach(n=>{
+    n._g.classList.toggle("dim", selected && n.id!==selected && !connected(selected,n.id));
+    n._g.classList.toggle("sel", n.id===selected);
+  });
+  gEdges.querySelectorAll("path.edge").forEach(p=>{
+    if(!selected){ p.classList.remove("dim"); return; }
+    const hit = p.getAttribute("data-from")===selected || p.getAttribute("data-to")===selected;
+    p.classList.toggle("dim", !hit);
+  });
+  document.querySelectorAll(".busseg").forEach(p=>{
+    p.style.opacity = selected && selected!=="borrador" && !String(p.getAttribute("d")||"").length ? .12 : "";
+  });
+}
+NODES.forEach(n=>{
+  n._g.addEventListener("mouseenter", ()=>{ tip.innerHTML=tipHTML(n); tip.style.opacity="1"; });
+  n._g.addEventListener("mousemove", ev=>{
+    const r=stage.getBoundingClientRect();
+    let x=ev.clientX-r.left+16, y=ev.clientY-r.top+14;
+    if(x+tip.offsetWidth>r.width-8) x=ev.clientX-r.left-tip.offsetWidth-16;
+    if(y+tip.offsetHeight>r.height-8) y=ev.clientY-r.top-tip.offsetHeight-14;
+    tip.style.left=x+"px"; tip.style.top=y+"px";
+  });
+  n._g.addEventListener("mouseleave", ()=>{ tip.style.opacity="0"; });
+  n._g.addEventListener("click", ev=>{
+    ev.stopPropagation();
+    selected = selected===n.id ? null : n.id;
+    applyHighlight();
+    if(selected){ dcontent.innerHTML=detailHTML(n); detail.classList.remove("hidden"); }
+    else { detail.classList.add("hidden"); }
+  });
+});
+svg.addEventListener("click", ()=>{ selected=null; applyHighlight(); detail.classList.add("hidden"); });
+document.getElementById("dclose").addEventListener("click", ()=>{ selected=null; applyHighlight(); detail.classList.add("hidden"); });
+
+/* ----- capas conmutables ----- */
+function bindLayer(id, layer){
+  const cb=document.getElementById(id);
+  cb.addEventListener("change", ()=>{
+    const show=cb.checked;
+    NODES.filter(n=>n.layer===layer).forEach(n=> n._g.style.display = show?"":"none");
+    EDGES.forEach(e=>{
+      const involves = (e.layer===layer) ||
+        (layer==="return" && (e.type==="return"|| (e.type==="bus"))) ||
+        (layer==="cancel" && e.type==="cancel") ||
+        (layer==="special" && e.type==="special");
+      if(involves){
+        if(e._path) e._path.style.display=show?"":"none";
+        if(e._label) e._label.style.display=show?"":"none";
+      }
+    });
+    if(layer==="return"){ gBus.style.display = show?"":"none"; }
+  });
+}
+bindLayer("lyr-return","return");
+bindLayer("lyr-cancel","cancel");
+bindLayer("lyr-special","special");
+document.getElementById("lyr-notify").addEventListener("change", e=>{
+  stage.classList.toggle("show-notify", e.target.checked);
+});
+
+/* ============================================================
+   Zoom / Pan
+   ============================================================ */
+let vb = { x:0, y:0, w:CONTENT_W, h:CONTENT_H };
+const baseVB = { ...vb };
+function setVB(){ svg.setAttribute("viewBox", `${vb.x} ${vb.y} ${vb.w} ${vb.h}`); }
+function clientToSvg(cx,cy){
+  const r=svg.getBoundingClientRect();
+  return { x: vb.x + (cx-r.left)/r.width*vb.w, y: vb.y + (cy-r.top)/r.height*vb.h };
+}
+function zoomAt(cx,cy,factor){
+  const p=clientToSvg(cx,cy);
+  const nw=Math.min(baseVB.w*1.6, Math.max(baseVB.w*0.18, vb.w*factor));
+  const k=nw/vb.w;
+  vb.w=nw; vb.h*=k;
+  vb.x = p.x-(p.x-vb.x)*k;
+  vb.y = p.y-(p.y-vb.y)*k;
+  setVB();
+}
+stage.addEventListener("wheel", ev=>{
+  ev.preventDefault();
+  zoomAt(ev.clientX, ev.clientY, ev.deltaY>0?1.12:0.89);
+}, {passive:false});
+
+let panning=false, panStart=null;
+svg.addEventListener("mousedown", ev=>{
+  if(ev.button!==0) return;
+  panning=true; svg.classList.add("panning");
+  panStart={ x:ev.clientX, y:ev.clientY, vx:vb.x, vy:vb.y };
+});
+window.addEventListener("mousemove", ev=>{
+  if(!panning) return;
+  const r=svg.getBoundingClientRect();
+  vb.x = panStart.vx - (ev.clientX-panStart.x)/r.width*vb.w;
+  vb.y = panStart.vy - (ev.clientY-panStart.y)/r.height*vb.h;
+  setVB();
+});
+window.addEventListener("mouseup", ()=>{ panning=false; svg.classList.remove("panning"); });
+
+function fit(){ vb={...baseVB}; setVB(); }
+document.getElementById("zin").addEventListener("click", ()=>{ const r=svg.getBoundingClientRect(); zoomAt(r.left+r.width/2, r.top+r.height/2, 0.82); });
+document.getElementById("zout").addEventListener("click", ()=>{ const r=svg.getBoundingClientRect(); zoomAt(r.left+r.width/2, r.top+r.height/2, 1.22); });
+document.getElementById("zfit").addEventListener("click", fit);
+document.getElementById("zreset").addEventListener("click", ()=>{
+  // 100% real: 1 unidad SVG = 1px de pantalla, centrado en el inicio
+  const r=svg.getBoundingClientRect();
+  vb.w=r.width; vb.h=r.height; vb.x=POOL_X-20; vb.y=LANE_TOP0-20; setVB();
+});
+fit();
+</script>
+</body>
+</html>
