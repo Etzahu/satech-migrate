@@ -18,7 +18,9 @@ class View extends ViewRecord
         return [
             Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
-                ->visible(fn () => $this->record->status()->canBe('aprobado por DG') || $this->record->status()->canBe('devuelto por DG') || $this->record->status()->canBe('cancelado por DG'))
+                ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
+                ->visible(fn () => ($this->record->status()->canBe('aprobado por DG') || $this->record->status()->canBe('devuelto por DG') || $this->record->status()->canBe('cancelado por DG'))
+                    && auth()->user()->hasRole('autoriza_requisicion_compra'))
                 ->color('success')
                 ->schema([
                     Select::make('response')

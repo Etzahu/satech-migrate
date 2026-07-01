@@ -27,7 +27,8 @@ class View extends ViewRecord
                 ->url(route('order.pdf.show', ['id' => $this->record->id]))
                 ->icon('heroicon-m-document')
                 ->openUrlInNewTab(),
-            EditAction::make(),
+            EditAction::make()
+            ->visible( auth()->user()->hasRole('super_admin')),
         ];
     }
 

@@ -18,7 +18,9 @@ class ViewPR extends ViewRecord
         return [
             Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
-                ->visible(fn () => $this->record->status()->canBe('revisión') || $this->record->status()->canBe('devuelto por almacén'))
+                ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
+                ->visible(fn () => ($this->record->status()->canBe('revisión') || $this->record->status()->canBe('devuelto por almacén'))
+                    && auth()->user()->hasRole('revisa_almacen_requisicion_compra'))
                 ->color('success')
                 ->schema([
                     Select::make('response')

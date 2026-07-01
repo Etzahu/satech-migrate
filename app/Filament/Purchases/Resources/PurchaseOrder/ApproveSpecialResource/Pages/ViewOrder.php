@@ -24,13 +24,14 @@ class ViewOrder extends ViewRecord
 
             Actions\Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
+                ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
                 ->color('success')
                 ->visible(
                     fn () => (
                         $this->record->status()->canBe('autorizada para proveedor') ||
                         $this->record->status()->canBe('devuelto por dirección general') ||
                         $this->record->status()->canBe('cancelado por dirección general')) &&
-                        auth()->user()->can('view_approve-level-3_purchase::order::purchaser')
+                        auth()->user()->hasRole('autoriza_nivel-1-orden_compra')
                 )
                 ->schema([
                     Select::make('response')

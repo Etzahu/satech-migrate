@@ -63,11 +63,13 @@ class ViewOrder extends ViewRecord
                 }),
             Actions\Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
+                ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
                 ->color('success')
                 ->visible(
-                    fn () => $this->record->status()->canBe('aprobado por gerente de compras') ||
+                    fn () => ($this->record->status()->canBe('aprobado por gerente de compras') ||
                         $this->record->status()->canBe('devuelto por gerente de compras') ||
-                        $this->record->status()->canBe('cancelado por gerente de compras')
+                        $this->record->status()->canBe('cancelado por gerente de compras')) &&
+                        auth()->user()->hasRole('gerente_compras')
                 )
                 ->schema([
                     Select::make('response')

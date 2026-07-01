@@ -65,3 +65,4 @@ class ViewPurchaseRequisition extends ViewRecord
         ];
     }
 }
+

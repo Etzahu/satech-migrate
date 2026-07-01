@@ -66,9 +66,7 @@ class HistoryResource extends Resource
     public static function canEdit($record = null): bool
     {
         return
-            auth()->user()->hasRole('super_admin') ||
-            auth()->user()->hasRole('administrador_compras') ||
-            auth()->user()->hasRole('gerente_compras');
+            auth()->user()->hasRole('super_admin');
     }
 
     public static function infolist(Schema $infolist): Schema

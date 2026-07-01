@@ -23,11 +23,12 @@ class ViewOrder extends ViewRecord
             // Nivel 2
             Actions\Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
+                ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
                 ->color('success')
                 ->visible(
                     fn () => ($this->record->status()->canBe('autorizada para proveedor') ||
                         $this->record->status()->canBe('devuelto por DG nivel 2') ||
-                        $this->record->status()->canBe('cancelado por DG nivel 2')) && auth()->user()->can('view_approve_level-4_purchase::order::purchaser')
+                        $this->record->status()->canBe('cancelado por DG nivel 2')) && auth()->user()->hasRole('autoriza_nivel-2-orden_compra')
                 )
                 ->schema([
                     Select::make('response')
