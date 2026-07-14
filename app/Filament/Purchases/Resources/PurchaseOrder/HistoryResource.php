@@ -305,6 +305,8 @@ class HistoryResource extends Resource
                         ->modalWidth(Width::FourExtraLarge)
                         ->modalSubmitAction(false)
                         ->schema(function ($record): array {
+                            $itemLabel = $record->requisition?->item_label ?? 'Producto';
+
                             return [
                                 Schemas\Components\Section::make('Partidas de la Orden')
                                     ->description('Detalle de los productos/servicios de la orden '.$record->folio)
@@ -316,7 +318,7 @@ class HistoryResource extends Resource
                                                 Schemas\Components\Fieldset::make('')
                                                     ->schema([
                                                         Infolists\Components\TextEntry::make('product.name')
-                                                            ->label('Producto/Servicio'),
+                                                            ->label($itemLabel),
                                                         Infolists\Components\TextEntry::make('product.unit.acronym')
                                                             ->label('Unidad'),
                                                         Infolists\Components\TextEntry::make('quantity')

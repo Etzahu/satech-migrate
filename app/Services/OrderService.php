@@ -94,6 +94,7 @@ class OrderService
         $data['itemsFormatted'] = $itemsFormatted;
         $subject = str($subject)->upper();
         $data['subject'] = "{$subject} ORDEN DE COMPRA {$data['folio']}";
+        $data['item_label'] = $data->requisition?->item_label ?? 'Producto';
         return $data;
     }
 

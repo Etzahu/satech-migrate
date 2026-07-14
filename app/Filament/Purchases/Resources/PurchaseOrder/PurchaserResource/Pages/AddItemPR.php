@@ -65,11 +65,13 @@ class AddItemPR extends Page implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
+        $itemLabel = $this->record->requisition?->item_label ?? 'Producto';
+
         return $table
             ->relationship(fn (): HasMany => $this->record->requisition->items())
             ->columns([
                 TextColumn::make('product.name')
-                    ->label('Producto'),
+                    ->label($itemLabel),
                 TextColumn::make('quantity_purchase')
                     ->label('Cantidad a comprar')
                     ->numeric()

@@ -28,13 +28,20 @@ class ItemsRelationManager extends RelationManager
         return false;
     }
 
+    protected function getItemLabel(): string
+    {
+        return $this->getOwnerRecord()?->item_label ?? 'Producto';
+    }
+
     public function form(Schema $form): Schema
     {
+        $itemLabel = $this->getItemLabel();
+
         return $form
             ->columns(1)
             ->schema([
                 Forms\Components\Select::make('product_id')
-                    ->label('Producto')
+                    ->label($itemLabel)
                     ->options(function () {
                         $type = $this->getOwnerRecord()->category;
                         if (session()->get('company_id') == 1) { // ID 1:GPT IM
@@ -78,10 +85,12 @@ class ItemsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $itemLabel = $this->getItemLabel();
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('product.name')
-                    ->label('Producto'),
+                    ->label($itemLabel),
                 Tables\Columns\TextColumn::make('quantity_requested')
                     ->label('Cantidad solicitada')
                     ->numeric(decimalPlaces: 2)

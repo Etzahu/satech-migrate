@@ -45,6 +45,7 @@ class PRMediaService
 
     public function build($infolist, $record, $tabItems = true)
     {
+        $itemLabel = $record?->item_label ?? 'Producto';
 
         return $infolist
             ->record($record)
@@ -81,7 +82,7 @@ class PRMediaService
                                         TextEntry::make('product.code')
                                             ->label('Código'),
                                         TextEntry::make('product.name')
-                                            ->label('Producto'),
+                                            ->label($itemLabel),
                                         // TextEntry::make('quantity_purchase')
                                         //     ->label('Cantidad solicitada'),
                                         TextEntry::make('quantity_warehouse')

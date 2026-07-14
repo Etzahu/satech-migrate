@@ -107,6 +107,15 @@ class PurchaseRequisition extends Model implements Auditable, HasMedia
         return self::$estadosProgreso[$this->status] ?? 0;
     }
 
+    /**
+     * Etiqueta a mostrar para las partidas según el tipo de requisición.
+     * "Servicio" cuando la categoría es servicio; "Producto" en cualquier otro caso.
+     */
+    public function getItemLabelAttribute(): string
+    {
+        return $this->category === 'servicio' ? 'Servicio' : 'Producto';
+    }
+
     public function getRevisionDates()
     {
         $revisiones = [

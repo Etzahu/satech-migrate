@@ -407,7 +407,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                 Infolists\Components\TextEntry::make('product.code')
                                                     ->label('Código'),
                                                 Infolists\Components\TextEntry::make('product.name')
-                                                    ->label('Producto'),
+                                                    ->label(fn ($record) => $record->requisition?->item_label ?? 'Producto'),
                                                 Infolists\Components\TextEntry::make('quantity_warehouse')
                                                     ->label('Cantidad en almacén')
                                                     ->numeric(decimalPlaces: 2),

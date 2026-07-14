@@ -26,9 +26,16 @@ class ItemsRelationManager extends RelationManager
 
     protected static ?string $title = 'Partida';
 
+    protected function getItemLabel(): string
+    {
+        return $this->getOwnerRecord()?->item_label ?? 'Producto';
+    }
+
     #[On('refreshRelationManagerItemsPurchaseRequisition')]
     public function form(Schema $form): Schema
     {
+        $itemLabel = $this->getItemLabel();
+
         return $form
             ->columns(1)
             ->schema([
@@ -39,7 +46,7 @@ class ItemsRelationManager extends RelationManager
                     ->required()
                     ->minValue(1),
                 Forms\Components\Select::make('product_id')
-                    ->label('Producto')
+                    ->label($itemLabel)
                     ->options(function () {
                         $type = $this->getOwnerRecord()->category;
                         if (session()->get('company_id') == 1) { // ID 1:GPT IM
@@ -97,12 +104,14 @@ class ItemsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $itemLabel = $this->getItemLabel();
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('product.code')
                     ->label('Código'),
                 Tables\Columns\TextColumn::make('product.name')
-                    ->label('Producto'),
+                    ->label($itemLabel),
                 Tables\Columns\TextColumn::make('product.unit.name')
                     ->label('UM'),
                 Tables\Columns\TextColumn::make('quantity_requested')

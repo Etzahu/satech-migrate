@@ -19,7 +19,10 @@ class View extends ViewRecord
             Action::make('Capturar respuesta')
                 ->modalHeading('Enviar respuesta')
                 ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
-                ->visible(fn () => ($this->record->status()->canBe('aprobado por revisor') || $this->record->status()->canBe('devuelto por revisor') || $this->record->status()->canBe('cancelado por revisor'))
+                ->visible(fn () => (
+                    $this->record->status()->canBe('aprobado por revisor') ||
+                     $this->record->status()->canBe('devuelto por revisor') ||
+                      $this->record->status()->canBe('cancelado por revisor'))
                     && auth()->user()->hasRole('revisa_requisicion_compra'))
                 ->color('success')
                 ->schema([

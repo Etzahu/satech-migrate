@@ -84,6 +84,7 @@ class PurchaseRequisitionCreationService
             'project' => $model->project->code . '-' . $model->project->name,
             'observation' => $model->observation,
             'items' => $this->getItemsForEmail($model->items),
+            'item_label' => $model->item_label,
             'mensaje' => '',
             'url_btn' => '',
             'informative' => $informative

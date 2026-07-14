@@ -31,8 +31,15 @@ class ItemsRelationManager extends RelationManager
     #[On('refreshRelationManagerItems')]
     public function refresh(): void {}
 
+    protected function getItemLabel(): string
+    {
+        return $this->getOwnerRecord()?->requisition?->item_label ?? 'Producto';
+    }
+
     public function form(Schema $form): Schema
     {
+        $itemLabel = $this->getItemLabel();
+
         return $form
             ->columns(1)
             ->schema([
@@ -55,7 +62,7 @@ class ItemsRelationManager extends RelationManager
                         },
                     ]),
                 Forms\Components\Select::make('product_id')
-                    ->label('Producto/Servicio')
+                    ->label($itemLabel)
                     ->options(function () {
                         return Product::where('status', 'aprobado')
                             ->where('company_id', session()->get('company_id'))
@@ -75,6 +82,8 @@ class ItemsRelationManager extends RelationManager
 
     public function table(Table $table): Table
     {
+        $itemLabel = $this->getItemLabel();
+
         return $table
             ->recordTitleAttribute('product.name')
             ->recordClasses(fn ($record): ?string => (int) $record->unit_price === 0
@@ -82,7 +91,7 @@ class ItemsRelationManager extends RelationManager
                 : null)
             ->columns([
                 Tables\Columns\TextColumn::make('product.name')
-                    ->label('Producto/Servicio'),
+                    ->label($itemLabel),
                 Tables\Columns\TextColumn::make('product.unit.acronym')
                     ->label('Unidad'),
                 Tables\Columns\TextColumn::make('quantity')

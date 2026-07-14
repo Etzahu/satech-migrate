@@ -101,7 +101,7 @@
                                                 <tr>
                                                     <td class="text-center"
                                                         style="color: #162d4d;padding:4px;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;">
-                                                        Producto/Servicio</td>
+                                                        {{ ($data['type_purchase'] ?? null) === 'servicio' ? 'Servicio' : 'Producto' }}</td>
                                                     <td class="text-center"
                                                         style="color: #162d4d;padding:4px;font-weight: bold;font-size: 14px;border: 1px solid #6c6c6c;padding:4px;"
                                                         width="74.406">Unidad</td>

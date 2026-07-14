@@ -420,7 +420,7 @@ class PurchaserResource extends Resource implements HasShieldPermissions
                                                     })
                                                     ->schema([
                                                         Infolists\Components\TextEntry::make('product.name')
-                                                            ->label('Producto/Servicio'),
+                                                            ->label(fn ($record) => $record->purchase?->requisition?->item_label ?? 'Producto'),
                                                         Infolists\Components\TextEntry::make('product.unit.acronym')
                                                             ->label('Unidad'),
                                                         Infolists\Components\TextEntry::make('quantity')
@@ -716,7 +716,7 @@ class PurchaserResource extends Resource implements HasShieldPermissions
                                                         Infolists\Components\TextEntry::make('product.code')
                                                             ->label('Código'),
                                                         Infolists\Components\TextEntry::make('product.name')
-                                                            ->label('Producto'),
+                                                            ->label(fn ($record) => $record->requisition?->item_label ?? 'Producto'),
                                                         Infolists\Components\TextEntry::make('quantity_warehouse')
                                                             ->numeric(decimalPlaces: 2)
                                                             ->label('En almacén'),

@@ -159,7 +159,7 @@
                                                             width="27.609">Código</td>
                                                         <td class="text-center"
                                                             style="font-size: 12px;border: 1px solid #6c6c6c;padding:4px;font-family: Roboto, sans-serif;font-weight: bold;color: #343a40;">
-                                                            Producto/Servicio</td>
+                                                            {{ $data['item_label'] ?? 'Producto' }}</td>
                                                         <td class="text-center"
                                                             style="font-family: Roboto, sans-serif;color: #343a40;font-size: 12px;border: 1px solid #6c6c6c;padding:4px;padding: 12px;font-weight: bold;width: 74.406px;padding: 5px;margin: 0;"
                                                             width="74.406">Unidad</td>
