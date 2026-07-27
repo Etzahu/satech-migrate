@@ -41,6 +41,13 @@ class UserResource extends Resource
                     ->tabs([
                         Schemas\Components\Tabs\Tab::make('General')
                             ->schema([
+                                Forms\Components\TextInput::make('id')
+                                    ->label('ID del colaborador')
+                                    ->required()
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->unique(ignoreRecord: true)
+                                    ->disabledOn('edit'),
                                 Forms\Components\TextInput::make('name')
                                     ->label('Nombre')
                                     ->required()
@@ -88,6 +95,10 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->label('ID del colaborador')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')

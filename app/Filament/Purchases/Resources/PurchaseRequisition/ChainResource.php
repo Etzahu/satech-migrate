@@ -5,11 +5,13 @@ namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ChainResource\Pages;
 use App\Models\PurchaseRequisition;
 use App\Models\PurchaseRequisitionApprovalChain;
+use Closure;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\Width;
 use Filament\Tables;
@@ -69,7 +71,24 @@ class ChainResource extends Resource
                         : $query->whereHas('roles', fn (Builder $q) => $q->where('name', 'autoriza_requisicion_compra')))
                     ->searchable()
                     ->preload()
-                    ->required(),
+                    ->required()
+                    // Evita cadenas duplicadas: no puede existir otra con la misma
+                    // combinación Solicita/Revisa/Aprueba/Autoriza (ignora el propio registro al editar).
+                    ->rules([
+                        fn (Get $get, ?PurchaseRequisitionApprovalChain $record): Closure => function (string $attribute, $value, Closure $fail) use ($get, $record) {
+                            $exists = PurchaseRequisitionApprovalChain::query()
+                                ->where('requester_id', $get('requester_id'))
+                                ->where('reviewer_id', $get('reviewer_id'))
+                                ->where('approver_id', $get('approver_id'))
+                                ->where('authorizer_id', $value)
+                                ->when($record, fn (Builder $query) => $query->whereKeyNot($record->getKey()))
+                                ->exists();
+
+                            if ($exists) {
+                                $fail('Ya existe una cadena con esta misma combinación de Solicita, Revisa, Aprueba y Autoriza.');
+                            }
+                        },
+                    ]),
             ]);
     }
 
