@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -81,7 +82,14 @@ class PurchaseRequisitionApprovalChain extends Model
     }
 
     /**
-     * Verifica si algún usuario en la cadena está inactivo (soft deleted)
+     * Roles de la cadena que participan en el flujo de aprobación.
+     *
+     * @var array<int, string>
+     */
+    public const ROLES = ['requester', 'reviewer', 'approver', 'authorizer'];
+
+    /**
+     * Verifica si algún usuario en la cadena está inactivo (active = 0) o fue eliminado
      *
      * @return array Roles con usuarios inactivos
      */
@@ -89,19 +97,63 @@ class PurchaseRequisitionApprovalChain extends Model
     {
         $inactive = [];
 
-        $this->load('reviewer', 'approver', 'authorizer');
+        $this->loadMissing(self::ROLES);
 
-        if ($this->reviewer && $this->reviewer->trashed()) {
-            $inactive['reviewer'] = $this->reviewer_id;
-        }
-        if ($this->approver && $this->approver->trashed()) {
-            $inactive['approver'] = $this->approver_id;
-        }
-        if ($this->authorizer && $this->authorizer->trashed()) {
-            $inactive['authorizer'] = $this->authorizer_id;
+        foreach (self::ROLES as $role) {
+            $user = $this->{$role};
+
+            if (! $user || ! $user->active) {
+                $inactive[$role] = $this->{$role.'_id'};
+            }
         }
 
         return $inactive;
+    }
+
+    public function hasInactiveUsers(): bool
+    {
+        return ! empty($this->getInactiveUsers());
+    }
+
+    /**
+     * Cadenas cuyos cuatro participantes están activos.
+     */
+    public function scopeFullyActive(Builder $query): Builder
+    {
+        foreach (self::ROLES as $role) {
+            $query->whereHas($role, fn (Builder $q) => $q->where('active', 1));
+        }
+
+        return $query;
+    }
+
+    /**
+     * Cadenas con al menos un participante inactivo o inexistente.
+     */
+    public function scopeWithInactiveUsers(Builder $query): Builder
+    {
+        return $query->where(function (Builder $query) {
+            foreach (self::ROLES as $role) {
+                $query->orWhereDoesntHave($role)
+                    ->orWhereHas($role, fn (Builder $q) => $q->where('active', 0));
+            }
+        });
+    }
+
+    /**
+     * Cadenas con requisiciones relacionadas (incluidas las eliminadas).
+     */
+    public function scopeInUse(Builder $query): Builder
+    {
+        return $query->whereHas('requisitions', fn (Builder $q) => $q->withTrashed());
+    }
+
+    /**
+     * Cadenas sin ninguna requisición relacionada, por lo tanto eliminables.
+     */
+    public function scopeUnused(Builder $query): Builder
+    {
+        return $query->whereDoesntHave('requisitions', fn (Builder $q) => $q->withTrashed());
     }
 
     /**

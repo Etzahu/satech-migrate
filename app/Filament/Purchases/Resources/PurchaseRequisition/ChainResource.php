@@ -92,29 +92,34 @@ class ChainResource extends Resource
             ]);
     }
 
+    /**
+     * Columna de un participante de la cadena, resaltada en rojo cuando el
+     * usuario fue desactivado (la cadena queda inutilizable hasta reemplazarlo).
+     */
+    protected static function participantColumn(string $role, string $label): Tables\Columns\TextColumn
+    {
+        return Tables\Columns\TextColumn::make("{$role}.name")
+            ->label($label)
+            ->searchable()
+            ->sortable()
+            ->color(fn ($record) => $record->{$role}?->active ? null : 'danger')
+            ->icon(fn ($record) => $record->{$role}?->active ? null : 'heroicon-m-exclamation-triangle')
+            ->tooltip(fn ($record) => $record->{$role}?->active ? null : 'Usuario inactivo');
+    }
+
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('requester.name')
-                    ->label('Solicita')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('reviewer.name')
-                    ->label('Revisa')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('approver.name')
-                    ->label('Aprueba')
-                    ->searchable()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('authorizer.name')
-                    ->label('Autoriza')
-                    ->searchable()
-                    ->sortable(),
+                static::participantColumn('requester', 'Solicita'),
+                static::participantColumn('reviewer', 'Revisa'),
+                static::participantColumn('approver', 'Aprueba'),
+                static::participantColumn('authorizer', 'Autoriza'),
                 Tables\Columns\TextColumn::make('requisitions_count')
                     ->label('Requisiciones relacionadas')
-                    ->counts('requisitions')
+                    ->counts(['requisitions' => fn (Builder $query) => $query->withTrashed()])
+                    ->badge()
+                    ->color(fn ($state) => $state > 0 ? 'success' : 'gray')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
@@ -170,11 +175,19 @@ class ChainResource extends Resource
                                     ->readOnly(),
                                 Forms\Components\Select::make('chain_replaced')
                                     ->label('Cadena de reemplazo')
+                                    ->helperText('Solo se listan cadenas cuyos participantes están activos.')
                                     ->required()
-                                    ->options(function (): array {
-                                        return PurchaseRequisitionApprovalChain::all()->mapWithKeys(function ($model) {
-                                            return [$model->id => '(Revisa)'.$model->reviewer->name.' (Aprueba)'.$model->approver->name.' (Autoriza)'.$model->authorizer->name];
-                                        })->toArray();
+                                    ->searchable()
+                                    ->options(function ($record): array {
+                                        return PurchaseRequisitionApprovalChain::query()
+                                            ->with(['reviewer', 'approver', 'authorizer'])
+                                            ->fullyActive()
+                                            ->whereKeyNot($record->getKey())
+                                            ->get()
+                                            ->mapWithKeys(fn ($model) => [
+                                                $model->id => '(Revisa)'.$model->reviewer->name.' (Aprueba)'.$model->approver->name.' (Autoriza)'.$model->authorizer->name,
+                                            ])
+                                            ->toArray();
                                     }),
                             ]),
                     ])
@@ -213,6 +226,12 @@ class ChainResource extends Resource
                         }
                     }),
             ]);
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->with(PurchaseRequisitionApprovalChain::ROLES);
     }
 
     public static function getPages(): array

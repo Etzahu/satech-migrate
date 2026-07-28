@@ -293,6 +293,26 @@ class RequesterResource extends Resource implements HasShieldPermissions
             ]);
     }
 
+    /**
+     * Cadenas del usuario autenticado que pueden usarse en una requisición:
+     * todas sus participantes deben estar activos. Al editar se conserva la
+     * cadena ya asignada aunque alguien se haya desactivado, para no dejar el
+     * formulario sin opción seleccionada.
+     */
+    public static function selectableChains(?PurchaseRequisition $record = null): \Illuminate\Database\Eloquent\Collection
+    {
+        return PurchaseRequisitionApprovalChain::query()
+            ->with(['reviewer', 'approver', 'authorizer'])
+            ->where('requester_id', auth()->id())
+            ->where(fn (Builder $query) => $query
+                ->fullyActive()
+                ->when(
+                    $record?->approval_chain_id,
+                    fn (Builder $q, $chainId) => $q->orWhere($q->getModel()->getQualifiedKeyName(), $chainId)
+                ))
+            ->get();
+    }
+
     public static function flujoAprobacionTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Flujo de aprobación')
@@ -303,9 +323,10 @@ class RequesterResource extends Resource implements HasShieldPermissions
             ->schema([
                 Forms\Components\Select::make('reviewer_id')
                     ->label('Revisa')
+                    // Solo se ofrecen cadenas cuyos participantes (revisa/aprueba/autoriza)
+                    // siguen activos, para no generar requisiciones que nazcan bloqueadas.
                     ->options(
-                        PurchaseRequisitionApprovalChain::with(['reviewer'])
-                            ->where('requester_id', auth()->user()->id)->get()
+                        fn (?PurchaseRequisition $record) => static::selectableChains($record)
                             ->pluck('reviewer.name', 'reviewer.id')
                     )
                     ->live()
@@ -313,19 +334,36 @@ class RequesterResource extends Resource implements HasShieldPermissions
                     ->required(),
                 Forms\Components\Select::make('approver_id')
                     ->label('Aprueba')
-                    ->options(function (Get $get) {
+                    ->options(function (Get $get, ?PurchaseRequisition $record) {
                         $reviewerId = $get('reviewer_id');
                         if (! $reviewerId) {
                             return [];
                         }
 
-                        return PurchaseRequisitionApprovalChain::with(['approver'])
-                            ->where('requester_id', auth()->user()->id)
+                        return static::selectableChains($record)
                             ->where('reviewer_id', $reviewerId)
-                            ->get()
                             ->pluck('approver.name', 'approver.id');
                     })
+                    ->live()
                     ->required(),
+                // Último eslabón de la cadena: se muestra solo lectura porque
+                // queda determinado por la combinación revisa/aprueba elegida.
+                Forms\Components\Placeholder::make('authorizer_name')
+                    ->label('Autoriza')
+                    ->content(function (Get $get, ?PurchaseRequisition $record) {
+                        $reviewerId = $get('reviewer_id');
+                        $approverId = $get('approver_id');
+
+                        if (! $reviewerId || ! $approverId) {
+                            return 'Seleccione quién revisa y quién aprueba.';
+                        }
+
+                        return static::selectableChains($record)
+                            ->where('reviewer_id', $reviewerId)
+                            ->where('approver_id', $approverId)
+                            ->first()?->authorizer?->name
+                            ?? 'Sin autorizador definido para este flujo.';
+                    }),
             ]);
     }
 

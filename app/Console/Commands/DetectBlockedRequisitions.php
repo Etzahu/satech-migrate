@@ -70,7 +70,7 @@ class DetectBlockedRequisitions extends Command
       foreach ($requisitions as $requisition) {
         $currentApprover = $requisition->getCurrentApprover();
 
-        if ($currentApprover && $currentApprover->trashed()) {
+        if ($currentApprover && ! $currentApprover->active) {
           $blockedRequisitions[] = [
             'folio' => $requisition->folio,
             'status' => $requisition->status,
@@ -122,7 +122,7 @@ class DetectBlockedRequisitions extends Command
 
       foreach ($inactiveUsers as $role => $userId) {
         $user = $chain->{$role};
-        $this->line("  - {$role}: {$user->name} (ID: {$userId}) [INACTIVO]");
+        $this->line("  - {$role}: ".($user->name ?? 'usuario eliminado')." (ID: {$userId}) [INACTIVO]");
       }
 
       $this->line("  Comando sugerido:");
