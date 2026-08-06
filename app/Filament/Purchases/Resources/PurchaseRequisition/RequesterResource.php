@@ -4,11 +4,13 @@ namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
+use App\Forms\Components\ApprovalChainSelector;
 use App\Models\ProjectPurchase;
 use App\Models\PurchaseRequisition;
 use App\Models\PurchaseRequisitionApprovalChain;
 use App\Services\PurchaseRequisitionCreationService;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
+use Closure;
 use Filament\Actions;
 use Filament\Actions\ActionGroup;
 use Filament\Forms;
@@ -20,7 +22,6 @@ use Filament\Schemas;
 use Filament\Schemas\Components\Icon;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Text;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
@@ -294,10 +295,10 @@ class RequesterResource extends Resource implements HasShieldPermissions
     }
 
     /**
-     * Cadenas del usuario autenticado que pueden usarse en una requisición:
-     * todas sus participantes deben estar activos. Al editar se conserva la
-     * cadena ya asignada aunque alguien se haya desactivado, para no dejar el
-     * formulario sin opción seleccionada.
+     * Cadenas del usuario autenticado que pueden usarse en una requisición.
+     * Al editar se incluye además la cadena ya asignada aunque entretanto se
+     * haya desactivado, para que el solicitante vea cuál tenía y por qué debe
+     * cambiarla en lugar de encontrarse el flujo vacío sin explicación.
      */
     public static function selectableChains(?PurchaseRequisition $record = null): \Illuminate\Database\Eloquent\Collection
     {
@@ -305,7 +306,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
             ->with(['reviewer', 'approver', 'authorizer'])
             ->where('requester_id', auth()->id())
             ->where(fn (Builder $query) => $query
-                ->fullyActive()
+                ->selectable()
                 ->when(
                     $record?->approval_chain_id,
                     fn (Builder $q, $chainId) => $q->orWhere($q->getModel()->getQualifiedKeyName(), $chainId)
@@ -316,54 +317,29 @@ class RequesterResource extends Resource implements HasShieldPermissions
     public static function flujoAprobacionTab(): Tabs\Tab
     {
         return Tabs\Tab::make('Flujo de aprobación')
-            ->columns([
-                'sm' => 1,
-                'xl' => 2,
-            ])
             ->schema([
-                Forms\Components\Select::make('reviewer_id')
-                    ->label('Revisa')
-                    // Solo se ofrecen cadenas cuyos participantes (revisa/aprueba/autoriza)
-                    // siguen activos, para no generar requisiciones que nazcan bloqueadas.
-                    ->options(
-                        fn (?PurchaseRequisition $record) => static::selectableChains($record)
-                            ->pluck('reviewer.name', 'reviewer.id')
-                    )
-                    ->live()
-                    ->afterStateUpdated(fn (Set $set) => $set('approver_id', null))
-                    ->required(),
-                Forms\Components\Select::make('approver_id')
-                    ->label('Aprueba')
-                    ->options(function (Get $get, ?PurchaseRequisition $record) {
-                        $reviewerId = $get('reviewer_id');
-                        if (! $reviewerId) {
-                            return [];
-                        }
+                ApprovalChainSelector::make('approval_chain_id')
+                    ->label('Flujo de aprobación')
+                    ->helperText('Seleccione la cadena con la que se revisará, aprobará y autorizará esta requisición.')
+                    ->chains(fn (?PurchaseRequisition $record) => static::selectableChains($record))
+                    ->required()
+                    // La cadena se revalida al guardar: pudo desactivarse entre que
+                    // se creó la requisición y el momento en que se vuelve a editar.
+                    ->rules([
+                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                            $chain = PurchaseRequisitionApprovalChain::find($value);
 
-                        return static::selectableChains($record)
-                            ->where('reviewer_id', $reviewerId)
-                            ->pluck('approver.name', 'approver.id');
-                    })
-                    ->live()
-                    ->required(),
-                // Último eslabón de la cadena: se muestra solo lectura porque
-                // queda determinado por la combinación revisa/aprueba elegida.
-                Forms\Components\Placeholder::make('authorizer_name')
-                    ->label('Autoriza')
-                    ->content(function (Get $get, ?PurchaseRequisition $record) {
-                        $reviewerId = $get('reviewer_id');
-                        $approverId = $get('approver_id');
+                            if (! $chain || $chain->requester_id !== auth()->id()) {
+                                $fail('El flujo de aprobación seleccionado no es válido.');
 
-                        if (! $reviewerId || ! $approverId) {
-                            return 'Seleccione quién revisa y quién aprueba.';
-                        }
+                                return;
+                            }
 
-                        return static::selectableChains($record)
-                            ->where('reviewer_id', $reviewerId)
-                            ->where('approver_id', $approverId)
-                            ->first()?->authorizer?->name
-                            ?? 'Sin autorizador definido para este flujo.';
-                    }),
+                            if ($reason = $chain->unavailabilityReason()) {
+                                $fail($reason.' Seleccione otro flujo de aprobación.');
+                            }
+                        },
+                    ]),
             ]);
     }
 
@@ -643,8 +619,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
                             'type' => $record->type,
                             'category' => $record->category,
                             'delivery_address' => $record->delivery_address,
-                            'reviewer_id' => $record->approvalChain->reviewer_id,
-                            'approver_id' => $record->approvalChain->approver_id,
+                            'approval_chain_id' => $record->approval_chain_id,
                             'observation' => $record->observation,
                         ])
                         ->schema(fn (Schema $form) => static::form($form)->columns(1))
@@ -659,7 +634,6 @@ class RequesterResource extends Resource implements HasShieldPermissions
 
                                 // Asignar valores que no vienen del formulario
                                 $newRequisition->company_id = $record->company_id;
-                                $newRequisition->approval_chain_id = $record->approval_chain_id;
                                 $newRequisition->status = 'borrador';
                                 $newRequisition->assign_user_id = null;
 

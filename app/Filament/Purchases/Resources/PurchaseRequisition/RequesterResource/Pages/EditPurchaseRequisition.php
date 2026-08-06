@@ -3,14 +3,12 @@
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\Pages;
 
 use App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource;
-use App\Models\PurchaseRequisitionApprovalChain;
 use Filament\Actions;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Enums\Size;
-use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\On;
 
 #[On('refreshOwner')]
@@ -67,23 +65,4 @@ class EditPurchaseRequisition extends EditRecord
         ];
     }
 
-    // protected function mutateFormDataBeforeSave(array $data): array
-    // {
-    //     // Validación adicional antes de guardar
-    //     if (blank($data['category'])) {
-    //         throw ValidationException::withMessages([
-    //             'category' => 'La fecha de fin debe ser posterior a la fecha de inicio.',
-    //         ]);
-    //     }
-    //     return $data;
-    // }
-
-    protected function mutateFormDataBeforeFill(array $data): array
-    {
-        $chain = PurchaseRequisitionApprovalChain::find($data['approval_chain_id']);
-        $data['reviewer_id'] = $chain->reviewer_id;
-        $data['approver_id'] = $chain->approver_id;
-
-        return $data;
-    }
 }

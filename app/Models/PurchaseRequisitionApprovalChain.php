@@ -22,6 +22,7 @@ class PurchaseRequisitionApprovalChain extends Model
         'reviewer_id',
         'approver_id',
         'authorizer_id',
+        'archived_at',
     ];
 
     /**
@@ -35,6 +36,7 @@ class PurchaseRequisitionApprovalChain extends Model
         'reviewer_id' => 'integer',
         'approver_id' => 'integer',
         'authorizer_id' => 'integer',
+        'archived_at' => 'datetime',
     ];
 
     public function requisitions(): HasMany
@@ -116,6 +118,42 @@ class PurchaseRequisitionApprovalChain extends Model
     }
 
     /**
+     * Apagado manual: el administrador retira la cadena de circulación sin
+     * borrarla, para conservar el historial de las requisiciones que la usaron.
+     */
+    public function isArchived(): bool
+    {
+        return filled($this->archived_at);
+    }
+
+    public function isSelectable(): bool
+    {
+        return ! $this->isArchived() && ! $this->hasInactiveUsers();
+    }
+
+    /**
+     * Motivo por el que la cadena no puede usarse, o null si sí puede.
+     * Se muestra al solicitante para que entienda por qué debe elegir otra.
+     */
+    public function unavailabilityReason(): ?string
+    {
+        if ($this->isArchived()) {
+            return 'Esta cadena fue desactivada por el administrador.';
+        }
+
+        if ($inactive = $this->getInactiveUsers()) {
+            $names = collect($inactive)
+                ->keys()
+                ->map(fn (string $role) => $this->{$role}?->name ?? 'usuario eliminado')
+                ->implode(', ');
+
+            return "Participantes inactivos en esta cadena: {$names}.";
+        }
+
+        return null;
+    }
+
+    /**
      * Cadenas cuyos cuatro participantes están activos.
      */
     public function scopeFullyActive(Builder $query): Builder
@@ -125,6 +163,25 @@ class PurchaseRequisitionApprovalChain extends Model
         }
 
         return $query;
+    }
+
+    public function scopeArchived(Builder $query): Builder
+    {
+        return $query->whereNotNull('archived_at');
+    }
+
+    public function scopeNotArchived(Builder $query): Builder
+    {
+        return $query->whereNull('archived_at');
+    }
+
+    /**
+     * Cadenas que pueden asignarse a una requisición: ni archivadas por el
+     * administrador ni con participantes dados de baja.
+     */
+    public function scopeSelectable(Builder $query): Builder
+    {
+        return $query->fullyActive()->notArchived();
     }
 
     /**

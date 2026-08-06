@@ -81,6 +81,35 @@ class PurchaserResource extends Resource implements HasShieldPermissions
         return parent::getEloquentQuery()->myRequisitions();
     }
 
+    /**
+     * Requisiciones que se pueden seleccionar en una orden.
+     * El comprador solo ve las que tiene asignadas y siguen abiertas;
+     * el super_admin ve todas las de la empresa para poder corregir órdenes ya creadas.
+     */
+    public static function requisitionQuery(): Builder
+    {
+        if (auth()->user()->hasRole('super_admin')) {
+            return PurchaseRequisition::query()
+                ->where('company_id', session()->get('company_id'))
+                ->orderBy('id', 'desc');
+        }
+
+        return PurchaseRequisition::myAssing()->whereNot('status', 'cerrada');
+    }
+
+    public static function requisitionOptions(?PurchaseOrder $record = null): array
+    {
+        $options = static::requisitionQuery()->limit(50)->pluck('folio', 'id');
+
+        // La requisición ya guardada suele quedar fuera del listado (cerrada o asignada
+        // a otro comprador), así que se agrega para que el select muestre su folio.
+        if (filled($record?->requisition_id) && ! $options->has($record->requisition_id)) {
+            $options->put($record->requisition_id, $record->requisition?->folio ?? $record->requisition_id);
+        }
+
+        return $options->all();
+    }
+
     public static function form(Schema $form, array $options = []): Schema
     {
         return $form
@@ -150,7 +179,12 @@ class PurchaserResource extends Resource implements HasShieldPermissions
                                     ->hidden($options['rq'] ?? false)
                                     ->searchable()
                                     ->preload()
-                                    ->options(PurchaseRequisition::myAssing()->whereNot('status', 'cerrada')->pluck('folio', 'id'))
+                                    ->options(fn (?PurchaseOrder $record) => static::requisitionOptions($record))
+                                    ->getSearchResultsUsing(fn (string $search) => static::requisitionQuery()
+                                        ->where('folio', 'like', "%{$search}%")
+                                        ->limit(50)
+                                        ->pluck('folio', 'id'))
+                                    ->getOptionLabelUsing(fn ($value) => PurchaseRequisition::find($value)?->folio)
                                     ->required()
                                     ->columnSpan('full'),
                             ]),

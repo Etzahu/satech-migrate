@@ -115,6 +115,16 @@ class ChainResource extends Resource
                 static::participantColumn('reviewer', 'Revisa'),
                 static::participantColumn('approver', 'Aprueba'),
                 static::participantColumn('authorizer', 'Autoriza'),
+                Tables\Columns\TextColumn::make('archived_at')
+                    ->label('Estado')
+                    ->badge()
+                    ->state(fn ($record) => $record->isArchived() ? 'Desactivada' : ($record->hasInactiveUsers() ? 'Bloqueada' : 'Activa'))
+                    ->color(fn ($state) => match ($state) {
+                        'Desactivada' => 'gray',
+                        'Bloqueada' => 'danger',
+                        default => 'success',
+                    })
+                    ->tooltip(fn ($record) => $record->unavailabilityReason()),
                 Tables\Columns\TextColumn::make('requisitions_count')
                     ->label('Requisiciones relacionadas')
                     ->counts(['requisitions' => fn (Builder $query) => $query->withTrashed()])
@@ -153,9 +163,49 @@ class ChainResource extends Resource
                     ->relationship('authorizer', 'name')
                     ->searchable()
                     ->preload(),
+                Tables\Filters\TernaryFilter::make('archived_at')
+                    ->label('Desactivadas')
+                    ->placeholder('Todas')
+                    ->trueLabel('Solo desactivadas')
+                    ->falseLabel('Solo activas')
+                    ->queries(
+                        true: fn (Builder $query) => $query->archived(),
+                        false: fn (Builder $query) => $query->notArchived(),
+                    ),
             ])
             ->recordActions([
                 Actions\EditAction::make(),
+                Actions\Action::make('archive')
+                    ->label('Desactivar')
+                    ->icon('heroicon-m-pause-circle')
+                    ->color('gray')
+                    ->visible(fn ($record) => ! $record->isArchived())
+                    ->requiresConfirmation()
+                    ->modalHeading('Desactivar cadena de aprobación')
+                    ->modalDescription('Los solicitantes dejarán de poder elegir esta cadena. Las requisiciones que ya la usan conservan su historial y siguen su curso.')
+                    ->action(function ($record) {
+                        $record->update(['archived_at' => now()]);
+
+                        Notification::make()
+                            ->title('Cadena desactivada')
+                            ->success()
+                            ->send();
+                    }),
+                Actions\Action::make('unarchive')
+                    ->label('Reactivar')
+                    ->icon('heroicon-m-play-circle')
+                    ->color('success')
+                    ->visible(fn ($record) => $record->isArchived())
+                    ->requiresConfirmation()
+                    ->modalHeading('Reactivar cadena de aprobación')
+                    ->action(function ($record) {
+                        $record->update(['archived_at' => null]);
+
+                        Notification::make()
+                            ->title('Cadena reactivada')
+                            ->success()
+                            ->send();
+                    }),
                 Actions\DeleteAction::make()
                     ->visible(fn ($record) => $record->requisitions()->withTrashed()->count() == 0),
                 Actions\Action::make('Borrar')
@@ -175,13 +225,13 @@ class ChainResource extends Resource
                                     ->readOnly(),
                                 Forms\Components\Select::make('chain_replaced')
                                     ->label('Cadena de reemplazo')
-                                    ->helperText('Solo se listan cadenas cuyos participantes están activos.')
+                                    ->helperText('Solo se listan cadenas activas y con todos sus participantes activos.')
                                     ->required()
                                     ->searchable()
                                     ->options(function ($record): array {
                                         return PurchaseRequisitionApprovalChain::query()
                                             ->with(['reviewer', 'approver', 'authorizer'])
-                                            ->fullyActive()
+                                            ->selectable()
                                             ->whereKeyNot($record->getKey())
                                             ->get()
                                             ->mapWithKeys(fn ($model) => [

@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // La columna ya existe en los entornos que se poblaron desde un dump,
+        // donde esta migración nunca llegó a registrarse.
+        if (Schema::hasColumn('purchase_requisition_approval_chains', 'archived_at')) {
+            return;
+        }
+
         Schema::table('purchase_requisition_approval_chains', function (Blueprint $table) {
-            $table->archivedAt();
+            $table->timestamp('archived_at')->nullable()->after('authorizer_id');
         });
     }
 
@@ -22,7 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('purchase_requisition_approval_chains', function (Blueprint $table) {
-            $table->dropArchivedAt();
+            $table->dropColumn('archived_at');
         });
     }
 };
