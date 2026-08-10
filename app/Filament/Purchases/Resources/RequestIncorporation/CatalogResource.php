@@ -49,6 +49,7 @@ class CatalogResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form
+        ->columns(1)
             ->schema([
                 Schemas\Components\Section::make('Información general')
                     ->schema([
@@ -75,7 +76,7 @@ class CatalogResource extends Resource
                 Schemas\Components\Section::make('Documentación')
                     ->schema([
                         SpatieMediaLibraryFileUpload::make('documents')
-                            ->label('Ficha técnica, etc')
+                            ->label('(Opcional) Ficha técnica, etc')
                             ->hint('Puedes adjuntar más de un documento.')
                             ->hintColor('danger')
                             ->acceptedFileTypes(['application/pdf'])

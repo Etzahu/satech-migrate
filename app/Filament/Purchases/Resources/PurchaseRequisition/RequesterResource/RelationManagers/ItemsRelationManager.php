@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\RequesterResource\RelationManagers;
 
 use App\Models\Product;
+use App\Models\PurchaseRequisitionItem;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -10,8 +11,11 @@ use Filament\Schemas;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 
 class ItemsRelationManager extends RelationManager
@@ -29,6 +33,50 @@ class ItemsRelationManager extends RelationManager
     protected function getItemLabel(): string
     {
         return $this->getOwnerRecord()?->item_label ?? 'Producto';
+    }
+
+    /**
+     * Coloca al inicio del catálogo los productos que el solicitante de esta
+     * requisición ya ha pedido antes, del más reciente al más antiguo, y deja
+     * el resto del catálogo después.
+     *
+     * @param  Collection<int, string>  $options  [product_id => nombre]
+     * @return array<int, string>
+     */
+    protected function sortOptionsByRequesterHistory(Collection $options): array
+    {
+        $recent = $this->getRequesterRecentProductIds()
+            ->filter(fn (int $productId) => $options->has($productId))
+            ->mapWithKeys(fn (int $productId) => [$productId => $options->get($productId)]);
+
+        // union conserva el valor de la primera colección cuando la llave se repite,
+        // así los recientes quedan arriba y los demás en su orden original.
+        return $recent->union($options)->all();
+    }
+
+    /**
+     * IDs de productos pedidos por el solicitante de esta requisición, sin
+     * repetir y del más reciente al más antiguo.
+     *
+     * @return Collection<int, int>
+     */
+    protected function getRequesterRecentProductIds(): Collection
+    {
+        $requesterId = $this->getOwnerRecord()->approvalChain?->requester_id;
+
+        if (blank($requesterId)) {
+            return collect();
+        }
+
+        return PurchaseRequisitionItem::query()
+            ->whereHas('requisition', fn (Builder $query) => $query
+                ->where('company_id', session()->get('company_id'))
+                ->whereHas('approvalChain', fn (Builder $chain) => $chain->where('requester_id', $requesterId)))
+            ->orderByDesc('id')
+            ->limit(500)
+            ->pluck('product_id')
+            ->unique()
+            ->values();
     }
 
     #[On('refreshRelationManagerItemsPurchaseRequisition')]
@@ -49,22 +97,14 @@ class ItemsRelationManager extends RelationManager
                     ->label($itemLabel)
                     ->options(function () {
                         $type = $this->getOwnerRecord()->category;
-                        if (session()->get('company_id') == 1) { // ID 1:GPT IM
-                            return Product::where('status', 'aprobado')
-                                ->where('company_id', session()->get('company_id'))
-                                ->pluck('name', 'id');
+                        $query = Product::where('status', 'aprobado')
+                            ->where('company_id', session()->get('company_id'));
+
+                        if (session()->get('company_id') != 1 && filled($type)) { // ID 1:GPT IM no filtra por tipo
+                            $query->where('type_purchase', $type);
                         }
 
-                        if (filled($type)) {
-                            return Product::where('status', 'aprobado')
-                                ->where('company_id', session()->get('company_id'))
-                                ->where('type_purchase', $type)
-                                ->pluck('name', 'id');
-                        } else {
-                            return Product::where('status', 'aprobado')
-                                ->where('company_id', session()->get('company_id'))
-                                ->pluck('name', 'id');
-                        }
+                        return $this->sortOptionsByRequesterHistory($query->pluck('name', 'id'));
                     })
                     ->searchable()
                     ->live()
@@ -98,6 +138,7 @@ class ItemsRelationManager extends RelationManager
                     ->label('Observación')
                     ->default('Sin observaciones')
                     ->required()
+
                     ->maxLength(2000),
             ]);
     }
@@ -139,6 +180,7 @@ class ItemsRelationManager extends RelationManager
             ->headerActions([
                 Actions\CreateAction::make()
                     ->slideOver()
+                     ->modalWidth(Width::SevenExtraLarge)
                     ->mutateDataUsing(function (array $data): array {
                         $data['quantity_purchase'] = $data['quantity_requested'];
 
@@ -151,6 +193,7 @@ class ItemsRelationManager extends RelationManager
             ])
             ->recordActions([
                 Actions\EditAction::make()
+                ->modalWidth(Width::SevenExtraLarge)
                     ->mutateDataUsing(function (array $data): array {
                         $data['quantity_purchase'] = $data['quantity_requested'];
 
