@@ -201,8 +201,6 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
             // 'autorizada para proveedor'
         ];
 
-        $service = new OrderCalculationService($this->id);
-
         // Encontrar la última devolución o reasignación que reinicia el ciclo
         $ultimaDevolucion = $this->status()->history()
             ->where('field', 'status')
@@ -275,7 +273,6 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
             'autorizada para proveedor',
         ];
 
-        $service = new OrderCalculationService($this->id);
         // Encontrar la última devolución que reinicia el ciclo
         $ultimaDevolucion = $this->status()->history()
             ->where('field', 'status')

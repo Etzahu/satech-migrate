@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\ProviderEvaluationQuestion;
+use App\Services\ProviderEvaluationService;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -44,5 +46,28 @@ class ProviderEvaluationResponse extends Model
     public function isPending(): bool
     {
         return $this->answered_at === null;
+    }
+
+    /**
+     * Responses the user is responsible for: the ones assigned to them plus the
+     * unassigned (pool) ones belonging to a role they hold.
+     */
+    public function scopeForRespondent(Builder $query, ?User $user): Builder
+    {
+        if (! $user) {
+            return $query->whereRaw('1 = 0');
+        }
+
+        $poolRoles = ProviderEvaluationService::poolRolesFor($user);
+
+        return $query->where(function (Builder $query) use ($user, $poolRoles) {
+            $query->where('respondent_id', $user->id);
+
+            if ($poolRoles !== []) {
+                $query->orWhere(fn (Builder $pool) => $pool
+                    ->whereNull('respondent_id')
+                    ->whereIn('respondent_role', $poolRoles));
+            }
+        });
     }
 }

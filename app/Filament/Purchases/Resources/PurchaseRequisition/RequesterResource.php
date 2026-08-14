@@ -30,7 +30,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Njxqlus\Filament\Components\Infolists\RelationManager;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\MediaStream;
 
@@ -496,14 +495,21 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                                 ]),
                                             ]),
                                     ]),
+                            ]),
 
-                                // 4. Órdenes de compra generadas
-                                Tabs\Tab::make('Órdenes de compra')
-                                    ->icon('heroicon-o-shopping-cart')
-                                    ->visible(fn ($record) => filled($record->orders))
-                                    ->schema([
-                                        RelationManager::make()->manager(RelationManagers\OrdersRelationManager::class)->lazy(false),
-                                    ]),
+                        // Órdenes de compra generadas a partir de la requisición.
+                        // Siempre visible: cuando no hay órdenes muestra un aviso
+                        // explicando en qué punto del flujo se generarán.
+                        Schemas\Components\Section::make('Órdenes de compra')
+                            ->icon('heroicon-o-shopping-cart')
+                            ->description(fn ($record) => $record->orders()->exists()
+                                ? 'Detalle y flujo de aprobación de cada orden generada.'
+                                : 'Esta requisición todavía no tiene órdenes de compra.')
+                            ->schema([
+                                Infolists\Components\ViewEntry::make('orders')
+                                    ->label('')
+                                    ->columnSpanFull()
+                                    ->view('filament.infolists.entries.requisition-orders'),
                             ]),
                     ]),
 
@@ -522,9 +528,6 @@ class RequesterResource extends Resource implements HasShieldPermissions
                                 Infolists\Components\TextEntry::make('date_delivery')
                                     ->label('Fecha deseable de entrega')
                                     ->date(),
-                                Infolists\Components\TextEntry::make('orders_count')
-                                    ->label('Órdenes de compra generadas')
-                                    ->state(fn ($record) => $record->orders->count()),
                             ]),
 
                         // Flujo de aprobación e Historial en pestañas

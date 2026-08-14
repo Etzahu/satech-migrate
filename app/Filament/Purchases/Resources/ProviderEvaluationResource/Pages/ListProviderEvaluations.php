@@ -81,13 +81,13 @@ class ListProviderEvaluations extends ListRecords
         $tabs = [
             'pending' => Tab::make('Mis pendientes')
                 ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('responses', function (Builder $q) {
-                    $q->where('respondent_id', auth()->id())
+                    $q->forRespondent(auth()->user())
                         ->whereNull('answered_at');
                 }))
                 ->badge(
                     ProviderEvaluation::query()
                         ->whereHas('responses', fn (Builder $q) => $q
-                            ->where('respondent_id', auth()->id())
+                            ->forRespondent(auth()->user())
                             ->whereNull('answered_at'))
                         ->count() ?: null
                 )

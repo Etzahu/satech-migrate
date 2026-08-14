@@ -57,7 +57,7 @@ class ProviderEvaluationResource extends Resource
     {
         $count = static::getModel()::whereHas('order', fn (Builder $query) => $query->where('company_id', session('company_id')))
             ->whereHas('responses', function (Builder $query) {
-                $query->where('respondent_id', auth()->id())
+                $query->forRespondent(auth()->user())
                     ->whereNull('answered_at');
             })->count();
 
@@ -98,12 +98,7 @@ class ProviderEvaluationResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('pending_count')
                     ->label('Secciones pendientes')
-                    ->state(
-                        fn (ProviderEvaluation $record) => $record->responses
-                            ->where('respondent_id', auth()->id())
-                            ->whereNull('answered_at')
-                            ->count()
-                    )
+                    ->state(fn (ProviderEvaluation $record) => $record->pendingResponsesFor(auth()->user())->count())
                     ->badge()
                     ->color('warning')
                     ->visible(fn () => ! auth()->user()->hasAnyRole(['administrador_compras', 'gerente_compras', 'super_admin'])),
@@ -124,7 +119,7 @@ class ProviderEvaluationResource extends Resource
                                 ->description('OC: '.$record->order?->folio.' — '.$record->order?->provider?->company_name)
                                 ->schema([
                                     Infolists\Components\RepeatableEntry::make('responses')
-                                        ->label('')
+                                        ->hiddenLabel()
                                         ->contained(false)
                                         ->schema([
                                             Schemas\Components\Fieldset::make('')
@@ -174,12 +169,9 @@ class ProviderEvaluationResource extends Resource
                     ->slideOver()
                     ->modalWidth(Width::ScreenLarge)
                     ->color('primary')
+                    ->visible(fn (ProviderEvaluation $record) => $record->pendingResponsesFor(auth()->user())->isNotEmpty())
                     ->schema(function (ProviderEvaluation $record) {
-                        $pendingResponses = $record->responses
-                            ->where('respondent_id', auth()->id())
-                            ->whereNull('answered_at');
-
-                        return $pendingResponses->map(function (ProviderEvaluationResponse $response) {
+                        return $record->pendingResponsesFor(auth()->user())->map(function (ProviderEvaluationResponse $response) {
                             $question = $response->questionEnum();
 
                             return Radio::make('question_'.$response->id)
@@ -189,15 +181,30 @@ class ProviderEvaluationResource extends Resource
                         })->values()->all();
                     })
                     ->action(function (array $data, ProviderEvaluation $record) {
-                        $pendingResponses = $record->responses
-                            ->where('respondent_id', auth()->id())
-                            ->whereNull('answered_at');
+                        $taken = 0;
 
-                        foreach ($pendingResponses as $response) {
+                        foreach ($record->pendingResponsesFor(auth()->user()) as $response) {
                             $key = 'question_'.$response->id;
-                            if (isset($data[$key])) {
-                                ProviderEvaluationService::answer($response, $data[$key]);
+
+                            if (! isset($data[$key])) {
+                                continue;
                             }
+
+                            // Una respuesta compartida puede haber sido contestada
+                            // por otro usuario del mismo rol mientras se llenaba el formulario
+                            if (! ProviderEvaluationService::answer($response, $data[$key])) {
+                                $taken++;
+                            }
+                        }
+
+                        if ($taken > 0) {
+                            Notification::make()
+                                ->title('Algunas preguntas ya habían sido respondidas')
+                                ->body($taken.' pregunta(s) fueron contestadas por otro usuario de tu área y se cerraron.')
+                                ->warning()
+                                ->send();
+
+                            return;
                         }
 
                         Notification::make()

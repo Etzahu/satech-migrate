@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Services\ProviderEvaluationService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class ProviderEvaluation extends Model
 {
@@ -22,6 +24,27 @@ class ProviderEvaluation extends Model
     public function responses(): HasMany
     {
         return $this->hasMany(ProviderEvaluationResponse::class);
+    }
+
+    /**
+     * Pending responses the user has to answer: their own plus the unassigned
+     * (pool) ones for a role they hold.
+     *
+     * @return Collection<int, ProviderEvaluationResponse>
+     */
+    public function pendingResponsesFor(?User $user): Collection
+    {
+        if (! $user) {
+            return collect();
+        }
+
+        $poolRoles = ProviderEvaluationService::poolRolesFor($user);
+
+        return $this->responses
+            ->whereNull('answered_at')
+            ->filter(fn (ProviderEvaluationResponse $response) => $response->respondent_id === $user->id
+                || ($response->respondent_id === null && in_array($response->respondent_role, $poolRoles, true)))
+            ->values();
     }
 
     public function totalScore(): int
