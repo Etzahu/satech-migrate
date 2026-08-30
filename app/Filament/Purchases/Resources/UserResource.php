@@ -5,13 +5,16 @@ namespace App\Filament\Purchases\Resources;
 use App\Filament\Purchases\Resources\UserResource\Pages;
 use App\Models\Management;
 use App\Models\User;
+use Closure;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\Resource;
 use Filament\Schemas;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use STS\FilamentImpersonate\Actions\Impersonate;
 
 class UserResource extends Resource
@@ -47,11 +50,34 @@ class UserResource extends Resource
                                     ->numeric()
                                     ->minValue(1)
                                     ->unique(ignoreRecord: true)
+                                    ->validationMessages([
+                                        'unique' => 'Ya existe un usuario con este ID de colaborador.',
+                                    ])
                                     ->disabledOn('edit'),
                                 Forms\Components\TextInput::make('name')
                                     ->label('Nombre')
                                     ->required()
-                                    ->maxLength(255),
+                                    ->maxLength(255)
+                                    // El nombre tampoco puede repetirse. Va como regla propia
+                                    // y no como unique() para poder distinguir el caso en que
+                                    // además coincide el ID: ahí no es un homónimo, es el
+                                    // mismo colaborador dado de alta dos veces.
+                                    ->rules([
+                                        fn (Get $get, ?User $record): Closure => function (string $attribute, $value, Closure $fail) use ($get, $record) {
+                                            $twins = User::query()
+                                                ->where('name', $value)
+                                                ->when($record, fn (Builder $query) => $query->whereKeyNot($record->getKey()))
+                                                ->pluck('id');
+
+                                            if ($twins->isEmpty()) {
+                                                return;
+                                            }
+
+                                            $fail($twins->contains((int) $get('id'))
+                                                ? 'Ya existe un usuario con este mismo ID de colaborador y nombre.'
+                                                : 'Ya existe un usuario con este nombre.');
+                                        },
+                                    ]),
                                 Forms\Components\TextInput::make('email')
                                     ->label('Correo')
                                     ->required()
