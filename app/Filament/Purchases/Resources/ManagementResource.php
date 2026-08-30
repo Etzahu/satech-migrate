@@ -72,6 +72,9 @@ class ManagementResource extends Resource
                                     ->label('Restricción para proyectos')
                                     ->options(['limitar' => 'Limitar', 'excluir' => 'Excluir'])
                                     ->nullable(),
+                                Forms\Components\Toggle::make('purchase_order_flow')
+                                    ->label('Flujo de orden de compra por rol')
+                                    ->helperText('Las órdenes de esta gerencia las aprueba y autoriza quien tenga el rol, no la cadena de la requisición. La requisición no cambia.'),
                             ]),
                     ]),
                 // Schemas\Components\Section::make('Restricciones')
@@ -120,6 +123,7 @@ class ManagementResource extends Resource
         return [
             RelationManagers\ProjectsRelationManager::class,
             RelationManagers\UsersRelationManager::class,
+            RelationManagers\InformedRulesRelationManager::class,
         ];
     }
 

@@ -32,7 +32,12 @@ class StatusPurchaseProviderMachine extends StateMachine
         return [
             'revisión' => [
                 function ($from, $model) {
-                    $recipient = User::role('gerente_compras')->first()->email;
+                    $recipient = User::withRole('gerente_compras')->value('email');
+
+                    if (! $recipient) {
+                        return;
+                    }
+
                     $data = [
                         'subject' => 'Nuevo proveedor para revisar',
                         'rfc' => $model->rfc,

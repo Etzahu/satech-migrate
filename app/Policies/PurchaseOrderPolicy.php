@@ -2,29 +2,15 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\PurchaseOrder;
+use App\Models\User;
+use App\Services\PurchaseInformedService;
+use App\Services\PurchaseOrderChainResolver;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PurchaseOrderPolicy
 {
     use HandlesAuthorization;
-    public function viewApproveLevel1(User $user)
-    {
-        return $user->can('view_approve-level-1_purchase::order::purchaser');
-    }
-    public function viewApproveLevel2(User $user)
-    {
-        return $user->can('view_approve-level-2_purchase::order::purchaser');
-    }
-    public function viewApproveLevel3(User $user)
-    {
-        return $user->can('view_approve-level-3_purchase::order::purchaser');
-    }
-    public function viewApproveLevel4(User $user)
-    {
-        return $user->can('view_approve-level-4_purchase::order::purchaser');
-    }
 
     /**
      * Determine whether the user can view any models.
@@ -36,10 +22,20 @@ class PurchaseOrderPolicy
 
     /**
      * Determine whether the user can view the model.
+     *
+     * Quien la cadena nombra como participante puede abrir su propia orden
+     * aunque no tenga el permiso general: si el flujo le asigna un nivel,
+     * necesita poder verla para responder.
+     *
+     * El informativo también, aunque no responda nada: sin esta rama la
+     * bandeja lista la orden y abrirla devuelve 403.
      */
     public function view(User $user, PurchaseOrder $purchaseOrder): bool
     {
-        return $user->can('view_purchase::order::purchaser');
+        return $user->can('view_purchase::order::purchaser')
+            || $purchaseOrder->participatesInChain($user)
+            || app(PurchaseOrderChainResolver::class)->participates($purchaseOrder, $user)
+            || app(PurchaseInformedService::class)->isInformed($user, $purchaseOrder->requisition);
     }
 
     /**
@@ -62,10 +58,11 @@ class PurchaseOrderPolicy
             'devuelto por DG nivel 1',
             'devuelto por DG nivel 2',
             'devuelto por administrador', // Permite agregar partidas cuando admin devuelve la orden
-            'reabierta para edición'
+            'reabierta para edición',
         ];
-        return ($user->can('update_purchase::order::purchaser') &&  in_array($purchaseOrder->status, $states)) || ($user->hasRole('super_admin') || $user->hasRole('administrador_compras') ||
-        $user->hasRole('gerente_compras')); //administrador_compras
+
+        return ($user->can('update_purchase::order::purchaser') && in_array($purchaseOrder->status, $states)) || ($user->hasRole('super_admin') || $user->hasRole('administrador_compras') ||
+        $user->hasRole('gerente_compras')); // administrador_compras
     }
 
     /**

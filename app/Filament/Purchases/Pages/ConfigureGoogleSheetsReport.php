@@ -140,7 +140,7 @@ class ConfigureGoogleSheetsReport extends Page
                             ->multiple()
                             ->nullable()
                             ->options(function () {
-                                return User::role('comprador')->pluck('name', 'id');
+                                return User::withRole('comprador')->pluck('name', 'id');
                             })
                             ->searchable(),
 

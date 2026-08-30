@@ -27,7 +27,7 @@ class AuthorizeResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 6;
 
     public static function canAccess(): bool
     {

@@ -194,7 +194,7 @@ class PRInfolistService
                     'requester' => ['title' => 'Solicita', 'name' => $model->approvalChain->requester->name, 'statusTo' => 'revisión'],
                     'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
                     'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
-                    'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer?->name ?? 'N/A', 'statusTo' => 'aprobado por DG'],
                     'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado'],
                 ];
             }
@@ -204,7 +204,7 @@ class PRInfolistService
                     'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'statusTo' => 'revisión'],
                     'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
                     'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
-                    'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer?->name ?? 'N/A', 'statusTo' => 'aprobado por DG'],
                     'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado'],
                 ];
             }
@@ -215,7 +215,7 @@ class PRInfolistService
                 'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'statusTo' => 'revisión'],
                 'reviewer' => ['title' => 'Revisa', 'name' => $model->approvalChain->reviewer->name, 'statusTo' => 'aprobado por revisor'],
                 'approver' => ['title' => 'Aprueba', 'name' => $model->approvalChain->approver->name, 'statusTo' => 'aprobado por gerencia'],
-                'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer->name, 'statusTo' => 'aprobado por DG'],
+                'authorizer' => ['title' => 'Autoriza', 'name' => $model->approvalChain->authorizer?->name ?? 'N/A', 'statusTo' => 'aprobado por DG'],
                 'purchaser' => ['title' => 'Comprador', 'name' => (filled($model->purchaser) ? $model->purchaser->name : 'Sin asignar'), 'statusTo' => 'comprador asignado'],
             ];
         }

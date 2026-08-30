@@ -50,6 +50,9 @@ class HistoryResource extends Resource
             auth()->user()->hasRole('gerente_compras') ||
             auth()->user()->hasRole('super_admin') ||
             auth()->user()->hasRole('visor_ordenes') ||
+            auth()->user()->hasRole('informativo_compras') ||
+            auth()->user()->hasRole('aprueba_orden_compra') ||
+            auth()->user()->hasRole('autoriza_orden_compra') ||
             auth()->user()->hasRole('administrador_compras');
     }
 
@@ -65,8 +68,7 @@ class HistoryResource extends Resource
 
     public static function canEdit($record = null): bool
     {
-        return
-            auth()->user()->hasRole('super_admin');
+        return auth()->user()->hasRole('super_admin');
     }
 
     public static function infolist(Schema $infolist): Schema
@@ -93,6 +95,7 @@ class HistoryResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->with('items'))
             ->columns([
                 Tables\Columns\TextColumn::make('folio')
                     ->searchable(),
@@ -114,6 +117,16 @@ class HistoryResource extends Resource
                     ->label('Solicitante')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('total_amount')
+                    ->label('Monto total')
+                    ->alignEnd()
+                    ->state(function (PurchaseOrder $record): string {
+                        try {
+                            return OrderCalculationService::forOrder($record)->getTotalWithCurrency();
+                        } catch (\Throwable $e) {
+                            return 'N/A';
+                        }
+                    }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
                     ->searchable(),
@@ -153,7 +166,7 @@ class HistoryResource extends Resource
                     ->slideOver()
                     ->modalWidth(Width::FiveExtraLarge)
                     ->visible(
-                        auth()->user()->id == 106 ||
+                        auth()->user()->hasRole('libera_orden_compra') ||
                             auth()->user()->hasRole('comprador') ||
                             auth()->user()->hasRole('visor_ordenes') ||
                             auth()->user()->hasRole('gerente_compras') ||
@@ -224,7 +237,7 @@ class HistoryResource extends Resource
                                 ->multiple()
                                 ->nullable()
                                 ->options(function () {
-                                    return User::role('comprador')->pluck('name', 'id');
+                                    return User::withRole('comprador')->pluck('name', 'id');
                                 }),
                             Forms\Components\CheckboxList::make('type_purchase')
                                 ->label('Tipo (opcional)')

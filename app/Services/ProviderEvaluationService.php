@@ -217,7 +217,7 @@ class ProviderEvaluationService
         $roleName = self::POOL_ROLES[$respondentRole] ?? null;
 
         return $roleName
-            ? User::role($roleName)->get()
+            ? User::withRole($roleName)->get()
             : collect();
     }
 

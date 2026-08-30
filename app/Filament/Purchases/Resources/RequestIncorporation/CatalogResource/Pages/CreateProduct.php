@@ -27,8 +27,8 @@ class CreateProduct extends CreateRecord
     {
         //   enviar correo al usuario que da de alta
         $this->record->load('company', 'requester', 'unit');
-        $usersPurchase = User::role('gerente_compras')->get();
-        $usersAdmin = User::role('administrador_compras')->get();
+        $usersPurchase = User::withRole('gerente_compras')->get();
+        $usersAdmin = User::withRole('administrador_compras')->get();
 
 
         $recipients = [];

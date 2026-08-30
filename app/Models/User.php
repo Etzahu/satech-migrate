@@ -3,21 +3,21 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
+use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable  implements FilamentUser
+class User extends Authenticatable implements FilamentUser
 {
     use HasFactory, Notifiable;
-    use HasRoles;
     use HasPanelShield;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -37,6 +37,7 @@ class User extends Authenticatable  implements FilamentUser
         'password',
         'remember_token',
     ];
+
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@gptservices.com');
@@ -64,33 +65,45 @@ class User extends Authenticatable  implements FilamentUser
             'password' => 'hashed',
         ];
     }
+
     public function management()
     {
         return $this->belongsTo(Management::class, 'management_id', 'id');
     }
-    public function managementResponsible()
-    {
-        return $this->hasOne(Management::class, 'responsible_id');
-    }
+
     public function approvalChainsPurchaseRequisition()
     {
         return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'requester_id');
     }
+
+    /**
+     * Usuarios con alguno de los roles indicados.
+     *
+     * Alternativa al scope `role()` de Spatie, que lanza RoleDoesNotExist
+     * cuando el rol todavía no existe en la base —por ejemplo si la migración
+     * que lo crea no corrió en ese entorno—. Aquí un rol inexistente
+     * simplemente no aporta a nadie, que es lo que quiere quien arma una lista
+     * de destinatarios o de permitidos.
+     *
+     * @param  string|array<int, string>  $role
+     */
+    public function scopeWithRole(Builder $query, string|array $role): Builder
+    {
+        return $query->whereHas('roles', fn (Builder $q) => $q->whereIn('name', (array) $role));
+    }
+
     public function reviewerChainsPR(): HasMany
     {
         return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'reviewer_id');
     }
+
     public function approverChainsPR(): HasMany
     {
         return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'approver_id');
     }
+
     public function authorizerChainsPR(): HasMany
     {
         return $this->hasMany(PurchaseRequisitionApprovalChain::class, 'authorizer_id');
-    }
-    public function scopeApprovers()
-    {
-        $management = Management::all()->pluck('responsible_id')->unique();
-        return $this->whereIn('id', $management);
     }
 }

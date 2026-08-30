@@ -22,6 +22,7 @@ class PurchaseRequisitionApprovalChain extends Model
         'reviewer_id',
         'approver_id',
         'authorizer_id',
+        'po_flow_excluded',
         'archived_at',
     ];
 
@@ -36,6 +37,7 @@ class PurchaseRequisitionApprovalChain extends Model
         'reviewer_id' => 'integer',
         'approver_id' => 'integer',
         'authorizer_id' => 'integer',
+        'po_flow_excluded' => 'boolean',
         'archived_at' => 'datetime',
     ];
 
@@ -91,6 +93,21 @@ class PurchaseRequisitionApprovalChain extends Model
     public const ROLES = ['requester', 'reviewer', 'approver', 'authorizer'];
 
     /**
+     * Niveles que toda cadena debe tener ocupados.
+     */
+    public const REQUIRED_ROLES = ['requester', 'reviewer', 'approver'];
+
+    /**
+     * Niveles que pueden quedar vacíos a propósito.
+     *
+     * El correo de Operaciones del 18-ago-2026 elimina el último nivel de
+     * autorización en las requisiciones de Soldadura y Servicios Técnicos —la
+     * tabla dice "N/A"—. Una casilla vacía no es una cadena rota: es un nivel
+     * que no existe, y la requisición avanza sola por él.
+     */
+    public const OPTIONAL_ROLES = ['authorizer'];
+
+    /**
      * Verifica si algún usuario en la cadena está inactivo (active = 0) o fue eliminado
      *
      * @return array Roles con usuarios inactivos
@@ -102,6 +119,11 @@ class PurchaseRequisitionApprovalChain extends Model
         $this->loadMissing(self::ROLES);
 
         foreach (self::ROLES as $role) {
+            // Un nivel opcional sin ocupar no es un participante dado de baja.
+            if ($this->{$role.'_id'} === null && in_array($role, self::OPTIONAL_ROLES, true)) {
+                continue;
+            }
+
             $user = $this->{$role};
 
             if (! $user || ! $user->active) {
@@ -147,6 +169,7 @@ class PurchaseRequisitionApprovalChain extends Model
                 ->map(fn (string $role) => $this->{$role}?->name ?? 'usuario eliminado')
                 ->implode(', ');
 
+
             return "Participantes inactivos en esta cadena: {$names}.";
         }
 
@@ -154,12 +177,21 @@ class PurchaseRequisitionApprovalChain extends Model
     }
 
     /**
-     * Cadenas cuyos cuatro participantes están activos.
+     * Cadenas cuyos participantes están activos.
+     *
+     * Un nivel opcional vacío no descalifica la cadena; uno ocupado por alguien
+     * dado de baja, sí.
      */
     public function scopeFullyActive(Builder $query): Builder
     {
-        foreach (self::ROLES as $role) {
+        foreach (self::REQUIRED_ROLES as $role) {
             $query->whereHas($role, fn (Builder $q) => $q->where('active', 1));
+        }
+
+        foreach (self::OPTIONAL_ROLES as $role) {
+            $query->where(fn (Builder $q) => $q
+                ->whereNull($role.'_id')
+                ->orWhereHas($role, fn (Builder $u) => $u->where('active', 1)));
         }
 
         return $query;
@@ -190,9 +222,17 @@ class PurchaseRequisitionApprovalChain extends Model
     public function scopeWithInactiveUsers(Builder $query): Builder
     {
         return $query->where(function (Builder $query) {
-            foreach (self::ROLES as $role) {
+            foreach (self::REQUIRED_ROLES as $role) {
                 $query->orWhereDoesntHave($role)
                     ->orWhereHas($role, fn (Builder $q) => $q->where('active', 0));
+            }
+
+            foreach (self::OPTIONAL_ROLES as $role) {
+                $query->orWhere(fn (Builder $q) => $q
+                    ->whereNotNull($role.'_id')
+                    ->where(fn (Builder $inner) => $inner
+                        ->whereDoesntHave($role)
+                        ->orWhereHas($role, fn (Builder $u) => $u->where('active', 0))));
             }
         });
     }
@@ -211,6 +251,24 @@ class PurchaseRequisitionApprovalChain extends Model
     public function scopeUnused(Builder $query): Builder
     {
         return $query->whereDoesntHave('requisitions', fn (Builder $q) => $q->withTrashed());
+    }
+
+    /**
+     * ¿La cadena ya se usó al menos una vez?
+     *
+     * Una cadena con historial es de solo lectura: cambiar sus participantes
+     * reescribiría el flujo de las requisiciones que ya la recorrieron. Las
+     * requisiciones eliminadas también cuentan, igual que en el borrado.
+     */
+    public function isInUse(): bool
+    {
+        // El listado ya trae el conteo con withCount(); reusarlo evita una
+        // consulta por fila.
+        if (array_key_exists('requisitions_count', $this->attributes)) {
+            return (int) $this->requisitions_count > 0;
+        }
+
+        return $this->requisitions()->withTrashed()->exists();
     }
 
     /**

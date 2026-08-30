@@ -263,21 +263,21 @@ class CheckUserRequisitions extends Page implements HasActions, HasForms
                 return [
                     Forms\Components\Select::make('reviewer_id')
                         ->label('Revisor')
-                        ->options(User::role('revisa_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('revisa_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Revisa Requisición de Compra"'),
 
                     Forms\Components\Select::make('approver_id')
                         ->label('Aprobador')
-                        ->options(User::role('aprueba_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('aprueba_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Aprueba Requisición de Compra"'),
 
                     Forms\Components\Select::make('authorizer_id')
                         ->label('Autorizador')
-                        ->options(User::role('autoriza_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('autoriza_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Autoriza Requisición de Compra"'),
@@ -558,21 +558,21 @@ class CheckUserRequisitions extends Page implements HasActions, HasForms
                 return [
                     Forms\Components\Select::make('reviewer_id')
                         ->label('Revisor')
-                        ->options(User::role('revisa_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('revisa_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Revisa Requisición de Compra"'),
 
                     Forms\Components\Select::make('approver_id')
                         ->label('Aprobador')
-                        ->options(User::role('aprueba_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('aprueba_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Aprueba Requisición de Compra"'),
 
                     Forms\Components\Select::make('authorizer_id')
                         ->label('Autorizador')
-                        ->options(User::role('autoriza_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('autoriza_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Autoriza Requisición de Compra"'),
@@ -697,21 +697,21 @@ class CheckUserRequisitions extends Page implements HasActions, HasForms
                 return [
                     Forms\Components\Select::make('reviewer_id')
                         ->label('Revisor')
-                        ->options(User::role('revisa_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('revisa_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Revisa Requisición de Compra"'),
 
                     Forms\Components\Select::make('approver_id')
                         ->label('Aprobador')
-                        ->options(User::role('aprueba_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('aprueba_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Aprueba Requisición de Compra"'),
 
                     Forms\Components\Select::make('authorizer_id')
                         ->label('Autorizador')
-                        ->options(User::role('autoriza_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('autoriza_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Autoriza Requisición de Compra"'),

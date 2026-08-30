@@ -197,7 +197,7 @@ class CheckUserOrders extends Page implements HasActions, HasForms
 
                     $fields[] = Forms\Components\Placeholder::make('current_info')
                         ->label('Cadena Actual')
-                        ->content("Aprueba: {$order->requisition->approvalChain->approver->name} | Autoriza: {$order->requisition->approvalChain->authorizer->name}");
+                        ->content("Aprueba: {$order->requisition->approvalChain->approver->name} | Autoriza: {$order->requisition->approvalChain->authorizer?->name}");
 
                     $fields[] = Forms\Components\Placeholder::make('info')
                         ->content('💡 Al cambiar la cadena, la orden volverá al inicio del proceso de aprobación.');
@@ -274,21 +274,21 @@ class CheckUserOrders extends Page implements HasActions, HasForms
                 return [
                     Forms\Components\Select::make('approver_id')
                         ->label('Gerente Solicitante (Aprobador)')
-                        ->options(User::role('aprueba_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('aprueba_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Aprueba Requisición de Compra"'),
 
                     Forms\Components\Select::make('authorizer_id')
                         ->label('Director (Autorizador)')
-                        ->options(User::role('autoriza_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('autoriza_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Autoriza Requisición de Compra"'),
 
                     Forms\Components\Placeholder::make('current_info')
                         ->label('Cadena Actual')
-                        ->content("Aprueba: {$order->requisition->approvalChain->approver->name} | Autoriza: {$order->requisition->approvalChain->authorizer->name}"),
+                        ->content("Aprueba: {$order->requisition->approvalChain->approver->name} | Autoriza: {$order->requisition->approvalChain->authorizer?->name}"),
 
                     Forms\Components\Placeholder::make('info')
                         ->content('⚠️ Esta nueva cadena se asignará a la requisición actual y la orden volverá al inicio del proceso.'),
@@ -309,7 +309,7 @@ class CheckUserOrders extends Page implements HasActions, HasForms
                 // Crear nueva cadena
                 $newChain = PurchaseRequisitionApprovalChain::create([
                     'requester_id' => $requesterId,
-                    'reviewer_id' => User::role('revisa_requisicion_compra')->first()?->id ?? $requesterId,
+                    'reviewer_id' => User::withRole('revisa_requisicion_compra')->value('id') ?? $requesterId,
                     'approver_id' => $data['approver_id'],
                     'authorizer_id' => $data['authorizer_id'],
                 ]);

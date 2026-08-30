@@ -4,6 +4,7 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
 
 use App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource;
 use App\Services\OrderCalculationService;
+use App\Services\PurchaseOrderChainResolver;
 use Filament\Actions;
 use Filament\Actions\ActionGroup;
 use Filament\Forms\Components\Select;
@@ -31,7 +32,7 @@ class ViewOrder extends ViewRecord
                         $this->record->status()->canBe('aprobado por DG nivel 1') ||
                         $this->record->status()->canBe('devuelto por DG nivel 1') ||
                         $this->record->status()->canBe('cancelado por DG nivel 1')) &&
-                        auth()->user()->hasRole('autoriza_nivel-1-orden_compra')
+                        app(PurchaseOrderChainResolver::class)->isAuthorizer($this->record, auth()->user())
                 )
                 ->schema([
                     Select::make('response')
@@ -54,24 +55,16 @@ class ViewOrder extends ViewRecord
                 ->action(function (array $data) {
                     unset($this->record->total); // evitar error de serialización del total calculado
                     $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
-                    if ($data['response'] == 'aprobado por DG nivel 1') {
-                        $service = new OrderCalculationService($this->record->id);
 
-                        // Proveedor GPT Ingeniería y Manufactura, S.A. de C.V.
-                        if (in_array($this->record->provider->id, [427, 425, 332])) {
-                            $this->record->status()->transitionTo('autorizada para proveedor');
-                            Notification::make()
-                                ->title('Respuesta enviada')
-                                ->success()
-                                ->send();
+                    // La condición de monto se movió al final del flujo: ahora se
+                    // evalúa después de la liberación de Dirección Administrativa
+                    // (PurchaseOrderFlowService). Este nivel solo aprueba.
+                    Notification::make()
+                        ->title('Respuesta enviada')
+                        ->success()
+                        ->send();
 
-                            return redirect(ApproveResource::getUrl('index'));
-                        }
-
-                        if ($service->isOrderTotalBetweenLimits()) {
-                            $this->record->status()->transitionTo('autorizada para proveedor');
-                        }
-                    }
+                    return redirect(ApproveResource::getUrl('index'));
                 }),
 
             ActionGroup::make([

@@ -4,6 +4,7 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
 use App\Filament\Purchases\Resources\PurchaseOrder\ReviewResource\Pages;
 use App\Models\PurchaseOrder;
+use App\Services\PurchaseOrderChainResolver;
 use Filament\Actions;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -29,9 +30,14 @@ class ReviewResource extends Resource
 
     protected static ?int $navigationSort = 3;
 
+    /**
+     * La sección se muestra a quien la cadena nombra como aprobador, no a quien
+     * tenga un rol: el listado filtra por `chain.approver_id`, así que cualquier
+     * otro criterio deja órdenes asignadas a alguien que no puede abrirlas.
+     */
     public static function canAccess(): bool
     {
-        return auth()->user()->can('view_approve_level-2_purchase::order::purchaser');
+        return app(PurchaseOrderChainResolver::class)->canAccessApproval(auth()->user());
     }
 
     public static function getEloquentQuery(): Builder

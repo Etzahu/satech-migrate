@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
 
 use App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource;
+use App\Services\PurchaseInformedService;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
@@ -81,11 +82,24 @@ class ManagePR extends ManageRecords
                         });
                 });
         }
+        // Nivel informativo: en Manufactura + servicio la regla especial suma a
+        // Jennifer al titular de la gerencia, que es lo que pidió Alan Anaya
+        // para no triangular información.
+        if (auth()->user()->hasRole('informativo_compras')) {
+            $tabs['informed'] = Tab::make('Informativo')
+                ->modifyQueryUsing(function (Builder $query) {
+                    return app(PurchaseInformedService::class)
+                        ->applyRequisitionScope($query, auth()->user())
+                        ->where('company_id', session()->get('company_id'))
+                        ->whereNot('status', 'borrador')
+                        ->orderBy('id', 'desc');
+                });
+        }
         if (
             auth()->user()->hasRole('gerente_compras') ||
             auth()->user()->hasRole('comprador') ||
             auth()->user()->hasRole('visor_requisiciones') ||
-            auth()->user()->id == 106 ||
+            auth()->user()->hasRole('libera_orden_compra') ||
             auth()->user()->hasRole('super_admin')
         ) {
             $tabs['all'] = Tab::make('Todas')

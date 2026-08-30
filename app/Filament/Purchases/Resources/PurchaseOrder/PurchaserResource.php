@@ -72,6 +72,8 @@ class PurchaserResource extends Resource implements HasShieldPermissions
             'view_approve-level-1', // Revisar gerente de compras
             'view_approve_level-2', // Revisar gerente relacionado a la requisicion
             'view_approve-level-3', // Revisar por direccion (Denisse)
+            'view_release', // Libera Direccion Administrativa (Denise) - aplica a toda la empresa
+            'view_informed', // Nivel informativo: solo lectura, no responde nada
             'view_approve_level-4', // Si el total de la orden es mayor a X de valor revisa Carlos
         ];
     }

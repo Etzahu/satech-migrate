@@ -27,11 +27,11 @@ class ApproveSpecialResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 7;
 
     public static function canAccess(): bool
     {
-        return auth()->user()->id == 106;
+        return auth()->user()?->hasRole('aprueba_orden_especial') ?? false;
     }
 
     public static function getEloquentQuery(): Builder

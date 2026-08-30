@@ -106,7 +106,7 @@ class PurchaseProviderResource extends Resource
                                     ->required()
                                     ->searchable()
                                     ->options([
-                                       'ABC CAPITAL',
+                                        'ABC CAPITAL',
                                         'AFIRME',
                                         'AMERICAN EXPRESS',
                                         'ANÁHUAC',

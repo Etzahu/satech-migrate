@@ -188,7 +188,7 @@ class PurchaseRequisition extends Model implements Auditable, HasMedia
                     'requester' => ['title' => 'Solicita', 'name' => $this->approvalChain->requester->name, 'date' => $data['revisión']],
                     'reviewer' => ['title' => 'Revisa', 'name' => $this->approvalChain->reviewer->name, 'date' => $data['aprobado por revisor']],
                     'approver' => ['title' => 'Aprueba', 'name' => $this->approvalChain->approver->name, 'date' => $data['aprobado por gerencia']],
-                    'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer->name, 'date' => $data['aprobado por DG']],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer?->name ?? 'N/A', 'date' => $data['aprobado por DG']],
                     'purchaser' => ['title' => 'Comprador', 'name' => (filled($this->purchaser) ? $this->purchaser->name : 'Sin asignar'), 'date' => $data['comprador asignado']],
                 ];
             }
@@ -198,7 +198,7 @@ class PurchaseRequisition extends Model implements Auditable, HasMedia
                     'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'date' => $data['revisión']],
                     'reviewer' => ['title' => 'Revisa', 'name' => $this->approvalChain->reviewer->name, 'date' => $data['aprobado por revisor']],
                     'approver' => ['title' => 'Aprueba', 'name' => $this->approvalChain->approver->name, 'date' => $data['aprobado por gerencia']],
-                    'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer->name, 'date' => $data['aprobado por DG']],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer?->name ?? 'N/A', 'date' => $data['aprobado por DG']],
                     'purchaser' => ['title' => 'Comprador', 'name' => (filled($this->purchaser) ? $this->purchaser->name : 'Sin asignar'), 'date' => $data['comprador asignado']],
                 ];
             }
@@ -209,7 +209,7 @@ class PurchaseRequisition extends Model implements Auditable, HasMedia
                     'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'date' => $data['revisión']],
                     'reviewer' => ['title' => 'Revisa', 'name' => $this->approvalChain->reviewer->name, 'date' => $data['aprobado por revisor']],
                     'approver' => ['title' => 'Aprueba', 'name' => $this->approvalChain->approver->name, 'date' => $data['aprobado por gerencia']],
-                    'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer->name, 'date' => $data['aprobado por DG']],
+                    'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer?->name ?? 'N/A', 'date' => $data['aprobado por DG']],
                     'purchaser' => ['title' => 'Comprador', 'name' => (filled($this->purchaser) ? $this->purchaser->name : 'Sin asignar'), 'date' => $data['comprador asignado']],
                 ];
             }
@@ -220,7 +220,7 @@ class PurchaseRequisition extends Model implements Auditable, HasMedia
                 'warehouse' => ['title' => 'Almacén', 'name' => 'N/A', 'date' => $data['revisión']],
                 'reviewer' => ['title' => 'Revisa', 'name' => $this->approvalChain->reviewer->name, 'date' => $data['aprobado por revisor']],
                 'approver' => ['title' => 'Aprueba', 'name' => $this->approvalChain->approver->name, 'date' => $data['aprobado por gerencia']],
-                'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer->name, 'date' => $data['aprobado por DG']],
+                'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer?->name ?? 'N/A', 'date' => $data['aprobado por DG']],
                 'purchaser' => ['title' => 'Comprador', 'name' => (filled($this->purchaser) ? $this->purchaser->name : 'Sin asignar'), 'date' => $data['comprador asignado']],
             ];
         }

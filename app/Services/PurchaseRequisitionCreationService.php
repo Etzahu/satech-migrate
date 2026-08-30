@@ -145,28 +145,47 @@ class PurchaseRequisitionCreationService
         }
         return $data;
     }
+    /**
+     * Copia del correo de cierre de la requisición.
+     *
+     * El autorizador puede no existir: en Soldadura y Servicios Técnicos ese
+     * nivel se eliminó y la casilla queda vacía. Los roles se leen con
+     * withRole() —no con el scope role() de Spatie— porque ese lanza
+     * RoleDoesNotExist si el rol no está en la base, y un correo no debe tumbar
+     * el avance de la requisición.
+     */
     public function getUserForEmailPRFinish($model)
     {
-        $moreUsers = [];
-        $moreUsers[] = $model->approvalChain->reviewer->email;
-        $moreUsers[] = $model->approvalChain->approver->email;
-        $moreUsers[] = $model->approvalChain->authorizer->email;
-        $moreUsers[] = User::role('gerente_compras')->first()->email;
-        $usersWareHouse = User::role('revisa_almacen_requisicion_compra')->get()->flatten();
-        foreach ($usersWareHouse as $user) {
-            $moreUsers[] = $user->email;
-        }
-        return array_unique($moreUsers);
+        $moreUsers = [
+            $model->approvalChain?->reviewer?->email,
+            $model->approvalChain?->approver?->email,
+            $model->approvalChain?->authorizer?->email,
+        ];
+
+        $moreUsers = array_merge(
+            $moreUsers,
+            User::withRole('gerente_compras')->pluck('email')->all(),
+            User::withRole('revisa_almacen_requisicion_compra')->pluck('email')->all(),
+        );
+
+        return array_values(array_unique(array_filter($moreUsers)));
     }
+
     public function getUserAssignedPurchaser($model)
     {
-        $moreUsers = [];
-        $moreUsers[] = $model->approvalChain->requester->email;
-        $moreUsers[] = $model->approvalChain->reviewer->email;
-        $moreUsers[] = $model->approvalChain->approver->email;
-        $moreUsers[] = $model->approvalChain->authorizer->email;
-        $moreUsers[] = User::role('gerente_compras')->first()->email;
-        return array_unique($moreUsers);
+        $moreUsers = [
+            $model->approvalChain?->requester?->email,
+            $model->approvalChain?->reviewer?->email,
+            $model->approvalChain?->approver?->email,
+            $model->approvalChain?->authorizer?->email,
+        ];
+
+        $moreUsers = array_merge(
+            $moreUsers,
+            User::withRole('gerente_compras')->pluck('email')->all(),
+        );
+
+        return array_values(array_unique(array_filter($moreUsers)));
     }
 
     /**

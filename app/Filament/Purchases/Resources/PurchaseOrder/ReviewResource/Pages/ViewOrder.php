@@ -4,6 +4,7 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder\ReviewResource\Pages;
 
 use App\Filament\Purchases\Resources\PurchaseOrder\ReviewResource;
 use App\Services\OrderCalculationService;
+use App\Services\PurchaseOrderChainResolver;
 use Filament\Actions;
 use Filament\Actions\ActionGroup;
 use Filament\Forms\Components\Select;
@@ -28,7 +29,7 @@ class ViewOrder extends ViewRecord
                     fn () => ($this->record->status()->canBe('aprobado por gerente solicitante') ||
                         $this->record->status()->canBe('devuelto por gerente solicitante') ||
                         $this->record->status()->canBe('cancelado por gerente solicitante')) &&
-                        auth()->user()->hasRole('gerente_solicitante_orden_compra')
+                        app(PurchaseOrderChainResolver::class)->isApprover($this->record, auth()->user())
                 )
                 ->schema([
                     Select::make('response')

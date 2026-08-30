@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseRequisition\ApproverResource\Pages;
 
 use App\Filament\Purchases\Resources\PurchaseRequisition\ApproverResource;
+use App\Services\PurchaseRequisitionFlowService;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -47,6 +48,15 @@ class ViewPR extends ViewRecord
                 ->requiresConfirmation()
                 ->action(function (array $data) {
                     $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
+
+                    // Si la cadena no lleva nivel de autorización —Soldadura y
+                    // Servicios Técnicos—, la aprobación de gerencia es el
+                    // último paso y la requisición avanza sola.
+                    if ($data['response'] === 'aprobado por gerencia') {
+                        app(PurchaseRequisitionFlowService::class)
+                            ->advanceAfterManagementApproval($this->record);
+                    }
+
                     Notification::make()
                         ->title('Respuesta enviada')
                         ->success()

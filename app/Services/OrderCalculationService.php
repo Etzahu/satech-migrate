@@ -34,6 +34,20 @@ class OrderCalculationService
     }
 
     /**
+     * Crea el servicio a partir de una orden ya cargada en memoria y evita la
+     * consulta extra del constructor (pensado para listados/tablas).
+     */
+    public static function forOrder(PurchaseOrder $order): self
+    {
+        $service = new self;
+        $service->order = $order;
+        $service->currency = $order->currency;
+        $service->locale = $service->localeOptions[$order->currency] ?? 'es_MX';
+
+        return $service;
+    }
+
+    /**
      * Formatea un valor para mostrar en vistas/PDF.
      * Internamente los montos se almacenan con 4 decimales (entero × 10000).
      * Este método convierte y muestra con 2 decimales.
@@ -113,6 +127,18 @@ class OrderCalculationService
             ->minus($this->getRetentionIsr());
 
         return $formatter ? $this->brickFormatter($total) : $total;
+    }
+
+    /**
+     * Total de la orden formateado como moneda y con el código de divisa,
+     * por ejemplo: $1,234.57 MXN.
+     */
+    public function getTotalWithCurrency(): string
+    {
+        $locale = $this->localeOptions[$this->currency] ?? 'es_MX';
+        $amount = BrickMoney::of((string) $this->getTotal(), $this->currency);
+
+        return $amount->formatTo($locale).' '.$this->currency;
     }
 
     public function isOrderTotalBetweenLimits(): bool

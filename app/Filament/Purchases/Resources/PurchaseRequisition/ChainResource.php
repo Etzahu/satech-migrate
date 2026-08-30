@@ -17,6 +17,7 @@ use Filament\Support\Enums\Width;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class ChainResource extends Resource
 {
@@ -71,7 +72,12 @@ class ChainResource extends Resource
                         : $query->whereHas('roles', fn (Builder $q) => $q->where('name', 'autoriza_requisicion_compra')))
                     ->searchable()
                     ->preload()
-                    ->required()
+                    // Opcional a propósito: el correo de Operaciones del
+                    // 18-ago-2026 elimina este nivel en las requisiciones de
+                    // Soldadura y Servicios Técnicos. Dejarlo vacío no rompe la
+                    // cadena; la requisición avanza sola por ese paso.
+                    ->placeholder('N/A — sin nivel de autorización')
+                    ->helperText('Déjalo vacío si esta cadena no lleva nivel de autorización.')
                     // Evita cadenas duplicadas: no puede existir otra con la misma
                     // combinación Solicita/Revisa/Aprueba/Autoriza (ignora el propio registro al editar).
                     ->rules([
@@ -80,7 +86,13 @@ class ChainResource extends Resource
                                 ->where('requester_id', $get('requester_id'))
                                 ->where('reviewer_id', $get('reviewer_id'))
                                 ->where('approver_id', $get('approver_id'))
-                                ->where('authorizer_id', $value)
+                                // NULL = NULL nunca es verdadero en SQL, así que
+                                // el nivel vacío necesita su propia comparación.
+                                ->when(
+                                    $value === null,
+                                    fn (Builder $query) => $query->whereNull('authorizer_id'),
+                                    fn (Builder $query) => $query->where('authorizer_id', $value),
+                                )
                                 ->when($record, fn (Builder $query) => $query->whereKeyNot($record->getKey()))
                                 ->exists();
 
@@ -89,6 +101,10 @@ class ChainResource extends Resource
                             }
                         },
                     ]),
+                Forms\Components\Toggle::make('po_flow_excluded')
+                    ->label('Excluir del flujo de orden por rol')
+                    ->helperText('Marcar solo si esta cadena debe conservar su propio aprobador y autorizador en las órdenes, pese a que su gerencia use el flujo por rol.')
+                    ->visible(fn ($record) => (bool) $record?->requester?->management?->purchase_order_flow),
             ]);
     }
 
@@ -174,7 +190,13 @@ class ChainResource extends Resource
                     ),
             ])
             ->recordActions([
-                Actions\EditAction::make(),
+                // Una cadena que ya se usó solo se consulta: editar sus
+                // participantes reescribiría el flujo de las requisiciones que
+                // ya la recorrieron.
+                Actions\ViewAction::make()
+                    ->visible(fn ($record) => $record->isInUse()),
+                Actions\EditAction::make()
+                    ->visible(fn ($record) => ! $record->isInUse()),
                 Actions\Action::make('archive')
                     ->label('Desactivar')
                     ->icon('heroicon-m-pause-circle')
@@ -276,6 +298,15 @@ class ChainResource extends Resource
                         }
                     }),
             ]);
+    }
+
+    /**
+     * Cerrar el permiso aquí, y no solo ocultar el botón, bloquea también la
+     * URL directa de edición de una cadena que ya se usó.
+     */
+    public static function canEdit(Model $record): bool
+    {
+        return ! $record->isInUse() && parent::canEdit($record);
     }
 
     public static function getEloquentQuery(): Builder

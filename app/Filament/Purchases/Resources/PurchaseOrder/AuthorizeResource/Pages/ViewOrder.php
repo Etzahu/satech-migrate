@@ -26,7 +26,7 @@ class ViewOrder extends ViewRecord
                 ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
                 ->color('success')
                 ->visible(
-                    fn () => ($this->record->status()->canBe('autorizada para proveedor') ||
+                    fn () => ($this->record->status()->canBe('aprobado por DG nivel 2') ||
                         $this->record->status()->canBe('devuelto por DG nivel 2') ||
                         $this->record->status()->canBe('cancelado por DG nivel 2')) && auth()->user()->hasRole('autoriza_nivel-2-orden_compra')
                 )
@@ -34,14 +34,14 @@ class ViewOrder extends ViewRecord
                     Select::make('response')
                         ->label('Respuesta')
                         ->options([
-                            'autorizada para proveedor' => 'Aprobar',
+                            'aprobado por DG nivel 2' => 'Aprobar',
                             'devuelto por DG nivel 2' => 'Devolver',
                             'cancelado por DG nivel 2' => 'Cancelar',
                         ])
-                        ->default('autorizada para proveedor')
+                        ->default('aprobado por DG nivel 2')
                         ->required(),
                     Textarea::make('observation')
-                        ->requiredUnless('response', 'autorizada para proveedor')
+                        ->requiredUnless('response', 'aprobado por DG nivel 2')
                         ->validationMessages([
                             'required_unless' => 'El campo :attribute es obligatorio.',
                         ])
@@ -51,7 +51,12 @@ class ViewOrder extends ViewRecord
                 ->action(function (array $data) {
                     unset($this->record->total); // evitar error de serialización del total calculado
                     $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
-                    if ($data['response'] == 'aprobado por DG nivel 1') {
+
+                    // Antes el select aprobaba saltando directo a `autorizada para
+                    // proveedor`, así que `aprobado por DG nivel 2` no se registró
+                    // nunca y la firma de Dirección General CA salía vacía en el
+                    // PDF de toda orden que superara el límite. Ahora deja traza.
+                    if ($data['response'] === 'aprobado por DG nivel 2') {
                         $this->record->status()->transitionTo('autorizada para proveedor');
                     }
                     Notification::make()

@@ -36,8 +36,8 @@ class StatusPurchaseProjectMachine extends StateMachine
             'pendiente' => [
                 function ($to, $model) {
                     $model->load('company', 'requester');
-                    $usersPurchase = User::role('gerente_compras')->get();
-                    $usersAdmin = User::role('administrador_compras')->get();
+                    $usersPurchase = User::withRole('gerente_compras')->get();
+                    $usersAdmin = User::withRole('administrador_compras')->get();
 
                     $recipients = [];
                     foreach ($usersPurchase as $user) {

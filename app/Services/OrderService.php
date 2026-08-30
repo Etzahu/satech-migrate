@@ -32,12 +32,6 @@ class OrderService
     {
         return Company::find(session()->get('company_id'));
     }
-    public function getManagement($rq_id)
-    {
-        $rq = PurchaseRequisition::find($rq_id);
-        return $rq->approvalChain->requester->management->acronym;
-    }
-
     public function generatePdf($model)
     {
         return pdf()
@@ -108,19 +102,34 @@ class OrderService
         }
         return $recipients;
     }
+    /**
+     * Copia del correo de cierre de la orden.
+     *
+     * Incluye a quien firmó de verdad cada nivel: bajo el flujo por rol de los
+     * cinco departamentos operativos, los niveles 2 y 3 no los ocupa la cadena
+     * sino Alan y Sergio, así que se resuelven con el mismo servicio que decide
+     * quién actúa. Se conserva al solicitante de la cadena, que sí es siempre
+     * el mismo.
+     *
+     * Los roles se leen con withRole() —no con el scope role() de Spatie—
+     * porque ese lanza RoleDoesNotExist cuando el rol no existe en la base, y
+     * este correo no debe tumbar el cierre de una orden por eso.
+     */
     public function getUserForEmailFinish($model)
     {
-        $moreUsers = [];
-        $moreUsers[] = $model->requisition->approvalChain->requester->email;
-        $moreUsers[] = $model->requisition->approvalChain->approver->email;
-        $moreUsers[] = $model->requisition->approvalChain->authorizer->email;
-        $moreUsers[] = User::find(106)->email;
-        $moreUsers[] = User::role('gerente_compras')->first()->email;
-        $usersWareHouse = User::role('revisa_almacen_requisicion_compra')->get()->flatten();
+        $resolver = app(\App\Services\PurchaseOrderChainResolver::class);
 
-        foreach ($usersWareHouse as $user) {
-            $moreUsers[] = $user->email;
-        }
-        return array_unique($moreUsers);
+        $moreUsers = [];
+        $moreUsers[] = $model->requisition?->approvalChain?->requester?->email;
+        $moreUsers = array_merge(
+            $moreUsers,
+            $resolver->approverEmails($model),
+            $resolver->authorizerEmails($model),
+            User::withRole('libera_orden_compra')->pluck('email')->all(),
+            User::withRole('gerente_compras')->pluck('email')->all(),
+            User::withRole('revisa_almacen_requisicion_compra')->pluck('email')->all(),
+        );
+
+        return array_values(array_unique(array_filter($moreUsers)));
     }
 }

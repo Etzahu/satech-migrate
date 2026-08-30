@@ -4,6 +4,7 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
 use App\Filament\Purchases\Resources\PurchaseOrder\ApproveResource\Pages;
 use App\Models\PurchaseOrder;
+use App\Services\PurchaseOrderChainResolver;
 use Filament\Actions;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -27,11 +28,15 @@ class ApproveResource extends Resource
 
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
 
-    protected static ?int $navigationSort = 5;
+    protected static ?int $navigationSort = 4;
 
+    /**
+     * Misma regla que en ReviewResource: manda la cadena, no el rol. El listado
+     * filtra por `chain.authorizer_id`, así que el acceso debe leer lo mismo.
+     */
     public static function canAccess(): bool
     {
-        return auth()->user()->can('view_approve-level-3_purchase::order::purchaser');
+        return app(PurchaseOrderChainResolver::class)->canAccessAuthorization(auth()->user());
     }
 
     public static function getEloquentQuery(): Builder

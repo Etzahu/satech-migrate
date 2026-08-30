@@ -6,12 +6,13 @@ use App\Mail\PurchaseOrder\Notification;
 use App\Models\PurchaseRequisition;
 use App\Models\PurchaseRequisitionApprovalChain;
 use App\Models\User;
-use App\Services\OrderCalculationService;
 use App\Services\OrderService;
 use App\Services\ProviderEvaluationService;
+use App\Services\PurchaseInformedService;
+use App\Services\PurchaseOrderChainResolver;
+use App\Services\PurchaseOrderFlowService;
 use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
 use Illuminate\Support\Facades\Mail;
-use Money\Money;
 
 class PurchaseOrderStateMachine extends StateMachine
 {
@@ -34,7 +35,12 @@ class PurchaseOrderStateMachine extends StateMachine
 
             'aprobado por gerente de compras' => ['aprobado por gerente solicitante', 'devuelto por gerente solicitante', 'cancelado por gerente solicitante'],
             'aprobado por gerente solicitante' => ['aprobado por DG nivel 1', 'devuelto por DG nivel 1', 'cancelado por DG nivel 1'],
-            'aprobado por DG nivel 1' => ['aprobado por DG nivel 2', 'devuelto por DG nivel 2', 'cancelado por DG nivel 2', 'autorizada para proveedor'],
+            // La liberación de Dirección Administrativa es obligatoria en todo
+            // momento (Operaciones, 18-ago-2026), así que DG nivel 1 ya no puede
+            // saltar directo al proveedor: siempre pasa por aquí.
+            'aprobado por DG nivel 1' => ['liberado por dirección administrativa', 'devuelto por liberación', 'cancelado por liberación'],
+            // El nivel de monto quedó al final del flujo: es la última aprobación.
+            'liberado por dirección administrativa' => ['aprobado por DG nivel 2', 'autorizada para proveedor', 'devuelto por DG nivel 2', 'cancelado por DG nivel 2'],
             'aprobado por DG nivel 2' => ['autorizada para proveedor'],
             'autorizada para proveedor' => ['reabierta para edición'],
 
@@ -42,6 +48,7 @@ class PurchaseOrderStateMachine extends StateMachine
             'devuelto por gerente solicitante' => ['revisión gerente de compras', 'revision por dirección general'],
             'devuelto por DG nivel 1' => ['revisión gerente de compras', 'revision por dirección general'],
             'devuelto por DG nivel 2' => ['revisión gerente de compras', 'revision por dirección general'],
+            'devuelto por liberación' => ['revisión gerente de compras', 'revision por dirección general'],
             'devuelto por administrador' => ['revisión gerente de compras', 'revision por dirección general'],
             'reabierta para edición' => ['revisión gerente de compras', 'revision por dirección general'],
 
@@ -71,18 +78,24 @@ class PurchaseOrderStateMachine extends StateMachine
                 $service = new OrderService;
                 $data = $service->generateDataEmail($model->id, 'revisar');
 
-                $recipients = User::role('gerente_compras')->get();
+                $recipients = User::withRole('gerente_compras')->get();
                 $recipients = $service->getRecipientsArray($recipients);
                 Mail::to($recipients)->send(new Notification($data));
             }],
 
+            // A quién le toca el nivel 2 lo decide el resolver: en los cinco
+            // departamentos operativos es el rol, en el resto la cadena.
             'aprobado por gerente de compras' => [function ($to, $model) {
+                $recipients = app(PurchaseOrderChainResolver::class)->approverEmails($model);
+
+                if ($recipients === []) {
+                    return;
+                }
+
                 $service = new OrderService;
                 $data = $service->generateDataEmail($model->id, 'revisar');
 
-                $recipient = $model->requisition->approvalChain->approver->email;
-
-                Mail::to($recipient)->send(new Notification($data));
+                Mail::to($recipients)->send(new Notification($data));
             }],
 
             'devuelto por gerente de compras' => [function ($to, $model) {
@@ -102,12 +115,16 @@ class PurchaseOrderStateMachine extends StateMachine
                 Mail::to($recipient)->send(new Notification($data));
             }],
             'aprobado por gerente solicitante' => [function ($to, $model) {
+                $recipients = app(PurchaseOrderChainResolver::class)->authorizerEmails($model);
+
+                if ($recipients === []) {
+                    return;
+                }
+
                 $service = new OrderService;
                 $data = $service->generateDataEmail($model->id, 'revision');
 
-                $recipient = $model->requisition->approvalChain->authorizer->email;
-
-                Mail::to($recipient)->send(new Notification($data));
+                Mail::to($recipients)->send(new Notification($data));
             }],
             'devuelto por gerente solicitante' => [function ($to, $model) {
                 $service = new OrderService;
@@ -140,29 +157,63 @@ class PurchaseOrderStateMachine extends StateMachine
                 $model->final_delivery_date = now()->addDays((int) $model->delivery_days);
                 $model->saveQuietly();
             }],
+            // Antes este aviso iba al nivel de monto. Ahora el siguiente paso es
+            // siempre la liberación, así que el correo va a quien libera; el
+            // aviso por monto se movió a `liberado por dirección administrativa`.
             'aprobado por DG nivel 1' => [function ($to, $model) {
                 $service = new OrderService;
                 $data = $service->generateDataEmail($model->id, 'revisar');
-                $recipients = User::role('autoriza_nivel-2-orden_compra')->get();
-                $recipients = $service->getRecipientsArray($recipients);
-                $maxAmount = 0;
-                if ($model->currency == 'USD') {
-                    // $maxAmount = Money::USD(1500000);
-                    $maxAmount = 15000; // $15,000
-                }
-                if ($model->currency == 'MXN') {
-                    // $maxAmount = Money::MXN(30000000);
-                    $maxAmount = 300000; // 300,000
-                }
-                $service = new OrderCalculationService($model->id);
-                $total = $service->getTotal();
 
-                if (in_array($model->provider->id, [427, 425, 332])) {
+                $recipients = $service->getRecipientsArray(User::withRole('libera_orden_compra')->get());
+
+                if ($recipients === []) {
                     return;
                 }
-                if ($total->isGreaterThan($maxAmount)) {
-                    Mail::to($recipients)->send(new Notification($data));
+
+                Mail::to($recipients)->send(new Notification($data));
+            }],
+            // Última aprobación: solo las órdenes que superan el límite siguen a
+            // Dirección General CA. Las demás las cierra advanceAfterRelease().
+            'liberado por dirección administrativa' => [function ($to, $model) {
+                // El correo pide "la notificación de la liberación", así que el
+                // aviso al nivel informativo va aquí y no en el cierre: arriba
+                // del límite el cierre todavía espera a Dirección General CA y
+                // puede tardar días más.
+                $informed = app(PurchaseInformedService::class)->emailsFor($model->requisition);
+
+                if ($informed !== []) {
+                    $service = new OrderService;
+                    $data = $service->generateDataEmail($model->id, 'liberada');
+
+                    Mail::to($informed)->send(new Notification($data));
                 }
+
+                if (! (new PurchaseOrderFlowService)->requiresAmountApproval($model)) {
+                    return;
+                }
+
+                $service = new OrderService;
+                $data = $service->generateDataEmail($model->id, 'revisar');
+
+                $recipients = $service->getRecipientsArray(User::withRole('autoriza_nivel-2-orden_compra')->get());
+
+                if ($recipients === []) {
+                    return;
+                }
+
+                Mail::to($recipients)->send(new Notification($data));
+            }],
+            'devuelto por liberación' => [function ($to, $model) {
+                $service = new OrderService;
+                $data = $service->generateDataEmail($model->id, 'devuelto por dirección administrativa');
+
+                Mail::to($model->purchaser->email)->send(new Notification($data));
+            }],
+            'cancelado por liberación' => [function ($to, $model) {
+                $service = new OrderService;
+                $data = $service->generateDataEmail($model->id, 'cancelado por dirección administrativa');
+
+                Mail::to($model->purchaser->email)->send(new Notification($data));
             }],
             'devuelto por DG nivel 1' => [function ($to, $model) {
                 $service = new OrderService;
@@ -200,7 +251,12 @@ class PurchaseOrderStateMachine extends StateMachine
             'revision por dirección general' => [function ($to, $model) {
                 $service = new OrderService;
                 $data = $service->generateDataEmail($model->id, 'revision');
-                $recipient = User::find(106)->email;
+                $recipient = User::withRole('aprueba_orden_especial')->pluck('email')->all();
+
+                if ($recipient === []) {
+                    return;
+                }
+
                 Mail::to($recipient)->send(new Notification($data));
             }],
 
@@ -253,7 +309,7 @@ class PurchaseOrderStateMachine extends StateMachine
                 $recipient = $model->purchaser->email;
 
                 // Enviar a comprador y al gerente de compras
-                $purchaseManagers = User::role('gerente_compras')->pluck('email')->toArray();
+                $purchaseManagers = User::withRole('gerente_compras')->pluck('email')->toArray();
 
                 Mail::to($recipient)->cc($purchaseManagers)->send(new Notification($data));
             }],
@@ -287,7 +343,7 @@ class PurchaseOrderStateMachine extends StateMachine
                 $recipient = $model->purchaser->email;
 
                 // Enviar a comprador, al gerente de compras y a los nuevos aprobadores
-                $purchaseManagers = User::role('gerente_compras')->pluck('email')->toArray();
+                $purchaseManagers = User::withRole('gerente_compras')->pluck('email')->toArray();
                 $ccEmails = array_merge($purchaseManagers, [
                     $newChain?->approver->email,
                     $newChain?->authorizer->email,
@@ -310,14 +366,16 @@ class PurchaseOrderStateMachine extends StateMachine
                 $service = new OrderService;
                 $data = $service->generateDataEmail($model->id, 'reabierta para edición');
                 $recipient = $model->purchaser->email;
-                $moreUsers = [];
-                $moreUsers[] = $model->requisition->approvalChain->requester->email;
-                $moreUsers[] = $model->requisition->approvalChain->authorizer->email;
-                $moreUsers[] = User::find(106)->email;
-                $moreUsers[] = User::role('gerente_compras')->first()->email;
+                $moreUsers = array_merge([
+                    $model->requisition->approvalChain?->requester?->email,
+                    $model->requisition->approvalChain?->authorizer?->email,
+                ],
+                    User::withRole('libera_orden_compra')->pluck('email')->all(),
+                    User::withRole('gerente_compras')->pluck('email')->all(),
+                );
 
                 Mail::to($recipient)
-                    ->cc($moreUsers)
+                    ->cc(array_values(array_unique(array_filter($moreUsers))))
                     ->send(new Notification($data));
             }],
         ];

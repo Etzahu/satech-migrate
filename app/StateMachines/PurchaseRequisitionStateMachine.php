@@ -72,7 +72,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
             ],
             'revisión por almacén' => [
                 function ($to, $model) {
-                    $users = User::role('revisa_almacen_requisicion_compra')->get();
+                    $users = User::withRole('revisa_almacen_requisicion_compra')->get();
                     $service = new PurchaseRequisitionCreationService();
                     $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('revisar existencia', $model);
@@ -133,12 +133,18 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     Mail::to($recipient)->send(new Notification($data));
                 }
             ],
+            // Sin autorizador la requisición no espera a nadie —el nivel se
+            // eliminó en Soldadura y Servicios Técnicos— y PurchaseRequisitionFlowService
+            // la avanza sola: este correo se queda sin destinatario.
             'aprobado por gerencia' => [
                 function ($to, $model) {
-                    // $recipient = User::role('autoriza_requisicion_compra')->get();
-                    $service = new PurchaseRequisitionCreationService();
+                    $recipient = $model->approvalChain?->authorizer;
 
-                    $recipient = $model->approvalChain->authorizer;
+                    if (! $recipient) {
+                        return;
+                    }
+
+                    $service = new PurchaseRequisitionCreationService();
                     $data = $service->generateDataForEmail('aprobar', $model);
                     Mail::to($recipient)->send(new Notification($data));
                 }
@@ -238,7 +244,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'cerrada' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $moreUsers[] = User::role('gerente_compras')->first()->email;
+                    $moreUsers[] = User::withRole('gerente_compras')->value('email');
                     $service = new PurchaseRequisitionCreationService();
                     $data = $service->generateDataForEmail('cerrada', $model);
                     Mail::to($recipient)

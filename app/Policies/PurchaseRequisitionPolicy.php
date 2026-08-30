@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\PurchaseRequisition;
+use App\Services\PurchaseInformedService;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class PurchaseRequisitionPolicy
@@ -40,19 +41,31 @@ class PurchaseRequisitionPolicy
 
     /**
      * Determine whether the user can view the model.
+     *
+     * El informativo entra por su propia rama: no depende del permiso base ni
+     * de estar en la cadena, y sin esto la bandeja lista la requisición pero
+     * abrirla devuelve 403.
      */
     public function view(User $user, PurchaseRequisition $purchaseRequisition): bool
     {
-        $usersRoles = [];
-        $usersRoles = User::role(['revisa_almacen_requisicion_compra', 'gerente_compras', 'comprador'])->get()->pluck('id')->toArray();
-        $allowedIds = [];
+        if (app(PurchaseInformedService::class)->isInformed($user, $purchaseRequisition)) {
+            return true;
+        }
 
-        $allowedIds = $purchaseRequisition->approvalChain->only(['requester_id', 'reviewer_id', 'approver_id', 'authorizer_id']);
-        $allowedIds = array_merge($allowedIds, $usersRoles);
-        $allowedIds = array_values($allowedIds);
-        $allowedIds[] = 106;
-        $allowedIds[] = 199;
-        $allowedIds[] = 306;
+        // Antes venían tres ids sueltos: 106 (Dirección Administrativa), 199 y
+        // 306 (las cuentas de sistemas). Cada uno se sostiene solo por su rol,
+        // así que un cambio de persona ya no obliga a tocar código.
+        $usersRoles = User::withRole([
+            'revisa_almacen_requisicion_compra',
+            'gerente_compras',
+            'comprador',
+            'libera_orden_compra',
+            'super_admin',
+            'administrador_compras',
+        ])->pluck('id')->toArray();
+
+        $allowedIds = $purchaseRequisition->approvalChain?->only(['requester_id', 'reviewer_id', 'approver_id', 'authorizer_id']) ?? [];
+        $allowedIds = array_values(array_filter(array_merge($allowedIds, $usersRoles)));
         $allowedIds[] = $purchaseRequisition->purchaser?->id;
 
         return $user->can('view_purchase::requisition::requester') && in_array($user->id, $allowedIds);

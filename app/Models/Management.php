@@ -20,10 +20,10 @@ class Management extends Model
     protected $table = 'management';
     protected $fillable = [
         'name',
-        'depto',
         'acronym',
         'restriction_requisition',
         'responsible_id',
+        'purchase_order_flow',
     ];
 
     /**
@@ -34,6 +34,7 @@ class Management extends Model
     protected $casts = [
         'id' => 'integer',
         'responsible_id' => 'integer',
+        'purchase_order_flow' => 'boolean',
     ];
 
     public function projects()
@@ -49,5 +50,16 @@ class Management extends Model
     public function users(): HasMany
     {
         return $this->hasMany(User::class, 'management_id');
+    }
+
+    /**
+     * Reglas del nivel informativo de esta gerencia.
+     *
+     * Se mantienen desde el relation manager de ManagementResource: cambiar
+     * quién está informado no debe requerir un despliegue.
+     */
+    public function informedRules(): HasMany
+    {
+        return $this->hasMany(ManagementInformedRule::class);
     }
 }

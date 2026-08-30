@@ -56,7 +56,7 @@ class View extends ViewRecord
                 ->schema([
                     Select::make('responsible')
                         ->label('Responsable')
-                        ->options(User::role('comprador')->pluck('name', 'id'))
+                        ->options(User::withRole('comprador')->pluck('name', 'id'))
                         ->required(),
                 ])
                 ->action(function (array $data): void {

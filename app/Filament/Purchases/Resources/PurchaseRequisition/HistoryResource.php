@@ -51,6 +51,7 @@ class HistoryResource extends Resource
             auth()->user()->hasRole('autoriza_requisicion_compra') ||
             auth()->user()->hasRole('gerente_compras') ||
             auth()->user()->hasRole('visor_requisiciones') ||
+            auth()->user()->hasRole('informativo_compras') ||
             auth()->user()->hasRole('comprador') ||
             auth()->user()->hasRole('administrador_compras');
     }
@@ -167,7 +168,7 @@ class HistoryResource extends Resource
                     ->slideOver()
                     ->modalWidth(Width::FiveExtraLarge)
                     ->visible(
-                        auth()->user()->id == 106 ||
+                        auth()->user()->hasRole('libera_orden_compra') ||
                             auth()->user()->hasRole('comprador') ||
                             auth()->user()->hasRole('gerente_compras') ||
                             auth()->user()->hasRole('super_admin') ||
