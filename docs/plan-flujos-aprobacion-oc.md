@@ -516,9 +516,9 @@ pruebas de flujo.
 
 | # | Punto del correo | Estado | Entrega |
 |---|---|---|---|
-| 1 | Nivel informativo: ver la OC + correo al liberarse | ✅ **Aplicada** | Fase C |
-| 2 | Denise libera siempre (alcance global) | ✅ **Aplicada** | Fase B |
-| 3 | Allier al final, solo arriba del límite | ✅ **Aplicada** | Fase B — ruta especial exenta (§11.11) |
+| 1 | Nivel informativo: ver la OC + correo al liberarse | ⚠️ **Aplicada en el flujo normal** | Fase C — la ruta especial no lo dispara (§11.11) |
+| 2 | Denise libera siempre (alcance global) | ⚠️ **Aplicada en el flujo normal** | Fase B — la ruta especial no pasa por liberación (§11.11) |
+| 3 | Allier al final, solo arriba del límite | ⚠️ **Aplicada en el flujo normal** | Fase B — la ruta especial lo esquiva: 16 órdenes lo pedían (§11.11) |
 | 4 | Jennifer informativa en servicios de Manufactura | ✅ **Aplicada** | Fase C |
 | 5 | Quitar el último nivel de autorización en Soldadura y ST | ✅ **Aplicada** | Fase D2 |
 | 6 | En OC: aprueba Alan, autoriza Sergio | ✅ **Aplicada** | Fase D1 |
@@ -1139,22 +1139,52 @@ son bajas reales**, no flags mal puestos.
     patrón Kevin→Sergio) y sacaría a Denise del nivel 1 en ALM, SG, ADM, COM y
     DNT. Por eso la bandera de alcance en `management`.
 
-### Fuera de alcance, para levantar aparte
+### Fuera del alcance implementado — requieren decisión del área
 
-11. ~~**La ruta especial esquiva a Allier.**~~ **Excepción deliberada del área
-    (28-ago-2026, Etzahu).** Los 20 proveedores con `approval_chain = 'especial'`
-    van de `revision por dirección general` directo a `autorizada para proveedor`,
-    con Denise como actor, y **conservan ese flujo tal como está**: el punto 3
-    del correo no aplica a esta ruta.
+11. **La ruta especial incumple los tres puntos del correo sobre la OC.**
+    Reencuadrado el **30-ago-2026** tras probarlo: lo que aquí se había asentado
+    como "excepción deliberada del área" es más ancho de lo que decía, y no es
+    una exención configurada sino un hueco de la máquina de estados.
 
-    Alcance medido antes de decidirlo: **46 de 134** órdenes que la recorrieron
-    superaron el límite, y las 4 vivas en `revision por dirección general` lo
-    superan también. No es un defecto pendiente.
+    Los 20 proveedores con `approval_chain = 'especial'` van de `borrador` a
+    `revision por dirección general` y de ahí directo a `autorizada para
+    proveedor`. Medido con el arnés de pruebas, sobre el proveedor **535**
+    —especial pero **no** exento del nivel de monto— y una orden de 500,000 MXN:
 
-    Queda **escrito en la página *Flujo del proceso*** para que no sea una
-    sorpresa cuando alguien pregunte por qué una orden grande no pasó por
-    Dirección General CA. `getProgressSpecialAttribute()` ya era consistente: no
-    pinta la firma de monto en estas órdenes.
+    | Punto del correo | Ruta especial |
+    |---|---|
+    | Liberación de Denise "en todo momento" | `canBe('liberado por dirección administrativa')` = **false**. La transición no existe desde ese estado. |
+    | Allier arriba del límite | `requiresAmountApproval()` = **true** — y la orden sale igual. La ruta nunca consulta la regla. |
+    | Correo al informativo al liberar | **No llega nada.** Sin liberación no hay hook; el correo de cierre no incluye al informativo. |
+
+    Es decir: la regla de monto **sí** se evalúa correctamente y **sí** dice que
+    hace falta Dirección General CA. Simplemente nadie la mira en esta ruta. Eso
+    es distinto de una exención, que sería `requiresAmountApproval()` devolviendo
+    false a propósito.
+
+    **Alcance real, medido el 30-ago-2026** (la cifra anterior de "46 de 134" no
+    se pudo reproducir; esta se calcula con la propia regla del sistema sobre las
+    órdenes cuyo histórico incluye `revision por dirección general`):
+
+    - **140** órdenes recorrieron la ruta especial.
+    - En **16** de ellas la regla de monto pedía a Allier. Ninguna pasó por él.
+    - **4 siguen sin cerrar**, y las cuatro lo piden.
+    - La mayor es de **8,763,552 MXN** — 29 veces el límite de 300,000.
+
+    Denise sí interviene en esta ruta, pero como `aprueba_orden_especial`, que es
+    saltarse la cadena entera; no es el nivel de liberación y no deja su firma en
+    ese renglón del PDF.
+
+    **Qué hacer:** decidirlo con Jorge, no aquí. Conservarlo es defendible —la
+    ruta existe para compras urgentes— pero es una decisión suya, y hasta hoy no
+    la ha tomado con esta información enfrente. Si se decide cerrar el hueco, el
+    cambio es ofrecer `liberado por dirección administrativa` como destino desde
+    `revision por dirección general` y dejar que `advanceAfterRelease()` resuelva
+    el resto; el resolver y los correos ya funcionan.
+
+    Queda **escrito en la página *Flujo del proceso***.
+    `getProgressSpecialAttribute()` es consistente con el comportamiento actual:
+    no pinta la firma de monto en estas órdenes.
 12. **El PDF ya imprime el firmante equivocado.** `getProgressAttribute()`
     resuelve el nombre en vivo desde la cadena, mientras `state_histories.responsible_id`
     guarda quién firmó de verdad: difieren en **880 de 2,268** aprobaciones (38.8%)
