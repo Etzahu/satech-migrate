@@ -10,7 +10,6 @@
     "require": {
         "php": "^8.2",
         "asantibanez/laravel-eloquent-state-machines": "^6.0",
-        "backstage/mails": "^3.0",
         "barryvdh/laravel-dompdf": "^3.0",
         "bezhansalleh/filament-shield": "^4.0",
         "brick/money": "^0.10.1",

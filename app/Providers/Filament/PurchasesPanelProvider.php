@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\RoleResource;
 use App\Http\Middleware\CompanySession;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Enums\ThemeMode;
@@ -50,6 +51,9 @@ class PurchasesPanelProvider extends PanelProvider
             ])
             ->bootUsing(function (Panel $panel) {})
             ->discoverResources(in: app_path('Filament/Purchases/Resources'), for: 'App\\Filament\\Purchases\\Resources')
+            ->resources([
+                RoleResource::class,
+            ])
             ->discoverPages(in: app_path('Filament/Purchases/Pages'), for: 'App\\Filament\\Purchases\\Pages')
             ->pages([])
             ->discoverWidgets(in: app_path('Filament/Purchases/Widgets'), for: 'App\\Filament\\Purchases\\Widgets')

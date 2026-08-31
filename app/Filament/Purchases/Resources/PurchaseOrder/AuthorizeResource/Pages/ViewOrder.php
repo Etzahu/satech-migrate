@@ -54,7 +54,7 @@ class ViewOrder extends ViewRecord
 
                     // Antes el select aprobaba saltando directo a `autorizada para
                     // proveedor`, así que `aprobado por DG nivel 2` no se registró
-                    // nunca y la firma de Dirección General CA salía vacía en el
+                    // nunca y la firma de Dirección General salía vacía en el
                     // PDF de toda orden que superara el límite. Ahora deja traza.
                     if ($data['response'] === 'aprobado por DG nivel 2') {
                         $this->record->status()->transitionTo('autorizada para proveedor');

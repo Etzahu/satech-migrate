@@ -20,7 +20,7 @@ class PurchaseOrderFlowService
     public const PROVEEDORES_EXENTOS = [427, 425, 332];
 
     /**
-     * ¿La orden necesita la aprobación por monto de Dirección General CA?
+     * ¿La orden necesita la aprobación por monto de Dirección General?
      *
      * Se evalúa después de la liberación: es la última aprobación del flujo.
      */
@@ -36,7 +36,7 @@ class PurchaseOrderFlowService
     /**
      * Avanza la orden después de que Dirección Administrativa la liberó.
      *
-     * Si supera el límite se queda esperando a Dirección General CA; si no,
+     * Si supera el límite se queda esperando a Dirección General; si no,
      * la liberación es el último paso y la orden queda lista para el proveedor.
      */
     public function advanceAfterRelease(PurchaseOrder $order): void

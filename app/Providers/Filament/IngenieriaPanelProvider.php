@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\RoleResource;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -32,6 +33,9 @@ class IngenieriaPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Ingenieria/Resources'), for: 'App\\Filament\\Ingenieria\\Resources')
+            ->resources([
+                RoleResource::class,
+            ])
             ->discoverPages(in: app_path('Filament/Ingenieria/Pages'), for: 'App\\Filament\\Ingenieria\\Pages')
             ->pages([
                 Pages\Dashboard::class,

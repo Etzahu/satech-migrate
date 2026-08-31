@@ -203,7 +203,7 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
     }
 
     /**
-     * Bandeja del nivel de monto (Dirección General CA), ahora al final del
+     * Bandeja del nivel de monto (Dirección General), ahora al final del
      * flujo: solo ve órdenes que Dirección Administrativa ya liberó.
      */
     public function scopeAuthorize(Builder $query)
@@ -408,7 +408,7 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
             'approver' => ['title' => 'Aprueba', 'name' => $firmante['aprobado por gerente solicitante'] ?? $resolver->approverName($this), 'job-pdf' => 'Gerente solicitante', 'date' => $data['aprobado por gerente solicitante']],
             'authorizer-1' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 1'] ?? $resolver->authorizerName($this) ?? 'N/A', 'job-pdf' => 'Dirección general', 'date' => $data['aprobado por DG nivel 1']],
             'releaser' => ['title' => 'Libera', 'name' => $firmante['liberado por dirección administrativa'] ?? $releaser, 'job-pdf' => 'Dirección administrativa', 'date' => $data['liberado por dirección administrativa']],
-            'authorizer-2' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 2'] ?? $dgLevel2, 'job-pdf' => 'Dirección general CA', 'date' => $data['aprobado por DG nivel 2']],
+            'authorizer-2' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 2'] ?? $dgLevel2, 'job-pdf' => 'Dirección General (monto)', 'date' => $data['aprobado por DG nivel 2']],
         ];
 
         // El nivel de monto es la última aprobación y solo aplica a las órdenes

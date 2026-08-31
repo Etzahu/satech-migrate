@@ -516,9 +516,9 @@ pruebas de flujo.
 
 | # | Punto del correo | Estado | Entrega |
 |---|---|---|---|
-| 1 | Nivel informativo: ver la OC + correo al liberarse | ⚠️ **Aplicada en el flujo normal** | Fase C — la ruta especial no lo dispara (§11.11) |
-| 2 | Denise libera siempre (alcance global) | ⚠️ **Aplicada en el flujo normal** | Fase B — la ruta especial no pasa por liberación (§11.11) |
-| 3 | Allier al final, solo arriba del límite | ⚠️ **Aplicada en el flujo normal** | Fase B — la ruta especial lo esquiva: 16 órdenes lo pedían (§11.11) |
+| 1 | Nivel informativo: ver la OC + correo al liberarse | ✅ **Aplicada** | Fase C — pendiente decidir si aplica a la ruta especial (§11.11) |
+| 2 | Denise libera siempre (alcance global) | ✅ **Aplicada** | Fase B — en la ruta especial ella firma como autorización, no liberación |
+| 3 | Allier al final, solo arriba del límite | ✅ **Aplicada** | Fase B — la ruta especial queda exenta por regla del área (§11.11) |
 | 4 | Jennifer informativa en servicios de Manufactura | ✅ **Aplicada** | Fase C |
 | 5 | Quitar el último nivel de autorización en Soldadura y ST | ✅ **Aplicada** | Fase D2 |
 | 6 | En OC: aprueba Alan, autoriza Sergio | ✅ **Aplicada** | Fase D1 |
@@ -530,7 +530,7 @@ pruebas de flujo.
 **El estado `aprobado por DG nivel 2` nunca se registra.** La pantalla de N4
 transiciona directo a `autorizada para proveedor`. Hay 0 registros de ese estado
 sobre 2,302 órdenes autorizadas, aunque sí hay 12 devoluciones del mismo nivel.
-Consecuencia: en el PDF, la firma "Dirección general CA" siempre aparece como
+Consecuencia: en el PDF, la firma del nivel de monto siempre aparece como
 *Sin respuesta* en órdenes que superan el límite.
 
 **`getProgressAttribute()` resuelve el nombre con `->first()->name`** sin
@@ -1141,50 +1141,34 @@ son bajas reales**, no flags mal puestos.
 
 ### Fuera del alcance implementado — requieren decisión del área
 
-11. **La ruta especial incumple los tres puntos del correo sobre la OC.**
-    Reencuadrado el **30-ago-2026** tras probarlo: lo que aquí se había asentado
-    como "excepción deliberada del área" es más ancho de lo que decía, y no es
-    una exención configurada sino un hueco de la máquina de estados.
+11. **La ruta especial: exenta del nivel de monto, por regla del área.**
+    Confirmado por Etzahu el **30-ago-2026**: los proveedores especiales **no
+    respetan el límite de monto y no pasan por Allier**, y la lista la define el
+    gerente de compras. Quién entra a esa lista es decisión suya: el giro del
+    proveedor —material, aduana, flete, intercompañía— **no es criterio** y no
+    debe usarse para cuestionar la marca.
 
     Los 20 proveedores con `approval_chain = 'especial'` van de `borrador` a
     `revision por dirección general` y de ahí directo a `autorizada para
-    proveedor`. Medido con el arnés de pruebas, sobre el proveedor **535**
-    —especial pero **no** exento del nivel de monto— y una orden de 500,000 MXN:
+    proveedor`, con Denise como actora. **Es el comportamiento correcto.**
 
-    | Punto del correo | Ruta especial |
-    |---|---|
-    | Liberación de Denise "en todo momento" | `canBe('liberado por dirección administrativa')` = **false**. La transición no existe desde ese estado. |
-    | Allier arriba del límite | `requiresAmountApproval()` = **true** — y la orden sale igual. La ruta nunca consulta la regla. |
-    | Correo al informativo al liberar | **No llega nada.** Sin liberación no hay hook; el correo de cierre no incluye al informativo. |
+    Medido el 30-ago-2026, para dimensionar y no para cuestionarlo: 140 órdenes
+    recorrieron la ruta; en 16 de ellas la regla general de monto habría pedido
+    a Dirección General, y correctamente no se les pidió. Cuatro siguen abiertas.
 
-    Es decir: la regla de monto **sí** se evalúa correctamente y **sí** dice que
-    hace falta Dirección General CA. Simplemente nadie la mira en esta ruta. Eso
-    es distinto de una exención, que sería `requiresAmountApproval()` devolviendo
-    false a propósito.
+    Nota de implementación: `requiresAmountApproval()` devuelve `true` para esas
+    órdenes, pero la ruta nunca lo consulta, así que no cambia el
+    comportamiento. `getProgressSpecialAttribute()` es consistente: no pinta la
+    firma de monto en estas órdenes.
 
-    **Alcance real, medido el 30-ago-2026** (la cifra anterior de "46 de 134" no
-    se pudo reproducir; esta se calcula con la propia regla del sistema sobre las
-    órdenes cuyo histórico incluye `revision por dirección general`):
-
-    - **140** órdenes recorrieron la ruta especial.
-    - En **16** de ellas la regla de monto pedía a Allier. Ninguna pasó por él.
-    - **4 siguen sin cerrar**, y las cuatro lo piden.
-    - La mayor es de **8,763,552 MXN** — 29 veces el límite de 300,000.
-
-    Denise sí interviene en esta ruta, pero como `aprueba_orden_especial`, que es
-    saltarse la cadena entera; no es el nivel de liberación y no deja su firma en
-    ese renglón del PDF.
-
-    **Qué hacer:** decidirlo con Jorge, no aquí. Conservarlo es defendible —la
-    ruta existe para compras urgentes— pero es una decisión suya, y hasta hoy no
-    la ha tomado con esta información enfrente. Si se decide cerrar el hueco, el
-    cambio es ofrecer `liberado por dirección administrativa` como destino desde
-    `revision por dirección general` y dejar que `advanceAfterRelease()` resuelva
-    el resto; el resolver y los correos ya funcionan.
+    **Lo único abierto de esta ruta** es si el nivel informativo debe enterarse.
+    En el flujo normal el aviso va colgado de la liberación, y esta ruta no la
+    tiene, así que hoy el informativo no recibe nada por las órdenes de
+    proveedores especiales. El correo de Jorge pide "la notificación de la
+    liberación", que aquí no existe. Preguntarle si quiere que se le avise de
+    todos modos; si la respuesta es sí, el aviso se cuelga del cierre.
 
     Queda **escrito en la página *Flujo del proceso***.
-    `getProgressSpecialAttribute()` es consistente con el comportamiento actual:
-    no pinta la firma de monto en estas órdenes.
 12. **El PDF ya imprime el firmante equivocado.** `getProgressAttribute()`
     resuelve el nombre en vivo desde la cadena, mientras `state_histories.responsible_id`
     guarda quién firmó de verdad: difieren en **880 de 2,268** aprobaciones (38.8%)

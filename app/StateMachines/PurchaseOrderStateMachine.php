@@ -173,11 +173,11 @@ class PurchaseOrderStateMachine extends StateMachine
                 Mail::to($recipients)->send(new Notification($data));
             }],
             // Última aprobación: solo las órdenes que superan el límite siguen a
-            // Dirección General CA. Las demás las cierra advanceAfterRelease().
+            // Dirección General. Las demás las cierra advanceAfterRelease().
             'liberado por dirección administrativa' => [function ($to, $model) {
                 // El correo pide "la notificación de la liberación", así que el
                 // aviso al nivel informativo va aquí y no en el cierre: arriba
-                // del límite el cierre todavía espera a Dirección General CA y
+                // del límite el cierre todavía espera a Dirección General y
                 // puede tardar días más.
                 $informed = app(PurchaseInformedService::class)->emailsFor($model->requisition);
 

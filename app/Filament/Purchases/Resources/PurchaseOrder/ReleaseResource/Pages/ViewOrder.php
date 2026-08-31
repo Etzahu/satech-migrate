@@ -55,7 +55,7 @@ class ViewOrder extends ViewRecord
 
                     // Si la orden no supera el límite, la liberación es el último
                     // paso del flujo; si lo supera se queda esperando a
-                    // Dirección General CA, que es la última aprobación.
+                    // Dirección General, que es la última aprobación.
                     if ($data['response'] === 'liberado por dirección administrativa') {
                         (new PurchaseOrderFlowService)->advanceAfterRelease($this->record);
                     }

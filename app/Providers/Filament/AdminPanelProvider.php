@@ -73,7 +73,6 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
-                MailsPlugin::make(),
                 FilamentErrorMailerPlugin::make(),
             ]);
     }

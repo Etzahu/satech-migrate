@@ -277,14 +277,14 @@ class ProcessFlow extends Page
                 [
                     'id' => 'liberada', 'label' => 'Liberado por Dir. Administrativa', 'icon' => '🔑', 'type' => 'approval',
                     'col' => 5, 'row' => 1,
-                    'actor' => 'Dirección General CA / Sistema',
-                    'description' => 'Dirección Administrativa liberó la orden. Si el total supera $300,000 MXN o $15,000 USD, falta la última aprobación de Dirección General CA; de lo contrario la orden queda autorizada para el proveedor. Algunos proveedores específicos están exentos del nivel de monto.',
+                    'actor' => 'Dirección General / Sistema',
+                    'description' => 'Dirección Administrativa liberó la orden. Si el total supera $300,000 MXN o $15,000 USD, falta la última aprobación de Dirección General; de lo contrario la orden queda autorizada para el proveedor. Algunos proveedores específicos están exentos del nivel de monto.',
                     'notify' => 'Correo a DG nivel 2 solo si el monto supera el límite',
                 ],
                 [
                     'id' => 'apr_dg2', 'label' => 'Aprobado por DG nivel 2', 'icon' => '🏛️', 'type' => 'approval',
                     'col' => 6, 'row' => 1,
-                    'actor' => 'Dirección General CA',
+                    'actor' => 'Dirección General',
                     'description' => 'Última aprobación del flujo, requerida solo para montos que superan el límite establecido.',
                     'notify' => null,
                 ],
@@ -307,7 +307,7 @@ class ProcessFlow extends Page
                     'id' => 'rev_dg_especial', 'label' => 'Revisión por Dirección General', 'icon' => '⭐', 'type' => 'review',
                     'col' => 2, 'row' => 0,
                     'actor' => 'Dirección General',
-                    'description' => 'Flujo especial: cuando el proveedor pertenece a la lista especial definida por el gerente de compras, la orden pasa directamente a revisión de Dirección General, sin el resto de aprobaciones intermedias. Por decisión del área, esta ruta tampoco pasa por el nivel de monto: aunque supere los $15,000 USD o $300,000 MXN, no requiere la aprobación de Dirección General CA.',
+                    'description' => 'Flujo especial: cuando el proveedor pertenece a la lista especial definida por el gerente de compras, la orden pasa directamente a revisión de Dirección General, sin el resto de aprobaciones intermedias. Por decisión del área, esta ruta tampoco pasa por el nivel de monto: aunque supere los $15,000 USD o $300,000 MXN, no requiere la aprobación de Dirección General.',
                     'notify' => 'Correo a Dirección General',
                 ],
                 [
