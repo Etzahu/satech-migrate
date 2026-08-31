@@ -288,7 +288,7 @@ Aplicada el 28-ago-2026. Entrega los puntos 1 y 4 del correo.
 | `PurchaseRequisition/HistoryResource.php` + `…/Pages/ManagePR.php` | Ídem |
 | `PurchaseOrderPolicy.php` | `view()` acepta al informativo |
 | `PurchaseRequisitionPolicy.php` | `view()` sale temprano si es informativo |
-| `PurchaseOrderStateMachine.php` | Aviso al informativo en `liberado por dirección administrativa`, antes del corte por monto |
+| `OrderService::getUserForEmailFinish()` | Aviso al informativo en el cierre de la orden (§11.7, corregido el 30-ago) |
 | `PurchaserResource.php` | Prefijo `view_informed` para Shield |
 | `ManagementResource.php` | Registra el relation manager |
 
@@ -516,7 +516,7 @@ pruebas de flujo.
 
 | # | Punto del correo | Estado | Entrega |
 |---|---|---|---|
-| 1 | Nivel informativo: ver la OC + correo al liberarse | ✅ **Aplicada** | Fase C — pendiente decidir si aplica a la ruta especial (§11.11) |
+| 1 | Nivel informativo: ver la OC + correo al liberarse | ✅ **Aplicada** | Fase C — el aviso va en el cierre; cubre también la ruta especial (§11.7) |
 | 2 | Denise libera siempre (alcance global) | ✅ **Aplicada** | Fase B — en la ruta especial ella firma como autorización, no liberación |
 | 3 | Allier al final, solo arriba del límite | ✅ **Aplicada** | Fase B — la ruta especial queda exenta por regla del área (§11.11) |
 | 4 | Jennifer informativa en servicios de Manufactura | ✅ **Aplicada** | Fase C |
@@ -927,11 +927,11 @@ contradicen entre sí.
 
 ### 7.4 Correos
 
-- **Orden:** el aviso va en el hook de `liberado por dirección administrativa`
-  ([PurchaseOrderStateMachine.php:163]), no en `getUserForEmailFinish()`. El
-  correo pide "la notificación de la liberación", y arriba de 15K USD la
-  liberación ya no es el cierre: enganchar el aviso al cierre lo retrasaría días
-  sin motivo.
+- **Orden:** el aviso va en `getUserForEmailFinish()`, o sea en el hook de
+  `autorizada para proveedor`. "Liberada" aquí significa que la orden salió al
+  proveedor, no la firma de Dirección Administrativa (§11.7). Por venir del
+  cierre cubre también la ruta de proveedores especiales, que no tiene nivel de
+  liberación pero sí termina en ese estado.
 - **Requisición:** solo bandeja, **sin correo**. El correo explícito se pide
   únicamente para la orden; un aviso por cada requisición de la gerencia es
   ruido. Confirmable con Jorge.
@@ -1107,10 +1107,25 @@ son bajas reales**, no flags mal puestos.
    **Desde que sale de `borrador`.** El "únicamente" de Jorge restringe el *tipo*
    de permiso —ver, no aprobar—, no el momento; y el propósito de Jennifer
    ("evitar triangular información") se pierde si solo lo ve al final.
-7. ~~¿Qué correo dispara el aviso al informativo?~~ **El de la liberación**, en el
-   hook de `liberado por dirección administrativa`, no el de cierre: arriba de
-   15K USD el cierre puede tardar días más y el correo pide literalmente la
-   notificación de la liberación. En requisición, **sin correo**: solo bandeja.
+7. ~~¿Qué correo dispara el aviso al informativo?~~ **El del cierre**, dentro de
+   `getUserForEmailFinish()`. *Corregido el 30-ago-2026 por Etzahu, revirtiendo
+   la decisión del 28-ago.* "Liberar" en el vocabulario de la casa significa que
+   la orden **salió al proveedor** —la pestaña *Liberadas* de asignación filtra
+   por `cerrada`—, no la firma de Dirección Administrativa; y cuando Jorge
+   escribió "la notificación de la liberación de la orden", ese nivel todavía no
+   existía: lo pedía en el punto siguiente del mismo correo.
+
+   La decisión anterior colgaba el aviso de `liberado por dirección
+   administrativa` para que no se retrasara arriba de 15K USD. El argumento se
+   da vuelta: enterarse tarde de algo que ya ocurrió es mejor que enterarse
+   pronto de una orden que Dirección General todavía puede devolver.
+
+   **Cierra de paso el hueco de la ruta especial** (§11.11): esas órdenes no
+   tienen nivel de liberación pero sí llegan a `autorizada para proveedor`, así
+   que el informativo pasa a recibirlas sin código adicional. Verificado con el
+   arnés: 46 de 46 casos del flujo normal y las dos corridas de la ruta especial.
+
+   En requisición, **sin correo**: solo bandeja.
 13. ~~¿El informativo es solo de OC o también de requisición?~~ **Las dos, para
     las cinco gerencias.** El correo de Jorge solo menciona la OC y el de Alan
     pide las dos para Jennifer; Etzahu extendió el alcance a los cinco. Elimina
@@ -1161,12 +1176,13 @@ son bajas reales**, no flags mal puestos.
     comportamiento. `getProgressSpecialAttribute()` es consistente: no pinta la
     firma de monto en estas órdenes.
 
-    **Lo único abierto de esta ruta** es si el nivel informativo debe enterarse.
-    En el flujo normal el aviso va colgado de la liberación, y esta ruta no la
-    tiene, así que hoy el informativo no recibe nada por las órdenes de
-    proveedores especiales. El correo de Jorge pide "la notificación de la
-    liberación", que aquí no existe. Preguntarle si quiere que se le avise de
-    todos modos; si la respuesta es sí, el aviso se cuelga del cierre.
+    **El aviso al informativo ya está resuelto.** Estuvo abierto unas horas: el
+    aviso colgaba del nivel de liberación, que esta ruta no tiene, así que el
+    informativo no recibía nada de estas órdenes. Al mover el aviso al cierre
+    (§11.7) quedó cubierto sin código específico, porque estas órdenes sí llegan
+    a `autorizada para proveedor`. Verificado con el arnés sobre Manufactura
+    categoría servicio: Jennifer y Eddie ahora sí aparecen entre los
+    destinatarios.
 
     Queda **escrito en la página *Flujo del proceso***.
 12. **El PDF ya imprime el firmante equivocado.** `getProgressAttribute()`
@@ -1206,7 +1222,7 @@ requisición y las pruebas de flujo completo, que exigen factories.
 | C3 | `ManagementInformedRule` + `PurchaseInformedService` | §7.2 — fuente única |
 | C4 | Pestaña *Informativo* en las dos `HistoryResource` | §7.3 |
 | C5 | Rama del informativo en las dos policies | §7.5 — sin esto, 403 |
-| C6 | Correo en `liberado por dirección administrativa` | §7.4 |
+| C6 | Correo al informativo en el cierre de la orden | §7.4 |
 | C7 | Relation manager en `ManagementResource` | §7.6 |
 
 C3 antes que C4 y C5: las dos bandejas y las dos policies deben leer del mismo

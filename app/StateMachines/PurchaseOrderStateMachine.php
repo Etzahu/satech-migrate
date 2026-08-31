@@ -8,7 +8,6 @@ use App\Models\PurchaseRequisitionApprovalChain;
 use App\Models\User;
 use App\Services\OrderService;
 use App\Services\ProviderEvaluationService;
-use App\Services\PurchaseInformedService;
 use App\Services\PurchaseOrderChainResolver;
 use App\Services\PurchaseOrderFlowService;
 use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
@@ -175,19 +174,13 @@ class PurchaseOrderStateMachine extends StateMachine
             // Última aprobación: solo las órdenes que superan el límite siguen a
             // Dirección General. Las demás las cierra advanceAfterRelease().
             'liberado por dirección administrativa' => [function ($to, $model) {
-                // El correo pide "la notificación de la liberación", así que el
-                // aviso al nivel informativo va aquí y no en el cierre: arriba
-                // del límite el cierre todavía espera a Dirección General y
-                // puede tardar días más.
-                $informed = app(PurchaseInformedService::class)->emailsFor($model->requisition);
-
-                if ($informed !== []) {
-                    $service = new OrderService;
-                    $data = $service->generateDataEmail($model->id, 'liberada');
-
-                    Mail::to($informed)->send(new Notification($data));
-                }
-
+                // El aviso al nivel informativo NO va aquí: "liberar" en el
+                // vocabulario de la casa es que la orden salió al proveedor
+                // —la pestaña *Liberadas* de asignación filtra por `cerrada`—,
+                // no la firma de Dirección Administrativa. Va en el cierre,
+                // dentro de getUserForEmailFinish(). Así el informativo se
+                // entera de lo que ya ocurrió, y no de una orden que Dirección
+                // General todavía puede devolver.
                 if (! (new PurchaseOrderFlowService)->requiresAmountApproval($model)) {
                     return;
                 }

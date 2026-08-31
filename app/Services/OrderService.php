@@ -125,6 +125,13 @@ class OrderService
             $moreUsers,
             $resolver->approverEmails($model),
             $resolver->authorizerEmails($model),
+            // El nivel informativo de la gerencia. Aquí es donde el correo de
+            // Operaciones pide "la notificación de la liberación de la orden":
+            // liberada, en el vocabulario de la casa, es que ya salió al
+            // proveedor. Por venir del cierre y no del nivel de Dirección
+            // Administrativa, cubre también la ruta de proveedores especiales,
+            // que no tiene ese nivel pero sí termina aquí.
+            app(\App\Services\PurchaseInformedService::class)->emailsFor($model->requisition),
             User::withRole('libera_orden_compra')->pluck('email')->all(),
             User::withRole('gerente_compras')->pluck('email')->all(),
             User::withRole('revisa_almacen_requisicion_compra')->pluck('email')->all(),

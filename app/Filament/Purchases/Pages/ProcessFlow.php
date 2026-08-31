@@ -293,7 +293,7 @@ class ProcessFlow extends Page
                     'col' => 7, 'row' => 1,
                     'actor' => 'Comprador',
                     'description' => 'La orden queda autorizada y puede enviarse al proveedor. Se calcula la fecha final de entrega según los días capturados y se genera la evaluación del proveedor.',
-                    'notify' => 'Correo al comprador con copia a los involucrados. El nivel informativo de la gerencia recibió su aviso al liberarse la orden.',
+                    'notify' => 'Correo al comprador con copia a los involucrados y al nivel informativo de la gerencia. Este es el aviso de que la orden se liberó: aquí es cuando sale al proveedor.',
                 ],
                 [
                     'id' => 'reabierta', 'label' => 'Reabierta para edición', 'icon' => '🔓', 'type' => 'special',
