@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
 use App\Filament\Purchases\Resources\PurchaseRequisition\ChainResource\Pages;
+use App\Models\Management;
 use App\Models\PurchaseRequisition;
 use App\Models\PurchaseRequisitionApprovalChain;
 use Closure;
@@ -159,6 +160,26 @@ class ChainResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                // Agrupa por el área de quien solicita: elegir QHSE deja a la
+                // vista las cadenas de todos los solicitantes de esa gerencia,
+                // sin tener que ir nombre por nombre.
+                Tables\Filters\SelectFilter::make('requester_management')
+                    ->label('Gerencia del solicitante')
+                    ->options(fn (): array => Management::query()
+                        ->orderBy('name')
+                        ->get()
+                        ->mapWithKeys(fn (Management $management): array => [
+                            $management->id => trim($management->name)." ({$management->acronym})",
+                        ])
+                        ->all())
+                    ->searchable()
+                    ->query(fn (Builder $query, array $data): Builder => $query->when(
+                        $data['value'],
+                        fn (Builder $query, $managementId): Builder => $query->whereHas(
+                            'requester',
+                            fn (Builder $requester): Builder => $requester->where('management_id', $managementId),
+                        ),
+                    )),
                 Tables\Filters\SelectFilter::make('requester_id')
                     ->label('Solicita')
                     ->relationship('requester', 'name', modifyQueryUsing: fn (Builder $query) => $query->where('active', 1)->where('email', 'like', '%@gptservices.com'))
@@ -179,15 +200,25 @@ class ChainResource extends Resource
                     ->relationship('authorizer', 'name')
                     ->searchable()
                     ->preload(),
-                Tables\Filters\TernaryFilter::make('archived_at')
-                    ->label('Desactivadas')
+                // Las tres opciones son las mismas que muestra la columna
+                // Estado. Antes el filtro solo miraba el apagado manual, así
+                // que "activas" arrastraba también a las bloqueadas por tener
+                // a alguien dado de baja: dos cosas distintas bajo un mismo
+                // nombre.
+                Tables\Filters\SelectFilter::make('estado')
+                    ->label('Estado')
                     ->placeholder('Todas')
-                    ->trueLabel('Solo desactivadas')
-                    ->falseLabel('Solo activas')
-                    ->queries(
-                        true: fn (Builder $query) => $query->archived(),
-                        false: fn (Builder $query) => $query->notArchived(),
-                    ),
+                    ->options([
+                        'activa' => 'Activa',
+                        'bloqueada' => 'Bloqueada',
+                        'desactivada' => 'Desactivada',
+                    ])
+                    ->query(fn (Builder $query, array $data): Builder => match ($data['value']) {
+                        'activa' => $query->selectable(),
+                        'bloqueada' => $query->notArchived()->withInactiveUsers(),
+                        'desactivada' => $query->archived(),
+                        default => $query,
+                    }),
             ])
             ->recordActions([
                 // Una cadena que ya se usó solo se consulta: editar sus

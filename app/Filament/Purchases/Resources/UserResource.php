@@ -8,10 +8,12 @@ use App\Models\User;
 use Closure;
 use Filament\Actions;
 use Filament\Forms;
+use Filament\Infolists;
 use Filament\Resources\Resource;
 use Filament\Schemas;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -117,6 +119,58 @@ class UserResource extends Resource
             ]);
     }
 
+    public static function infolist(Schema $infolist): Schema
+    {
+        return $infolist
+            ->columns(1)
+            ->schema([
+                Schemas\Components\Section::make('Datos del colaborador')
+                    ->icon('heroicon-o-identification')
+                    ->columns(3)
+                    ->schema([
+                        Infolists\Components\TextEntry::make('id')
+                            ->label('ID del colaborador'),
+                        Infolists\Components\TextEntry::make('name')
+                            ->label('Nombre')
+                            ->weight(FontWeight::Bold),
+                        Infolists\Components\TextEntry::make('email')
+                            ->label('Correo')
+                            ->copyable(),
+                        Infolists\Components\TextEntry::make('phone')
+                            ->label('Celular')
+                            ->placeholder('Sin registrar'),
+                        Infolists\Components\TextEntry::make('management.name')
+                            ->label('Gerencia')
+                            // Sin gerencia el usuario no puede levantar requisiciones:
+                            // el folio se arma con sus siglas.
+                            ->placeholder('Sin gerencia asignada')
+                            ->color(fn ($record) => $record->management ? null : 'danger'),
+                        Infolists\Components\TextEntry::make('puesto')
+                            ->label('Puesto')
+                            ->placeholder('Sin registrar'),
+                        Infolists\Components\IconEntry::make('active')
+                            ->label('Activo')
+                            ->boolean(),
+                        Infolists\Components\TextEntry::make('created_at')
+                            ->label('Alta')
+                            ->dateTime('d-m-Y'),
+                        Infolists\Components\TextEntry::make('updated_at')
+                            ->label('Última actualización')
+                            ->dateTime('d-m-Y'),
+                    ]),
+
+                Schemas\Components\Section::make('Roles')
+                    ->icon('heroicon-o-shield-check')
+                    ->description('Determinan qué módulos ve el usuario y qué guías se le proponen en la invitación.')
+                    ->schema([
+                        Infolists\Components\TextEntry::make('roles.name')
+                            ->label('')
+                            ->badge()
+                            ->placeholder('Sin roles asignados'),
+                    ]),
+            ]);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -149,6 +203,7 @@ class UserResource extends Resource
                 //
             ])
             ->recordActions([
+                Actions\ViewAction::make(),
                 Actions\EditAction::make(),
                 Impersonate::make()
                     ->visible(auth()->user()->hasRole('super_admin')),
@@ -167,6 +222,7 @@ class UserResource extends Resource
         return [
             'index' => Pages\ListUsers::route('/'),
             'create' => Pages\CreateUser::route('/create'),
+            'view' => Pages\ViewUser::route('/{record}'),
             'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
