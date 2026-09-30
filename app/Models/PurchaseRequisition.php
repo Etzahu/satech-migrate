@@ -94,6 +94,7 @@ class PurchaseRequisition extends Model implements Auditable, HasMedia
         'cancelado por revisor' => 0,
         'cancelado por gerencia' => 0,
         'cancelado por DG' => 0,
+        'cancelado por administrador' => 0,
         'devuelto por revisor' => 40,
         'devuelto por gerencia' => 40,
         'devuelto por DG' => 40,
@@ -223,6 +224,60 @@ class PurchaseRequisition extends Model implements Auditable, HasMedia
                 'authorizer' => ['title' => 'Autoriza', 'name' => $this->approvalChain->authorizer?->name ?? 'N/A', 'date' => $data['aprobado por DG']],
                 'purchaser' => ['title' => 'Comprador', 'name' => (filled($this->purchaser) ? $this->purchaser->name : 'Sin asignar'), 'date' => $data['comprador asignado']],
             ];
+        }
+
+        return $this->markVacancies($progress);
+    }
+
+    /**
+     * ¿Un administrador puede cancelarla? Solo mientras siga abierta y sin
+     * órdenes vivas: cancelarla con órdenes en curso las dejaría colgando de
+     * una requisición cancelada. Primero se cancelan las órdenes.
+     */
+    public function canBeCancelledByAdmin(): bool
+    {
+        if ($this->status === 'cerrada' || str_starts_with((string) $this->status, 'cancelado')) {
+            return false;
+        }
+
+        return $this->orders()->where('status', 'not like', 'cancelado%')->doesntExist();
+    }
+
+    /**
+     * Marca los niveles pendientes que nadie activo puede firmar, con el mismo
+     * texto que la orden (PurchaseOrder::VACANT_SIGNER).
+     *
+     * El "N/A" del autorizador se queda como está: ahí significa que el nivel
+     * no existe (Soldadura y Servicios Técnicos). Se marca un nivel que sí
+     * existe y cuya persona de la cadena ya no está activa, o el de almacén si
+     * el rol se quedó sin titular. Cerrada o cancelada, la requisición ya no
+     * espera firmas y no se marca nada.
+     *
+     * @param  array<string, array<string, mixed>>  $progress
+     * @return array<string, array<string, mixed>>
+     */
+    private function markVacancies(array $progress): array
+    {
+        if ($this->status === 'cerrada' || str_starts_with((string) $this->status, 'cancelado')) {
+            return $progress;
+        }
+
+        $chain = $this->approvalChain;
+
+        $isVacant = [
+            'warehouse' => fn (): bool => ! User::withRole('revisa_almacen_requisicion_compra')->where('active', 1)->exists(),
+            'reviewer' => fn (): bool => filled($chain?->reviewer_id) && ! $chain->reviewer?->active,
+            'approver' => fn (): bool => filled($chain?->approver_id) && ! $chain->approver?->active,
+            'authorizer' => fn (): bool => filled($chain?->authorizer_id) && ! $chain->authorizer?->active,
+        ];
+
+        foreach ($isVacant as $level => $check) {
+            if (! isset($progress[$level]) || filled($progress[$level]['date']) || ! $check()) {
+                continue;
+            }
+
+            $progress[$level]['name'] = PurchaseOrder::VACANT_SIGNER;
+            $progress[$level]['vacant'] = true;
         }
 
         return $progress;

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
+use App\Enums\ReviewLevel;
+use App\Filament\Purchases\Actions\RespondInBulkAction;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ApproverResource\Pages;
 use App\Models\PurchaseRequisition;
 use Filament\Actions;
@@ -105,7 +107,12 @@ class ApproverResource extends Resource
                         ->url(fn ($record) => (string) route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
                 ]),
-            ]);
+            ])
+            ->toolbarActions([
+                RespondInBulkAction::make()->level(ReviewLevel::RequisitionApproval),
+            ])
+            ->checkIfRecordIsSelectableUsing(fn (PurchaseRequisition $record): bool => ReviewLevel::RequisitionApproval->isAwaiting($record))
+            ->maxSelectableRecords(RespondInBulkAction::MAX_RECORDS);
     }
 
     public static function infolist(Schema $infolist): Schema

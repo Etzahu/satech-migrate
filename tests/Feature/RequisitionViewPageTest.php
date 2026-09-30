@@ -3,6 +3,8 @@
 namespace Tests\Feature;
 
 use App\Models\PurchaseRequisition;
+use DOMDocument;
+use DOMXPath;
 use Illuminate\Support\Collection;
 use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
@@ -37,6 +39,33 @@ class RequisitionViewPageTest extends TestCase
                 'company_acronym' => 'T',
             ])
             ->get("/compras/mis-requisiciones/{$requisition->id}");
+    }
+
+    /**
+     * Pestañas de la barra que navega entre las órdenes, o null si no está.
+     *
+     * Se busca la barra que contiene el folio de la orden: la página tiene
+     * además las pestañas de Filament (Datos generales, Partidas, Flujo de
+     * aprobación, Historial), que también llevan role="tab" y no son órdenes.
+     */
+    private function orderTabCount(string $html, string $folio): ?int
+    {
+        $previous = libxml_use_internal_errors(true);
+
+        $document = new DOMDocument;
+        $document->loadHTML($html);
+
+        libxml_clear_errors();
+        libxml_use_internal_errors($previous);
+
+        $xpath = new DOMXPath($document);
+
+        $tablist = $xpath->query(sprintf(
+            '//*[@role="tablist"][.//*[@role="tab"][contains(normalize-space(.), "%s")]]',
+            $folio
+        ))->item(0);
+
+        return $tablist ? $xpath->query('.//*[@role="tab"]', $tablist)->length : null;
     }
 
     /**
@@ -109,10 +138,13 @@ class RequisitionViewPageTest extends TestCase
             'Debe renderizarse un flujo de aprobación por orden.'
         );
 
-        // Con varias órdenes se navegan por pestañas
+        // Con varias órdenes se navegan por pestañas, una por orden
         if ($orderCount > 1) {
-            $response->assertSee('role="tablist"', false);
-            $this->assertSame($orderCount, substr_count($response->getContent(), 'role="tab"'));
+            $this->assertSame(
+                $orderCount,
+                $this->orderTabCount($response->getContent(), $order->folio),
+                'Debe haber una pestaña por orden.'
+            );
         }
     }
 

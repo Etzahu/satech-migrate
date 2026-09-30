@@ -7,6 +7,7 @@ use App\Models\PurchaseRequisitionApprovalChain;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Support\Collection;
+use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -33,8 +34,19 @@ class ChainStatusFilterTest extends TestCase
     }
 
     /**
+     * El listado con la paginación abierta. De lo contrario solo cabrían diez
+     * cadenas de más de cien, y un "no se ve" no distinguiría el trabajo del
+     * filtro del de la página.
+     */
+    private function listing(): Testable
+    {
+        return Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+            ->set('tableRecordsPerPage', 'all');
+    }
+
+    /**
      * Las cadenas de un estado, tal como lo calcula la columna. Se limitan
-     * para no chocar con la paginación del listado.
+     * para mantener las aserciones manejables.
      *
      * @return Collection<int, PurchaseRequisitionApprovalChain>
      */
@@ -56,7 +68,7 @@ class ChainStatusFilterTest extends TestCase
 
     public function test_activa_leaves_out_the_blocked_ones(): void
     {
-        Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+        $this->listing()
             ->filterTable('estado', 'activa')
             ->assertCanSeeTableRecords($this->chainsInState('activa'))
             ->assertCanNotSeeTableRecords($this->chainsInState('bloqueada'))
@@ -65,7 +77,7 @@ class ChainStatusFilterTest extends TestCase
 
     public function test_bloqueada_shows_only_chains_with_someone_on_leave(): void
     {
-        Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+        $this->listing()
             ->filterTable('estado', 'bloqueada')
             ->assertCanSeeTableRecords($this->chainsInState('bloqueada'))
             ->assertCanNotSeeTableRecords($this->chainsInState('activa'))
@@ -74,7 +86,7 @@ class ChainStatusFilterTest extends TestCase
 
     public function test_desactivada_shows_only_the_ones_switched_off_by_hand(): void
     {
-        Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+        $this->listing()
             ->filterTable('estado', 'desactivada')
             ->assertCanSeeTableRecords($this->chainsInState('desactivada'))
             ->assertCanNotSeeTableRecords($this->chainsInState('activa'))
@@ -88,7 +100,7 @@ class ChainStatusFilterTest extends TestCase
      */
     public function test_without_the_filter_the_three_states_are_visible(): void
     {
-        Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+        $this->listing()
             ->assertCanSeeTableRecords($this->chainsInState('activa'))
             ->assertCanSeeTableRecords($this->chainsInState('bloqueada'))
             ->assertCanSeeTableRecords($this->chainsInState('desactivada'));

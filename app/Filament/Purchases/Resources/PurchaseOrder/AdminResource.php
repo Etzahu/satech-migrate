@@ -2,6 +2,8 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
+use App\Enums\ReviewLevel;
+use App\Filament\Purchases\Actions\RespondInBulkAction;
 use App\Filament\Purchases\Resources\PurchaseOrder\AdminResource\Pages;
 use App\Mail\PurchaseOrder\Notification as OrderMail;
 use App\Models\ProviderEvaluation;
@@ -186,7 +188,13 @@ class AdminResource extends Resource
                             ->success()
                             ->send();
                     }),
-            ]);
+            ])
+            ->toolbarActions([
+                RespondInBulkAction::make()->level(ReviewLevel::OrderPurchasingReview),
+            ])
+            // La pestaña "Todas" mezcla estados: solo se selecciona lo que espera revisión.
+            ->checkIfRecordIsSelectableUsing(fn (PurchaseOrder $record): bool => ReviewLevel::OrderPurchasingReview->isAwaiting($record))
+            ->maxSelectableRecords(RespondInBulkAction::MAX_RECORDS);
     }
 
     public static function infolist(Schema $infolist): Schema

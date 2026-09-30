@@ -12,6 +12,7 @@ use App\Services\PurchaseOrderChainResolver;
 use App\Services\PurchaseOrderFlowService;
 use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
 use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class PurchaseOrderStateMachine extends StateMachine
 {
@@ -23,8 +24,10 @@ class PurchaseOrderStateMachine extends StateMachine
     public function transitions(): array
     {
         return [
-            // Wildcard: permite reasignar desde cualquier estado
-            '*' => ['requisición reasignada', 'cadena reasignada', 'devuelto por administrador'],
+            // Wildcard: permite reasignar, devolver o cancelar desde cualquier
+            // estado. El comodín no distingue una orden abierta de una que ya
+            // terminó; para cancelar, eso lo decide canBeCancelledByAdmin().
+            '*' => ['requisición reasignada', 'cadena reasignada', 'devuelto por administrador', 'cancelado por administrador'],
 
             'borrador' => [
                 'revisión gerente de compras',
@@ -352,6 +355,31 @@ class PurchaseOrderStateMachine extends StateMachine
                 $recipient = $model->purchaser->email;
 
                 Mail::to($recipient)->send(new Notification($data));
+            }],
+            // Saca la orden del flujo desde cualquier nivel, para lo que nadie
+            // puede responder. El motivo va en el correo: es lo único que le
+            // explica al comprador por qué se detuvo. Si el correo falla, la
+            // cancelación ya quedó guardada y no debe verse como error.
+            'cancelado por administrador' => [function ($to, $model) {
+                $purchaser = $model->purchaser;
+
+                if (! $purchaser?->active || blank($purchaser->email)) {
+                    return;
+                }
+
+                try {
+                    $service = new OrderService;
+                    $data = $service->generateDataEmail($model->id, 'cancelado por administrador');
+                    $data['reason'] = $model->status()->history()
+                        ->where('to', 'cancelado por administrador')
+                        ->latest('id')
+                        ->first()
+                        ?->getCustomProperty('respuesta');
+
+                    Mail::to($purchaser->email)->send(new Notification($data));
+                } catch (Throwable $exception) {
+                    report($exception);
+                }
             }],
             'reabierta para edición' => [function ($to, $model) {
                 ProviderEvaluationService::cancelPendingForOrder($model);

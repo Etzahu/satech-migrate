@@ -8,6 +8,7 @@ use App\Models\PurchaseRequisitionApprovalChain;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Support\Collection;
+use Livewire\Features\SupportTesting\Testable;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -47,6 +48,17 @@ class ChainManagementFilterTest extends TestCase
         return $management;
     }
 
+    /**
+     * El listado con la paginación abierta. De lo contrario solo cabrían diez
+     * cadenas de más de cien, y un "no se ve" no distinguiría el trabajo del
+     * filtro del de la página.
+     */
+    private function listing(): Testable
+    {
+        return Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+            ->set('tableRecordsPerPage', 'all');
+    }
+
     /** @return Collection<int, PurchaseRequisitionApprovalChain> */
     private function chainsOfManagement(Management $management)
     {
@@ -80,7 +92,7 @@ class ChainManagementFilterTest extends TestCase
 
         $expected = $this->chainsOfManagement($management);
 
-        Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+        $this->listing()
             ->filterTable('requester_management', $management->id)
             ->assertCanSeeTableRecords($expected);
     }
@@ -89,7 +101,7 @@ class ChainManagementFilterTest extends TestCase
     {
         $management = $this->managementWithChains();
 
-        Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+        $this->listing()
             ->filterTable('requester_management', $management->id)
             ->assertCanNotSeeTableRecords($this->chainsOfOtherManagements($management));
     }
@@ -98,7 +110,7 @@ class ChainManagementFilterTest extends TestCase
     {
         $management = $this->managementWithChains();
 
-        Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+        $this->listing()
             ->assertCanSeeTableRecords($this->chainsOfOtherManagements($management));
     }
 
@@ -106,7 +118,7 @@ class ChainManagementFilterTest extends TestCase
     {
         $management = $this->managementWithChains();
 
-        Livewire::test(ListPurchaseRequisitionApprovalChains::class)
+        $this->listing()
             ->assertTableFilterExists(
                 'requester_management',
                 fn ($filter) => in_array(

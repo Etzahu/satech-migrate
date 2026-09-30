@@ -2,12 +2,12 @@
 
 namespace App\StateMachines;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\PurchaseRequisition\Notification;
-use Filament\Notifications\Notification as NotificationFilament;
+use App\Models\User;
 use App\Services\PurchaseRequisitionCreationService;
 use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
+use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 class PurchaseRequisitionStateMachine extends StateMachine
 {
@@ -19,7 +19,9 @@ class PurchaseRequisitionStateMachine extends StateMachine
     public function transitions(): array
     {
         return [
-            '*' => ['comprador reasignado', 'cerrada', 'revisión por almacén', 'revisión', 'cadena reasignada'],
+            // El comodín no distingue una requisición abierta de una que ya
+            // terminó; para cancelar, eso lo decide canBeCancelledByAdmin().
+            '*' => ['comprador reasignado', 'cerrada', 'revisión por almacén', 'revisión', 'cadena reasignada', 'cancelado por administrador'],
             'borrador' => ['revisión por almacén', 'revisión', 'aprobado por revisor'],
 
             'devuelto por revisor' => ['revisión por almacén', 'revisión'],
@@ -38,10 +40,12 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'comprador asignado' => ['devuelto por comprador'],
         ];
     }
+
     public function defaultState(): ?string
     {
         return 'borrador';
     }
+
     public function afterTransitionHooks(): array
     {
         // TODO: falta crear la logica en el caso donde los items de una partida si los tenga completo almacen
@@ -49,7 +53,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'cadena reasignada' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
 
                     // Obtener el old_chain_id de la última transición
                     $latestHistory = $model->status()->history()
@@ -68,12 +72,12 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     );
 
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'revisión por almacén' => [
                 function ($to, $model) {
                     $users = User::withRole('revisa_almacen_requisicion_compra')->get();
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('revisar existencia', $model);
                     Mail::to($recipient)->send(new Notification($data));
@@ -82,7 +86,7 @@ class PurchaseRequisitionStateMachine extends StateMachine
             'revisión' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->reviewer;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     $data = $service->generateDataForEmail('revisar', $model);
                     Mail::to($recipient)->send(new Notification($data));
                     if ($model->status()->latest()->from == 'revisar') {
@@ -95,43 +99,43 @@ class PurchaseRequisitionStateMachine extends StateMachine
                             Mail::to($recipient)->send(new Notification($data));
                         }
                     }
-                }
+                },
             ],
             'aprobado por revisor' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->approver;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('revisar', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'devuelto por almacén' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('devuelto por almacén', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'devuelto por revisor' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('devuelto por revisor', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'cancelado por revisor' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('cancelado por revisor', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             // Sin autorizador la requisición no espera a nadie —el nivel se
             // eliminó en Soldadura y Servicios Técnicos— y PurchaseRequisitionFlowService
@@ -144,114 +148,140 @@ class PurchaseRequisitionStateMachine extends StateMachine
                         return;
                     }
 
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     $data = $service->generateDataForEmail('aprobar', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'devuelto por gerencia' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('devuelto por gerencia', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'cancelado por gerencia' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('cancelado por gerencia', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'aprobado por DG' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('aprobado por dirección general', $model);
                     $moreUsers = $service->getUserForEmailPRFinish($model);
                     Mail::to($recipient)->cc($moreUsers)->send(new Notification($data));
-                }
+                },
             ],
             'devuelto por DG' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('devuelto por dirección general', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'cancelado por DG' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
                     $data = $service->generateDataForEmail('cancelado por dirección general', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
+            ],
+            // Saca la requisición del flujo desde cualquier nivel, para lo que
+            // nadie puede responder. El motivo va en el correo. Si el correo
+            // falla, la cancelación ya quedó guardada y no debe verse como error.
+            'cancelado por administrador' => [
+                function ($to, $model) {
+                    $recipient = $model->approvalChain?->requester;
+
+                    if (! $recipient?->active || blank($recipient->email)) {
+                        return;
+                    }
+
+                    try {
+                        $service = new PurchaseRequisitionCreationService;
+                        $data = $service->generateDataForEmail('cancelado por administrador', $model);
+                        $data['reason'] = $model->status()->history()
+                            ->where('to', 'cancelado por administrador')
+                            ->latest('id')
+                            ->first()
+                            ?->getCustomProperty('respuesta');
+
+                        Mail::to($recipient)->send(new Notification($data));
+                    } catch (Throwable $exception) {
+                        report($exception);
+                    }
+                },
             ],
             'comprador asignado' => [
                 function ($to, $model) {
                     $model->load('responsiblePurchaseOrder');
                     $recipient = $model->responsiblePurchaseOrder->email;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     $data = $service->generateDataForEmail('colocar orden de compra', $model);
                     $moreUsers = $service->getUserAssignedPurchaser($model);
 
                     Mail::to($recipient)
                         ->cc($moreUsers)
                         ->send(new Notification($data));
-                }
+                },
             ],
             'comprador reasignado' => [
                 function ($to, $model) {
                     $model->load('responsiblePurchaseOrder');
                     $recipient = $model->responsiblePurchaseOrder->email;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     $data = $service->generateDataForEmail('comprador reasignado-colocar orden de compra', $model);
                     $moreUsers = $service->getUserAssignedPurchaser($model);
 
                     Mail::to($recipient)
                         ->cc($moreUsers)
                         ->send(new Notification($data));
-                }
+                },
             ],
             'devuelto por comprador' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     $model->assign_user_id = null;
                     $model->save();
                     $data = $service->generateDataForEmail('devuelto por comprador', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'devuelto por gerente de compras' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     $model->assign_user_id = null;
                     $model->save();
                     $data = $service->generateDataForEmail('devuelto por gerente de compras', $model);
                     Mail::to($recipient)->send(new Notification($data));
-                }
+                },
             ],
             'cerrada' => [
                 function ($to, $model) {
                     $recipient = $model->approvalChain->requester;
                     $moreUsers[] = User::withRole('gerente_compras')->value('email');
-                    $service = new PurchaseRequisitionCreationService();
+                    $service = new PurchaseRequisitionCreationService;
                     $data = $service->generateDataForEmail('cerrada', $model);
                     Mail::to($recipient)
                         ->cc($moreUsers)
                         ->send(new Notification($data));
-                }
-            ]
+                },
+            ],
         ];
     }
 }

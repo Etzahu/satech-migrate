@@ -354,6 +354,57 @@ class HistoryResource extends Resource
                         ->icon('heroicon-m-document')
                         ->url(fn ($record) => (string) route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
+                    // Para lo que nadie puede responder: saca la requisición del
+                    // flujo desde el nivel en que esté. Con órdenes vivas no se
+                    // ofrece; primero se cancelan las órdenes.
+                    Actions\Action::make('cancelar_requisicion')
+                        ->label('Cancelar requisición')
+                        ->icon('heroicon-m-x-circle')
+                        ->color('danger')
+                        ->visible(fn (PurchaseRequisition $record) => (auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('gerente_compras'))
+                            && $record->canBeCancelledByAdmin())
+                        ->requiresConfirmation()
+                        ->modalHeading('¿Cancelar la requisición?')
+                        ->modalDescription('La requisición sale del flujo desde el nivel en que esté, aunque nadie pueda responderlo. Si la cuenta del solicitante sigue activa, se le avisará por correo con el motivo.')
+                        ->schema([
+                            Forms\Components\Textarea::make('motivo')
+                                ->label('Motivo')
+                                ->required(),
+                        ])
+                        ->modalSubmitActionLabel('Sí, cancelar la requisición')
+                        ->modalCancelActionLabel('No, volver')
+                        ->action(function (PurchaseRequisition $record, array $data) {
+                            if (! $record->canBeCancelledByAdmin()) {
+                                Notification::make()
+                                    ->title('La requisición ya no se puede cancelar')
+                                    ->body("La requisición {$record->folio} ya terminó o tiene órdenes en curso.")
+                                    ->warning()
+                                    ->send();
+
+                                return;
+                            }
+
+                            try {
+                                $record->status()->transitionTo('cancelado por administrador', [
+                                    'respuesta' => $data['motivo'],
+                                    'admin_id' => auth()->id(),
+                                    'admin_name' => auth()->user()->name,
+                                    'previous_state' => $record->status,
+                                ]);
+
+                                Notification::make()
+                                    ->title('Requisición cancelada')
+                                    ->body("La requisición {$record->folio} salió del flujo.")
+                                    ->success()
+                                    ->send();
+                            } catch (\Exception $e) {
+                                Notification::make()
+                                    ->title('Error al cancelar la requisición')
+                                    ->body('No se pudo cancelar la requisición: '.$e->getMessage())
+                                    ->danger()
+                                    ->send();
+                            }
+                        }),
                 ]),
             ]);
     }

@@ -329,7 +329,12 @@
                     <tr>
                         @foreach ($stages as $stage)
                             <td style="border:none;text-align: center;">
-                                <p style="font-size: 11px;margin:0;">
+                                {{-- Nivel que nadie activo puede firmar: ver PurchaseRequisition::markVacancies() --}}
+                                <p @style([
+                                    'font-size: 11px',
+                                    'margin: 0',
+                                    'color: #dc2626; font-weight: bold' => $stage['vacant'] ?? false,
+                                ])>
                                     {{ $stage['name'] }}
                                 </p>
                                 @if (filled($stage['date']))

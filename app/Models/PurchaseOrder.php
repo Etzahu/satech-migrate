@@ -83,6 +83,11 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
         'status' => PurchaseOrderStateMachine::class,
     ];
 
+    /**
+     * Lo que se imprime en un nivel pendiente que nadie activo puede firmar.
+     */
+    public const VACANT_SIGNER = 'Sin titular activo';
+
     protected $casts = [
         'documentation_delivery' => 'array',
         'condition_payment' => 'array',
@@ -249,7 +254,12 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
     }
 
     /**
-     * Nombre del primer usuario que tiene el rol, o null si no hay ninguno.
+     * Nombre del primer usuario activo que tiene el rol, o null si no hay
+     * ninguno.
+     *
+     * Solo cuenta quien sigue activo: un titular dado de baja ya no puede
+     * firmar, y su nombre en un nivel pendiente ocultaría que el rol se quedó
+     * vacío.
      *
      * Se usa whereHas en vez del scope User::role() de Spatie porque ese scope
      * lanza RoleDoesNotExist cuando el rol todavía no existe en la base —por
@@ -260,7 +270,50 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
      */
     public static function firstUserWithRole(string $role): ?string
     {
-        return User::whereHas('roles', fn ($query) => $query->where('name', $role))->value('name');
+        return User::whereHas('roles', fn ($query) => $query->where('name', $role))
+            ->where('active', 1)
+            ->value('name');
+    }
+
+    /**
+     * ¿La orden sigue esperando firmas? Autorizada o cancelada, ya no.
+     */
+    public function awaitsSignatures(): bool
+    {
+        return $this->status !== 'autorizada para proveedor'
+            && ! str_starts_with((string) $this->status, 'cancelado');
+    }
+
+    /**
+     * ¿Un administrador puede cancelarla? Mientras siga abierta, desde el
+     * nivel en que esté: autorizada ya salió al proveedor y cancelada ya
+     * terminó.
+     */
+    public function canBeCancelledByAdmin(): bool
+    {
+        return $this->awaitsSignatures();
+    }
+
+    /**
+     * Marca un nivel pendiente que nadie activo puede firmar.
+     *
+     * Antes quedaba en blanco o como "N/A", que en la requisición significa
+     * otra cosa: que el nivel no existe. Aquí el nivel sí existe y la orden no
+     * va a avanzar hasta que alguien ocupe el rol o se cambie la cadena. En
+     * una orden que ya no espera firmas no se marca nada.
+     *
+     * @param  array<string, mixed>  $step
+     * @return array<string, mixed>
+     */
+    private function markVacancy(array $step): array
+    {
+        $step['vacant'] = $this->awaitsSignatures() && blank($step['date']) && blank($step['name']);
+
+        if ($step['vacant']) {
+            $step['name'] = self::VACANT_SIGNER;
+        }
+
+        return $step;
     }
 
     /**
@@ -406,10 +459,14 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
             'purchaser' => ['title' => 'Comprador', 'name' => $this->purchaser?->name, 'job-pdf' => 'Comprador', 'date' => $data['revisión gerente de compras']],
             'reviewer' => ['title' => 'Revisa', 'name' => $firmante['aprobado por gerente de compras'] ?? $purchaseManager, 'job-pdf' => 'Gerente de compras', 'date' => $data['aprobado por gerente de compras']],
             'approver' => ['title' => 'Aprueba', 'name' => $firmante['aprobado por gerente solicitante'] ?? $resolver->approverName($this), 'job-pdf' => 'Gerente solicitante', 'date' => $data['aprobado por gerente solicitante']],
-            'authorizer-1' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 1'] ?? $resolver->authorizerName($this) ?? 'N/A', 'job-pdf' => 'Dirección general', 'date' => $data['aprobado por DG nivel 1']],
+            'authorizer-1' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 1'] ?? $resolver->authorizerName($this), 'job-pdf' => 'Dirección general', 'date' => $data['aprobado por DG nivel 1']],
             'releaser' => ['title' => 'Libera', 'name' => $firmante['liberado por dirección administrativa'] ?? $releaser, 'job-pdf' => 'Dirección administrativa', 'date' => $data['liberado por dirección administrativa']],
             'authorizer-2' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 2'] ?? $dgLevel2, 'job-pdf' => 'Dirección General (monto)', 'date' => $data['aprobado por DG nivel 2']],
         ];
+
+        foreach (['reviewer', 'approver', 'authorizer-1', 'releaser', 'authorizer-2'] as $level) {
+            $progress[$level] = $this->markVacancy($progress[$level]);
+        }
 
         // El nivel de monto es la última aprobación y solo aplica a las órdenes
         // que superan el límite; el resto no lleva esa firma.
@@ -487,6 +544,8 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
                 'date' => isset($data['autorizada para proveedor']) ? $data['autorizada para proveedor']->created_at : null,
             ],
         ];
+
+        $progress['authorizer'] = $this->markVacancy($progress['authorizer']);
 
         return $progress;
     }

@@ -3,11 +3,12 @@ import * as d3 from "d3";
 /**
  * Stepper de avance de aprobación (v2 del entry progress-approval).
  *
- * Lee los pasos {title, name, date, done} del JSON embebido en cada
+ * Lee los pasos {title, name, date, done, vacant} del JSON embebido en cada
  * [data-progress-approval] y dibuja una línea de tiempo animada:
  * línea de progreso, badges de fecha, paso actual pulsante, tooltips y
- * contadores animados. La orientación se controla con data-orientation
- * ("vertical" por defecto, "horizontal" opcional). Un MutationObserver
+ * contadores animados. Un paso `vacant` es un nivel pendiente que nadie
+ * activo puede firmar y se pinta en rojo. La orientación se controla con
+ * data-orientation ("vertical" por defecto, "horizontal" opcional). Un MutationObserver
  * renderiza las entradas que aparecen después de la carga (modales de
  * Livewire).
  */
@@ -79,6 +80,8 @@ const CSS = `
 .pa-label__name { font-size: 10px; fill: #9ca3af; }
 .pa-label__name--done { fill: #16a34a; }
 .dark .pa-label__name--done { fill: #34d399; }
+.pa-label__name--vacant { fill: #dc2626; font-weight: 700; }
+.dark .pa-label__name--vacant { fill: #f87171; }
 
 .pa-tooltip {
     position: absolute; top: 0; left: 0; z-index: 30;
@@ -121,6 +124,18 @@ function wrapName(name, max) {
         lines[1] += "…";
     }
     return lines.slice(0, 2);
+}
+
+function nameClass(s) {
+    if (s.done) return "pa-label__name pa-label__name--done";
+    if (s.vacant) return "pa-label__name pa-label__name--vacant";
+    return "pa-label__name";
+}
+
+function statusOf(s) {
+    if (s.done) return { label: "Completado", color: "#22c55e" };
+    if (s.vacant) return { label: "Sin titular activo", color: "#dc2626" };
+    return { label: "Pendiente", color: "#9ca3af" };
 }
 
 function render(root) {
@@ -250,7 +265,7 @@ function render(root) {
             wrapName(s.name, 38).forEach((line, li) => {
                 labels
                     .append("text")
-                    .attr("class", `pa-label__name${s.done ? " pa-label__name--done" : ""}`)
+                    .attr("class", nameClass(s))
                     .attr("x", tx)
                     .attr("y", y + 11 + li * 13)
                     .text(line);
@@ -268,7 +283,7 @@ function render(root) {
             wrapName(s.name, 19).forEach((line, li) => {
                 labels
                     .append("text")
-                    .attr("class", `pa-label__name${s.done ? " pa-label__name--done" : ""}`)
+                    .attr("class", nameClass(s))
                     .attr("x", x)
                     .attr("y", y + R + 37 + li * 12)
                     .attr("text-anchor", "middle")
@@ -297,12 +312,14 @@ function render(root) {
     nodes
         .on("mouseenter", function (event, s) {
             const date = s.done ? fullFmt.format(new Date(s.date)) : null;
+            const status = statusOf(s);
             tooltip.innerHTML = `
                 <div><strong>${s.title}</strong></div>
-                ${s.name ? `<div>👤 ${s.name}</div>` : ""}
+                ${s.name && !s.vacant ? `<div>👤 ${s.name}</div>` : ""}
+                ${s.vacant ? `<div>Nadie activo puede firmar este nivel.</div>` : ""}
                 ${date ? `<div>📅 ${date}</div>` : ""}
-                <span class="pa-tooltip__status" style="background:${s.done ? "#22c55e" : "#9ca3af"}">
-                    ${s.done ? "Completado" : "Pendiente"}
+                <span class="pa-tooltip__status" style="background:${status.color}">
+                    ${status.label}
                 </span>`;
             tooltip.style.opacity = "1";
         })

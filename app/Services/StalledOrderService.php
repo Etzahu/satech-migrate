@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseRequisition;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
@@ -111,9 +112,10 @@ class StalledOrderService
      * Días desde la última transición de estado.
      *
      * Sin histórico —órdenes anteriores a que se registrara— cae en la fecha de
-     * creación, que es lo más cercano que hay.
+     * creación, que es lo más cercano que hay. Sirve igual para requisiciones,
+     * que llevan el mismo histórico de estados.
      */
-    public function diasDetenida(PurchaseOrder $order): int
+    public function diasDetenida(PurchaseOrder|PurchaseRequisition $order): int
     {
         $ultima = $order->status()->history()
             ->where('field', 'status')

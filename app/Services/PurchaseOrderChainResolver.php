@@ -111,30 +111,38 @@ class PurchaseOrderChainResolver
     }
 
     /**
-     * Nombre de quien debe aprobar esta orden, o null si no hay nadie.
+     * Nombre de quien debe aprobar esta orden, o null si no hay nadie activo.
      *
-     * Lo usa el PDF para los niveles que todavía no se firmaron.
+     * Lo usa el PDF para los niveles que todavía no se firmaron. Alguien dado
+     * de baja no cuenta, venga del rol o de la cadena: ya no puede entrar a
+     * firmar, y su nombre en un nivel pendiente haría creer que la orden está
+     * en su bandeja.
      */
     public function approverName(?PurchaseOrder $order): ?string
     {
         return $this->usesRoleFlow($order)
             ? $this->firstNameWithRole(self::APPROVER_ROLE)
-            : $order?->requisition?->approvalChain?->approver?->name;
+            : $this->activeName($order?->requisition?->approvalChain?->approver);
     }
 
     /**
-     * Nombre de quien debe autorizar esta orden, o null si no hay nadie.
+     * Nombre de quien debe autorizar esta orden, o null si no hay nadie activo.
      */
     public function authorizerName(?PurchaseOrder $order): ?string
     {
         return $this->usesRoleFlow($order)
             ? $this->firstNameWithRole(self::AUTHORIZER_ROLE)
-            : $order?->requisition?->approvalChain?->authorizer?->name;
+            : $this->activeName($order?->requisition?->approvalChain?->authorizer);
     }
 
     private function firstNameWithRole(string $role): ?string
     {
         return User::withRole($role)->where('active', 1)->value('name');
+    }
+
+    private function activeName(?User $user): ?string
+    {
+        return $user?->active ? $user->name : null;
     }
 
     /**

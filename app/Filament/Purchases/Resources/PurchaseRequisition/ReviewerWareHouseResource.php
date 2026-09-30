@@ -2,6 +2,8 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseRequisition;
 
+use App\Enums\ReviewLevel;
+use App\Filament\Purchases\Actions\RespondInBulkAction;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResource\Pages\ManagePRReviewWareHouses;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResource\Pages\ViewPR;
 use App\Filament\Purchases\Resources\PurchaseRequisition\ReviewerWareHouseResource\RelationManagers;
@@ -114,7 +116,12 @@ class ReviewerWareHouseResource extends Resource
                         ->url(fn ($record) => (string) route('requisition.pdf', ['id' => $record->id]))
                         ->openUrlInNewTab(),
                 ]),
-            ]);
+            ])
+            ->toolbarActions([
+                RespondInBulkAction::make()->level(ReviewLevel::RequisitionWarehouse),
+            ])
+            ->checkIfRecordIsSelectableUsing(fn (PurchaseRequisition $record): bool => ReviewLevel::RequisitionWarehouse->isAwaiting($record))
+            ->maxSelectableRecords(RespondInBulkAction::MAX_RECORDS);
     }
 
     public static function getRelations(): array

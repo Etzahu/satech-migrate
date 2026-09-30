@@ -50,7 +50,10 @@ class ViewPurchaseRequisition extends ViewRecord
             // Acciones secundarias agrupadas
             ActionGroup::make([
                 EditAction::make(),
-                DeleteAction::make(),
+                // Solo para descartar un borrador, como en las órdenes. Borrar una
+                // requisición en curso dejaba sus órdenes colgando.
+                DeleteAction::make()
+                    ->visible(fn ($record) => $record->status === 'borrador'),
                 Action::make('Ver pdf')
                     ->color('danger')
                     ->icon('heroicon-m-document')
@@ -65,4 +68,3 @@ class ViewPurchaseRequisition extends ViewRecord
         ];
     }
 }
-

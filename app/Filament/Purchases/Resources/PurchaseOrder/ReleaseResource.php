@@ -2,6 +2,8 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
+use App\Enums\ReviewLevel;
+use App\Filament\Purchases\Actions\RespondInBulkAction;
 use App\Filament\Purchases\Resources\PurchaseOrder\ReleaseResource\Pages;
 use App\Models\PurchaseOrder;
 use Filament\Actions;
@@ -96,7 +98,12 @@ class ReleaseResource extends Resource
             ->filters([])
             ->recordActions([
                 Actions\ViewAction::make(),
-            ]);
+            ])
+            ->toolbarActions([
+                RespondInBulkAction::make()->level(ReviewLevel::OrderRelease),
+            ])
+            ->checkIfRecordIsSelectableUsing(fn (PurchaseOrder $record): bool => ReviewLevel::OrderRelease->isAwaiting($record))
+            ->maxSelectableRecords(RespondInBulkAction::MAX_RECORDS);
     }
 
     public static function getPages(): array

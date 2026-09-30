@@ -2,6 +2,8 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder;
 
+use App\Enums\ReviewLevel;
+use App\Filament\Purchases\Actions\RespondInBulkAction;
 use App\Filament\Purchases\Resources\PurchaseOrder\AuthorizeResource\Pages;
 use App\Models\PurchaseOrder;
 use Filament\Actions;
@@ -87,7 +89,12 @@ class AuthorizeResource extends Resource
             ->filters([])
             ->recordActions([
                 Actions\ViewAction::make(),
-            ]);
+            ])
+            ->toolbarActions([
+                RespondInBulkAction::make()->level(ReviewLevel::OrderAmountAuthorization),
+            ])
+            ->checkIfRecordIsSelectableUsing(fn (PurchaseOrder $record): bool => ReviewLevel::OrderAmountAuthorization->isAwaiting($record))
+            ->maxSelectableRecords(RespondInBulkAction::MAX_RECORDS);
     }
 
     public static function getPages(): array

@@ -55,7 +55,9 @@ class EditPurchaseRequisition extends EditRecord
             // Acciones secundarias agrupadas
             ActionGroup::make([
                 Actions\ViewAction::make(),
-                Actions\DeleteAction::make(),
+                // Solo para descartar un borrador, como en las órdenes.
+                Actions\DeleteAction::make()
+                    ->visible(fn ($record) => $record->status === 'borrador'),
             ])
                 ->label('Opciones')
                 ->icon('heroicon-m-ellipsis-vertical')
@@ -64,5 +66,4 @@ class EditPurchaseRequisition extends EditRecord
                 ->button(),
         ];
     }
-
 }

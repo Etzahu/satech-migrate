@@ -61,6 +61,22 @@
                                             style="background-color: #ffffff;font-size: 18px;font-family: Roboto, sans-serif;color: #162d4d;text-transform: uppercase;">
                                             Orden de compra</h1>
 
+                                        {{-- Por qué se detuvo la orden; hoy solo lo trae la cancelación por administrador. --}}
+                                        @if (filled($data['reason'] ?? null))
+                                            <table border="0" cellpadding="0" cellspacing="0"
+                                                style="width: 100%;border-collapse: collapse;margin: 12px 0 0;">
+                                                <tbody>
+                                                    <tr>
+                                                        <td
+                                                            style="font-family: Roboto, sans-serif;font-size: 12px;color: #343a40;border: 1px solid #cc2647;padding: 8px 10px;text-align: left;">
+                                                            <strong style="color: #cc2647;">MOTIVO:</strong>
+                                                            {{ $data['reason'] }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        @endif
+
                                         <table class="spacer" role="presentation" border="0" cellpadding="0"
                                             cellspacing="0" style="width: 100%;height: 20px;">
                                             <tbody>

@@ -23,6 +23,8 @@
                 'name' => $step['name'],
                 'date' => $step['date']?->toIso8601String(),
                 'done' => filled($step['name']) && filled($step['date']),
+                // Nivel pendiente que nadie activo puede firmar (ver markVacancy en la orden y markVacancies en la requisición).
+                'vacant' => (bool) ($step['vacant'] ?? false),
             ],
         )
         ->values();

@@ -310,6 +310,56 @@ class HistoryResource extends Resource
                                     ->send();
                             }
                         }),
+                    // Para lo que nadie puede responder: saca la orden del flujo
+                    // desde el nivel en que esté, aunque esa persona ya no esté.
+                    Actions\Action::make('cancelar_orden')
+                        ->label('Cancelar Orden')
+                        ->icon('heroicon-m-x-circle')
+                        ->color('danger')
+                        ->visible(fn (PurchaseOrder $record) => (auth()->user()->hasRole('super_admin') || auth()->user()->hasRole('gerente_compras'))
+                            && $record->canBeCancelledByAdmin())
+                        ->requiresConfirmation()
+                        ->modalHeading('¿Cancelar la orden?')
+                        ->modalDescription('La orden sale del flujo desde el nivel en que esté, aunque nadie pueda responderlo. Si la cuenta del comprador sigue activa, se le avisará por correo con el motivo.')
+                        ->schema([
+                            Forms\Components\Textarea::make('motivo')
+                                ->label('Motivo')
+                                ->required(),
+                        ])
+                        ->modalSubmitActionLabel('Sí, cancelar la orden')
+                        ->modalCancelActionLabel('No, volver')
+                        ->action(function (PurchaseOrder $record, array $data) {
+                            if (! $record->canBeCancelledByAdmin()) {
+                                Notification::make()
+                                    ->title('La orden ya no se puede cancelar')
+                                    ->body("La orden {$record->folio} ya está en «{$record->status}».")
+                                    ->warning()
+                                    ->send();
+
+                                return;
+                            }
+
+                            try {
+                                $record->status()->transitionTo('cancelado por administrador', [
+                                    'respuesta' => $data['motivo'],
+                                    'admin_id' => auth()->id(),
+                                    'admin_name' => auth()->user()->name,
+                                    'previous_state' => $record->status,
+                                ]);
+
+                                Notification::make()
+                                    ->title('Orden cancelada')
+                                    ->body("La orden {$record->folio} salió del flujo.")
+                                    ->success()
+                                    ->send();
+                            } catch (\Exception $e) {
+                                Notification::make()
+                                    ->title('Error al cancelar la orden')
+                                    ->body('No se pudo cancelar la orden: '.$e->getMessage())
+                                    ->danger()
+                                    ->send();
+                            }
+                        }),
                     Actions\Action::make('ver_partidas')
                         ->label('Ver Partidas')
                         ->icon('heroicon-m-list-bullet')

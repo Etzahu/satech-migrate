@@ -381,7 +381,13 @@
                             @else
                                 <p style="font-size: 11px;margin:0;font-weight: bold;color:#808080;">
                                     {{ $step['job-pdf'] }}</p>
-                                <p style="font-size: 11px;margin:0;color:#808080;">
+                                {{-- Nivel que nadie activo puede firmar: ver PurchaseOrder::markVacancy() --}}
+                                <p @style([
+                                    'font-size: 11px',
+                                    'margin: 0',
+                                    'color: #dc2626; font-weight: bold' => $step['vacant'] ?? false,
+                                    'color: #808080' => ! ($step['vacant'] ?? false),
+                                ])>
                                     {{ $step['name'] }}
                                 </p>
                                 <p style="font-size: 11px;margin:0;color:#808080;">
