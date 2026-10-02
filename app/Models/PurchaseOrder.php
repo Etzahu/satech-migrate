@@ -6,6 +6,7 @@ use App\Services\PurchaseOrderChainResolver;
 use App\Services\PurchaseOrderFlowService;
 use App\StateMachines\PurchaseOrderStateMachine;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
+use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -254,8 +255,8 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
     }
 
     /**
-     * Nombre del primer usuario activo que tiene el rol, o null si no hay
-     * ninguno.
+     * Nombres de los usuarios activos que tienen el rol, en orden alfabético;
+     * vacío si no hay ninguno.
      *
      * Solo cuenta quien sigue activo: un titular dado de baja ya no puede
      * firmar, y su nombre en un nivel pendiente ocultaría que el rol se quedó
@@ -267,12 +268,16 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
      * un `?->` no protege de una excepción. Pasó de verdad: al reponer la base
      * sin la migración del nivel de liberación, el PDF y la ficha de la
      * requisición devolvían 500.
+     *
+     * @return array<int, string>
      */
-    public static function firstUserWithRole(string $role): ?string
+    public static function activeNamesWithRole(string $role): array
     {
         return User::whereHas('roles', fn ($query) => $query->where('name', $role))
             ->where('active', 1)
-            ->value('name');
+            ->orderBy('name')
+            ->pluck('name')
+            ->all();
     }
 
     /**
@@ -292,6 +297,45 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
     public function canBeCancelledByAdmin(): bool
     {
         return $this->awaitsSignatures();
+    }
+
+    /**
+     * Completa un nivel que no tiene firmante registrado con quienes pueden
+     * firmarlo hoy.
+     *
+     * Cuando un rol tiene varios titulares, cualquiera de ellos puede firmar:
+     * a todos les llega el aviso y todos ven la orden en su bandeja. Mostrar
+     * solo a uno hacía creer que la orden esperaba a esa persona. Mientras el
+     * nivel esté pendiente, `name` los junta a todos —así los lee el PDF— y
+     * `candidates` los trae por separado para el avance en pantalla.
+     *
+     * Un nivel firmado conserva a quien firmó. Si el historial no guardó quién
+     * fue, se queda con el primer titular, como antes.
+     *
+     * @param  array<string, mixed>  $step
+     * @param  Closure(): array<int, string>  $candidates
+     * @return array<string, mixed>
+     */
+    private function fillPendingSigner(array $step, Closure $candidates): array
+    {
+        $step['candidates'] = [];
+
+        if (filled($step['name'])) {
+            return $step;
+        }
+
+        $names = $candidates();
+
+        if (filled($step['date'])) {
+            $step['name'] = $names[0] ?? null;
+
+            return $step;
+        }
+
+        $step['name'] = $names === [] ? null : implode(' / ', $names);
+        $step['candidates'] = $names;
+
+        return $step;
     }
 
     /**
@@ -439,33 +483,36 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
     public function getProgressAttribute()
     {
 
-        // Ver firstUserWithRole(): ni un rol vacío ni un rol inexistente deben
-        // tumbar el PDF ni el infolist. El paso se pinta sin nombre, igual que
-        // ya se comporta un paso sin fecha.
-        $purchaseManager = static::firstUserWithRole('gerente_compras');
-        $releaser = static::firstUserWithRole('libera_orden_compra');
-        $dgLevel2 = static::firstUserWithRole('autoriza_nivel-2-orden_compra');
-
         $registros = $this->getRevisionRecords();
         $data = array_map(fn ($registro) => $registro?->created_at, $registros);
 
         // Cada nivel se firma con quien lo firmó de verdad; si sigue pendiente,
-        // con quien tiene que firmarlo hoy.
+        // con quienes pueden firmarlo hoy (ver fillPendingSigner()).
         $firmante = $this->signersOf($registros);
         $resolver = app(PurchaseOrderChainResolver::class);
 
         $progress = [];
         $progress = [
             'purchaser' => ['title' => 'Comprador', 'name' => $this->purchaser?->name, 'job-pdf' => 'Comprador', 'date' => $data['revisión gerente de compras']],
-            'reviewer' => ['title' => 'Revisa', 'name' => $firmante['aprobado por gerente de compras'] ?? $purchaseManager, 'job-pdf' => 'Gerente de compras', 'date' => $data['aprobado por gerente de compras']],
-            'approver' => ['title' => 'Aprueba', 'name' => $firmante['aprobado por gerente solicitante'] ?? $resolver->approverName($this), 'job-pdf' => 'Gerente solicitante', 'date' => $data['aprobado por gerente solicitante']],
-            'authorizer-1' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 1'] ?? $resolver->authorizerName($this), 'job-pdf' => 'Dirección general', 'date' => $data['aprobado por DG nivel 1']],
-            'releaser' => ['title' => 'Libera', 'name' => $firmante['liberado por dirección administrativa'] ?? $releaser, 'job-pdf' => 'Dirección administrativa', 'date' => $data['liberado por dirección administrativa']],
-            'authorizer-2' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 2'] ?? $dgLevel2, 'job-pdf' => 'Dirección General (monto)', 'date' => $data['aprobado por DG nivel 2']],
+            'reviewer' => ['title' => 'Revisa', 'name' => $firmante['aprobado por gerente de compras'], 'job-pdf' => 'Gerente de compras', 'date' => $data['aprobado por gerente de compras']],
+            'approver' => ['title' => 'Aprueba', 'name' => $firmante['aprobado por gerente solicitante'], 'job-pdf' => 'Gerente solicitante', 'date' => $data['aprobado por gerente solicitante']],
+            'authorizer-1' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 1'], 'job-pdf' => 'Dirección general', 'date' => $data['aprobado por DG nivel 1']],
+            'releaser' => ['title' => 'Libera', 'name' => $firmante['liberado por dirección administrativa'], 'job-pdf' => 'Dirección administrativa', 'date' => $data['liberado por dirección administrativa']],
+            'authorizer-2' => ['title' => 'Autoriza', 'name' => $firmante['aprobado por DG nivel 2'], 'job-pdf' => 'Dirección General (monto)', 'date' => $data['aprobado por DG nivel 2']],
         ];
 
-        foreach (['reviewer', 'approver', 'authorizer-1', 'releaser', 'authorizer-2'] as $level) {
-            $progress[$level] = $this->markVacancy($progress[$level]);
+        // Ver activeNamesWithRole(): ni un rol vacío ni un rol inexistente
+        // deben tumbar el PDF ni el infolist; el paso queda como vacante.
+        $candidates = [
+            'reviewer' => fn () => static::activeNamesWithRole('gerente_compras'),
+            'approver' => fn () => $resolver->approverNames($this),
+            'authorizer-1' => fn () => $resolver->authorizerNames($this),
+            'releaser' => fn () => static::activeNamesWithRole('libera_orden_compra'),
+            'authorizer-2' => fn () => static::activeNamesWithRole('autoriza_nivel-2-orden_compra'),
+        ];
+
+        foreach ($candidates as $level => $names) {
+            $progress[$level] = $this->markVacancy($this->fillPendingSigner($progress[$level], $names));
         }
 
         // El nivel de monto es la última aprobación y solo aplica a las órdenes
@@ -536,16 +583,18 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
             ],
             'authorizer' => [
                 'title' => 'Autoriza',
-                // Quien firmó según el histórico; si aún no se autoriza, quien
-                // tiene la facultad. Antes iba el nombre literal.
-                'name' => (isset($data['autorizada para proveedor']) ? $data['autorizada para proveedor']->responsible?->name : null)
-                    ?? static::firstUserWithRole('aprueba_orden_especial'),
+                // Quien firmó según el histórico; si aún no se autoriza, quienes
+                // tienen la facultad. Antes iba el nombre literal.
+                'name' => isset($data['autorizada para proveedor']) ? $data['autorizada para proveedor']->responsible?->name : null,
                 'job-pdf' => 'Dirección general',
                 'date' => isset($data['autorizada para proveedor']) ? $data['autorizada para proveedor']->created_at : null,
             ],
         ];
 
-        $progress['authorizer'] = $this->markVacancy($progress['authorizer']);
+        $progress['authorizer'] = $this->markVacancy($this->fillPendingSigner(
+            $progress['authorizer'],
+            fn () => static::activeNamesWithRole('aprueba_orden_especial'),
+        ));
 
         return $progress;
     }

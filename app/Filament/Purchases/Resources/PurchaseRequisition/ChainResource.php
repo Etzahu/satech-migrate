@@ -49,7 +49,35 @@ class ChainResource extends Resource
                         : $query->where('email', 'like', '%@gptservices.com'))
                     ->searchable()
                     ->preload()
-                    ->required(),
+                    ->required()
+                    // Evita cadenas duplicadas: no puede existir otra con la misma
+                    // combinación Solicita/Revisa/Aprueba/Autoriza (ignora el propio registro al editar).
+                    // Va en este campo y no en Autoriza porque es obligatorio: a un campo
+                    // opcional vacío Laravel no le corre la regla, y la cadena sin
+                    // autorizador pasaría como nueva aunque ya existiera.
+                    ->rules([
+                        fn (Get $get, ?PurchaseRequisitionApprovalChain $record): Closure => function (string $attribute, $value, Closure $fail) use ($get, $record) {
+                            $authorizerId = $get('authorizer_id');
+
+                            $exists = PurchaseRequisitionApprovalChain::query()
+                                ->where('requester_id', $value)
+                                ->where('reviewer_id', $get('reviewer_id'))
+                                ->where('approver_id', $get('approver_id'))
+                                // NULL = NULL nunca es verdadero en SQL, así que
+                                // el nivel vacío necesita su propia comparación.
+                                ->when(
+                                    blank($authorizerId),
+                                    fn (Builder $query) => $query->whereNull('authorizer_id'),
+                                    fn (Builder $query) => $query->where('authorizer_id', $authorizerId),
+                                )
+                                ->when($record, fn (Builder $query) => $query->whereKeyNot($record->getKey()))
+                                ->exists();
+
+                            if ($exists) {
+                                $fail('Ya existe una cadena con esta misma combinación de Solicita, Revisa, Aprueba y Autoriza.');
+                            }
+                        },
+                    ]),
                 Forms\Components\Select::make('reviewer_id')
                     ->label('Revisa')
                     ->relationship('reviewer', 'name', modifyQueryUsing: fn (Builder $query, string $operation) => $operation === 'create'
@@ -78,30 +106,7 @@ class ChainResource extends Resource
                     // Soldadura y Servicios Técnicos. Dejarlo vacío no rompe la
                     // cadena; la requisición avanza sola por ese paso.
                     ->placeholder('N/A — sin nivel de autorización')
-                    ->helperText('Déjalo vacío si esta cadena no lleva nivel de autorización.')
-                    // Evita cadenas duplicadas: no puede existir otra con la misma
-                    // combinación Solicita/Revisa/Aprueba/Autoriza (ignora el propio registro al editar).
-                    ->rules([
-                        fn (Get $get, ?PurchaseRequisitionApprovalChain $record): Closure => function (string $attribute, $value, Closure $fail) use ($get, $record) {
-                            $exists = PurchaseRequisitionApprovalChain::query()
-                                ->where('requester_id', $get('requester_id'))
-                                ->where('reviewer_id', $get('reviewer_id'))
-                                ->where('approver_id', $get('approver_id'))
-                                // NULL = NULL nunca es verdadero en SQL, así que
-                                // el nivel vacío necesita su propia comparación.
-                                ->when(
-                                    $value === null,
-                                    fn (Builder $query) => $query->whereNull('authorizer_id'),
-                                    fn (Builder $query) => $query->where('authorizer_id', $value),
-                                )
-                                ->when($record, fn (Builder $query) => $query->whereKeyNot($record->getKey()))
-                                ->exists();
-
-                            if ($exists) {
-                                $fail('Ya existe una cadena con esta misma combinación de Solicita, Revisa, Aprueba y Autoriza.');
-                            }
-                        },
-                    ]),
+                    ->helperText('Déjalo vacío si esta cadena no lleva nivel de autorización.'),
                 Forms\Components\Toggle::make('po_flow_excluded')
                     ->label('Excluir del flujo de orden por rol')
                     ->helperText('Marcar solo si esta cadena debe conservar su propio aprobador y autorizador en las órdenes, pese a que su gerencia use el flujo por rol.')

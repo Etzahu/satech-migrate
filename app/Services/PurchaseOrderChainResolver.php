@@ -111,38 +111,43 @@ class PurchaseOrderChainResolver
     }
 
     /**
-     * Nombre de quien debe aprobar esta orden, o null si no hay nadie activo.
+     * Nombres de quienes pueden aprobar esta orden hoy; vacío si no hay nadie
+     * activo.
      *
-     * Lo usa el PDF para los niveles que todavía no se firmaron. Alguien dado
-     * de baja no cuenta, venga del rol o de la cadena: ya no puede entrar a
-     * firmar, y su nombre en un nivel pendiente haría creer que la orden está
-     * en su bandeja.
+     * Lo usan el avance y el PDF para los niveles que todavía no se firmaron.
+     * Por rol son todos los titulares activos, porque cualquiera puede firmar;
+     * por cadena, la persona de la cadena. Alguien dado de baja no cuenta,
+     * venga del rol o de la cadena: ya no puede entrar a firmar, y su nombre en
+     * un nivel pendiente haría creer que la orden está en su bandeja.
+     *
+     * @return array<int, string>
      */
-    public function approverName(?PurchaseOrder $order): ?string
+    public function approverNames(?PurchaseOrder $order): array
     {
         return $this->usesRoleFlow($order)
-            ? $this->firstNameWithRole(self::APPROVER_ROLE)
+            ? PurchaseOrder::activeNamesWithRole(self::APPROVER_ROLE)
             : $this->activeName($order?->requisition?->approvalChain?->approver);
     }
 
     /**
-     * Nombre de quien debe autorizar esta orden, o null si no hay nadie activo.
+     * Nombres de quienes pueden autorizar esta orden hoy; vacío si no hay
+     * nadie activo.
+     *
+     * @return array<int, string>
      */
-    public function authorizerName(?PurchaseOrder $order): ?string
+    public function authorizerNames(?PurchaseOrder $order): array
     {
         return $this->usesRoleFlow($order)
-            ? $this->firstNameWithRole(self::AUTHORIZER_ROLE)
+            ? PurchaseOrder::activeNamesWithRole(self::AUTHORIZER_ROLE)
             : $this->activeName($order?->requisition?->approvalChain?->authorizer);
     }
 
-    private function firstNameWithRole(string $role): ?string
+    /**
+     * @return array<int, string>
+     */
+    private function activeName(?User $user): array
     {
-        return User::withRole($role)->where('active', 1)->value('name');
-    }
-
-    private function activeName(?User $user): ?string
-    {
-        return $user?->active ? $user->name : null;
+        return $user?->active ? [$user->name] : [];
     }
 
     /**

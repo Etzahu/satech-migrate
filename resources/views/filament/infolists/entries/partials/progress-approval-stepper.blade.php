@@ -25,6 +25,8 @@
                 'done' => filled($step['name']) && filled($step['date']),
                 // Nivel pendiente que nadie activo puede firmar (ver markVacancy en la orden y markVacancies en la requisición).
                 'vacant' => (bool) ($step['vacant'] ?? false),
+                // Quienes pueden firmar un nivel pendiente de la orden (ver fillPendingSigner).
+                'candidates' => array_values($step['candidates'] ?? []),
             ],
         )
         ->values();

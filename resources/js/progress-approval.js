@@ -3,11 +3,13 @@ import * as d3 from "d3";
 /**
  * Stepper de avance de aprobación (v2 del entry progress-approval).
  *
- * Lee los pasos {title, name, date, done, vacant} del JSON embebido en cada
+ * Lee los pasos {title, name, date, done, vacant, candidates} del JSON embebido en cada
  * [data-progress-approval] y dibuja una línea de tiempo animada:
  * línea de progreso, badges de fecha, paso actual pulsante, tooltips y
  * contadores animados. Un paso `vacant` es un nivel pendiente que nadie
- * activo puede firmar y se pinta en rojo. La orientación se controla con
+ * activo puede firmar y se pinta en rojo. Si un nivel pendiente lo puede
+ * firmar más de una persona (`candidates`), la etiqueta muestra a la primera
+ * con "+N" y el tooltip la lista completa. La orientación se controla con
  * data-orientation ("vertical" por defecto, "horizontal" opcional). Un MutationObserver
  * renderiza las entradas que aparecen después de la carga (modales de
  * Livewire).
@@ -96,6 +98,7 @@ const CSS = `
 .pa-tooltip strong { color: #111827; }
 .dark .pa-tooltip strong { color: #f9fafb; }
 .pa-tooltip__status { display: inline-block; margin-top: 3px; padding: 0 8px; border-radius: 999px; font-size: 10px; font-weight: 700; color: #fff; }
+.pa-tooltip__list { margin: 1px 0 2px; padding-left: 16px; list-style: disc; }
 `;
 
 function injectStyles() {
@@ -124,6 +127,32 @@ function wrapName(name, max) {
         lines[1] += "…";
     }
     return lines.slice(0, 2);
+}
+
+function escapeHtml(text) {
+    const el = document.createElement("span");
+    el.textContent = String(text ?? "");
+    return el.innerHTML;
+}
+
+function hasSeveralCandidates(s) {
+    return !s.done && Array.isArray(s.candidates) && s.candidates.length > 1;
+}
+
+// Varios pueden firmar el nivel pendiente: la etiqueta solo tiene dos líneas,
+// así que se muestra a la primera persona y cuántas más hay.
+function displayName(s) {
+    if (hasSeveralCandidates(s)) return `${s.candidates[0]} +${s.candidates.length - 1}`;
+    return s.name;
+}
+
+function whoTooltip(s) {
+    if (s.vacant) return `<div>Nadie activo puede firmar este nivel.</div>`;
+    if (hasSeveralCandidates(s)) {
+        const items = s.candidates.map((name) => `<li>${escapeHtml(name)}</li>`).join("");
+        return `<div>👥 Puede firmarlo cualquiera de:</div><ul class="pa-tooltip__list">${items}</ul>`;
+    }
+    return s.name ? `<div>👤 ${escapeHtml(s.name)}</div>` : "";
 }
 
 function nameClass(s) {
@@ -262,7 +291,7 @@ function render(root) {
                 .attr("y", y - 4)
                 .text(s.title);
 
-            wrapName(s.name, 38).forEach((line, li) => {
+            wrapName(displayName(s), 38).forEach((line, li) => {
                 labels
                     .append("text")
                     .attr("class", nameClass(s))
@@ -280,7 +309,7 @@ function render(root) {
                 .attr("text-anchor", "middle")
                 .text(s.title);
 
-            wrapName(s.name, 19).forEach((line, li) => {
+            wrapName(displayName(s), 19).forEach((line, li) => {
                 labels
                     .append("text")
                     .attr("class", nameClass(s))
@@ -315,8 +344,7 @@ function render(root) {
             const status = statusOf(s);
             tooltip.innerHTML = `
                 <div><strong>${s.title}</strong></div>
-                ${s.name && !s.vacant ? `<div>👤 ${s.name}</div>` : ""}
-                ${s.vacant ? `<div>Nadie activo puede firmar este nivel.</div>` : ""}
+                ${whoTooltip(s)}
                 ${date ? `<div>📅 ${date}</div>` : ""}
                 <span class="pa-tooltip__status" style="background:${status.color}">
                     ${status.label}
