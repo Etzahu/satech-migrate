@@ -2,18 +2,16 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\Models\PurchaseOrder;
+use App\Models\User;
 use App\Observers\PurchaseOrderObserver;
-use App\Policies\AutidPolicy;
-use OwenIt\Auditing\Models\Audit;
+use Filament\Schemas\Components\Form;
+use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Filament\Support\Facades\FilamentView;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,17 +31,24 @@ class AppServiceProvider extends ServiceProvider
         // Registrar Observer para PurchaseOrder
         PurchaseOrder::observe(PurchaseOrderObserver::class);
 
+        // Sin validación nativa del navegador: si un campo inválido (un decimal en
+        // un número entero, una fecha a medias) queda en un tab inactivo, Chrome no
+        // puede enfocarlo y bloquea el envío en silencio ("An invalid form control
+        // is not focusable"). Filament ya valida las mismas reglas en el servidor
+        // y abre el tab donde está el error.
+        Form::configureUsing(fn (Form $form): Form => $form->extraAttributes(['novalidate' => true], merge: true));
+
         Gate::define('viewLogViewer', function (?User $user) {
 
             return $user->hasRole('super_admin');
         });
 
-        Gate::define('see-sent-emails', function (User $user,) {
+        Gate::define('see-sent-emails', function (User $user) {
 
             return $user->hasRole('super_admin');
         });
 
-        Gate::define('audit', function (User $user,) {
+        Gate::define('audit', function (User $user) {
             return $user->hasRole('super_admin');
         });
         // Mail::alwaysTo('ahernandezm@gptservices.com');
