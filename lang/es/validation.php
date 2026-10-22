@@ -202,7 +202,7 @@ return [
     'string'               => 'El campo :attribute debe ser una cadena de caracteres.',
     'timezone'             => 'El :attribute debe ser una zona válida.',
     'unique'               => ':attribute ya ha sido registrado.',
-    'uploaded'             => 'Subir :attribute ha fallado.',
+    'uploaded'             => 'No se pudo subir el archivo. Verifica que no exceda el tamaño máximo permitido e inténtalo de nuevo.',
     'url'                  => 'El formato :attribute es inválido.',
 
     /*
