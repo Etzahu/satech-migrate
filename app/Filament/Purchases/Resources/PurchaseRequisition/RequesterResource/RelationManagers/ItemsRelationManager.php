@@ -36,22 +36,45 @@ class ItemsRelationManager extends RelationManager
     }
 
     /**
-     * Coloca al inicio del catálogo los productos que el solicitante de esta
-     * requisición ya ha pedido antes, del más reciente al más antiguo, y deja
-     * el resto del catálogo después.
+     * Ordena el catálogo para el solicitante de esta requisición: primero los
+     * productos que ya ha pedido, luego los que él mismo dio de alta (ambos del
+     * más reciente al más antiguo) y al final el resto del catálogo.
      *
      * @param  Collection<int, string>  $options  [product_id => nombre]
      * @return array<int, string>
      */
-    protected function sortOptionsByRequesterHistory(Collection $options): array
+    protected function sortOptionsForRequester(Collection $options): array
     {
-        $recent = $this->getRequesterRecentProductIds()
+        $requesterId = $this->getOwnerRecord()->approvalChain?->requester_id;
+
+        if (blank($requesterId)) {
+            return $options->all();
+        }
+
+        $first = $this->getRequesterRecentProductIds($requesterId)
+            ->merge($this->getRequesterCapturedProductIds($requesterId))
+            ->unique()
             ->filter(fn (int $productId) => $options->has($productId))
             ->mapWithKeys(fn (int $productId) => [$productId => $options->get($productId)]);
 
         // union conserva el valor de la primera colección cuando la llave se repite,
-        // así los recientes quedan arriba y los demás en su orden original.
-        return $recent->union($options)->all();
+        // así los del solicitante quedan arriba y los demás en su orden original.
+        return $first->union($options)->all();
+    }
+
+    /**
+     * IDs de productos que el solicitante dio de alta en el catálogo, del más
+     * reciente al más antiguo.
+     *
+     * @return Collection<int, int>
+     */
+    protected function getRequesterCapturedProductIds(int $requesterId): Collection
+    {
+        return Product::query()
+            ->where('requester_id', $requesterId)
+            ->where('company_id', session()->get('company_id'))
+            ->orderByDesc('id')
+            ->pluck('id');
     }
 
     /**
@@ -60,14 +83,8 @@ class ItemsRelationManager extends RelationManager
      *
      * @return Collection<int, int>
      */
-    protected function getRequesterRecentProductIds(): Collection
+    protected function getRequesterRecentProductIds(int $requesterId): Collection
     {
-        $requesterId = $this->getOwnerRecord()->approvalChain?->requester_id;
-
-        if (blank($requesterId)) {
-            return collect();
-        }
-
         return PurchaseRequisitionItem::query()
             ->whereHas('requisition', fn (Builder $query) => $query
                 ->where('company_id', session()->get('company_id'))
@@ -104,7 +121,7 @@ class ItemsRelationManager extends RelationManager
                             $query->where('type_purchase', $type);
                         }
 
-                        return $this->sortOptionsByRequesterHistory($query->pluck('name', 'id'));
+                        return $this->sortOptionsForRequester($query->pluck('name', 'id'));
                     })
                     ->searchable()
                     ->live()
@@ -180,7 +197,7 @@ class ItemsRelationManager extends RelationManager
             ->headerActions([
                 Actions\CreateAction::make()
                     ->slideOver()
-                     ->modalWidth(Width::SevenExtraLarge)
+                    ->modalWidth(Width::SevenExtraLarge)
                     ->mutateDataUsing(function (array $data): array {
                         $data['quantity_purchase'] = $data['quantity_requested'];
 
@@ -193,7 +210,7 @@ class ItemsRelationManager extends RelationManager
             ])
             ->recordActions([
                 Actions\EditAction::make()
-                ->modalWidth(Width::SevenExtraLarge)
+                    ->modalWidth(Width::SevenExtraLarge)
                     ->mutateDataUsing(function (array $data): array {
                         $data['quantity_purchase'] = $data['quantity_requested'];
 
