@@ -102,6 +102,30 @@ class FlowHealthService
     }
 
     /**
+     * A quién le llegan los avisos de operación: este reporte y las fallas de
+     * la página de Salud. Los correos configurados o, si no hay, los
+     * super_admin activos.
+     *
+     * @return array<int, string>
+     */
+    public function alertRecipients(): array
+    {
+        $configured = config('purchases.flow_alerts.recipients', []);
+
+        if ($configured !== []) {
+            return $configured;
+        }
+
+        return User::withRole('super_admin')
+            ->where('active', 1)
+            ->pluck('email')
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+    }
+
+    /**
      * @return Collection<int, PurchaseOrder>
      */
     public function pendingOrders(): Collection

@@ -43,6 +43,10 @@ return [
         // original acaba de salir. 0 recuerda todo.
         'min_days' => (int) env('REVIEW_REMINDER_MIN_DAYS', 1),
 
+        // URL a la que se avisa cuando el recordatorio termina sin errores
+        // (healthchecks.io, Oh Dear). Vacío: no se avisa a nadie.
+        'ping_url' => env('REVIEW_REMINDER_PING_URL'),
+
     ],
 
 ];

@@ -45,7 +45,8 @@ class ReportFlowHealthCommandTest extends TestCase
      */
     private function fakeReport(array $report): void
     {
-        $this->mock(FlowHealthService::class, function (MockInterface $mock) use ($report) {
+        // Parcial: a quién se avisa (alertRecipients) corre de verdad.
+        $this->partialMock(FlowHealthService::class, function (MockInterface $mock) use ($report) {
             $mock->shouldReceive('report')->once()->andReturn($report);
         });
     }

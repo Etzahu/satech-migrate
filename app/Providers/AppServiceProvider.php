@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\PurchaseOrder;
 use App\Models\User;
 use App\Observers\PurchaseOrderObserver;
+use App\Policies\MailLogPolicy;
 use Filament\Forms\Components\FileUpload;
 use Filament\Schemas\Components\Form;
 use Filament\Support\Facades\FilamentView;
@@ -15,6 +16,12 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\FileUploadConfiguration;
+use Spatie\Health\Checks\Checks\CacheCheck;
+use Spatie\Health\Checks\Checks\DatabaseCheck;
+use Spatie\Health\Checks\Checks\ScheduleCheck;
+use Spatie\Health\Checks\Checks\UsedDiskSpaceCheck;
+use Spatie\Health\Facades\Health;
+use Tapp\FilamentMailLog\Models\MailLog;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -60,6 +67,19 @@ class AppServiceProvider extends ServiceProvider
         Gate::define('audit', function (User $user) {
             return $user->hasRole('super_admin');
         });
+
+        Gate::policy(MailLog::class, MailLogPolicy::class);
+
+        // Lo que revisa la página de Salud cada minuto (ver routes/console.php).
+        // El de tareas programadas falla si el cron de `schedule:run` dejó de
+        // correr, que es de lo que dependen el recordatorio diario y
+        // flow-health. El de disco usa `df`, que en Windows no existe.
+        Health::checks([
+            ScheduleCheck::new()->label('Tareas programadas'),
+            DatabaseCheck::new()->label('Base de datos'),
+            CacheCheck::new()->label('Cache'),
+            UsedDiskSpaceCheck::new()->label('Espacio en disco')->unless(PHP_OS_FAMILY === 'Windows'),
+        ]);
         // Mail::alwaysTo('ahernandezm@gptservices.com');
         // if ($this->app->environment('local')) {
         //     Mail::alwaysTo('ahernandezm@gptservices.com');

@@ -36,9 +36,12 @@
         "rap2hpoutre/fast-excel": "^5.5",
         "revolution/laravel-google-sheets": "^7.1",
         "secondnetwork/blade-tabler-icons": "^3.41",
+        "shuvroroy/filament-spatie-laravel-health": "^3.3",
+        "spatie/laravel-health": "^1.40",
         "spatie/laravel-pdf": "^1.5",
         "stechstudio/filament-impersonate": "^5.0",
-        "tapp/filament-auditing": "^4.0"
+        "tapp/filament-auditing": "^4.0",
+        "tapp/filament-maillog": "^2.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

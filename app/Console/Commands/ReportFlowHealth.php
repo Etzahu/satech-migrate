@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\Mail\FlowHealthReport;
-use App\Models\User;
 use App\Services\FlowHealthService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
@@ -38,7 +37,7 @@ class ReportFlowHealth extends Command
             return self::SUCCESS;
         }
 
-        $recipients = $this->recipients();
+        $recipients = $service->alertRecipients();
 
         if ($recipients === []) {
             $this->error('No hay a quién mandar el aviso: define FLOW_ALERT_RECIPIENTS o asigna super_admin a alguien activo.');
@@ -51,28 +50,6 @@ class ReportFlowHealth extends Command
         $this->info('Aviso enviado a '.implode(', ', $recipients).'.');
 
         return self::SUCCESS;
-    }
-
-    /**
-     * Los correos configurados o, si no hay, los super_admin activos.
-     *
-     * @return array<int, string>
-     */
-    private function recipients(): array
-    {
-        $configured = config('purchases.flow_alerts.recipients', []);
-
-        if ($configured !== []) {
-            return $configured;
-        }
-
-        return User::withRole('super_admin')
-            ->where('active', 1)
-            ->pluck('email')
-            ->filter()
-            ->unique()
-            ->values()
-            ->all();
     }
 
     /**

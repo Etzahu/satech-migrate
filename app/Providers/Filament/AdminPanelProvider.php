@@ -2,7 +2,6 @@
 
 namespace App\Providers\Filament;
 
-use Backstage\Mails\MailsPlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Enums\ThemeMode;
 use Filament\Http\Middleware\Authenticate;
@@ -23,6 +22,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
+use Tapp\FilamentMailLog\FilamentMailLogPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -74,6 +75,12 @@ class AdminPanelProvider extends PanelProvider
             ->plugins([
                 FilamentShieldPlugin::make(),
                 FilamentErrorMailerPlugin::make(),
+                // Cualquier cuenta de la empresa entra al panel: la página de
+                // Salud y la bitácora de correos (MailLogPolicy) son solo de
+                // super_admin.
+                FilamentSpatieLaravelHealthPlugin::make()
+                    ->authorize(fn (): bool => auth()->user()?->hasRole('super_admin') ?? false),
+                FilamentMailLogPlugin::make(),
             ]);
     }
 }

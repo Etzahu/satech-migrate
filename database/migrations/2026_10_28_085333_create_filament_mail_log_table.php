@@ -1,0 +1,63 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Tapp\FilamentMailLog\Models\MailLog;
+
+return new class extends Migration
+{
+    public function up()
+    {
+        Schema::create('mail_logs', function (Blueprint $table) {
+            $table->increments('id');
+
+            if (config('filament-maillog.tenancy.enabled')) {
+                $tenantModel = config('filament-maillog.tenancy.model');
+
+                if (! is_string($tenantModel) || $tenantModel === '') {
+                    throw new InvalidArgumentException('Tenant model not configured in filament-maillog.tenancy.model');
+                }
+
+                $tenantColumn = $table->foreignIdFor($tenantModel, MailLog::getTenantColumnName());
+
+                if (config('filament-maillog.tenancy.nullable', true)) {
+                    $tenantColumn->nullable();
+                }
+
+                $tenantColumn
+                    ->constrained()
+                    ->onDelete((string) config('filament-maillog.tenancy.foreign_key.on_delete', 'cascade'))
+                    ->onUpdate((string) config('filament-maillog.tenancy.foreign_key.on_update', 'cascade'));
+            }
+
+            $table->text('from')->nullable();
+            $table->text('to')->nullable();
+            $table->text('cc')->nullable();
+            $table->text('bcc')->nullable();
+            $table->text('subject');
+            // Nullable: el paquete guarda solo el HTML, y un correo de texto
+            // plano no debe fallar por no poder registrarse.
+            $table->longText('body')->nullable();
+            $table->text('headers')->nullable();
+            $table->longText('attachments')->nullable();
+            $table->uuid('message_id')->nullable();
+            $table->string('status')->nullable();
+            $table->longText('data')->nullable();
+            $table->timestamp('opened')->nullable();
+            $table->timestamp('delivered')->nullable();
+            $table->timestamp('complaint')->nullable();
+            $table->timestamp('bounced')->nullable();
+
+            $table->timestamps();
+
+            $table->index('message_id');
+            $table->index('status');
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('mail_logs');
+    }
+};
