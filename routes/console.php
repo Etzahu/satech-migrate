@@ -38,11 +38,11 @@ Schedule::command('purchases:remind-pending')
 Schedule::command(ScheduleCheckHeartbeatCommand::class)->everyMinute();
 Schedule::command(RunHealthChecksCommand::class)->everyMinute();
 
-// La bitácora de correos guarda cada correo completo, adjuntos incluidos: se
-// borra lo que pasa de MAIL_LOG_KEEP_DAYS.
+// La bitácora de correos guarda cada correo completo, adjuntos incluidos: cada
+// domingo se borra lo que pasa de MAIL_LOG_KEEP_DAYS.
 Schedule::call(fn () => MailLog::query()
     ->where('created_at', '<', now()->subDays(config('filament-maillog.keep_for_days')))
     ->delete())
     ->name('Limpia la bitácora de correos')
-    ->dailyAt('03:00')
+    ->weeklyOn(0, '03:00')
     ->timezone('America/Mexico_City');
