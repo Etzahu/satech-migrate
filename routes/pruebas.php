@@ -2172,3 +2172,13 @@ Route::get('orders-total', function () {
 
     return $data;
 });
+
+/**
+ * Figura isométrica de la cadena de aprobación de requisiciones.
+ * La genera resources/figures/cadena-aprobacion/build.mjs; ?tema=oscuro para el tema oscuro.
+ */
+Route::get('cadena-aprobacion', function (Request $request) {
+    $file = $request->query('tema') === 'oscuro' ? 'cadena-aprobacion.html' : 'cadena-aprobacion-light.html';
+
+    return response()->file(resource_path("figures/cadena-aprobacion/{$file}"));
+});
