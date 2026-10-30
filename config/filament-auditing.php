@@ -2,8 +2,10 @@
 
 return [
 
+    // Por id y no por created_at: dos transiciones en el mismo segundo empatan
+    // en created_at y Filament las desempata por id ascendente, dejando arriba la vieja.
     'audits_sort' => [
-        'column' => 'created_at',
+        'column' => 'id',
         'direction' => 'desc',
     ],
 
