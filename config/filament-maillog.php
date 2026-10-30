@@ -1,6 +1,6 @@
 <?php
 
-use Tapp\FilamentMailLog\Resources\MailLogResource;
+use App\Filament\Admin\Resources\MailLogResource;
 
 return [
     'amazon-ses' => [

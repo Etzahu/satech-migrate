@@ -1,11 +1,11 @@
 <?php
 
+use App\Services\MailLogPruner;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
 use Spatie\Health\Commands\RunHealthChecksCommand;
 use Spatie\Health\Commands\ScheduleCheckHeartbeatCommand;
-use Tapp\FilamentMailLog\Models\MailLog;
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -40,9 +40,7 @@ Schedule::command(RunHealthChecksCommand::class)->everyMinute();
 
 // La bitácora de correos guarda cada correo completo, adjuntos incluidos: cada
 // domingo se borra lo que pasa de MAIL_LOG_KEEP_DAYS.
-Schedule::call(fn () => MailLog::query()
-    ->where('created_at', '<', now()->subDays(config('filament-maillog.keep_for_days')))
-    ->delete())
+Schedule::call(fn (MailLogPruner $pruner) => $pruner->prune((int) config('filament-maillog.keep_for_days')))
     ->name('Limpia la bitácora de correos')
     ->weeklyOn(0, '03:00')
     ->timezone('America/Mexico_City');

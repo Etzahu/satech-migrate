@@ -2,13 +2,16 @@
 
 namespace Tests\Feature;
 
+use App\Filament\Admin\Resources\MailLogResource\Pages\ListMailLogs;
 use App\Mail\PendingReviewReminder;
 use App\Models\User;
+use Carbon\CarbonInterface;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Mail;
+use Livewire\Livewire;
 use Tapp\FilamentMailLog\Models\MailLog;
 use Tests\TestCase;
 
@@ -34,6 +37,22 @@ class MailLogTest extends TestCase
         }
 
         return $user;
+    }
+
+    /**
+     * Un registro como los que deja un envío real: la tabla del panel decodifica
+     * `from` y `headers`, que nunca vienen vacíos.
+     */
+    private function logEntry(string $subject, CarbonInterface $sentAt): MailLog
+    {
+        return MailLog::create([
+            'from' => 'Compras <compras@example.com>',
+            'to' => 'destino@example.com',
+            'subject' => $subject,
+            'body' => "<p>{$subject}</p>",
+            'headers' => "Subject: {$subject}",
+            'created_at' => $sentAt,
+        ]);
     }
 
     public function test_el_recordatorio_de_pendientes_queda_en_la_bitacora(): void
@@ -75,8 +94,8 @@ class MailLogTest extends TestCase
     {
         config(['filament-maillog.keep_for_days' => 90]);
 
-        $old = MailLog::create(['subject' => 'Viejo', 'body' => '<p>Viejo</p>', 'created_at' => now()->subDays(91)]);
-        $recent = MailLog::create(['subject' => 'Reciente', 'body' => '<p>Reciente</p>', 'created_at' => now()->subDays(89)]);
+        $old = $this->logEntry('Viejo', now()->subDays(91));
+        $recent = $this->logEntry('Reciente', now()->subDays(89));
 
         $prune = collect(app(Schedule::class)->events())
             ->first(fn (Event $event) => $event->description === 'Limpia la bitácora de correos');
@@ -87,6 +106,42 @@ class MailLogTest extends TestCase
 
         $this->assertModelMissing($old);
         $this->assertModelExists($recent);
+    }
+
+    public function test_el_boton_limpiar_borra_lo_que_pasa_de_los_dias_indicados(): void
+    {
+        $this->actingAs($this->panelUser('bitacora.limpia.prueba@gptservices.com', 'super_admin'));
+
+        $old = $this->logEntry('Viejo', now()->subDays(31));
+        $recent = $this->logEntry('Reciente', now()->subDays(29));
+
+        Livewire::test(ListMailLogs::class)
+            ->assertActionVisible('prune')
+            ->callAction('prune', data: ['days' => 30])
+            ->assertHasNoActionErrors()
+            ->assertNotified();
+
+        $this->assertModelMissing($old);
+        $this->assertModelExists($recent);
+    }
+
+    public function test_el_boton_limpiar_pide_al_menos_un_dia(): void
+    {
+        $this->actingAs($this->panelUser('bitacora.limpia.cero@gptservices.com', 'super_admin'));
+
+        $today = $this->logEntry('De hoy', now());
+
+        Livewire::test(ListMailLogs::class)
+            ->callAction('prune', data: ['days' => 0])
+            ->assertHasActionErrors(['days' => 'min']);
+
+        $this->assertModelExists($today);
+    }
+
+    public function test_solo_super_admin_puede_limpiar(): void
+    {
+        $this->assertTrue($this->panelUser('bitacora.puede.prueba@gptservices.com', 'super_admin')->can('deleteAny', MailLog::class));
+        $this->assertFalse($this->panelUser('bitacora.nopuede.prueba@gptservices.com')->can('deleteAny', MailLog::class));
     }
 
     public function test_super_admin_ve_la_bitacora(): void
