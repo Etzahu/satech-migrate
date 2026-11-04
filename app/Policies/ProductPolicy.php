@@ -2,9 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
 {
@@ -45,9 +46,21 @@ class ProductPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Product $product): bool
+    public function delete(User $user, Product $product): bool|Response
     {
-        return $user->can('delete_product');
+        if (! $user->can('delete_product')) {
+            return false;
+        }
+
+        $purchaseLinesCount = $product->purchaseLinesCount();
+
+        if ($purchaseLinesCount > 0) {
+            return Response::deny($purchaseLinesCount === 1
+                ? 'No se puede eliminar: se usa en 1 partida de requisición u orden de compra y se borraría con él.'
+                : "No se puede eliminar: se usa en {$purchaseLinesCount} partidas de requisiciones u órdenes de compra y se borrarían con él.");
+        }
+
+        return true;
     }
 
     /**
