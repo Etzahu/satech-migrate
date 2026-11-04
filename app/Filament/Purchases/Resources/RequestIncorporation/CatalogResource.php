@@ -14,6 +14,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\Support\MediaStream;
 
 class CatalogResource extends Resource
@@ -49,7 +50,7 @@ class CatalogResource extends Resource
     public static function form(Schema $form): Schema
     {
         return $form
-        ->columns(1)
+            ->columns(1)
             ->schema([
                 Schemas\Components\Section::make('Información general')
                     ->schema([
@@ -109,6 +110,15 @@ class CatalogResource extends Resource
                                 'proveeduria' => 'Producto',
                                 default => $state,
                             }),
+                        Infolists\Components\TextEntry::make('status')
+                            ->label('Estatus')
+                            ->badge()
+                            ->color(fn (?string $state): string => self::statusColor($state))
+                            ->formatStateUsing(fn (?string $state): string => self::statusLabel($state)),
+                        Infolists\Components\TextEntry::make('rejection_reason')
+                            ->label('Motivo del rechazo')
+                            ->state(fn (Product $record): ?string => $record->rejectionReason())
+                            ->visible(fn (Product $record): bool => filled($record->rejectionReason())),
                     ]),
                 Schemas\Components\Section::make('Documentación')
                     ->visible(fn ($record) => $record->getMedia('documents')->count() > 0)
@@ -158,7 +168,13 @@ class CatalogResource extends Resource
                         default => $state,
                     }),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Estatus'),
+                    ->label('Estatus')
+                    ->badge()
+                    ->color(fn (?string $state): string => self::statusColor($state))
+                    ->formatStateUsing(fn (?string $state): string => self::statusLabel($state))
+                    ->description(fn (Product $record): ?string => filled($reason = $record->rejectionReason())
+                        ? Str::limit($reason, 80)
+                        : null),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
                     ->dateTime('d-m-Y')->sinceTooltip()
@@ -177,6 +193,26 @@ class CatalogResource extends Resource
 
                 Actions\ViewAction::make(),
             ]);
+    }
+
+    private static function statusLabel(?string $status): string
+    {
+        return match ($status) {
+            'pendiente' => 'Pendiente',
+            'aprobado' => 'Aprobado',
+            'rechazado' => 'Rechazado',
+            default => (string) $status,
+        };
+    }
+
+    private static function statusColor(?string $status): string
+    {
+        return match ($status) {
+            'pendiente' => 'warning',
+            'aprobado' => 'success',
+            'rechazado' => 'danger',
+            default => 'gray',
+        };
     }
 
     public static function getPages(): array

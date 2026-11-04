@@ -76,6 +76,19 @@ class Product extends Model implements HasMedia
     }
 
     /**
+     * Observación que Compras capturó al rechazar la solicitud; se guarda en el
+     * historial de estatus como la `respuesta` de las demás aprobaciones.
+     */
+    public function rejectionReason(): ?string
+    {
+        if ($this->status !== 'rechazado') {
+            return null;
+        }
+
+        return $this->status()->getCustomProperty('respuesta');
+    }
+
+    /**
      * Partidas de requisición (incluidas las que están en papelera) y de orden
      * de compra que usan este producto, como producto pedido o como reemplazo.
      */

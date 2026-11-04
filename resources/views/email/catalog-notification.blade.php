@@ -84,6 +84,15 @@
                                                         style="padding:4px;font-size: 12px;font-family: 'Roboto';text-align: left;font-weight: bold;color: var(--dark);">
                                                         {{ $data['requester']['name'] }}</td>
                                                 </tr>
+                                                @if (filled($rejectionReason = $data->rejectionReason()))
+                                                    <tr>
+                                                        <td style="padding:4px;font-size: 12px;font-family: 'Roboto';width: 48.906px;vertical-align: top;"
+                                                            width="48.906">Motivo</td>
+                                                        <td
+                                                            style="padding:4px;font-size: 12px;font-family: 'Roboto';text-align: left;font-weight: bold;color: #cc2647;">
+                                                            {{ $rejectionReason }}</td>
+                                                    </tr>
+                                                @endif
                                                 <tr></tr>
                                             </tbody>
                                         </table>
