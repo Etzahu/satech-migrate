@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Observers\PurchaseOrderObserver;
 use App\Policies\MailLogPolicy;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Schemas\Components\Form;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
@@ -53,6 +54,12 @@ class AppServiceProvider extends ServiceProvider
         // máximo del archivo es 10 MB". Sin él, el archivo viajaba al servidor y
         // Livewire respondía "Subir data.supports.<uuid> ha fallado".
         FileUpload::configureUsing(fn (FileUpload $upload): FileUpload => $upload->maxSize($this->maxUploadKilobytes()));
+
+        // La lista nativa del <select> la dibuja Chrome fuera de la página y en
+        // algunos equipos sale completamente en blanco (fondo y texto), sobre todo
+        // con el sidebar oculto. La lista de Filament se dibuja dentro de la página
+        // con los estilos del tema, igual que en los selects con buscador.
+        Select::configureUsing(fn (Select $select): Select => $select->native(false));
 
         Gate::define('viewLogViewer', function (?User $user) {
 
