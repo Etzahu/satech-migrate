@@ -7,7 +7,6 @@ use App\Models\PurchaseRequisition;
 use App\Models\User;
 use App\Services\PurchaseOrderChainResolver;
 use App\Services\PurchaseOrderFlowService;
-use App\Services\PurchaseRequisitionFlowService;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
@@ -194,6 +193,10 @@ enum ReviewLevel
     /**
      * Aplica la respuesta y, si aprueba, los pasos que siguen solos.
      *
+     * Los de la requisición —cadena sin autorizador, o el mismo usuario en dos
+     * eslabones seguidos— los resuelven los hooks de
+     * PurchaseRequisitionStateMachine, así que valen igual aquí que en la vista.
+     *
      * @param  PurchaseOrder|PurchaseRequisition  $record
      */
     public function respond(Model $record, string $response, ?string $observation): void
@@ -213,8 +216,6 @@ enum ReviewLevel
             self::OrderRelease => (new PurchaseOrderFlowService)->advanceAfterRelease($record),
             // Dirección General es la última aprobación: deja traza y cierra.
             self::OrderAmountAuthorization => $record->status()->transitionTo('autorizada para proveedor'),
-            // Sin autorizador en la cadena, la aprobación de gerencia es la última.
-            self::RequisitionApproval => app(PurchaseRequisitionFlowService::class)->advanceAfterManagementApproval($record),
             default => null,
         };
     }

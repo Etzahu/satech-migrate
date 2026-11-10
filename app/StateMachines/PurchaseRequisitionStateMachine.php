@@ -5,6 +5,7 @@ namespace App\StateMachines;
 use App\Mail\PurchaseRequisition\Notification;
 use App\Models\User;
 use App\Services\PurchaseRequisitionCreationService;
+use App\Services\PurchaseRequisitionFlowService;
 use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -83,8 +84,14 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     Mail::to($recipient)->send(new Notification($data));
                 },
             ],
+            // Si quien revisa es quien solicitó, la revisión se aprueba sola y
+            // el aviso va directo al nivel siguiente.
             'revisión' => [
                 function ($to, $model) {
+                    if (app(PurchaseRequisitionFlowService::class)->approveRepeatedLink($model)) {
+                        return;
+                    }
+
                     $recipient = $model->approvalChain->reviewer;
                     $service = new PurchaseRequisitionCreationService;
                     $data = $service->generateDataForEmail('revisar', $model);
@@ -101,8 +108,13 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     }
                 },
             ],
+            // Si quien aprueba es quien revisó, la aprobación sale sola.
             'aprobado por revisor' => [
                 function ($to, $model) {
+                    if (app(PurchaseRequisitionFlowService::class)->approveRepeatedLink($model)) {
+                        return;
+                    }
+
                     $recipient = $model->approvalChain->approver;
                     $service = new PurchaseRequisitionCreationService;
                     // $recipient = $service->getUserForEmail($users?->toArray());
@@ -137,11 +149,25 @@ class PurchaseRequisitionStateMachine extends StateMachine
                     Mail::to($recipient)->send(new Notification($data));
                 },
             ],
-            // Sin autorizador la requisición no espera a nadie —el nivel se
-            // eliminó en Soldadura y Servicios Técnicos— y PurchaseRequisitionFlowService
-            // la avanza sola: este correo se queda sin destinatario.
+            // La requisición no espera a nadie si la cadena no tiene autorizador
+            // —el nivel se eliminó en Soldadura y Servicios Técnicos— o si quien
+            // autoriza es quien aprobó: en ambos casos avanza sola y este correo
+            // no sale. Se resuelve aquí, y no en cada vista, para que valga
+            // igual cuando se llega en cascada desde un nivel repetido.
             'aprobado por gerencia' => [
                 function ($to, $model) {
+                    $flow = app(PurchaseRequisitionFlowService::class);
+
+                    if (! $flow->requiresAuthorization($model)) {
+                        $flow->advanceAfterManagementApproval($model);
+
+                        return;
+                    }
+
+                    if ($flow->approveRepeatedLink($model)) {
+                        return;
+                    }
+
                     $recipient = $model->approvalChain?->authorizer;
 
                     if (! $recipient) {
