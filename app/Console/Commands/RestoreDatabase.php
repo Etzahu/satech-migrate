@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class RestoreDatabase extends Command
 {
@@ -13,83 +12,100 @@ class RestoreDatabase extends Command
      *
      * @var string
      */
-    protected $signature = 'db:restore {file}';
-    protected $description = 'Restore the database from a backup';
+    protected $signature = 'db:restore {file : Archivo dentro de storage/app/backups}';
 
-    public function handle()
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Borra la base de datos y la restaura desde un respaldo .sql';
+
+    public function handle(): int
     {
-        // $filename = $this->argument('filename');
-        $file= $this->argument('file');
-        $filePath = storage_path('app/backups/' . $file);
+        $filePath = storage_path('app/backups/'.$this->argument('file'));
 
-        $database = config('database.connections.mysql.database');
-        $username = config('database.connections.mysql.username');
-        $password = config('database.connections.mysql.password');
-        $host = config('database.connections.mysql.host');
-
-        // Verifica si el archivo existe
-        if (!file_exists($filePath)) {
+        if (! file_exists($filePath)) {
             $this->error("El archivo $filePath no existe.");
-            return 1;
+
+            return self::FAILURE;
         }
 
-             // Paso 1: Eliminar la base de datos existente
-        $dropCommand = sprintf(
-            'mysql -u%s -p%s -e "DROP DATABASE IF EXISTS %s;"',
-            $username,
-            $password,
-            $database
-        );
+        $connection = config('database.connections.mysql');
+        $client = $connection['client_binary'] ?? 'mysql';
 
-        $dropProcess = Process::fromShellCommandline($dropCommand);
-        $dropProcess->run();
+        // Se comprueba el cliente antes de borrar nada: si falla después del DROP, la base se pierde.
+        $version = $this->mysql($connection, ['--version']);
 
-        if (!$dropProcess->isSuccessful()) {
-            throw new ProcessFailedException($dropProcess);
+        if (! $version->isSuccessful()) {
+            $this->error("No se pudo ejecutar el cliente de MySQL ($client).");
+            $this->line(trim($version->getErrorOutput()));
+            $this->line('Pon la ruta completa en DB_MYSQL_CLIENT del .env, p. ej. C:\\laragon\\bin\\mysql\\mysql-8.4.3-winx64\\bin\\mysql.exe');
+
+            return self::FAILURE;
         }
 
-        $this->info('Base de datos eliminada: ' . $database);
+        $database = str_replace('`', '``', $connection['database']);
 
+        $steps = [
+            'Base de datos eliminada' => ['-e', "DROP DATABASE IF EXISTS `$database`"],
+            'Base de datos creada' => ['-e', "CREATE DATABASE `$database` CHARACTER SET {$connection['charset']} COLLATE {$connection['collation']}"],
+        ];
 
-         // Paso 2: Crear una nueva base de datos vacía
-        $createCommand = sprintf(
-            'mysql -u%s -p%s -e "CREATE DATABASE %s;"',
-            $username,
-            $password,
-            $database
-        );
+        foreach ($steps as $message => $arguments) {
+            $process = $this->mysql($connection, $arguments);
 
-        $createProcess = Process::fromShellCommandline($createCommand);
-        $createProcess->run();
+            if (! $process->isSuccessful()) {
+                $this->error(trim($process->getErrorOutput()));
 
-        if (!$createProcess->isSuccessful()) {
-            throw new ProcessFailedException($createProcess);
+                return self::FAILURE;
+            }
+
+            $this->info("$message: {$connection['database']}");
         }
 
-        $this->info('Base de datos creada: ' . $database);
+        $this->info('Restaurando, puede tardar unos minutos...');
 
-        
-        // Comando para restaurar
-        $command = sprintf(
-            'mysql -h %s -u %s %s %s < %s',
-            $host,
-            $username,
-            $password ? '-p' . escapeshellarg($password) : '',
-            $database,
-            escapeshellarg($filePath)
-        );
+        $dump = fopen($filePath, 'rb');
+        $restore = $this->mysql($connection, [$connection['database']], $dump, 3600);
+        fclose($dump);
 
-        // Ejecuta el comando
-        $process = Process::fromShellCommandline($command);
-        $process->setTimeout(3600); // Timeout de 1 hora para archivos grandes
-        $process->run();
+        if (! $restore->isSuccessful()) {
+            $this->error(trim($restore->getErrorOutput()));
 
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
+            return self::FAILURE;
         }
 
         $this->info('Base de datos restaurada exitosamente.');
-        return 0;
+
+        return self::SUCCESS;
     }
 
+    /**
+     * Ejecuta el cliente `mysql` sin pasar por la consola del sistema; la contraseña
+     * va en MYSQL_PWD para que no aparezca en la línea de comandos ni en los errores.
+     *
+     * @param  array<string, mixed>  $connection
+     * @param  array<int, string>  $arguments
+     * @param  resource|null  $input
+     */
+    private function mysql(array $connection, array $arguments, mixed $input = null, ?float $timeout = 60): Process
+    {
+        $process = new Process(
+            [
+                $connection['client_binary'] ?? 'mysql',
+                '--host='.$connection['host'],
+                '--port='.$connection['port'],
+                '--user='.$connection['username'],
+                ...$arguments,
+            ],
+            env: ['MYSQL_PWD' => (string) $connection['password']],
+            input: $input,
+            timeout: $timeout,
+        );
+
+        $process->run();
+
+        return $process;
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Filament\Purchases\Resources\PurchaseOrder;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\RelationManagers;
 use App\Forms\Components\MoneyInput;
+use App\Models\Company;
 use App\Models\ProviderContact;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseProvider;
@@ -112,6 +113,25 @@ class PurchaserResource extends Resource implements HasShieldPermissions
         return $options->all();
     }
 
+    /**
+     * La empresa vive en la sesión y es la misma en todas las pestañas: si el comprador
+     * cambia de empresa en otra pestaña, puede guardar la orden de una requisición de la
+     * otra razón social y la orden toma la empresa y el folio de la sesión
+     * (pasó con T-QHSE-2026-0106 → G396/26).
+     */
+    public static function otherCompanyRequisitionMessage(mixed $requisitionId): ?string
+    {
+        $requisition = filled($requisitionId) ? PurchaseRequisition::with('company')->find($requisitionId) : null;
+
+        if ($requisition === null || (int) $requisition->company_id === (int) session()->get('company_id')) {
+            return null;
+        }
+
+        $currentCompany = Company::find(session()->get('company_id'))?->short_name;
+
+        return "La requisición {$requisition->folio} es de {$requisition->company?->short_name} y estás trabajando en {$currentCompany}. Cambia a esa empresa antes de guardar la orden.";
+    }
+
     public static function form(Schema $form, array $options = []): Schema
     {
         return $form
@@ -188,6 +208,11 @@ class PurchaserResource extends Resource implements HasShieldPermissions
                                         ->pluck('folio', 'id'))
                                     ->getOptionLabelUsing(fn ($value) => PurchaseRequisition::find($value)?->folio)
                                     ->required()
+                                    ->rule(fn (): Closure => function (string $attribute, mixed $value, Closure $fail): void {
+                                        if ($message = static::otherCompanyRequisitionMessage($value)) {
+                                            $fail($message);
+                                        }
+                                    })
                                     ->columnSpan('full'),
                             ]),
                         Tabs\Tab::make('Partidas')->schema([

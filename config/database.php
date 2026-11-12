@@ -60,6 +60,8 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+            // Cliente `mysql` que usa `db:restore`; ruta completa si no está en el PATH.
+            'client_binary' => env('DB_MYSQL_CLIENT', 'mysql'),
         ],
 
         'mariadb' => [
