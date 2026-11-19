@@ -447,6 +447,24 @@ class PurchaseRequisition extends Model implements Auditable, HasMedia
     }
 
     /**
+     * Motivo por el que la requisición no puede entrar al flujo de
+     * aprobación, o null si sí puede.
+     *
+     * "Enviar a revisión" no pasa por la validación del formulario, así que un
+     * borrador o una requisición devuelta que traía una cadena con alguien
+     * dado de baja se reenviaba tal cual y se detenía al llegarle a esa
+     * persona. Pasó con una baja en noviembre de 2026.
+     */
+    public function submissionBlocker(): ?string
+    {
+        if (! $this->approvalChain) {
+            return 'La requisición no tiene flujo de aprobación.';
+        }
+
+        return $this->approvalChain->unavailabilityReason();
+    }
+
+    /**
      * Verifica si la requisición está bloqueada por un usuario inactivo
      */
     public function isBlockedByInactiveUser(): bool

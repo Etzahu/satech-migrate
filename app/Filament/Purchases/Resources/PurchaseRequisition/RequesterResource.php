@@ -29,6 +29,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\MediaStream;
@@ -89,7 +90,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
         return 'danger';
     }
 
-    public static function form(Schema $form, ?\Closure $flujoAprobacionTab = null): Schema
+    public static function form(Schema $form, ?Closure $flujoAprobacionTab = null): Schema
     {
         return $form
             ->columns(1)
@@ -299,7 +300,7 @@ class RequesterResource extends Resource implements HasShieldPermissions
      * haya desactivado, para que el solicitante vea cuál tenía y por qué debe
      * cambiarla en lugar de encontrarse el flujo vacío sin explicación.
      */
-    public static function selectableChains(?PurchaseRequisition $record = null): \Illuminate\Database\Eloquent\Collection
+    public static function selectableChains(?PurchaseRequisition $record = null): Collection
     {
         return PurchaseRequisitionApprovalChain::query()
             ->with(['reviewer', 'approver', 'authorizer'])
@@ -311,6 +312,37 @@ class RequesterResource extends Resource implements HasShieldPermissions
                     fn (Builder $q, $chainId) => $q->orWhere($q->getModel()->getQualifiedKeyName(), $chainId)
                 ))
             ->get();
+    }
+
+    /**
+     * Detiene "Enviar a revisión" cuando la cadena de la requisición ya no
+     * puede usarse y le dice al solicitante qué cambiar.
+     *
+     * Lo consultan la ficha y la edición antes de mover el estado. Devuelve
+     * true cuando detuvo el envío.
+     */
+    public static function haltSubmissionIfChainUnavailable(PurchaseRequisition $record): bool
+    {
+        $reason = $record->submissionBlocker();
+
+        if ($reason === null) {
+            return false;
+        }
+
+        Notification::make()
+            ->title('No se puede enviar la requisición')
+            ->body($reason.' Elige otro flujo de aprobación en la pestaña «Flujo de aprobación», guarda los cambios y vuelve a enviarla.')
+            ->danger()
+            ->persistent()
+            ->actions([
+                Actions\Action::make('cambiarFlujo')
+                    ->label('Cambiar flujo')
+                    ->button()
+                    ->url(static::getUrl('edit', ['record' => $record])),
+            ])
+            ->send();
+
+        return true;
     }
 
     public static function flujoAprobacionTab(): Tabs\Tab

@@ -35,6 +35,10 @@ class EditPurchaseRequisition extends EditRecord
                     $this->record->status()->canBe('revisión por almacén') && $this->record->items->count() > 0 && filled($this->record->category)
                 )
                 ->action(function () {
+                    if (RequesterResource::haltSubmissionIfChainUnavailable($this->record)) {
+                        return;
+                    }
+
                     if (session()->get('company_id') == 1) { // ID 1:GPT IM
                         $this->record->status()->transitionTo('revisión por almacén');
                     }

@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\PurchaseOrder;
 use App\Models\User;
 use App\Observers\PurchaseOrderObserver;
+use App\Observers\UserObserver;
 use App\Policies\MailLogPolicy;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
@@ -41,6 +42,9 @@ class AppServiceProvider extends ServiceProvider
     {
         // Registrar Observer para PurchaseOrder
         PurchaseOrder::observe(PurchaseOrderObserver::class);
+
+        // Al dar de baja a un usuario se le retiran todos sus roles
+        User::observe(UserObserver::class);
 
         // Sin validación nativa del navegador: si un campo inválido (un decimal en
         // un número entero, una fecha a medias) queda en un tab inactivo, Chrome no

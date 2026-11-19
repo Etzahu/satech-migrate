@@ -101,6 +101,7 @@ class UserResource extends Resource
                                     ->maxLength(100),
                                 Forms\Components\Toggle::make('active')
                                     ->default(1)
+                                    ->helperText('Al desactivarlo se le retiran todos sus roles.')
                                     ->required(),
 
                             ]),

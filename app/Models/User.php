@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
@@ -90,6 +91,37 @@ class User extends Authenticatable implements FilamentUser
     public function scopeWithRole(Builder $query, string|array $role): Builder
     {
         return $query->whereHas('roles', fn (Builder $q) => $q->whereIn('name', (array) $role));
+    }
+
+    /**
+     * Retira todos los roles del usuario y deja constancia en el log de cuáles
+     * tenía, para poder devolvérselos si regresa.
+     *
+     * Se usa al darlo de baja: un usuario inactivo ya no firma, y con el rol
+     * puesto seguía apareciendo en las listas que buscan a alguien con ese
+     * rol (por ejemplo, el revisor que propone "Verificar órdenes").
+     *
+     * @return array<int, string> Nombres de los roles retirados
+     */
+    public function revokeAllRoles(): array
+    {
+        // Se recargan: la relación en memoria puede no reflejar lo que otro
+        // paso guardó después, como la casilla de roles del formulario.
+        $roles = $this->load('roles')->getRoleNames()->all();
+
+        if ($roles === []) {
+            return [];
+        }
+
+        $this->syncRoles([]);
+
+        Log::info('Roles retirados al dar de baja al usuario', [
+            'user_id' => $this->getKey(),
+            'name' => $this->name,
+            'roles' => $roles,
+        ]);
+
+        return $roles;
     }
 
     public function reviewerChainsPR(): HasMany
