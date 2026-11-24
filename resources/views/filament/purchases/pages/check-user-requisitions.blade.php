@@ -64,6 +64,10 @@
                                 <span>Para Autorizar:</span>
                                 <span class="font-semibold">{{ $userStats['pending_to_authorize'] }}</span>
                             </div>
+                            <div class="flex justify-between">
+                                <span>Asignadas, por firmar en orden:</span>
+                                <span class="font-semibold">{{ $userStats['pending_in_orders'] }}</span>
+                            </div>
                         </div>
                     </div>
                 </x-filament::section>
@@ -260,6 +264,61 @@
                                                 {{ ($this->reassignAuthorizeAction)(['requisition' => $req->id]) }}
                                                 {{ ($this->createChainAuthorizeAction)(['requisition' => $req->id]) }}
                                             </div>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </x-filament::section>
+            @endif
+
+            {{-- Requisiciones asignadas cuyas órdenes todavía pasan por el usuario --}}
+            @if ($userStats['pending_in_orders'] > 0)
+                <x-filament::section>
+                    <x-slot name="heading">
+                        <div class="flex items-center gap-2">
+                            <span>🛒 Requisiciones asignadas que firmará en sus órdenes</span>
+                            <x-filament::badge color="danger">
+                                {{ $userStats['pending_in_orders'] }}
+                            </x-filament::badge>
+                        </div>
+                    </x-slot>
+
+                    <x-slot name="description">
+                        Ya están aprobadas, pero su orden la aprueba y la autoriza la cadena de la requisición.
+                        Si esta persona se va, cada orden que salga de ellas se detiene en su nivel.
+                        Cambiar la cadena aquí no las regresa al inicio.
+                    </x-slot>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm">
+                            <thead class="bg-gray-50 dark:bg-gray-800">
+                                <tr>
+                                    <th class="px-4 py-2 text-left">Folio</th>
+                                    <th class="px-4 py-2 text-left">Solicitante</th>
+                                    <th class="px-4 py-2 text-left">Estado</th>
+                                    <th class="px-4 py-2 text-left">Órdenes por firmar</th>
+                                    <th class="px-4 py-2 text-left">Fecha Creación</th>
+                                    <th class="px-4 py-2 text-left">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y dark:divide-gray-700">
+                                @foreach ($assignedRequisitions as $req)
+                                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800">
+                                        <td class="px-4 py-2 font-mono text-xs">{{ $req->folio }}</td>
+                                        <td class="px-4 py-2">{{ $req->approvalChain->requester->name ?? 'N/A' }}</td>
+                                        <td class="px-4 py-2">
+                                            <x-filament::badge color="gray">
+                                                {{ $req->status }}
+                                            </x-filament::badge>
+                                        </td>
+                                        <td class="px-4 py-2 text-xs">
+                                            {{ $this->openOrdersOf($req) ?: 'Sin orden todavía' }}
+                                        </td>
+                                        <td class="px-4 py-2">{{ $req->created_at->format('d/m/Y') }}</td>
+                                        <td class="px-4 py-2">
+                                            {{ ($this->changeAssignedChainAction)(['requisition' => $req->id]) }}
                                         </td>
                                     </tr>
                                 @endforeach

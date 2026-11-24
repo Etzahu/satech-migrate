@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
+use App\Models\PurchaseOrder;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Schemas\Components\Tabs\Tab;
@@ -23,19 +24,13 @@ class ListPurchaseOrders extends ListRecords
     {
         return [
             'draft' => Tab::make('Borradores')
-                ->modifyQueryUsing(fn (Builder $query) => $query->whereIn('status', [
-                    'borrador',
-                    'devuelto por gerente de compras',
-                    'devuelto por gerente solicitante',
-                    'devuelto por DG nivel 1',
-                    'devuelto por DG nivel 2',
-                    'reabierta para edición',
-                    'devuelto por administrador', // Permite agregar partidas cuando admin devuelve la orden
-                ])),
+                ->modifyQueryUsing(fn (Builder $query) => $query->notArchived()->whereIn('status', PurchaseOrder::PURCHASER_STATUSES)),
             'reopened' => Tab::make('Reabiertas')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'reabierta para edición')),
+                ->modifyQueryUsing(fn (Builder $query) => $query->notArchived()->where('status', 'reabierta para edición')),
             'released' => Tab::make('Liberadas')
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('status', 'autorizada para proveedor')),
+                ->modifyQueryUsing(fn (Builder $query) => $query->notArchived()->where('status', 'autorizada para proveedor')),
+            'archived' => Tab::make('Archivadas')
+                ->modifyQueryUsing(fn (Builder $query) => $query->archived()),
         ];
     }
 }

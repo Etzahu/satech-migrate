@@ -130,6 +130,13 @@ class HistoryResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Estatus')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('archived_at')
+                    ->label('Archivada')
+                    ->tooltip('Fecha en que el comprador la archivó. No cambia el estatus.')
+                    ->dateTime('d-m-Y')
+                    ->placeholder('—')
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de creación')
                     ->dateTime('d-m-Y')->sinceTooltip()
@@ -160,6 +167,12 @@ class HistoryResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     }),
+                Tables\Filters\TernaryFilter::make('archived_at')
+                    ->label('Archivadas por el comprador')
+                    ->nullable()
+                    ->placeholder('Todas')
+                    ->trueLabel('Solo archivadas')
+                    ->falseLabel('Sin archivar'),
             ])
             ->headerActions([
                 Actions\Action::make('Generar reporte')
@@ -209,6 +222,7 @@ class HistoryResource extends Resource
                                     'empresa' => 'Empresa',
                                     'requisición' => 'Requisición',
                                     'estatus' => 'Estatus',
+                                    'archivada' => 'Archivada por el comprador',
                                 ])
                                 ->afterStateHydrated(function ($component, $state) {
                                     if (! filled($state)) {

@@ -55,19 +55,7 @@ class StalledOrderService
     /**
      * Estados en los que la pelota la tiene el comprador, no un aprobador.
      */
-    public const EN_CANCHA_DEL_COMPRADOR = [
-        'borrador',
-        'reabierta para edición',
-        'devuelto por gerente de compras',
-        'devuelto por gerente solicitante',
-        'devuelto por DG nivel 1',
-        'devuelto por DG nivel 2',
-        'devuelto por liberación',
-        'devuelto por dirección general',
-        'devuelto por administrador',
-        'requisición reasignada',
-        'cadena reasignada',
-    ];
+    public const EN_CANCHA_DEL_COMPRADOR = PurchaseOrder::PURCHASER_STATUSES;
 
     /**
      * Órdenes detenidas más allá del umbral de su estado, de la más antigua a

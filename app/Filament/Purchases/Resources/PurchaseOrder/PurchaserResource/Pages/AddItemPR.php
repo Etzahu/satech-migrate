@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages;
 
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
+use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
 use App\Models\PurchaseRequisitionItem;
 use Filament\Actions\BulkAction;
@@ -37,16 +38,7 @@ class AddItemPR extends Page implements HasForms, HasTable
     public function mount(int|string $record)
     {
         $this->record = $this->resolveRecord($record);
-        $states = [
-            'borrador',
-            'devuelto por gerente de compras',
-            'devuelto por gerente solicitante',
-            'devuelto por DG nivel 1',
-            'devuelto por DG nivel 2',
-            'devuelto por administrador', // Permite agregar partidas cuando admin devuelve la orden
-            'reabierta para edición',
-        ];
-        if (! in_array($this->record->status, $states)) {
+        if (! in_array($this->record->status, PurchaseOrder::PURCHASER_STATUSES, true)) {
             return redirect(PurchaserResource::getUrl('view', ['record' => $this->record]));
         }
     }

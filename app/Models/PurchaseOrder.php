@@ -6,6 +6,7 @@ use App\Services\PurchaseOrderChainResolver;
 use App\Services\PurchaseOrderFlowService;
 use App\StateMachines\PurchaseOrderStateMachine;
 use Asantibanez\LaravelEloquentStateMachines\Traits\HasStateMachines;
+use Carbon\Carbon;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -89,10 +90,47 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
      */
     public const VACANT_SIGNER = 'Sin titular activo';
 
+    /**
+     * Estados en que la orden espera la firma de alguien más. Mientras esté
+     * en uno de ellos, el comprador no puede archivarla.
+     *
+     * @var list<string>
+     */
+    public const REVIEW_STATUSES = [
+        'revisión gerente de compras',
+        'aprobado por gerente de compras',
+        'aprobado por gerente solicitante',
+        'aprobado por DG nivel 1',
+        'liberado por dirección administrativa',
+        'aprobado por DG nivel 2',
+        'revision por dirección general',
+    ];
+
+    /**
+     * Estados en que la orden está en manos del comprador: la ve en su
+     * pestaña Borradores, puede editarla y agregarle partidas antes de
+     * volver a enviarla. Un estado nuevo de devolución va aquí.
+     *
+     * @var list<string>
+     */
+    public const PURCHASER_STATUSES = [
+        'borrador',
+        'reabierta para edición',
+        'devuelto por gerente de compras',
+        'devuelto por gerente solicitante',
+        'devuelto por DG nivel 1',
+        'devuelto por DG nivel 2',
+        'devuelto por liberación',
+        'devuelto por dirección general',
+        'devuelto por administrador',
+        'requisición reasignada',
+        'cadena reasignada',
+    ];
+
     protected $casts = [
         'documentation_delivery' => 'array',
         'condition_payment' => 'array',
-
+        'archived_at' => 'datetime',
     ];
 
     public static function boot()
@@ -101,6 +139,15 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
 
         static::creating(function ($ticket) {
             $ticket->folio = session()->get('company_acronym').self::generateFolioNumber().'/'.now()->format('y');
+        });
+
+        // Archivar solo esconde la orden en el estatus en que estaba. Si
+        // cambia (la reabren, la devuelven, la mandan a revisión), vuelve a
+        // las pestañas del comprador para que no se le pierda.
+        static::updating(function (PurchaseOrder $order) {
+            if ($order->isDirty('status') && $order->isArchived()) {
+                $order->archived_at = null;
+            }
         });
     }
 
@@ -297,6 +344,58 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
     public function canBeCancelledByAdmin(): bool
     {
         return $this->awaitsSignatures();
+    }
+
+    /**
+     * ¿Está esperando la firma de alguien más?
+     */
+    public function isInReview(): bool
+    {
+        return in_array($this->status, self::REVIEW_STATUSES, true);
+    }
+
+    public function isArchived(): bool
+    {
+        return filled($this->archived_at);
+    }
+
+    /**
+     * El comprador la archiva mientras no esté en revisión: borradores,
+     * devueltas, reabiertas, liberadas o canceladas.
+     */
+    public function canBeArchived(): bool
+    {
+        return ! $this->isArchived() && ! $this->isInReview();
+    }
+
+    /**
+     * Archivar es una preferencia de vista del comprador, no un cambio a la
+     * orden: no mueve la fecha de actualización ni dispara el observer que
+     * exporta a Google Sheets.
+     */
+    public function archive(): void
+    {
+        $this->setArchivedAt(now());
+    }
+
+    public function unarchive(): void
+    {
+        $this->setArchivedAt(null);
+    }
+
+    private function setArchivedAt(?Carbon $archivedAt): void
+    {
+        static::withoutTimestamps(fn () => $this->forceFill(['archived_at' => $archivedAt])->saveQuietly());
+    }
+
+    public function scopeArchived(Builder $query): Builder
+    {
+        return $query->whereNotNull('archived_at');
+    }
+
+    public function scopeNotArchived(Builder $query): Builder
+    {
+        return $query->whereNull('archived_at');
     }
 
     /**

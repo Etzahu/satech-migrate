@@ -2,9 +2,11 @@
 
 namespace App\Filament\Purchases\Pages;
 
+use App\Models\PurchaseOrder;
 use App\Models\PurchaseRequisition;
 use App\Models\PurchaseRequisitionApprovalChain;
 use App\Models\User;
+use App\Services\AssignedRequisitionChainService;
 use Filament\Actions\Action;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
@@ -15,6 +17,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class CheckUserRequisitions extends Page implements HasActions, HasForms
 {
@@ -44,6 +47,7 @@ class CheckUserRequisitions extends Page implements HasActions, HasForms
         'pending_to_review' => 0,
         'pending_to_approve' => 0,
         'pending_to_authorize' => 0,
+        'pending_in_orders' => 0,
     ];
 
     public Collection $requisitionsToReview;
@@ -51,6 +55,12 @@ class CheckUserRequisitions extends Page implements HasActions, HasForms
     public Collection $requisitionsToApprove;
 
     public Collection $requisitionsToAuthorize;
+
+    /**
+     * Requisiciones ya asignadas cuyas órdenes todavía van a pasar por el
+     * usuario. Ver {@see AssignedRequisitionChainService}.
+     */
+    public Collection $assignedRequisitions;
 
     public ?int $reassignRequisitionId = null;
 
@@ -74,6 +84,7 @@ class CheckUserRequisitions extends Page implements HasActions, HasForms
         $this->requisitionsToReview = collect();
         $this->requisitionsToApprove = collect();
         $this->requisitionsToAuthorize = collect();
+        $this->assignedRequisitions = collect();
     }
 
     public static function canAccess(): bool
@@ -146,6 +157,8 @@ class CheckUserRequisitions extends Page implements HasActions, HasForms
             ->with(['approvalChain.requester', 'company'])
             ->get();
 
+        $this->assignedRequisitions = app(AssignedRequisitionChainService::class)->pendingFor($user, $companyId);
+
         // Actualizar estadísticas
         $this->userStats = [
             'chains_as_reviewer' => $chainsAsReviewer->count(),
@@ -154,7 +167,22 @@ class CheckUserRequisitions extends Page implements HasActions, HasForms
             'pending_to_review' => $this->requisitionsToReview->count(),
             'pending_to_approve' => $this->requisitionsToApprove->count(),
             'pending_to_authorize' => $this->requisitionsToAuthorize->count(),
+            'pending_in_orders' => $this->assignedRequisitions->count(),
         ];
+    }
+
+    /**
+     * Las órdenes de la requisición que todavía van a pasar por la cadena,
+     * como "T384/26 (devuelto por administrador)". Vacío si aún no tiene.
+     */
+    public function openOrdersOf(PurchaseRequisition $requisition): string
+    {
+        $service = app(AssignedRequisitionChainService::class);
+
+        return $requisition->orders
+            ->filter(fn (PurchaseOrder $order) => $service->isStillInChain($order))
+            ->map(fn (PurchaseOrder $order) => "{$order->folio} ({$order->status})")
+            ->implode(', ');
     }
 
     protected function resetStats(): void
@@ -166,17 +194,104 @@ class CheckUserRequisitions extends Page implements HasActions, HasForms
             'pending_to_review' => 0,
             'pending_to_approve' => 0,
             'pending_to_authorize' => 0,
+            'pending_in_orders' => 0,
         ];
         $this->requisitionsToReview = collect();
         $this->requisitionsToApprove = collect();
         $this->requisitionsToAuthorize = collect();
+        $this->assignedRequisitions = collect();
     }
 
     public function getTotalPendingRequisitions(): int
     {
         return $this->userStats['pending_to_review']
           + $this->userStats['pending_to_approve']
-          + $this->userStats['pending_to_authorize'];
+          + $this->userStats['pending_to_authorize']
+          + $this->userStats['pending_in_orders'];
+    }
+
+    /**
+     * Pasa una requisición ya asignada a otra cadena del mismo solicitante
+     * sin regresarla al inicio ni reiniciar sus órdenes.
+     */
+    public function changeAssignedChainAction(): Action
+    {
+        return Action::make('changeAssignedChain')
+            ->label('Cambiar cadena')
+            ->icon('heroicon-o-arrow-path-rounded-square')
+            ->color('warning')
+            ->schema(function (Action $action): array {
+                $requisition = PurchaseRequisition::find($action->getArguments()['requisition'] ?? null);
+
+                if (! $requisition) {
+                    return [];
+                }
+
+                $service = app(AssignedRequisitionChainService::class);
+                $chains = $service->availableChains($requisition)
+                    ->mapWithKeys(fn (PurchaseRequisitionApprovalChain $chain) => [
+                        $chain->id => "Cadena #{$chain->id}: {$service->describeChain($chain)}",
+                    ])
+                    ->all();
+
+                $current = Forms\Components\Placeholder::make('current_chain')
+                    ->label('Cadena actual')
+                    ->content($service->describeChain($requisition->approvalChain));
+
+                if ($chains === []) {
+                    return [
+                        $current,
+                        Forms\Components\Placeholder::make('no_chains')
+                            ->hiddenLabel()
+                            ->content('⚠️ El solicitante no tiene otra cadena activa con todos sus participantes activos. Créala en «Cadena requisición» y vuelve aquí.'),
+                    ];
+                }
+
+                return [
+                    $current,
+                    Forms\Components\Select::make('new_chain_id')
+                        ->label('Nueva cadena')
+                        ->options($chains)
+                        ->required(),
+                    Forms\Components\Placeholder::make('info')
+                        ->hiddenLabel()
+                        ->content('💡 La requisición conserva su estado y sus órdenes no se reinician: las que falten pasarán por la nueva cadena. Si alguna orden ya espera aprobación o autorización, se le avisa a quien firma ahora.'),
+                ];
+            })
+            ->action(function (array $data, Action $action): void {
+                $requisition = PurchaseRequisition::find($action->getArguments()['requisition'] ?? null);
+                $chain = PurchaseRequisitionApprovalChain::find($data['new_chain_id'] ?? null);
+
+                if (! $requisition || ! $chain) {
+                    return;
+                }
+
+                try {
+                    $notified = app(AssignedRequisitionChainService::class)->switchChain($requisition, $chain, auth()->user());
+                } catch (InvalidArgumentException $exception) {
+                    Notification::make()
+                        ->title('No se cambió la cadena')
+                        ->body($exception->getMessage())
+                        ->danger()
+                        ->send();
+
+                    return;
+                }
+
+                Notification::make()
+                    ->title('Cadena cambiada')
+                    ->body($notified > 0
+                        ? "La requisición {$requisition->folio} pasó a la cadena #{$chain->id}. Se avisó de {$notified} orden(es) que ya esperaban firma."
+                        : "La requisición {$requisition->folio} pasó a la cadena #{$chain->id}.")
+                    ->success()
+                    ->send();
+
+                $this->analyzeUser();
+            })
+            ->modalHeading('Cambiar cadena de una requisición asignada')
+            ->modalDescription('Solo cambia quién aprueba y autoriza las órdenes que falten.')
+            ->modalSubmitActionLabel('Cambiar cadena')
+            ->modalWidth('2xl');
     }
 
     public function getTotalChains(): int

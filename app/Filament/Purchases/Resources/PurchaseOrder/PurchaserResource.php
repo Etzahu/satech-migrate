@@ -19,6 +19,7 @@ use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Infolists;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Actions as SchemaActions;
 use Filament\Schemas\Components\Fieldset;
@@ -33,6 +34,7 @@ use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\HtmlString;
 use Njxqlus\Filament\Components\Forms\RelationManager;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -55,6 +57,8 @@ class PurchaserResource extends Resource implements HasShieldPermissions
     protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-minus';
 
     protected static ?int $navigationSort = 2;
+
+    private const ARCHIVE_DESCRIPTION = 'Sale de tus pestañas y queda en Archivadas. No cambia su estatus ni lo que ven los demás, y si su estatus cambia vuelve sola a tus pestañas.';
 
     public static function canAccess(): bool
     {
@@ -911,8 +915,87 @@ class PurchaserResource extends Resource implements HasShieldPermissions
             ->recordActions([
                 Actions\EditAction::make(),
                 Actions\ViewAction::make(),
+                Action::make('archive')
+                    ->label('Archivar')
+                    ->icon('heroicon-m-archive-box')
+                    ->color('gray')
+                    ->visible(fn (PurchaseOrder $record): bool => $record->canBeArchived())
+                    ->requiresConfirmation()
+                    ->modalHeading('Archivar orden')
+                    ->modalDescription(self::ARCHIVE_DESCRIPTION)
+                    ->modalSubmitActionLabel('Archivar')
+                    ->action(function (PurchaseOrder $record): void {
+                        if (! $record->canBeArchived()) {
+                            Notification::make()
+                                ->title('La orden está en revisión')
+                                ->body('Solo se archiva mientras nadie tenga que firmarla.')
+                                ->warning()
+                                ->send();
+
+                            return;
+                        }
+
+                        $record->archive();
+
+                        Notification::make()
+                            ->title('Orden archivada')
+                            ->success()
+                            ->send();
+                    }),
+                Action::make('unarchive')
+                    ->label('Desarchivar')
+                    ->icon('heroicon-m-arrow-uturn-left')
+                    ->color('gray')
+                    ->visible(fn (PurchaseOrder $record): bool => $record->isArchived())
+                    ->action(function (PurchaseOrder $record): void {
+                        $record->unarchive();
+
+                        Notification::make()
+                            ->title('Orden desarchivada')
+                            ->success()
+                            ->send();
+                    }),
                 Actions\DeleteAction::make()
                     ->visible(fn ($record) => $record->status == 'borrador'),
+            ])
+            ->toolbarActions([
+                Actions\BulkAction::make('archive_selected')
+                    ->label('Archivar seleccionadas')
+                    ->icon('heroicon-m-archive-box')
+                    ->color('gray')
+                    ->visible(fn ($livewire): bool => ($livewire->activeTab ?? null) !== 'archived')
+                    ->requiresConfirmation()
+                    ->modalHeading('Archivar órdenes')
+                    ->modalDescription(self::ARCHIVE_DESCRIPTION)
+                    ->modalSubmitActionLabel('Archivar')
+                    ->action(function (Collection $records): void {
+                        $archivable = $records->filter(fn (PurchaseOrder $order): bool => $order->canBeArchived());
+                        $archivable->each(fn (PurchaseOrder $order) => $order->archive());
+
+                        $skipped = $records->count() - $archivable->count();
+
+                        Notification::make()
+                            ->title($archivable->count() === 1 ? '1 orden archivada' : "{$archivable->count()} órdenes archivadas")
+                            ->body($skipped > 0 ? "{$skipped} no se archivaron porque están en revisión." : null)
+                            ->success()
+                            ->send();
+                    })
+                    ->deselectRecordsAfterCompletion(),
+                Actions\BulkAction::make('unarchive_selected')
+                    ->label('Desarchivar seleccionadas')
+                    ->icon('heroicon-m-arrow-uturn-left')
+                    ->color('gray')
+                    ->visible(fn ($livewire): bool => ($livewire->activeTab ?? null) === 'archived')
+                    ->action(function (Collection $records): void {
+                        $archived = $records->filter(fn (PurchaseOrder $order): bool => $order->isArchived());
+                        $archived->each(fn (PurchaseOrder $order) => $order->unarchive());
+
+                        Notification::make()
+                            ->title($archived->count() === 1 ? '1 orden desarchivada' : "{$archived->count()} órdenes desarchivadas")
+                            ->success()
+                            ->send();
+                    })
+                    ->deselectRecordsAfterCompletion(),
             ]);
     }
 

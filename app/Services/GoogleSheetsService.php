@@ -367,6 +367,7 @@ class GoogleSheetsService
             'empresa' => $this->sanitizeUtf8($order->company->name ?? ''),
             'requisición' => $this->sanitizeUtf8($order->requisition->folio ?? ''),
             'estatus' => $this->sanitizeUtf8($order->status ?? ''),
+            'archivada' => $order->isArchived() ? 'Sí' : 'No',
         ];
     }
 

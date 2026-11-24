@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\PurchaseOrder;
+use App\Models\PurchaseRequisitionApprovalChain;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -37,8 +38,17 @@ class PurchaseOrderChainResolver
      */
     public function usesRoleFlow(?PurchaseOrder $order): bool
     {
-        $chain = $order?->requisition?->approvalChain;
+        return $this->chainUsesRoleFlow($order?->requisition?->approvalChain);
+    }
 
+    /**
+     * ¿Las órdenes que salgan de esta cadena se resuelven por rol?
+     *
+     * Sirve antes de que exista la orden: una requisición asignada todavía sin
+     * orden ya sabe por dónde va a pasar la que se le genere.
+     */
+    public function chainUsesRoleFlow(?PurchaseRequisitionApprovalChain $chain): bool
+    {
         if (! $chain || $chain->po_flow_excluded) {
             return false;
         }
