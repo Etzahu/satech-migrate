@@ -11,6 +11,7 @@ use App\Models\PurchaseOrder;
 use App\Models\PurchaseProvider;
 use App\Models\PurchaseRequisition;
 use App\Services\OrderCalculationService;
+use App\Services\PurchaseOrderChainResolver;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use Brick\Math\BigDecimal;
 use Closure;
@@ -1016,5 +1017,32 @@ class PurchaserResource extends Resource implements HasShieldPermissions
             'view' => Pages\ViewOrder::route('/{record}/ver'),
             'add-item' => Pages\AddItemPR::route('/{record}/agregar/partidas'),
         ];
+    }
+
+    /**
+     * Detiene el envío o la aprobación cuando la orden iría hacia un firmante
+     * de la cadena que ya no está activo, y explica a quién pedirle el cambio.
+     *
+     * Lo consultan el comprador al enviarla, el gerente de compras y el
+     * gerente solicitante al aprobarla. La máquina de estados revisa lo mismo,
+     * pero respondería con una excepción en vez de este aviso. Devuelve true
+     * cuando detuvo la respuesta.
+     */
+    public static function haltIfSignersInactive(PurchaseOrder $record, string $to): bool
+    {
+        $reason = app(PurchaseOrderChainResolver::class)->advanceBlocker($record, $to);
+
+        if ($reason === null) {
+            return false;
+        }
+
+        Notification::make()
+            ->title('La orden no puede avanzar')
+            ->body($reason)
+            ->danger()
+            ->persistent()
+            ->send();
+
+        return true;
     }
 }

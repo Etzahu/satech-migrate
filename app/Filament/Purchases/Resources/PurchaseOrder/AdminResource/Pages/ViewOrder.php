@@ -3,6 +3,7 @@
 namespace App\Filament\Purchases\Resources\PurchaseOrder\AdminResource\Pages;
 
 use App\Filament\Purchases\Resources\PurchaseOrder\AdminResource;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
 use App\Mail\PurchaseOrder\Notification as OrderMail;
 use App\Models\ProviderEvaluation;
 use App\Services\OrderCalculationService;
@@ -89,8 +90,13 @@ class ViewOrder extends ViewRecord
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
-                ->action(function (array $data) {
+                ->action(function (array $data, Actions\Action $action) {
                     unset($this->record->total);
+
+                    if (PurchaserResource::haltIfSignersInactive($this->record, $data['response'])) {
+                        $action->halt();
+                    }
+
                     $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
                     Notification::make()
                         ->title('Respuesta enviada')

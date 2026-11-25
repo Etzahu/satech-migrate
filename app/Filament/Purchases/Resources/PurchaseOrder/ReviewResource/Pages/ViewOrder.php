@@ -2,6 +2,7 @@
 
 namespace App\Filament\Purchases\Resources\PurchaseOrder\ReviewResource\Pages;
 
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource;
 use App\Filament\Purchases\Resources\PurchaseOrder\ReviewResource;
 use App\Services\OrderCalculationService;
 use App\Services\PurchaseOrderChainResolver;
@@ -49,8 +50,13 @@ class ViewOrder extends ViewRecord
                         ->label('Observación'),
                 ])
                 ->requiresConfirmation()
-                ->action(function (array $data) {
+                ->action(function (array $data, Actions\Action $action) {
                     unset($this->record->total); // evitar error de serialización del total calculado
+
+                    if (PurchaserResource::haltIfSignersInactive($this->record, $data['response'])) {
+                        $action->halt();
+                    }
+
                     $this->record->status()->transitionTo($data['response'], ['respuesta' => $data['observation']]);
                     Notification::make()
                         ->title('Respuesta enviada')

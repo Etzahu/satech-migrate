@@ -6,6 +6,7 @@ use App\Enums\ReviewLevel;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseRequisition;
 use App\Models\User;
+use App\Services\PurchaseOrderChainResolver;
 use Filament\Actions\BulkAction;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -95,13 +96,23 @@ class RespondInBulkAction extends BulkAction
     protected function respondTo(Collection $records, string $response, ?string $observation): void
     {
         $user = auth()->user();
+        $resolver = app(PurchaseOrderChainResolver::class);
         $applied = [];
         $skipped = [];
+        $blocked = [];
         $failed = [];
 
         foreach ($records as $record) {
             if (! $this->level->canRespond($record, $user)) {
                 $skipped[] = $record->folio;
+
+                continue;
+            }
+
+            // La máquina de estados también la detiene, pero aquí se reporta
+            // con su motivo en vez de mezclarla con las que fallaron.
+            if ($record instanceof PurchaseOrder && $resolver->inactiveSignersAhead($record, $response) !== []) {
+                $blocked[] = $record->folio;
 
                 continue;
             }
@@ -115,20 +126,25 @@ class RespondInBulkAction extends BulkAction
             }
         }
 
-        $this->notifyResult($records->count(), $applied, $skipped, $failed);
+        $this->notifyResult($records->count(), $applied, $skipped, $blocked, $failed);
     }
 
     /**
      * @param  array<int, string>  $applied
      * @param  array<int, string>  $skipped
+     * @param  array<int, string>  $blocked
      * @param  array<int, string>  $failed
      */
-    protected function notifyResult(int $total, array $applied, array $skipped, array $failed): void
+    protected function notifyResult(int $total, array $applied, array $skipped, array $blocked, array $failed): void
     {
         $lines = [];
 
         if ($skipped !== []) {
             $lines[] = 'Omitidas porque ya no esperan en este nivel o no te toca responderlas: '.e(implode(', ', $skipped)).'.';
+        }
+
+        if ($blocked !== []) {
+            $lines[] = 'Detenidas porque su cadena tiene un firmante inactivo más adelante: '.e(implode(', ', $blocked)).'. Pide a Compras que les cambie la cadena en «Verificar requisiciones» o «Verificar órdenes».';
         }
 
         if ($failed !== []) {

@@ -49,6 +49,10 @@ class ViewOrder extends ViewRecord
                     if ($this->record->provider->approval_chain == 'especial') {
                         $this->record->status()->transitionTo('revision por dirección general');
                     } else {
+                        if (PurchaserResource::haltIfSignersInactive($this->record, 'revisión gerente de compras')) {
+                            return;
+                        }
+
                         $this->record->status()->transitionTo('revisión gerente de compras');
                     }
                     Notification::make()

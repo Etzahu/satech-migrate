@@ -11,7 +11,10 @@ use App\Services\ProviderEvaluationService;
 use App\Services\PurchaseOrderChainResolver;
 use App\Services\PurchaseOrderFlowService;
 use Asantibanez\LaravelEloquentStateMachines\StateMachines\StateMachine;
+use Closure;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator as ValidatorFactory;
 use Throwable;
 
 class PurchaseOrderStateMachine extends StateMachine
@@ -70,6 +73,25 @@ class PurchaseOrderStateMachine extends StateMachine
     public function defaultState(): ?string
     {
         return 'borrador';
+    }
+
+    /**
+     * Candado para cualquier camino —vista, acción en lote o código—: la orden
+     * no avanza hacia un nivel de la cadena cuyo firmante ya no está activo.
+     * Las vistas revisan lo mismo antes, para explicarlo sin una excepción.
+     */
+    public function validatorForTransition($from, $to, $model): ?Validator
+    {
+        $blocker = app(PurchaseOrderChainResolver::class)->advanceBlocker($model, $to);
+
+        if ($blocker === null) {
+            return null;
+        }
+
+        return ValidatorFactory::make(
+            ['status' => $to],
+            ['status' => [fn (string $attribute, mixed $value, Closure $fail) => $fail($blocker)]],
+        );
     }
 
     public function afterTransitionHooks(): array

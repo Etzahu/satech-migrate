@@ -8,6 +8,7 @@ use App\Models\PurchaseRequisition;
 use App\Models\PurchaseRequisitionApprovalChain;
 use App\Models\User;
 use App\Services\PurchaseOrderChainResolver;
+use Spatie\Permission\Models\Role;
 use Tests\TestCase;
 
 /**
@@ -73,7 +74,7 @@ class PurchaseOrderChainResolverTest extends TestCase
         $user = new User;
         $user->id = $id;
         $user->setRelation('roles', collect($roles)->map(function (string $name) {
-            $role = new \Spatie\Permission\Models\Role;
+            $role = new Role;
             $role->name = $name;
             $role->guard_name = 'web';
 
@@ -174,6 +175,119 @@ class PurchaseOrderChainResolverTest extends TestCase
         $this->assertFalse($this->resolver->isApprover($order, null));
         $this->assertFalse($this->resolver->isAuthorizer($order, null));
         $this->assertFalse($this->resolver->participates($order, null));
+    }
+
+    /**
+     * Cuelga de la cadena de la orden a quienes aprueban y autorizan, con su
+     * estado de alta, sin tocar la base.
+     */
+    private function withSigners(PurchaseOrder $order, ?User $approver, ?User $authorizer): PurchaseOrder
+    {
+        $chain = $order->requisition->approvalChain;
+
+        $chain->approver_id = $approver?->id;
+        $chain->setRelation('approver', $approver);
+        $chain->authorizer_id = $authorizer?->id;
+        $chain->setRelation('authorizer', $authorizer);
+
+        return $order;
+    }
+
+    private function signer(int $id, string $name, bool $active): User
+    {
+        $user = $this->user($id);
+        $user->name = $name;
+        $user->active = $active;
+
+        return $user;
+    }
+
+    public function test_frena_la_orden_que_iria_hacia_un_autorizador_inactivo(): void
+    {
+        $order = $this->withSigners(
+            $this->order([], gerenciaEnFlujo: false),
+            $this->signer(227, 'Kevin', active: true),
+            $this->signer(168, 'Sergio', active: false),
+        );
+
+        $this->assertSame(['Autoriza' => 'Sergio'], $this->resolver->inactiveSignersAhead($order, 'aprobado por gerente solicitante'));
+        $this->assertSame(['Autoriza' => 'Sergio'], $this->resolver->inactiveSignersAhead($order, 'aprobado por gerente de compras'));
+        $this->assertSame(['Autoriza' => 'Sergio'], $this->resolver->inactiveSignersAhead($order, 'revisión gerente de compras'));
+        $this->assertStringContainsString('Autoriza: Sergio', $this->resolver->advanceBlocker($order, 'aprobado por gerente solicitante'));
+    }
+
+    public function test_frena_desde_el_envio_cuando_el_aprobador_esta_inactivo(): void
+    {
+        $order = $this->withSigners(
+            $this->order([], gerenciaEnFlujo: false),
+            $this->signer(227, 'Kevin', active: false),
+            $this->signer(334, 'Diego', active: true),
+        );
+
+        $this->assertSame(['Aprueba' => 'Kevin'], $this->resolver->inactiveSignersAhead($order, 'revisión gerente de compras'));
+        $this->assertSame(['Aprueba' => 'Kevin'], $this->resolver->inactiveSignersAhead($order, 'aprobado por gerente de compras'));
+    }
+
+    public function test_no_frena_por_un_nivel_que_ya_quedo_atras(): void
+    {
+        // Ya aprobó el gerente solicitante: que se haya ido después no detiene
+        // a quien autoriza.
+        $order = $this->withSigners(
+            $this->order([], gerenciaEnFlujo: false),
+            $this->signer(227, 'Kevin', active: false),
+            $this->signer(334, 'Diego', active: true),
+        );
+
+        $this->assertSame([], $this->resolver->inactiveSignersAhead($order, 'aprobado por gerente solicitante'));
+        $this->assertNull($this->resolver->advanceBlocker($order, 'aprobado por gerente solicitante'));
+    }
+
+    public function test_devolver_o_cancelar_nunca_se_frena(): void
+    {
+        $order = $this->withSigners(
+            $this->order([], gerenciaEnFlujo: false),
+            $this->signer(227, 'Kevin', active: false),
+            $this->signer(168, 'Sergio', active: false),
+        );
+
+        foreach (['devuelto por gerente de compras', 'devuelto por gerente solicitante', 'cancelado por gerente solicitante', 'cadena reasignada'] as $to) {
+            $this->assertSame([], $this->resolver->inactiveSignersAhead($order, $to), $to);
+        }
+    }
+
+    public function test_un_autorizador_vacio_a_proposito_no_frena(): void
+    {
+        $order = $this->withSigners(
+            $this->order([], gerenciaEnFlujo: false),
+            $this->signer(227, 'Kevin', active: true),
+            null,
+        );
+
+        $this->assertSame([], $this->resolver->inactiveSignersAhead($order, 'revisión gerente de compras'));
+    }
+
+    public function test_un_firmante_eliminado_tambien_frena(): void
+    {
+        $order = $this->withSigners(
+            $this->order([], gerenciaEnFlujo: false),
+            $this->signer(227, 'Kevin', active: true),
+            null,
+        );
+        $order->requisition->approvalChain->authorizer_id = 999;
+
+        $this->assertSame(['Autoriza' => 'usuario eliminado'], $this->resolver->inactiveSignersAhead($order, 'aprobado por gerente solicitante'));
+    }
+
+    public function test_bajo_el_flujo_por_rol_la_cadena_no_frena(): void
+    {
+        // Los niveles por rol los firma quien tenga el rol, no la cadena.
+        $order = $this->withSigners(
+            $this->order([], gerenciaEnFlujo: true),
+            $this->signer(227, 'Kevin', active: false),
+            $this->signer(168, 'Sergio', active: false),
+        );
+
+        $this->assertSame([], $this->resolver->inactiveSignersAhead($order, 'revisión gerente de compras'));
     }
 
     public function test_participates_cubre_los_dos_niveles(): void

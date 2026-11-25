@@ -175,9 +175,12 @@ class CheckUserOrders extends Page implements HasActions, HasForms
                 $requesterId = $order->requisition->approvalChain->requester_id;
                 $currentChainId = $order->requisition->approval_chain_id;
 
-                // Buscar otras cadenas del mismo solicitante
+                // Otras cadenas del mismo solicitante que puedan usarse: una
+                // desactivada o con alguien de baja dejaría la orden detenida,
+                // y la máquina de estados ya no deja mandarla a revisión así.
                 $availableChains = PurchaseRequisitionApprovalChain::where('requester_id', $requesterId)
                     ->where('id', '!=', $currentChainId)
+                    ->selectable()
                     ->get()
                     ->mapWithKeys(function ($chain) {
                         return [
@@ -274,14 +277,14 @@ class CheckUserOrders extends Page implements HasActions, HasForms
                 return [
                     Forms\Components\Select::make('approver_id')
                         ->label('Gerente Solicitante (Aprobador)')
-                        ->options(User::withRole('aprueba_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('aprueba_requisicion_compra')->where('active', 1)->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Aprueba Requisición de Compra"'),
 
                     Forms\Components\Select::make('authorizer_id')
                         ->label('Director (Autorizador)')
-                        ->options(User::withRole('autoriza_requisicion_compra')->orderBy('name')->pluck('name', 'id'))
+                        ->options(User::withRole('autoriza_requisicion_compra')->where('active', 1)->orderBy('name')->pluck('name', 'id'))
                         ->searchable()
                         ->required()
                         ->helperText('Solo usuarios con rol "Autoriza Requisición de Compra"'),

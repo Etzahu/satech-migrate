@@ -34,6 +34,88 @@ class PurchaseOrderChainResolver
     public const AUTHORIZER_ROLE = 'autoriza_orden_compra';
 
     /**
+     * Niveles de la cadena que la orden todavía tiene por delante al pasar a
+     * cada estado: enviarla a revisión o aprobarla la encamina hacia ellos.
+     *
+     * @var array<string, array<int, string>>
+     */
+    private const CHAIN_LEVELS_AHEAD = [
+        'revisión gerente de compras' => ['approver', 'authorizer'],
+        'aprobado por gerente de compras' => ['approver', 'authorizer'],
+        'aprobado por gerente solicitante' => ['authorizer'],
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    private const LEVEL_LABELS = [
+        'approver' => 'Aprueba',
+        'authorizer' => 'Autoriza',
+    ];
+
+    /**
+     * Firmantes de la cadena que la orden todavía tiene por delante al pasar
+     * a `$to` y que ya no están activos, como nivel => nombre.
+     *
+     * Solo aplica por cadena: un nivel por rol lo responde quien tenga el rol,
+     * y si nadie lo tiene se corrige asignándolo, sin tocar la orden. Un
+     * autorizador vacío a propósito no cuenta: es un nivel que no existe.
+     *
+     * @return array<string, string>
+     */
+    public function inactiveSignersAhead(PurchaseOrder $order, string $to): array
+    {
+        $levels = self::CHAIN_LEVELS_AHEAD[$to] ?? [];
+        $chain = $order->requisition?->approvalChain;
+
+        if ($levels === [] || ! $chain || $this->usesRoleFlow($order)) {
+            return [];
+        }
+
+        $inactive = [];
+
+        foreach ($levels as $level) {
+            if ($chain->{$level.'_id'} === null) {
+                continue;
+            }
+
+            $signer = $chain->{$level};
+
+            if (! $signer?->active) {
+                $inactive[self::LEVEL_LABELS[$level]] = $signer?->name ?? 'usuario eliminado';
+            }
+        }
+
+        return $inactive;
+    }
+
+    /**
+     * Por qué la orden no puede pasar a `$to`, o null si puede.
+     *
+     * Sin este freno la orden avanza hasta el nivel de alguien dado de baja y
+     * ahí se queda: nadie la ve en su bandeja y el aviso no le llega a nadie.
+     * Pasó con 17 órdenes de Contratos que Kevin siguió aprobando hacia Sergio
+     * Ordaz cuando ya estaba inactivo (T401/26, el 25-nov-2026).
+     */
+    public function advanceBlocker(PurchaseOrder $order, string $to): ?string
+    {
+        $inactive = $this->inactiveSignersAhead($order, $to);
+
+        if ($inactive === []) {
+            return null;
+        }
+
+        $signers = collect($inactive)
+            ->map(fn (string $name, string $level) => "{$level}: {$name}")
+            ->implode(', ');
+
+        $requisition = $order->requisition?->folio;
+
+        return "La cadena de la requisición {$requisition} tiene firmantes inactivos ({$signers}), así que la orden se quedaría detenida sin que nadie pueda responderla. "
+            .'Pide a Compras que le cambie la cadena en «Verificar requisiciones» o «Verificar órdenes».';
+    }
+
+    /**
      * ¿Esta orden se resuelve por rol en vez de por cadena?
      */
     public function usesRoleFlow(?PurchaseOrder $order): bool
@@ -165,7 +247,7 @@ class PurchaseOrderChainResolver
      */
     public function canAccessApproval(?User $user): bool
     {
-        return $this->canAccessLevel($user, self::APPROVER_ROLE, 'approverChainsPR');
+        return $this->canAccessLevel($user, self::APPROVER_ROLE, 'approverChainsPR', 'aprobado por gerente de compras');
     }
 
     /**
@@ -173,7 +255,7 @@ class PurchaseOrderChainResolver
      */
     public function canAccessAuthorization(?User $user): bool
     {
-        return $this->canAccessLevel($user, self::AUTHORIZER_ROLE, 'authorizerChainsPR');
+        return $this->canAccessLevel($user, self::AUTHORIZER_ROLE, 'authorizerChainsPR', 'aprobado por gerente solicitante');
     }
 
     /**
@@ -218,20 +300,36 @@ class PurchaseOrderChainResolver
             ->whereHas('requester.management', fn (Builder $m) => $m->where('purchase_order_flow', 1));
     }
 
-    private function canAccessLevel(?User $user, string $role, string $chainRelation): bool
+    /**
+     * Entra quien tiene el rol, quien está en una cadena vigente o quien tiene
+     * una orden esperándolo en una cadena ya desactivada: sin esa última rama,
+     * al aprobador que solo le quedan cadenas desactivadas se le escondería la
+     * sección justo cuando tiene algo que responder.
+     */
+    private function canAccessLevel(?User $user, string $role, string $chainRelation, string $waitingStatus): bool
     {
         if (! $user) {
             return false;
         }
 
         return $user->hasRole($role)
-            || $user->{$chainRelation}()->notArchived()->exists();
+            || $user->{$chainRelation}()->notArchived()->exists()
+            || $this->applyScope(PurchaseOrder::query(), $user, $role, $chainRelation)
+                ->where('status', $waitingStatus)
+                ->exists();
     }
 
     /**
      * Une las dos ramas: las órdenes que le tocan por rol y las que le tocan
      * por cadena. El `1 = 0` final cierra el grupo cuando no aplica ninguna,
      * para que un usuario sin nada no termine viendo la tabla completa.
+     *
+     * Cuenta también las cadenas desactivadas. Desactivar una cadena solo la
+     * retira para requisiciones nuevas; las órdenes que ya venían en ella
+     * siguen esperando a su gente, igual que el botón de respuesta y la policy,
+     * que tampoco miran si la cadena está desactivada. Filtrarlas dejó
+     * T868–T875/26 sin bandeja cuando se rehicieron las cadenas de Contratos
+     * el 18-nov-2026.
      */
     private function applyScope(Builder $query, ?User $user, string $role, string $chainRelation): Builder
     {
@@ -239,7 +337,7 @@ class PurchaseOrderChainResolver
             return $query->whereRaw('1 = 0');
         }
 
-        $chains = $user->{$chainRelation}()->notArchived()->pluck('id')->unique()->all();
+        $chains = $user->{$chainRelation}()->pluck('id')->unique()->all();
 
         return $query->where(function (Builder $outer) use ($user, $role, $chains) {
             if ($user->hasRole($role)) {
