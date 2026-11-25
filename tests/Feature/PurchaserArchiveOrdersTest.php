@@ -3,7 +3,9 @@
 namespace Tests\Feature;
 
 use App\Filament\Purchases\Resources\PurchaseOrder\HistoryResource\Pages\ManagePR;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages\AddItemPR;
 use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages\ListPurchaseOrders;
+use App\Filament\Purchases\Resources\PurchaseOrder\PurchaserResource\Pages\ViewOrder;
 use App\Models\PurchaseOrder;
 use App\Models\User;
 use App\Services\GoogleSheetsService;
@@ -78,6 +80,28 @@ class PurchaserArchiveOrdersTest extends TestCase
     private function buyerOrder(string $status): PurchaseOrder
     {
         return $this->buyerOrders($status)->first();
+    }
+
+    /**
+     * Una orden con partidas y proveedor, para abrir su vista.
+     */
+    private function viewableOrder(string $status): PurchaseOrder
+    {
+        $order = PurchaseOrder::query()
+            ->whereHas('requisition.project')
+            ->whereHas('provider')
+            ->whereHas('items')
+            ->whereDoesntHave('items', fn ($items) => $items->where('unit_price', 0))
+            ->latest('id')
+            ->first();
+
+        $this->assertNotNull($order, 'No hay órdenes con partidas para probar.');
+
+        session(['company_id' => $order->company_id]);
+
+        $order->forceFill(['status' => $status, 'purchaser_user_id' => $this->buyer->id, 'archived_at' => null])->saveQuietly();
+
+        return $order;
     }
 
     // ── Cuándo se puede ─────────────────────────────────────────────────────
@@ -246,6 +270,85 @@ class PurchaserArchiveOrdersTest extends TestCase
             ->set('activeTab', 'archived')
             ->assertTableBulkActionHidden('archive_selected')
             ->assertTableBulkActionVisible('unarchive_selected');
+    }
+
+    // ── Archivada solo se ve ────────────────────────────────────────────────
+
+    public function test_archivada_no_se_envia_a_revision_ni_se_edita(): void
+    {
+        $order = $this->viewableOrder('borrador');
+
+        Livewire::test(ViewOrder::class, ['record' => $order->getRouteKey()])
+            ->assertActionVisible('Solicitar')
+            ->assertActionVisible('edit')
+            ->assertActionHidden('unarchive');
+
+        $order->archive();
+
+        Livewire::test(ViewOrder::class, ['record' => $order->getRouteKey()])
+            ->assertActionHidden('Solicitar')
+            ->assertActionHidden('edit')
+            ->assertActionHidden('Agregar partidas de la requisición')
+            ->assertActionVisible('unarchive')
+            ->assertSee('Orden archivada. Desarchívala para editarla o enviarla a revisión.');
+    }
+
+    public function test_archivada_liberada_no_se_reabre_pero_se_descarga(): void
+    {
+        $order = $this->viewableOrder('autorizada para proveedor');
+        $order->archive();
+
+        Livewire::test(ViewOrder::class, ['record' => $order->getRouteKey()])
+            ->assertActionHidden('Reabrir para edición')
+            ->assertActionVisible('Descargar orden')
+            ->assertActionVisible('Ver pdf');
+    }
+
+    public function test_desarchivar_desde_la_vista_devuelve_las_acciones(): void
+    {
+        $order = $this->viewableOrder('borrador');
+        $order->archive();
+
+        Livewire::test(ViewOrder::class, ['record' => $order->getRouteKey()])
+            ->callAction('unarchive')
+            ->assertNotified('Orden desarchivada')
+            ->assertActionVisible('Solicitar')
+            ->assertActionVisible('edit');
+
+        $this->assertFalse($order->fresh()->isArchived());
+    }
+
+    public function test_el_comprador_no_edita_ni_agrega_partidas_a_una_archivada(): void
+    {
+        $order = $this->buyerOrder('borrador');
+        $this->assertTrue($this->buyer->can('update', $order));
+
+        $order->archive();
+
+        $this->assertFalse($this->buyer->can('update', $order));
+
+        Livewire::test(ListPurchaseOrders::class)
+            ->set('activeTab', 'archived')
+            ->assertTableActionHidden('edit', $order);
+
+        Livewire::test(AddItemPR::class, ['record' => $order->id])
+            ->assertRedirect();
+    }
+
+    public function test_el_gerente_de_compras_si_edita_una_archivada(): void
+    {
+        $order = $this->buyerOrder('borrador');
+        $order->archive();
+
+        $manager = User::forceCreate([
+            'name' => 'Prueba gerente archivadas',
+            'email' => 'prueba.gerente.archivadas@gptservices.com',
+            'puesto' => 'Prueba',
+            'active' => true,
+        ]);
+        $manager->assignRole('gerente_compras');
+
+        $this->assertTrue($manager->can('update', $order));
     }
 
     // ── Historial ───────────────────────────────────────────────────────────

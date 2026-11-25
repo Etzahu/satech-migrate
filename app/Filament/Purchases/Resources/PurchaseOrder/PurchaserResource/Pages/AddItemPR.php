@@ -38,7 +38,7 @@ class AddItemPR extends Page implements HasForms, HasTable
     public function mount(int|string $record)
     {
         $this->record = $this->resolveRecord($record);
-        if (! in_array($this->record->status, PurchaseOrder::PURCHASER_STATUSES, true)) {
+        if (! in_array($this->record->status, PurchaseOrder::PURCHASER_STATUSES, true) || $this->record->isArchived()) {
             return redirect(PurchaserResource::getUrl('view', ['record' => $this->record]));
         }
     }

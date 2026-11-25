@@ -9,6 +9,7 @@ use Filament\Actions;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Schema;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ViewOrder extends ViewRecord
 {
@@ -27,6 +28,10 @@ class ViewOrder extends ViewRecord
                 ->label('Enviar a revisión')
                 ->extraAttributes(['class' => 'animate-tada-loop  animate-iteration-count-infinite'])
                 ->visible(function () {
+                    if ($this->record->isArchived()) {
+                        return false;
+                    }
+
                     // TODO: fala la logica para que se muestre el boton una vez que el comprado agrege un precio unitario a cada item
                     $items = $this->record->items->pluck('unit_price');
                     $hasZeroQuantity = $items->contains(function ($item) {
@@ -59,11 +64,26 @@ class ViewOrder extends ViewRecord
                 ->color(fn () => $this->record->provider->approval_chain == 'especial' ? 'danger' : 'success')
                 ->modalSubmitActionLabel('Sí, enviar a revisión'),
 
-            Actions\EditAction::make(),
+            // Archivada solo se ve: para trabajarla primero se desarchiva.
+            Actions\Action::make('unarchive')
+                ->label('Desarchivar')
+                ->icon('heroicon-m-arrow-uturn-left')
+                ->color('gray')
+                ->visible(fn (PurchaseOrder $record): bool => $record->isArchived())
+                ->action(function (PurchaseOrder $record): void {
+                    $record->unarchive();
+
+                    Notification::make()
+                        ->title('Orden desarchivada')
+                        ->success()
+                        ->send();
+                }),
+            Actions\EditAction::make()
+                ->hidden(fn (PurchaseOrder $record): bool => $record->isArchived()),
             Actions\DeleteAction::make()
                 ->visible(fn ($record) => $record->status == 'borrador'),
             Actions\Action::make('Reabrir para edición')
-                ->visible(fn ($record) => $record->status == 'autorizada para proveedor')
+                ->visible(fn (PurchaseOrder $record): bool => $record->status == 'autorizada para proveedor' && ! $record->isArchived())
                 ->requiresConfirmation()
                 ->action(function () {
                     unset($this->record->total); // evitar error de serialización del total calculado
@@ -76,6 +96,10 @@ class ViewOrder extends ViewRecord
                 ->openUrlInNewTab(),
             Actions\Action::make('Agregar partidas de la requisición')
                 ->visible(function () {
+                    if ($this->record->isArchived()) {
+                        return false;
+                    }
+
                     if ($this->record->status !== 'borrador' && $this->record->status !== 'reabierta para edición') {
                         return false;
                     }
@@ -94,6 +118,13 @@ class ViewOrder extends ViewRecord
                 ->url(fn (PurchaseOrder $record): string => PurchaserResource::getUrl('add-item', ['record' => $record->id])),
 
         ];
+    }
+
+    public function getSubheading(): string|Htmlable|null
+    {
+        return $this->record->isArchived()
+            ? 'Orden archivada. Desarchívala para editarla o enviarla a revisión.'
+            : null;
     }
 
     public function infolist(Schema $infolist): Schema

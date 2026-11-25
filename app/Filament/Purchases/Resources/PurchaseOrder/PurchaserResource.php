@@ -913,7 +913,8 @@ class PurchaserResource extends Resource implements HasShieldPermissions
                 //
             ])
             ->recordActions([
-                Actions\EditAction::make(),
+                Actions\EditAction::make()
+                    ->hidden(fn (PurchaseOrder $record): bool => $record->isArchived()),
                 Actions\ViewAction::make(),
                 Action::make('archive')
                     ->label('Archivar')

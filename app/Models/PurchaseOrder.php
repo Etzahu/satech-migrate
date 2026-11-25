@@ -383,9 +383,16 @@ class PurchaseOrder extends Model implements Auditable, HasMedia
         $this->setArchivedAt(null);
     }
 
+    /**
+     * Escribe solo esta columna: la instancia puede traer atributos que no
+     * existen en la tabla, como el `total` que le pone la vista de la orden.
+     */
     private function setArchivedAt(?Carbon $archivedAt): void
     {
-        static::withoutTimestamps(fn () => $this->forceFill(['archived_at' => $archivedAt])->saveQuietly());
+        static::withoutTimestamps(fn () => static::query()->whereKey($this->getKey())->update(['archived_at' => $archivedAt]));
+
+        $this->archived_at = $archivedAt;
+        $this->syncOriginalAttribute('archived_at');
     }
 
     public function scopeArchived(Builder $query): Builder

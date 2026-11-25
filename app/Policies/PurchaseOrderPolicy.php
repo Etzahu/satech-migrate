@@ -48,10 +48,13 @@ class PurchaseOrderPolicy
 
     /**
      * Determine whether the user can update the model.
+     *
+     * El comprador edita mientras la orden esté en sus manos y no la haya
+     * archivado: para trabajarla primero la desarchiva.
      */
     public function update(User $user, PurchaseOrder $purchaseOrder): bool
     {
-        return ($user->can('update_purchase::order::purchaser') && in_array($purchaseOrder->status, PurchaseOrder::PURCHASER_STATUSES, true)) || ($user->hasRole('super_admin') || $user->hasRole('administrador_compras') ||
+        return ($user->can('update_purchase::order::purchaser') && in_array($purchaseOrder->status, PurchaseOrder::PURCHASER_STATUSES, true) && ! $purchaseOrder->isArchived()) || ($user->hasRole('super_admin') || $user->hasRole('administrador_compras') ||
         $user->hasRole('gerente_compras')); // administrador_compras
     }
 
