@@ -6,6 +6,7 @@ use App\Filament\Purchases\Resources\PurchaseRequisition\HistoryResource\Pages;
 use App\Models\Management;
 use App\Models\PurchaseRequisition;
 use App\Services\GoogleSheetsRequisitionService;
+use App\Services\SpreadsheetExporter;
 use Carbon\Carbon;
 use Filament\Actions;
 use Filament\Actions\ActionGroup;
@@ -294,7 +295,7 @@ class HistoryResource extends Resource
                                 $requisitionsData = $exportService->processRequisitionsReport($data);
 
                                 // Preparar datos de items para la segunda hoja
-                                $models = PurchaseRequisition::with(['company', 'project', 'approvalChain', 'purchaser', 'items.product'])
+                                $models = PurchaseRequisition::with(['items.product'])
                                     ->where('company_id', session()->get('company_id'))
                                     ->whereBetween('created_at', [$startDate, $endDate]);
 
@@ -313,17 +314,20 @@ class HistoryResource extends Resource
                                         ->send();
                                 }
 
-                                $items = $models->pluck('items')->flatten();
                                 $dataItems = [];
 
-                                foreach ($items as $item) {
-                                    $dataItems[] = [
-                                        'Requisición' => $item->requisition->folio,
-                                        'Cantidad' => $item->quantity_purchase,
-                                        'Producto-Servicio' => $item->product->name,
-                                        'Tipo' => $item->product->type_purchase,
-                                        'Observaciones' => $item->observation,
-                                    ];
+                                // Se recorre por requisición para no cargar la
+                                // requisición de cada partida por separado.
+                                foreach ($models as $requisition) {
+                                    foreach ($requisition->items as $item) {
+                                        $dataItems[] = [
+                                            'Requisición' => $requisition->folio,
+                                            'Cantidad' => $item->quantity_purchase,
+                                            'Producto-Servicio' => $item->product->name,
+                                            'Tipo' => $item->product->type_purchase,
+                                            'Observaciones' => $item->observation,
+                                        ];
+                                    }
                                 }
 
                                 $sheets = new SheetCollection([
@@ -331,7 +335,7 @@ class HistoryResource extends Resource
                                     'partidas' => $dataItems,
                                 ]);
 
-                                return fastexcel($sheets)
+                                return SpreadsheetExporter::make($sheets)
                                     ->download("requisiciones de compra {$startDate->format('d-m-Y')} {$endDate->format('d-m-Y')}.xlsx");
                             } catch (\Exception $e) {
                                 $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');

@@ -2,12 +2,10 @@
 
 namespace App\Services;
 
-use Exception;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\PurchaseOrder;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Revolution\Google\Sheets\Facades\Sheets;
 
@@ -21,7 +19,7 @@ class GoogleSheetsService
     /**
      * Constructor del servicio
      */
-    public function __construct(string $spreadsheetId = null)
+    public function __construct(?string $spreadsheetId = null)
     {
         $this->spreadsheetId = $spreadsheetId ?? config('google.default_spreadsheet_id', '1ha_45TdVN7odz-64yKlXlvjXD66O5zfXG7HKeamFJfU');
     }
@@ -29,7 +27,7 @@ class GoogleSheetsService
     /**
      * Procesa el formulario del HistoryResource según el tipo de exportación seleccionado
      *
-     * @param array $formData Datos del formulario (incluyendo type_save, columns, fechas, etc.)
+     * @param  array  $formData  Datos del formulario (incluyendo type_save, columns, fechas, etc.)
      * @return array|Collection Resultado según el tipo de exportación
      */
     public function processOrdersReport(array $formData)
@@ -49,18 +47,15 @@ class GoogleSheetsService
                 'form_data' => $formData,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            throw new Exception("Error al procesar reporte de órdenes: " . $e->getMessage());
+            throw new Exception('Error al procesar reporte de órdenes: '.$e->getMessage());
         }
     }
 
     /**
      * Procesa la exportación específica para Google Sheets
-     *
-     * @param array $formData
-     * @return array
      */
     protected function processGoogleSheetsExport(array $formData): array
     {
@@ -91,9 +86,9 @@ class GoogleSheetsService
                 'user_sheet' => $this->sanitizeUtf8($userSheetName),
                 'user_name' => $this->sanitizeUtf8($user->name),
                 'spreadsheet_url' => "https://docs.google.com/spreadsheets/d/{$this->spreadsheetId}",
-                'date_range' => Carbon::parse($formData['created_start'])->format('d/m/Y') . ' - ' . Carbon::parse($formData['created_end'])->format('d/m/Y'),
+                'date_range' => Carbon::parse($formData['created_start'])->format('d/m/Y').' - '.Carbon::parse($formData['created_end'])->format('d/m/Y'),
                 'total_orders' => $orders->count(),
-                'export_type' => 'sheets'
+                'export_type' => 'sheets',
             ];
         } catch (Exception $e) {
             Log::error('Error al procesar exportación a Google Sheets en GoogleSheetsService', [
@@ -101,18 +96,15 @@ class GoogleSheetsService
                 'form_data' => $formData,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            throw new Exception("Error al procesar exportación a Google Sheets: " . $e->getMessage());
+            throw new Exception('Error al procesar exportación a Google Sheets: '.$e->getMessage());
         }
     }
 
     /**
      * Procesa la exportación para Excel (sin interacción con Google Sheets)
-     *
-     * @param array $formData
-     * @return Collection
      */
     protected function processExcelExport(array $formData): Collection
     {
@@ -135,18 +127,15 @@ class GoogleSheetsService
                 'form_data' => $formData,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            throw new Exception("Error al procesar exportación a Excel: " . $e->getMessage());
+            throw new Exception('Error al procesar exportación a Excel: '.$e->getMessage());
         }
     }
 
     /**
      * Genera la colección de órdenes basada en los filtros del formulario
-     *
-     * @param array $formData
-     * @return Collection
      */
     protected function generateOrdersCollection(array $formData): Collection
     {
@@ -158,11 +147,11 @@ class GoogleSheetsService
             ->whereBetween('created_at', [$startDate, $endDate]);
 
         // Aplicar filtros opcionales
-        if (!empty($formData['buyers'])) {
+        if (! empty($formData['buyers'])) {
             $query->whereIn('purchaser_user_id', $formData['buyers']);
         }
 
-        if (!empty($formData['type_purchase'])) {
+        if (! empty($formData['type_purchase'])) {
             $query->whereHas('items.product', function ($q) use ($formData) {
                 $q->whereIn('type_purchase', $formData['type_purchase']);
             });
@@ -174,7 +163,7 @@ class GoogleSheetsService
     /**
      * Genera las iniciales del usuario a partir de su nombre completo
      *
-     * @param string $userName Nombre completo del usuario
+     * @param  string  $userName  Nombre completo del usuario
      * @return string Iniciales del usuario
      */
     public function generateBuyerInitials(string $userName): string
@@ -185,7 +174,7 @@ class GoogleSheetsService
         $initials = 'reporte-ordenes-';
 
         foreach ($words as $word) {
-            if (!empty($word)) {
+            if (! empty($word)) {
                 // Usar mb_substr para caracteres UTF-8
                 $initials .= mb_strtoupper(mb_substr($word, 0, 1, 'UTF-8'), 'UTF-8');
             }
@@ -198,14 +187,12 @@ class GoogleSheetsService
      * Verifica si existe la hoja del usuario, si no existe la crea
      * Si existe, limpia todos los datos antes de cargar nuevos
      *
-     * @param string $userSheetName
-     * @param array $selectedColumns Columnas seleccionadas por el usuario
-     * @return bool
+     * @param  array  $selectedColumns  Columnas seleccionadas por el usuario
      */
     protected function ensureUserSheetExists(string $userSheetName, array $selectedColumns = []): bool
     {
         try {
-            if (!$this->sheetExists($userSheetName)) {
+            if (! $this->sheetExists($userSheetName)) {
                 // Crear encabezados dinámicos basados en las columnas seleccionadas
                 $dynamicHeaders = ['Fecha Carga']; // Siempre incluir fecha de carga
                 $dynamicHeaders = array_merge($dynamicHeaders, $selectedColumns);
@@ -229,18 +216,15 @@ class GoogleSheetsService
                 'selected_columns' => $selectedColumns,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            throw new Exception("Error al crear/verificar hoja del usuario '$userSheetName': " . $e->getMessage());
+            throw new Exception("Error al crear/verificar hoja del usuario '$userSheetName': ".$e->getMessage());
         }
     }
 
     /**
      * Limpia todos los datos de una hoja, manteniendo solo los encabezados
-     *
-     * @param string $sheetName
-     * @return bool
      */
     protected function clearSheetData(string $sheetName): bool
     {
@@ -269,19 +253,15 @@ class GoogleSheetsService
                 'sheet_name' => $sheetName,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            throw new Exception("Error al limpiar datos de la hoja '$sheetName': " . $e->getMessage());
+            throw new Exception("Error al limpiar datos de la hoja '$sheetName': ".$e->getMessage());
         }
     }
 
     /**
      * Prepara los datos de las órdenes para Google Sheets (formato secuencial)
-     *
-     * @param Collection $orders
-     * @param array $selectedColumns
-     * @return array
      */
     protected function prepareOrdersData(Collection $orders, array $selectedColumns): array
     {
@@ -299,15 +279,12 @@ class GoogleSheetsService
 
             $ordersData[] = $rowData;
         }
+
         return $ordersData;
     }
 
     /**
      * Prepara los datos de las órdenes para Excel (formato asociativo)
-     *
-     * @param Collection $orders
-     * @param array $selectedColumns
-     * @return array
      */
     protected function prepareOrdersDataForExcel(Collection $orders, array $selectedColumns): array
     {
@@ -323,18 +300,18 @@ class GoogleSheetsService
 
             $ordersData[] = $rowData;
         }
+
         return $ordersData;
     }
 
     /**
      * Construye el array completo de datos de una orden
-     *
-     * @param PurchaseOrder $order
-     * @return array
      */
     protected function buildFullOrderData(PurchaseOrder $order): array
     {
-        $service = new \App\Services\OrderCalculationService($order->id);
+        // La orden ya trae sus partidas cargadas; volver a buscarla por id
+        // hacía una consulta por orden y en rangos largos el reporte expiraba.
+        $service = OrderCalculationService::forOrder($order);
 
         // Datos completos de la orden - asegurar codificación UTF-8
         return [
@@ -374,10 +351,6 @@ class GoogleSheetsService
     /**
      * Inserta los datos de las órdenes en la hoja del usuario
      * OPTIMIZADO: Inserta todos los datos en una sola llamada API
-     *
-     * @param string $userSheetName
-     * @param array $ordersData
-     * @return bool
      */
     protected function insertOrdersData(string $userSheetName, array $ordersData): bool
     {
@@ -402,19 +375,15 @@ class GoogleSheetsService
                 'spreadsheet_id' => $this->spreadsheetId,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            throw new Exception("Error al insertar órdenes en la hoja '$userSheetName': " . $e->getMessage());
+            throw new Exception("Error al insertar órdenes en la hoja '$userSheetName': ".$e->getMessage());
         }
     }
 
     /**
      * Actualiza los encabezados de la hoja según las columnas seleccionadas
-     *
-     * @param string $sheetName
-     * @param array $headers
-     * @return bool
      */
     protected function updateSheetHeaders(string $sheetName, array $headers): bool
     {
@@ -422,7 +391,7 @@ class GoogleSheetsService
             // Actualizar encabezados en la primera fila
             Sheets::spreadsheet($this->spreadsheetId)
                 ->sheet($sheetName)
-                ->range('A1:' . $this->getColumnLetter(count($headers)) . '1')
+                ->range('A1:'.$this->getColumnLetter(count($headers)).'1')
                 ->update([$headers]);
 
             return true;
@@ -434,7 +403,7 @@ class GoogleSheetsService
                 'spreadsheet_id' => $this->spreadsheetId,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
             // Si falla, continuar sin actualizar encabezados
@@ -444,18 +413,16 @@ class GoogleSheetsService
 
     /**
      * Convierte un número de columna a letra de Excel (A, B, C, ..., AA, AB, etc.)
-     *
-     * @param int $columnNumber
-     * @return string
      */
     protected function getColumnLetter(int $columnNumber): string
     {
         $letter = '';
         while ($columnNumber > 0) {
             $columnNumber--;
-            $letter = chr($columnNumber % 26 + 65) . $letter;
+            $letter = chr($columnNumber % 26 + 65).$letter;
             $columnNumber = intval($columnNumber / 26);
         }
+
         return $letter;
     }
 
@@ -468,6 +435,7 @@ class GoogleSheetsService
     {
         try {
             $sheets = Sheets::spreadsheet($this->spreadsheetId)->sheetList();
+
             return in_array($sheetName, $sheets);
         } catch (Exception $e) {
             Log::error('Error al verificar si la hoja existe en GoogleSheetsService', [
@@ -476,10 +444,10 @@ class GoogleSheetsService
                 'spreadsheet_id' => $this->spreadsheetId,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            throw new Exception("Error al verificar si la hoja existe: " . $e->getMessage());
+            throw new Exception('Error al verificar si la hoja existe: '.$e->getMessage());
         }
     }
 
@@ -491,7 +459,7 @@ class GoogleSheetsService
         try {
             Sheets::spreadsheet($this->spreadsheetId)->addSheet($sheetName);
 
-            if (!empty($headers)) {
+            if (! empty($headers)) {
                 $this->addHeaders($sheetName, $headers);
             }
 
@@ -504,10 +472,10 @@ class GoogleSheetsService
                 'spreadsheet_id' => $this->spreadsheetId,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            throw new Exception("Error al crear la hoja '$sheetName': " . $e->getMessage());
+            throw new Exception("Error al crear la hoja '$sheetName': ".$e->getMessage());
         }
     }
 
@@ -531,10 +499,10 @@ class GoogleSheetsService
                 'spreadsheet_id' => $this->spreadsheetId,
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'trace' => $e->getTraceAsString()
+                'trace' => $e->getTraceAsString(),
             ]);
 
-            throw new Exception("Error al agregar encabezados a la hoja '$sheetName': " . $e->getMessage());
+            throw new Exception("Error al agregar encabezados a la hoja '$sheetName': ".$e->getMessage());
         }
     }
 
@@ -567,6 +535,7 @@ class GoogleSheetsService
         if (is_array($order->condition_payment)) {
             $concepts = array_column($order->condition_payment, 'concept');
             $concepts = array_map([$this, 'sanitizeUtf8'], $concepts);
+
             return implode(',', $concepts);
         }
 
@@ -584,14 +553,12 @@ class GoogleSheetsService
 
         $names = array_column($order->documentation_delivery, 'name');
         $names = array_map([$this, 'sanitizeUtf8'], $names);
+
         return implode(',', $names);
     }
 
     /**
      * Sanitiza y asegura que el texto esté en UTF-8 correctamente codificado
-     *
-     * @param string $text
-     * @return string
      */
     protected function sanitizeUtf8(string $text): string
     {
@@ -602,7 +569,7 @@ class GoogleSheetsService
         $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $text);
 
         // Asegurar que sea UTF-8 válido
-        if (!mb_check_encoding($text, 'UTF-8')) {
+        if (! mb_check_encoding($text, 'UTF-8')) {
             $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8//IGNORE');
         }
 

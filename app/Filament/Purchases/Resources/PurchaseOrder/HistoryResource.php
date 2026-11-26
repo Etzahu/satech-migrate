@@ -7,6 +7,7 @@ use App\Models\PurchaseOrder;
 use App\Models\User;
 use App\Services\OrderCalculationService;
 use App\Services\PurchaseOrderReportService;
+use App\Services\SpreadsheetExporter;
 use Filament\Actions;
 use Filament\Actions\ActionGroup;
 use Filament\Forms;
@@ -271,7 +272,7 @@ class HistoryResource extends Resource
                             $result = $reportService->generateReport($data);
 
                             // Exportación a Excel
-                            return fastexcel($result['sheets'])
+                            return SpreadsheetExporter::make($result['sheets'])
                                 ->download($result['filename']);
                         } catch (\Exception $e) {
                             $errorMessage = htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
