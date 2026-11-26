@@ -28,6 +28,10 @@ use Spatie\Permission\Models\Role;
  *    cadena o reasignando. Lo que lleva más de `idle_days` sin moverse se da
  *    por abandonado y ya no se avisa: son pendientes de gente que se fue hace
  *    meses y que nadie va a retomar.
+ *
+ * Las órdenes archivadas no se reportan por ninguna de las dos causas:
+ * archivarla es la forma de decir que esa orden ya no se va a mover. Si
+ * cambia de estado se desarchiva sola y vuelve a contar.
  */
 class FlowHealthService
 {
@@ -169,6 +173,7 @@ class FlowHealthService
         $waitingOnInactive = [];
 
         $pending = $orders
+            ->reject(fn (PurchaseOrder $order) => $order->isArchived())
             ->map(fn (PurchaseOrder $order) => [$order, $this->orderResponder($order)])
             ->concat($requisitions->map(fn (PurchaseRequisition $requisition) => [$requisition, $this->requisitionResponder($requisition)]));
 

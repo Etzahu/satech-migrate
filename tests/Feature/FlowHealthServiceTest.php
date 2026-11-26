@@ -209,6 +209,27 @@ class FlowHealthServiceTest extends TestCase
         $this->assertSame([], $this->service->build(collect([$order]), collect())['inactive']);
     }
 
+    public function test_la_orden_archivada_no_se_reporta_aunque_espere_a_una_cuenta_inactiva(): void
+    {
+        $archivada = $this->order('aprobado por gerente de compras', approver: $this->person(active: false));
+        $archivada->archived_at = Carbon::now();
+
+        $this->assertSame([], $this->service->build(collect([$archivada]), collect())['inactive']);
+    }
+
+    public function test_la_orden_archivada_no_se_lista_en_el_rol_vacante_pero_el_rol_si(): void
+    {
+        $this->clearRole(PurchaseOrderChainResolver::AUTHORIZER_ROLE);
+
+        $archivada = $this->order('aprobado por gerente solicitante', roleFlow: true);
+        $archivada->archived_at = Carbon::now();
+
+        $report = $this->service->build(collect([$archivada]), collect());
+
+        $this->assertSame(PurchaseOrderChainResolver::AUTHORIZER_ROLE, $report['vacant_roles'][0]['role']);
+        $this->assertSame([], $report['vacant_roles'][0]['items']);
+    }
+
     public function test_la_cadena_que_no_nombra_a_nadie_se_reporta_sin_cuenta(): void
     {
         $order = $this->order('aprobado por gerente de compras', approver: null);

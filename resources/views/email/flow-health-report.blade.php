@@ -91,7 +91,8 @@
                                         <p style="{{ $muted }}margin: 0 0 10px;">
                                             Se corrige cambiando la cadena de aprobación o reasignando el documento; si
                                             ya no procede, cancélalo. Lo que lleva más de {{ $idleDays }} días sin
-                                            moverse no aparece aquí: se da por abandonado.
+                                            moverse no aparece aquí: se da por abandonado. Tampoco las órdenes
+                                            archivadas.
                                         </p>
 
                                         @foreach ($report['inactive'] as $group)
